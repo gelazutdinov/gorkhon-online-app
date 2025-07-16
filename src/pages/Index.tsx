@@ -135,8 +135,22 @@ const Index = () => {
       name: "ПВЗ OZON",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      note: "",
-      icon: "Package"
+      note: "С просмотром фотографии",
+      icon: "Package",
+      photos: [
+        {
+          url: "https://cdn.poehali.dev/files/9386c828-c39f-4329-b779-3ba6847a6109.png",
+          caption: "Вход в ПВЗ OZON (источник: приложение OZON)"
+        },
+        {
+          url: "https://cdn.poehali.dev/files/06353e69-2000-4f89-a92b-e9ffd14d9dc1.png", 
+          caption: "Интерьер ПВЗ OZON (источник: приложение OZON)"
+        },
+        {
+          url: "https://cdn.poehali.dev/files/c3a4b18b-fb4e-4002-aabd-2a42230bb220.png",
+          caption: "Оборудование ПВЗ OZON (источник: приложение OZON)"
+        }
+      ]
     },
     {
       name: "ПВЗ OZON",
