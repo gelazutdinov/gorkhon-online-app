@@ -35,11 +35,11 @@ const Header = () => {
         <div className="grid grid-cols-2 gap-3">
           <Button className="h-16 bg-gorkhon-blue hover:bg-gorkhon-blue/90 text-white flex flex-col items-center gap-1 rounded-2xl">
             <Icon name="Phone" size={20} />
-            <span className="text-sm">Экстренные службы</span>
+            <span className="text-xs text-center px-1">Экстренные службы</span>
           </Button>
           <Button className="h-16 bg-gorkhon-green hover:bg-gorkhon-green/90 text-white flex flex-col items-center gap-1 rounded-2xl">
             <Icon name="Bus" size={20} />
-            <span className="text-sm">Расписание</span>
+            <span className="text-xs text-center px-1">Расписание</span>
           </Button>
         </div>
       </div>
