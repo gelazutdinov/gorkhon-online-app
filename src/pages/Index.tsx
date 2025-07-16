@@ -181,7 +181,7 @@ const Index = () => {
             <img 
               src="https://cdn.poehali.dev/files/0ca339b4-243b-452e-a71d-b8405f228c6e.png" 
               alt="Логотип Горхон Online" 
-              className="w-12 h-12 rounded-lg shadow-lg"
+              className="w-12 h-12 rounded-2xl shadow-lg"
             />
             <h1 className="text-2xl font-bold">Горхон.Online</h1>
           </div>
@@ -193,18 +193,18 @@ const Index = () => {
         
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
-          <Button className="h-16 bg-gorkhon-blue hover:bg-gorkhon-blue/90 text-white flex flex-col items-center gap-1">
+          <Button className="h-16 bg-gorkhon-blue hover:bg-gorkhon-blue/90 text-white flex flex-col items-center gap-1 rounded-2xl">
             <Icon name="Phone" size={20} />
             <span className="text-sm">Экстренные службы</span>
           </Button>
-          <Button className="h-16 bg-gorkhon-green hover:bg-gorkhon-green/90 text-white flex flex-col items-center gap-1">
+          <Button className="h-16 bg-gorkhon-green hover:bg-gorkhon-green/90 text-white flex flex-col items-center gap-1 rounded-2xl">
             <Icon name="Bus" size={20} />
             <span className="text-sm">Расписание</span>
           </Button>
         </div>
 
         {/* Important Numbers */}
-        <Card className="animate-fade-in">
+        <Card className="animate-fade-in rounded-2xl">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
               <Icon name="Phone" size={20} />
@@ -213,9 +213,9 @@ const Index = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             {importantNumbers.map((contact, index) => (
-              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors">
+              <div key={index} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-slate-100 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-gorkhon-blue/10">
+                  <div className="p-2 rounded-2xl bg-gorkhon-blue/10">
                     <Icon name={contact.icon as any} size={16} className="text-gorkhon-blue" />
                   </div>
                   <div>
@@ -236,7 +236,7 @@ const Index = () => {
         </Card>
 
         {/* Transport Schedule */}
-        <Card className="animate-fade-in">
+        <Card className="animate-fade-in rounded-2xl">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
               <Icon name="Bus" size={20} />
@@ -249,7 +249,7 @@ const Index = () => {
                 <h4 className="font-medium mb-2 text-slate-700">{transport.type}</h4>
                 <div className="space-y-2">
                   {transport.routes.map((route, routeIndex) => (
-                    <div key={routeIndex} className="flex justify-between items-center p-2 rounded bg-slate-50">
+                    <div key={routeIndex} className="flex justify-between items-center p-2 rounded-2xl bg-slate-50">
                       <div>
                         <p className="text-sm font-medium">{route.route}</p>
                         <p className="text-xs text-slate-600">{route.time}</p>
@@ -267,7 +267,7 @@ const Index = () => {
         </Card>
 
         {/* Donation Section */}
-        <Card className="animate-fade-in">
+        <Card className="animate-fade-in rounded-2xl">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
               <Icon name="Heart" size={20} />
@@ -276,7 +276,7 @@ const Index = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             {donationData.map((donation, index) => (
-              <div key={index} className={`p-4 rounded-lg ${donation.gradient} text-white relative overflow-hidden`}>
+              <div key={index} className={`p-4 rounded-2xl ${donation.gradient} text-white relative overflow-hidden`}>
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
                     <Icon name={donation.icon as any} size={18} />
@@ -294,7 +294,7 @@ const Index = () => {
         </Card>
 
         {/* Work Schedule */}
-        <Card className="animate-fade-in">
+        <Card className="animate-fade-in rounded-2xl">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
               <Icon name="Clock" size={20} />
@@ -303,9 +303,9 @@ const Index = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             {workSchedule.map((item, index) => (
-              <div key={index} className="p-3 rounded-lg bg-slate-50">
+              <div key={index} className="p-3 rounded-2xl bg-slate-50">
                 <div className="flex gap-3 mb-2">
-                  <div className="p-2 rounded-full bg-gorkhon-blue/10 flex-shrink-0">
+                  <div className="p-2 rounded-2xl bg-gorkhon-blue/10 flex-shrink-0">
                     <Icon name={item.icon as any} size={16} className="text-gorkhon-blue" />
                   </div>
                   <div className="flex-1">
@@ -359,7 +359,7 @@ const Index = () => {
         </Card>
 
         {/* PVZ Section */}
-        <Card className="animate-fade-in">
+        <Card className="animate-fade-in rounded-2xl">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
               <Icon name="Package" size={20} />
@@ -368,9 +368,9 @@ const Index = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             {pvzData.map((pvz, index) => (
-              <div key={index} className="p-4 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100">
+              <div key={index} className="p-4 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="p-3 rounded-full bg-purple-100">
+                  <div className="p-3 rounded-2xl bg-purple-100">
                     <Icon name={pvz.icon as any} size={20} className="text-purple-600" />
                   </div>
                   <div>
@@ -420,14 +420,14 @@ const Index = () => {
                               <img 
                                 src={photo.url} 
                                 alt={photo.caption}
-                                className="w-full h-24 object-cover rounded-lg border-2 border-slate-200 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:border-purple-300"
+                                className="w-full h-24 object-cover rounded-2xl border-2 border-slate-200 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:border-purple-300"
                                 loading="lazy"
                                 style={{ 
                                   imageRendering: 'crisp-edges',
                                   filter: 'contrast(1.05) saturate(1.1)'
                                 }}
                               />
-                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-2xl flex items-center justify-center">
                                 <Icon name="ZoomIn" size={16} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                               </div>
                               <p className="text-xs text-slate-600 mt-1">{photo.caption}</p>
@@ -446,7 +446,7 @@ const Index = () => {
         </Card>
 
         {/* Medical Link */}
-        <Card className="animate-fade-in bg-gradient-to-r from-gorkhon-blue/5 to-gorkhon-green/5 border-gorkhon-blue/20">
+        <Card className="animate-fade-in bg-gradient-to-r from-gorkhon-blue/5 to-gorkhon-green/5 border-gorkhon-blue/20 rounded-2xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
