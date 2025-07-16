@@ -420,7 +420,12 @@ const Index = () => {
                               <img 
                                 src={photo.url} 
                                 alt={photo.caption}
-                                className="w-full h-20 object-cover rounded-lg border transition-transform group-hover:scale-105"
+                                className="w-full h-24 object-cover rounded-lg border-2 border-slate-200 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:border-purple-300"
+                                loading="lazy"
+                                style={{ 
+                                  imageRendering: 'crisp-edges',
+                                  filter: 'contrast(1.05) saturate(1.1)'
+                                }}
                               />
                               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
                                 <Icon name="ZoomIn" size={16} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
