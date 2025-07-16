@@ -484,10 +484,7 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 className="border-white/30 text-white hover:bg-white/20"
-                onClick={() => {
-                  // Jivo chat integration will be added here
-                  console.log('Opening chat support...');
-                }}
+                onClick={() => window.open('https://jivo.chat/9GPwkXQFfM', '_blank')}
               >
                 <Icon name="MessageSquare" size={16} />
               </Button>
