@@ -127,7 +127,7 @@ const Index = () => {
       name: "ПВЗ OZON",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      note: "Построить маршрут",
+      note: "",
       icon: "Package"
     }
   ];
@@ -362,7 +362,7 @@ const Index = () => {
                         <Icon name="Camera" size={14} className="text-blue-600" />
                         <span className="text-sm text-blue-600">{pvz.note}</span>
                       </div>
-                    ) : (
+                    ) : pvz.note ? (
                       <div className="flex items-center gap-2">
                         <Icon name="Navigation" size={14} className="text-blue-600" />
                         <Button 
@@ -377,7 +377,7 @@ const Index = () => {
                           {pvz.note}
                         </Button>
                       </div>
-                    )}
+                    ) : null}
                     
                     {pvz.photos && (
                       <div>
