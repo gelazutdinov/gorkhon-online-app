@@ -76,9 +76,12 @@ const ActionButtons = () => {
       </Card>
 
       {/* Footer */}
-      <div className="text-center py-4">
+      <div className="text-center py-4 space-y-2">
         <p className="text-sm text-slate-500">
           Сделано с ❤️ для жителей Горхона
+        </p>
+        <p className="text-xs text-slate-400">
+          © 2024 Все права защищены и принадлежат команде Горхон
         </p>
       </div>
     </div>
