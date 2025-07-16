@@ -139,16 +139,16 @@ const Index = () => {
       icon: "Package",
       photos: [
         {
-          url: "https://cdn.poehali.dev/files/9386c828-c39f-4329-b779-3ba6847a6109.png",
-          caption: "Вход в ПВЗ OZON (источник: приложение OZON)"
+          url: "https://cdn.poehali.dev/files/4cb01698-d8de-4264-b9bc-e863b3667eb4.jpg",
+          caption: "Фасад здания с ПВЗ OZON"
         },
         {
-          url: "https://cdn.poehali.dev/files/06353e69-2000-4f89-a92b-e9ffd14d9dc1.png", 
-          caption: "Интерьер ПВЗ OZON (источник: приложение OZON)"
+          url: "https://cdn.poehali.dev/files/528564ea-ccc2-46de-be3b-2faec284f4ea.jpg", 
+          caption: "Рабочее место ПВЗ OZON"
         },
         {
-          url: "https://cdn.poehali.dev/files/c3a4b18b-fb4e-4002-aabd-2a42230bb220.png",
-          caption: "Оборудование ПВЗ OZON (источник: приложение OZON)"
+          url: "https://cdn.poehali.dev/files/25a0c47e-7995-4c0b-a44e-440b27806401.jpg",
+          caption: "Примерочные кабины ПВЗ OZON"
         }
       ]
     },
