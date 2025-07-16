@@ -76,24 +76,16 @@ const Index = () => {
         "Воскресенье": "Выходной"
       }
     },
-    { service: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" },
-    { 
-      service: "ПВЗ Wildberries",
+    { service: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" }
+  ];
+
+  const pvzData = [
+    {
+      name: "ПВЗ Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      icon: "Package",
-      photos: [
-        {
-          url: "https://cdn.poehali.dev/files/db11a90a-322e-4e28-acdb-1230afb19cf1.png",
-          caption: "Интерьер ПВЗ Wildberries",
-          source: "Приложение Wildberries"
-        },
-        {
-          url: "https://cdn.poehali.dev/files/effd940b-46bf-46ab-b102-56fc7574bce1.png", 
-          caption: "Вход в ПВЗ Wildberries",
-          source: "Приложение Wildberries"
-        }
-      ]
+      note: "С просмотром фотографии",
+      icon: "Package"
     }
   ];
 
@@ -289,6 +281,48 @@ const Index = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* PVZ Section */}
+        <Card className="animate-fade-in">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
+              <Icon name="Package" size={20} />
+              Пункты выдачи заказов
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {pvzData.map((pvz, index) => (
+              <div key={index} className="p-4 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 rounded-full bg-purple-100">
+                    <Icon name={pvz.icon as any} size={20} className="text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-slate-800">{pvz.name}</h4>
+                    <p className="text-sm text-slate-600">{pvz.address}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Icon name="Clock" size={14} className="text-green-600" />
+                    <span className="text-sm font-medium text-green-600">{pvz.schedule}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Icon name="Camera" size={14} className="text-blue-600" />
+                    <span className="text-sm text-blue-600">{pvz.note}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 pt-2">
+                    <Icon name="MapPin" size={14} className="text-slate-500" />
+                    <span className="text-xs text-slate-500">Нажмите для навигации</span>
+                  </div>
+                </div>
               </div>
             ))}
           </CardContent>
