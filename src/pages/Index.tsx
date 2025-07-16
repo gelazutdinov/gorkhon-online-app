@@ -179,7 +179,7 @@ const Index = () => {
         <div className="max-w-md mx-auto text-center relative z-10">
           <div className="flex items-center justify-center mb-3">
             <img 
-              src="https://cdn.poehali.dev/files/340ca949-741c-43af-9748-98e5873aa61f.png" 
+              src="https://cdn.poehali.dev/files/57c1e519-5302-4805-a19e-b8929681ca07.png" 
               alt="Логотип Горхон Online" 
               className="w-16 h-16 rounded-2xl shadow-lg"
             />
