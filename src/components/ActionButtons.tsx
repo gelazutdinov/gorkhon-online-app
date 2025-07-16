@@ -43,7 +43,7 @@ const ActionButtons = () => {
             </div>
             <Button 
               className="bg-amber-600 hover:bg-amber-700 text-white"
-              onClick={() => window.open('https://t.me/+QgiLIa1gFRY4Y2Iy', '_blank')}
+              onClick={() => window.open('https://t.me/gorhonbot', '_blank')}
             >
               <Icon name="MessageSquare" size={16} />
             </Button>
