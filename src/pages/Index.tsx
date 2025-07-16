@@ -122,6 +122,13 @@ const Index = () => {
           caption: "Вход в ПВЗ Wildberries"
         }
       ]
+    },
+    {
+      name: "ПВЗ OZON",
+      address: "пос. Лесозаводской, ул. Трудовая, 12",
+      schedule: "Ежедневно: 10:00-20:00",
+      note: "Построить маршрут",
+      icon: "Package"
     }
   ];
 
@@ -350,10 +357,27 @@ const Index = () => {
                   </div>
                   
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Icon name="Camera" size={14} className="text-blue-600" />
-                      <span className="text-sm text-blue-600">{pvz.note}</span>
-                    </div>
+                    {pvz.photos ? (
+                      <div className="flex items-center gap-2">
+                        <Icon name="Camera" size={14} className="text-blue-600" />
+                        <span className="text-sm text-blue-600">{pvz.note}</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Icon name="Navigation" size={14} className="text-blue-600" />
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-sm text-blue-600 hover:text-gorkhon-blue p-0 h-auto font-normal"
+                          onClick={() => {
+                            const query = encodeURIComponent(pvz.address);
+                            window.open(`https://yandex.ru/maps/?text=${query}`, '_blank');
+                          }}
+                        >
+                          {pvz.note}
+                        </Button>
+                      </div>
+                    )}
                     
                     {pvz.photos && (
                       <div>
