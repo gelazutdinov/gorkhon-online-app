@@ -405,10 +405,7 @@ const Index = () => {
                     )}
                   </div>
                   
-                  <div className="flex items-center gap-2 pt-2">
-                    <Icon name="MapPin" size={14} className="text-slate-500" />
-                    <span className="text-xs text-slate-500">Построить маршрут</span>
-                  </div>
+
                 </div>
               </div>
             ))}
