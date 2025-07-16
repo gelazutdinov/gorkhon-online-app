@@ -129,6 +129,13 @@ const Index = () => {
       schedule: "Ежедневно: 10:00-20:00",
       note: "",
       icon: "Package"
+    },
+    {
+      name: "ПВЗ OZON",
+      address: "посёлок Горхон, ул. Железнодорожная, 31/2",
+      schedule: "Ежедневно: 10:00 – 19:00",
+      note: "",
+      icon: "Package"
     }
   ];
 
