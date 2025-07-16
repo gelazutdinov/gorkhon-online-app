@@ -71,7 +71,14 @@ const Index = () => {
       {/* Header */}
       <div className="bg-gradient-brand text-white px-4 py-6">
         <div className="max-w-md mx-auto text-center">
-          <h1 className="text-2xl font-bold mb-2">Горхон.Online</h1>
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <img 
+              src="https://cdn.poehali.dev/files/64175b7f-29b7-4d32-bcc2-25c53be6ea3b.png" 
+              alt="Логотип Горхон" 
+              className="w-12 h-12 rounded-lg shadow-lg"
+            />
+            <h1 className="text-2xl font-bold">Горхон.Online</h1>
+          </div>
           <p className="text-blue-100">Вся нужная информация под рукой</p>
         </div>
       </div>
