@@ -165,16 +165,35 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <div className="bg-gorkhon-pink text-white px-4 py-6 relative overflow-hidden rounded-b-3xl">
-        {/* Animated Background Pattern */}
+        {/* Abstract Background Pattern */}
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `url('https://cdn.poehali.dev/files/19d92d52-a37f-4236-a55f-1ce90dd9ba1b.png')`,
+            backgroundImage: `url('https://cdn.poehali.dev/files/8f138a31-25be-4bb8-b2a9-0f539909f82d.png')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             animation: 'float 8s ease-in-out infinite'
           }}
         />
+        
+        {/* Running Text Lines */}
+        <div className="absolute inset-0 flex flex-col justify-center gap-6 pointer-events-none">
+          <div className="relative overflow-hidden">
+            <div className="whitespace-nowrap text-lg font-bold text-white/20 animate-marquee">
+              Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • 
+            </div>
+          </div>
+          <div className="relative overflow-hidden">
+            <div className="whitespace-nowrap text-lg font-bold text-white/20 animate-marquee-reverse">
+              Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • 
+            </div>
+          </div>
+          <div className="relative overflow-hidden">
+            <div className="whitespace-nowrap text-lg font-bold text-white/20 animate-marquee">
+              Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • 
+            </div>
+          </div>
+        </div>
         
         <div className="max-w-md mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-3 mb-3">
