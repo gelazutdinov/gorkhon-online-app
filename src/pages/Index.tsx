@@ -2,9 +2,35 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
 
 const Index = () => {
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<any[]>([]);
+
+  const openPhotoCarousel = (photos: any[], startIndex: number) => {
+    setSelectedPvzPhotos(photos);
+    setSelectedImageIndex(startIndex);
+  };
+
+  const closePhotoCarousel = () => {
+    setSelectedImageIndex(null);
+    setSelectedPvzPhotos([]);
+  };
+
+  const nextPhoto = () => {
+    if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
+      setSelectedImageIndex((selectedImageIndex + 1) % selectedPvzPhotos.length);
+    }
+  };
+
+  const prevPhoto = () => {
+    if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
+      setSelectedImageIndex(selectedImageIndex === 0 ? selectedPvzPhotos.length - 1 : selectedImageIndex - 1);
+    }
+  };
   const importantNumbers = [
     { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
     { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
@@ -84,8 +110,18 @@ const Index = () => {
       name: "ПВЗ Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      note: "Фото пункта выдачи",
-      icon: "Package"
+      note: "С просмотром фотографии",
+      icon: "Package",
+      photos: [
+        {
+          url: "https://cdn.poehali.dev/files/db11a90a-322e-4e28-acdb-1230afb19cf1.png",
+          caption: "Интерьер ПВЗ Wildberries"
+        },
+        {
+          url: "https://cdn.poehali.dev/files/effd940b-46bf-46ab-b102-56fc7574bce1.png", 
+          caption: "Вход в ПВЗ Wildberries"
+        }
+      ]
     }
   ];
 
@@ -319,41 +355,30 @@ const Index = () => {
                       <span className="text-sm text-blue-600">{pvz.note}</span>
                     </div>
                     
-                    {/* Фотографии Wildberries */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="space-y-1">
-                        <img 
-                          src="https://cdn.poehali.dev/files/0c528210-bcf3-431a-8ae2-0208bacad2dd.png" 
-                          alt="Входная группа ПВЗ Wildberries" 
-                          className="w-full h-20 object-cover rounded border"
-                        />
-                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
+                    {pvz.photos && (
+                      <div>
+                        <p className="text-xs font-medium text-slate-700 mb-2">Фотографии ПВЗ:</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {pvz.photos.map((photo: any, photoIndex: number) => (
+                            <div 
+                              key={photoIndex} 
+                              className="relative cursor-pointer group"
+                              onClick={() => openPhotoCarousel(pvz.photos, photoIndex)}
+                            >
+                              <img 
+                                src={photo.url} 
+                                alt={photo.caption}
+                                className="w-full h-20 object-cover rounded-lg border transition-transform group-hover:scale-105"
+                              />
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
+                                <Icon name="ZoomIn" size={16} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </div>
+                              <p className="text-xs text-slate-600 mt-1">{photo.caption}</p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div className="space-y-1">
-                        <img 
-                          src="https://cdn.poehali.dev/files/d5bfbfe0-6adb-4877-bd99-8fd3fe0ca721.png" 
-                          alt="Зона примерки ПВЗ Wildberries" 
-                          className="w-full h-20 object-cover rounded border"
-                        />
-                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
-                      </div>
-                      <div className="space-y-1">
-                        <img 
-                          src="https://cdn.poehali.dev/files/dede0507-eb8f-4935-83a9-809949ba8600.png" 
-                          alt="Примерочные кабины ПВЗ Wildberries" 
-                          className="w-full h-20 object-cover rounded border"
-                        />
-                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
-                      </div>
-                      <div className="space-y-1">
-                        <img 
-                          src="https://cdn.poehali.dev/files/37eff7ab-9f98-4e7c-bce0-7a83c8075b18.png" 
-                          alt="Зона обслуживания ПВЗ Wildberries" 
-                          className="w-full h-20 object-cover rounded border"
-                        />
-                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
-                      </div>
-                    </div>
+                    )}
                   </div>
                   
                   <div className="flex items-center gap-2 pt-2">
@@ -423,6 +448,65 @@ const Index = () => {
           </p>
         </div>
       </div>
+
+      {/* Photo Carousel Modal */}
+      <Dialog open={selectedImageIndex !== null} onOpenChange={closePhotoCarousel}>
+        <DialogContent className="max-w-4xl w-full p-0 bg-black/95">
+          {selectedImageIndex !== null && selectedPvzPhotos[selectedImageIndex] && (
+            <div className="relative">
+              <img
+                src={selectedPvzPhotos[selectedImageIndex].url}
+                alt={selectedPvzPhotos[selectedImageIndex].caption}
+                className="w-full h-auto max-h-[80vh] object-contain"
+              />
+              
+              {/* Navigation buttons */}
+              {selectedPvzPhotos.length > 1 && (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white"
+                    onClick={prevPhoto}
+                  >
+                    <Icon name="ChevronLeft" size={24} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white"
+                    onClick={nextPhoto}
+                  >
+                    <Icon name="ChevronRight" size={24} />
+                  </Button>
+                </>
+              )}
+              
+              {/* Close button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white"
+                onClick={closePhotoCarousel}
+              >
+                <Icon name="X" size={24} />
+              </Button>
+              
+              {/* Photo info */}
+              <div className="absolute bottom-4 left-4 right-4 text-center">
+                <p className="text-white text-sm bg-black/50 px-3 py-1 rounded">
+                  {selectedPvzPhotos[selectedImageIndex].caption}
+                </p>
+                {selectedPvzPhotos.length > 1 && (
+                  <p className="text-white/70 text-xs mt-1">
+                    {selectedImageIndex + 1} из {selectedPvzPhotos.length}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
