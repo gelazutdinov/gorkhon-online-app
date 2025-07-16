@@ -69,8 +69,19 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <div className="bg-gorkhon-pink text-white px-4 py-6">
-        <div className="max-w-md mx-auto text-center">
+      <div className="bg-gorkhon-pink text-white px-4 py-6 relative overflow-hidden">
+        {/* Animated Background Pattern */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `url('https://cdn.poehali.dev/files/19d92d52-a37f-4236-a55f-1ce90dd9ba1b.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            animation: 'float 8s ease-in-out infinite'
+          }}
+        />
+        
+        <div className="max-w-md mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-3 mb-3">
             <img 
               src="https://cdn.poehali.dev/files/64175b7f-29b7-4d32-bcc2-25c53be6ea3b.png" 
