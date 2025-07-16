@@ -164,7 +164,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <div className="bg-gorkhon-pink text-white px-4 py-6 relative overflow-hidden">
+      <div className="bg-gorkhon-pink text-white px-4 py-6 relative overflow-hidden rounded-b-3xl">
         {/* Animated Background Pattern */}
         <div 
           className="absolute inset-0 opacity-20"
