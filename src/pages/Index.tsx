@@ -181,7 +181,7 @@ const Index = () => {
             <img 
               src="https://cdn.poehali.dev/files/57c1e519-5302-4805-a19e-b8929681ca07.png" 
               alt="Логотип Горхон Online" 
-              className="w-16 h-16 rounded-2xl shadow-lg"
+              className="w-24 h-24 rounded-2xl shadow-lg"
             />
           </div>
           <p className="text-white/90">Вся нужная информация под рукой</p>
