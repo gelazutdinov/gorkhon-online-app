@@ -69,7 +69,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <div className="bg-gradient-brand text-white px-4 py-6">
+      <div className="bg-gorkhon-blue text-white px-4 py-6">
         <div className="max-w-md mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-3">
             <img 
@@ -79,7 +79,7 @@ const Index = () => {
             />
             <h1 className="text-2xl font-bold">Горхон.Online</h1>
           </div>
-          <p className="text-blue-100">Вся нужная информация под рукой</p>
+          <p className="text-white/90">Вся нужная информация под рукой</p>
         </div>
       </div>
 
