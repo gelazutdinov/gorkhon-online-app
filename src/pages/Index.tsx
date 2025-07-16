@@ -8,9 +8,9 @@ import { useState } from "react";
 
 const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-  const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<any[]>([]);
+  const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<{url: string; alt: string}[]>([]);
 
-  const openPhotoCarousel = (photos: any[], startIndex: number) => {
+  const openPhotoCarousel = (photos: {url: string; alt: string}[], startIndex: number) => {
     setSelectedPvzPhotos(photos);
     setSelectedImageIndex(startIndex);
   };
