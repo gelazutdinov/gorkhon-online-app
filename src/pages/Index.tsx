@@ -84,7 +84,7 @@ const Index = () => {
       name: "ПВЗ Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      note: "С просмотром фотографии",
+      note: "Фото пункта выдачи",
       icon: "Package"
     }
   ];
@@ -313,14 +313,52 @@ const Index = () => {
                     <span className="text-sm font-medium text-green-600">{pvz.schedule}</span>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <Icon name="Camera" size={14} className="text-blue-600" />
-                    <span className="text-sm text-blue-600">{pvz.note}</span>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Icon name="Camera" size={14} className="text-blue-600" />
+                      <span className="text-sm text-blue-600">{pvz.note}</span>
+                    </div>
+                    
+                    {/* Фотографии Wildberries */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-1">
+                        <img 
+                          src="https://cdn.poehali.dev/files/0c528210-bcf3-431a-8ae2-0208bacad2dd.png" 
+                          alt="Входная группа ПВЗ Wildberries" 
+                          className="w-full h-20 object-cover rounded border"
+                        />
+                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
+                      </div>
+                      <div className="space-y-1">
+                        <img 
+                          src="https://cdn.poehali.dev/files/d5bfbfe0-6adb-4877-bd99-8fd3fe0ca721.png" 
+                          alt="Зона примерки ПВЗ Wildberries" 
+                          className="w-full h-20 object-cover rounded border"
+                        />
+                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
+                      </div>
+                      <div className="space-y-1">
+                        <img 
+                          src="https://cdn.poehali.dev/files/dede0507-eb8f-4935-83a9-809949ba8600.png" 
+                          alt="Примерочные кабины ПВЗ Wildberries" 
+                          className="w-full h-20 object-cover rounded border"
+                        />
+                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
+                      </div>
+                      <div className="space-y-1">
+                        <img 
+                          src="https://cdn.poehali.dev/files/37eff7ab-9f98-4e7c-bce0-7a83c8075b18.png" 
+                          alt="Зона обслуживания ПВЗ Wildberries" 
+                          className="w-full h-20 object-cover rounded border"
+                        />
+                        <p className="text-xs text-gray-600">Источник: приложение Wildberries</p>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="flex items-center gap-2 pt-2">
                     <Icon name="MapPin" size={14} className="text-slate-500" />
-                    <span className="text-xs text-slate-500">Нажмите для навигации</span>
+                    <span className="text-xs text-slate-500">Построить маршрут</span>
                   </div>
                 </div>
               </div>
