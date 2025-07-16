@@ -110,16 +110,24 @@ const Index = () => {
       name: "ПВЗ Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      note: "С просмотром фотографии",
+      note: "",
       icon: "Package",
       photos: [
+        {
+          url: "https://cdn.poehali.dev/files/effd940b-46bf-46ab-b102-56fc7574bce1.png", 
+          caption: "Вход в ПВЗ Wildberries"
+        },
         {
           url: "https://cdn.poehali.dev/files/db11a90a-322e-4e28-acdb-1230afb19cf1.png",
           caption: "Интерьер ПВЗ Wildberries"
         },
         {
-          url: "https://cdn.poehali.dev/files/effd940b-46bf-46ab-b102-56fc7574bce1.png", 
-          caption: "Вход в ПВЗ Wildberries"
+          url: "https://cdn.poehali.dev/files/dd085655-24de-4ab0-8877-256127c92015.png",
+          caption: "Зона обслуживания ПВЗ Wildberries"
+        },
+        {
+          url: "https://cdn.poehali.dev/files/93fc597d-3650-43d1-ad6c-7ce489b8e9c8.png",
+          caption: "Примерочные кабины ПВЗ Wildberries"
         }
       ]
     },
