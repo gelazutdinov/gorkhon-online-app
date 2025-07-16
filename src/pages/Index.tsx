@@ -374,7 +374,6 @@ const Index = () => {
                   <div className="space-y-3">
                     {pvz.photos ? (
                       <div className="flex items-center gap-2">
-                        <Icon name="Camera" size={14} className="text-blue-600" />
                         <span className="text-sm text-blue-600">{pvz.note}</span>
                       </div>
                     ) : pvz.note ? (
