@@ -177,12 +177,13 @@ const Index = () => {
         />
         
         <div className="max-w-md mx-auto text-center relative z-10">
-          <div className="flex items-center justify-center mb-3">
+          <div className="flex items-center justify-center gap-3 mb-3">
             <img 
-              src="https://cdn.poehali.dev/files/57c1e519-5302-4805-a19e-b8929681ca07.png" 
+              src="https://cdn.poehali.dev/files/0ca339b4-243b-452e-a71d-b8405f228c6e.png" 
               alt="Логотип Горхон Online" 
-              className="w-24 h-24 rounded-2xl shadow-lg"
+              className="w-12 h-12 rounded-2xl shadow-lg"
             />
+            <h1 className="text-2xl font-bold">Горхон.Online</h1>
           </div>
           <p className="text-white/90">Вся нужная информация под рукой</p>
         </div>
