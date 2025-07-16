@@ -76,7 +76,25 @@ const Index = () => {
         "Воскресенье": "Выходной"
       }
     },
-    { service: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" }
+    { service: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" },
+    { 
+      service: "ПВЗ Wildberries",
+      address: "пос. Лесозаводской, ул. Трудовая, 12",
+      schedule: "Ежедневно: 10:00-20:00",
+      icon: "Package",
+      photos: [
+        {
+          url: "https://cdn.poehali.dev/files/db11a90a-322e-4e28-acdb-1230afb19cf1.png",
+          caption: "Интерьер ПВЗ Wildberries",
+          source: "Приложение Wildberries"
+        },
+        {
+          url: "https://cdn.poehali.dev/files/effd940b-46bf-46ab-b102-56fc7574bce1.png", 
+          caption: "Вход в ПВЗ Wildberries",
+          source: "Приложение Wildberries"
+        }
+      ]
+    }
   ];
 
   return (
@@ -226,12 +244,36 @@ const Index = () => {
                   <div className="p-2 rounded-full bg-gorkhon-blue/10 flex-shrink-0">
                     <Icon name={item.icon as any} size={16} className="text-gorkhon-blue" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <p className="font-medium text-sm mb-1">{item.service}</p>
+                    {(item as any).address && (
+                      <p className="text-xs text-slate-500 mb-1">{(item as any).address}</p>
+                    )}
                     <p className="text-xs text-slate-600">{item.schedule}</p>
                   </div>
                 </div>
                 
+                {(item as any).photos && (
+                  <div className="mt-3 pt-3 border-t border-slate-200">
+                    <p className="text-xs font-medium text-slate-700 mb-2">Фотографии:</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(item as any).photos.map((photo: any, photoIndex: number) => (
+                        <div key={photoIndex} className="relative">
+                          <img 
+                            src={photo.url} 
+                            alt={photo.caption}
+                            className="w-full h-20 object-cover rounded-lg"
+                          />
+                          <div className="mt-1">
+                            <p className="text-xs text-slate-600">{photo.caption}</p>
+                            <p className="text-xs text-slate-400">Источник: {photo.source}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {(item as any).detailed && (
                   <div className="mt-3 pt-3 border-t border-slate-200">
                     <p className="text-xs font-medium text-slate-700 mb-2">Подробный график:</p>
