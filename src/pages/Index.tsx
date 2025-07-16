@@ -135,7 +135,7 @@ const Index = () => {
       name: "ПВЗ OZON",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      note: "С просмотром фотографии",
+      note: "",
       icon: "Package",
       photos: [
         {
