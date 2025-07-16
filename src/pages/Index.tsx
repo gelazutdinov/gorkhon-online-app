@@ -176,25 +176,6 @@ const Index = () => {
           }}
         />
         
-        {/* Running Text Lines */}
-        <div className="absolute inset-0 flex flex-col justify-center gap-6 pointer-events-none">
-          <div className="relative overflow-hidden">
-            <div className="whitespace-nowrap text-lg font-bold text-white/20 animate-marquee">
-              Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • 
-            </div>
-          </div>
-          <div className="relative overflow-hidden">
-            <div className="whitespace-nowrap text-lg font-bold text-white/20 animate-marquee-reverse">
-              Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • 
-            </div>
-          </div>
-          <div className="relative overflow-hidden">
-            <div className="whitespace-nowrap text-lg font-bold text-white/20 animate-marquee">
-              Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • Горхон.Online • 
-            </div>
-          </div>
-        </div>
-        
         <div className="max-w-md mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-3 mb-3">
             <img 
