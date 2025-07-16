@@ -183,7 +183,10 @@ const Index = () => {
               alt="Логотип Горхон Online" 
               className="w-12 h-12 rounded-2xl shadow-lg"
             />
-            <h1 className="text-2xl font-bold">Горхон.Online</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold">Горхон.Online</h1>
+              <span className="text-xs bg-white/20 px-2 py-1 rounded-full font-medium">beta</span>
+            </div>
           </div>
           <p className="text-white/90">Вся нужная информация под рукой</p>
         </div>
