@@ -60,6 +60,19 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       schedule: "Ежедневно: 10:00 – 19:00",
       note: "",
       icon: "Package"
+    },
+    {
+      name: "ПВЗ Wildberries",
+      address: "п. Горхон, ул. Железнодорожная, д. 15",
+      schedule: "Пн, Ср-Пт: 09:00-17:00 (перерыв 13:00-14:00), Сб: 09:00-16:00 (перерыв 13:00-14:00), Вт, Вс: выходной",
+      note: "",
+      icon: "Package",
+      photos: [
+        {
+          url: "https://cdn.poehali.dev/files/aec305dc-bf96-4997-83aa-fdb9be3bfd4c.jpg",
+          caption: "Фото предоставлено жителями п. Горхон"
+        }
+      ]
     }
   ];
 
