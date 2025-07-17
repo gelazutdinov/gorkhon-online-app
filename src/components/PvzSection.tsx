@@ -2,12 +2,26 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 
+interface PvzPhoto {
+  url: string;
+  caption: string;
+}
+
+interface PvzItem {
+  name: string;
+  address: string;
+  schedule: string;
+  note: string;
+  icon: string;
+  photos?: PvzPhoto[];
+}
+
 interface PvzSectionProps {
-  onOpenPhotoCarousel: (photos: {url: string; caption: string}[], startIndex: number) => void;
+  onOpenPhotoCarousel: (photos: PvzPhoto[], startIndex: number) => void;
 }
 
 const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
-  const pvzData = [
+  const pvzData: PvzItem[] = [
     {
       name: "ПВЗ Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
@@ -129,11 +143,11 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                   <div>
                     <p className="text-xs font-medium text-slate-700 mb-2">Фотографии ПВЗ:</p>
                     <div className="grid grid-cols-2 gap-2">
-                      {pvz.photos.map((photo: any, photoIndex: number) => (
+                      {pvz.photos.map((photo, photoIndex) => (
                         <div 
                           key={photoIndex} 
                           className="relative cursor-pointer group"
-                          onClick={() => onOpenPhotoCarousel(pvz.photos, photoIndex)}
+                          onClick={() => pvz.photos && onOpenPhotoCarousel(pvz.photos, photoIndex)}
                         >
                           <img 
                             src={photo.url} 

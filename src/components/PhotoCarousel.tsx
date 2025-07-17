@@ -2,9 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Icon from "@/components/ui/icon";
 
+interface Photo {
+  url: string;
+  caption: string;
+}
+
 interface PhotoCarouselProps {
   selectedImageIndex: number | null;
-  selectedPvzPhotos: {url: string; caption: string}[];
+  selectedPvzPhotos: Photo[];
   onClose: () => void;
   onNext: () => void;
   onPrev: () => void;
@@ -20,12 +25,17 @@ const PhotoCarousel = ({
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl w-full p-0 bg-black/95">
-        {selectedImageIndex !== null && selectedPvzPhotos[selectedImageIndex] && (
+        {selectedImageIndex !== null && selectedPvzPhotos.length > 0 && selectedPvzPhotos[selectedImageIndex] && (
           <div className="relative">
             <img
               src={selectedPvzPhotos[selectedImageIndex].url}
               alt={selectedPvzPhotos[selectedImageIndex].caption}
               className="w-full h-auto max-h-[80vh] object-contain"
+              loading="lazy"
+              onError={(e) => {
+                console.error('Failed to load image:', selectedPvzPhotos[selectedImageIndex].url);
+                e.currentTarget.style.display = 'none';
+              }}
             />
             
             {/* Navigation buttons */}

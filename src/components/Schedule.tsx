@@ -3,8 +3,19 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Icon from "@/components/ui/icon";
 
+interface RouteInfo {
+  route: string;
+  time: string;
+  price: string;
+}
+
+interface TransportSchedule {
+  type: string;
+  routes: RouteInfo[];
+}
+
 const Schedule = () => {
-  const scheduleData = [
+  const scheduleData: TransportSchedule[] = [
     {
       type: "🚌 Автобус",
       routes: [

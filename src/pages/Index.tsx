@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Header from "@/components/Header";
 import ImportantNumbers from "@/components/ImportantNumbers";
 import Schedule from "@/components/Schedule";
@@ -8,44 +8,49 @@ import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import PhotoCarousel from "@/components/PhotoCarousel";
 
+interface Photo {
+  url: string;
+  caption: string;
+}
+
 const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-  const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<{url: string; caption: string}[]>([]);
+  const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
 
-  const openPhotoCarousel = (photos: {url: string; caption: string}[], startIndex: number) => {
+  const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
     setSelectedPvzPhotos(photos);
     setSelectedImageIndex(startIndex);
-  };
+  }, []);
 
-  const closePhotoCarousel = () => {
+  const closePhotoCarousel = useCallback(() => {
     setSelectedImageIndex(null);
     setSelectedPvzPhotos([]);
-  };
+  }, []);
 
-  const nextPhoto = () => {
+  const nextPhoto = useCallback(() => {
     if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
       setSelectedImageIndex((selectedImageIndex + 1) % selectedPvzPhotos.length);
     }
-  };
+  }, [selectedImageIndex, selectedPvzPhotos.length]);
 
-  const prevPhoto = () => {
+  const prevPhoto = useCallback(() => {
     if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
       setSelectedImageIndex(selectedImageIndex === 0 ? selectedPvzPhotos.length - 1 : selectedImageIndex - 1);
     }
-  };
+  }, [selectedImageIndex, selectedPvzPhotos.length]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
 
-      <div className="max-w-md mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-md mx-auto px-4 py-6 space-y-6">
         <ImportantNumbers />
         <Schedule />
         <DonationSection />
         <WorkSchedule />
         <PvzSection onOpenPhotoCarousel={openPhotoCarousel} />
         <ActionButtons />
-      </div>
+      </main>
 
       <PhotoCarousel 
         selectedImageIndex={selectedImageIndex}

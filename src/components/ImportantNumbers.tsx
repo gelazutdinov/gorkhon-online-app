@@ -2,8 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 
+interface ImportantNumber {
+  name: string;
+  person: string;
+  phone: string;
+  icon: string;
+}
+
 const ImportantNumbers = () => {
-  const importantNumbers = [
+  const importantNumbers: ImportantNumber[] = [
     { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
     { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
     { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
@@ -25,7 +32,7 @@ const ImportantNumbers = () => {
           <div key={index} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-slate-100 transition-colors">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-2xl bg-gorkhon-blue/10">
-                <Icon name={contact.icon as any} size={16} className="text-gorkhon-blue" />
+                <Icon name={contact.icon} size={16} className="text-gorkhon-blue" />
               </div>
               <div>
                 <p className="font-medium text-sm">{contact.name}</p>
