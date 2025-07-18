@@ -40,10 +40,10 @@ const Index = () => {
   }, [selectedImageIndex, selectedPvzPhotos.length]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
 
-      <main className="max-w-md mx-auto px-4 py-6 space-y-8">
+      <main className="max-w-md mx-auto px-4 py-6 space-y-6">
         <ImportantNumbers />
         <Schedule />
         <DonationSection />

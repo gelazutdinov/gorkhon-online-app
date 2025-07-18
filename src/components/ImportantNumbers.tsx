@@ -20,21 +20,19 @@ const ImportantNumbers = () => {
   ];
 
   return (
-    <Card className="animate-fade-in rounded-2xl shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+    <Card className="animate-fade-in rounded-2xl">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
-          <div className="p-2 rounded-xl bg-gradient-blue">
-            <Icon name="Phone" size={20} className="text-white" />
-          </div>
+          <Icon name="Phone" size={20} />
           Важные номера
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {importantNumbers.map((contact, index) => (
-          <div key={index} className="flex items-center justify-between p-3 rounded-2xl bg-white/60 hover:bg-white/80 transition-all duration-200 hover:scale-[1.02] border border-white/20">
+          <div key={index} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-slate-100 transition-colors">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-2xl bg-gradient-purple">
-                <Icon name={contact.icon} size={16} className="text-white" />
+              <div className="p-2 rounded-2xl bg-gorkhon-blue/10">
+                <Icon name={contact.icon} size={16} className="text-gorkhon-blue" />
               </div>
               <div>
                 <p className="font-medium text-sm">{contact.name}</p>
@@ -43,7 +41,7 @@ const ImportantNumbers = () => {
             </div>
             <Button 
               size="sm" 
-              className="bg-gradient-emerald hover:scale-105 text-white px-3 py-1 h-8 rounded-xl transition-all duration-200 shadow-md"
+              className="bg-gorkhon-green hover:bg-gorkhon-green/90 text-white px-3 py-1 h-8"
               onClick={() => window.open(`tel:${contact.phone}`, '_self')}
             >
               <Icon name="Phone" size={14} />
