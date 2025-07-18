@@ -73,7 +73,13 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       address: "посёлок Горхон, ул. Железнодорожная, 31/2",
       schedule: "Ежедневно: 10:00 – 19:00",
       note: "",
-      icon: "Package"
+      icon: "Package",
+      photos: [
+        {
+          url: "https://cdn.poehali.dev/files/69129961-1abb-4f9d-add3-302072129183.png",
+          caption: "ПВЗ OZON, посёлок Горхон, ул. Железнодорожная, 31/2. Автор: Команда Горхон"
+        }
+      ]
     },
     {
       name: "ПВЗ Wildberries",
