@@ -4,16 +4,7 @@ import Icon from "@/components/ui/icon";
 const Header = () => {
   return (
     <div className="bg-gorkhon-pink text-white px-4 py-6 relative overflow-hidden rounded-b-3xl">
-      {/* Abstract Background Pattern */}
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `url('https://cdn.poehali.dev/files/8f138a31-25be-4bb8-b2a9-0f539909f82d.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          animation: 'float 8s ease-in-out infinite'
-        }}
-      />
+
       
       <div className="max-w-md mx-auto text-center relative z-10">
         <div className="flex items-center justify-center gap-3 mb-3">
