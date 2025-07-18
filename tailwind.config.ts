@@ -66,12 +66,14 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				gorkhon: {
-					blue: '#005BFF',
-					pink: '#F1117E',
-					darkBlue: '#001A34',
-					lightBlue: '#00A2FF',
-					green: '#00BE6C',
-					orange: '#FFA800'
+					blue: '#2563EB',
+					pink: '#EC4899',
+					darkBlue: '#1E293B',
+					lightBlue: '#06B6D4',
+					green: '#059669',
+					orange: '#F59E0B',
+					purple: '#7C3AED',
+					emerald: '#10B981'
 				}
 			},
 			borderRadius: {
@@ -122,9 +124,11 @@ export default {
 				'marquee-reverse': 'marquee-reverse 15s linear infinite'
 			},
 			backgroundImage: {
-				'gradient-brand': 'linear-gradient(135deg, #005BFF 0%, #F1117E 50%, #00BE6C 100%)',
-				'gradient-blue': 'linear-gradient(135deg, #005BFF 0%, #00A2FF 100%)',
-				'gradient-warm': 'linear-gradient(135deg, #F1117E 0%, #FFA800 100%)'
+				'gradient-brand': 'linear-gradient(135deg, #2563EB 0%, #EC4899 50%, #059669 100%)',
+				'gradient-blue': 'linear-gradient(135deg, #2563EB 0%, #06B6D4 100%)',
+				'gradient-warm': 'linear-gradient(135deg, #EC4899 0%, #F59E0B 100%)',
+				'gradient-purple': 'linear-gradient(135deg, #7C3AED 0%, #EC4899 100%)',
+				'gradient-emerald': 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
 			}
 		}
 	},
