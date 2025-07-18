@@ -84,7 +84,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       photos: [
         {
           url: "https://cdn.poehali.dev/files/aec305dc-bf96-4997-83aa-fdb9be3bfd4c.jpg",
-          caption: "Фото предоставлено жителями п. Горхон"
+          caption: "ПВЗ Wildberries, ул. Железнодорожная, 15"
         }
       ]
     }
