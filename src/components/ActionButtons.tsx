@@ -28,28 +28,7 @@ const ActionButtons = () => {
         </CardContent>
       </Card>
 
-      {/* Beta Feedback */}
-      <Card className="animate-fade-in bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 rounded-2xl">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-full bg-amber-100">
-                <Icon name="TestTube" size={20} className="text-amber-600" />
-              </div>
-              <div>
-                <p className="font-medium text-amber-800">Бета-версия портала</p>
-                <p className="text-sm text-amber-700">Поделитесь мнением о сайте</p>
-              </div>
-            </div>
-            <Button 
-              className="bg-amber-600 hover:bg-amber-700 text-white"
-              onClick={() => window.open('https://t.me/gorhonbot', '_blank')}
-            >
-              <Icon name="MessageSquare" size={16} />
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+
 
       {/* Chat Support */}
       <Card className="animate-fade-in bg-gradient-warm text-white">
