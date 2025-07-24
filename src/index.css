@@ -96,8 +96,9 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-family: 'Unbounded', sans-serif;
+    background-color: #D0D0D0;
   }
 }
 

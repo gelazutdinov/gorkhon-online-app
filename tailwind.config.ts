@@ -72,6 +72,9 @@ export default {
 					lightBlue: '#00A2FF',
 					green: '#00BE6C',
 					orange: '#FFA800'
+				},
+				ral: {
+					7047: '#D0D0D0'
 				}
 			},
 			borderRadius: {
