@@ -7,7 +7,6 @@ import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import PhotoCarousel from "@/components/PhotoCarousel";
-import Tutorial from "@/components/Tutorial";
 
 interface Photo {
   url: string;
@@ -61,8 +60,6 @@ const Index = () => {
         <PvzSection onOpenPhotoCarousel={openPhotoCarousel} />
         <ActionButtons />
       </main>
-
-      <Tutorial />
 
       <PhotoCarousel 
         selectedImageIndex={selectedImageIndex}
