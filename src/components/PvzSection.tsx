@@ -167,16 +167,16 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       icon: "Package",
       photos: [
         {
-          url: "img/de710559-da33-448a-b659-e5ac80f6b41d.jpg",
-          caption: "Интерьер ПВЗ OZON"
+          url: "https://cdn.poehali.dev/files/4cb01698-d8de-4264-b9bc-e863b3667eb4.jpg",
+          caption: "Фасад здания с ПВЗ OZON"
         },
         {
-          url: "img/d0569d3f-3790-4199-882a-496a988fae81.jpg", 
+          url: "https://cdn.poehali.dev/files/528564ea-ccc2-46de-be3b-2faec284f4ea.jpg", 
           caption: "Рабочее место ПВЗ OZON"
         },
         {
-          url: "img/ba2c8749-c717-4944-8a8c-754c819b85dd.jpg",
-          caption: "Фасад здания с ПВЗ OZON"
+          url: "https://cdn.poehali.dev/files/25a0c47e-7995-4c0b-a44e-440b27806401.jpg",
+          caption: "Примерочные кабины ПВЗ OZON"
         }
       ]
     },
