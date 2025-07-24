@@ -61,14 +61,20 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
         {photos.length > 1 && (
           <>
             <button
-              onClick={prevPhoto}
-              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+              onClick={(e) => {
+                e.stopPropagation();
+                prevPhoto();
+              }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
             >
               <Icon name="ChevronLeft" size={20} className="text-gorkhon-pink" />
             </button>
             <button
-              onClick={nextPhoto}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+              onClick={(e) => {
+                e.stopPropagation();
+                nextPhoto();
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
             >
               <Icon name="ChevronRight" size={20} className="text-gorkhon-pink" />
             </button>

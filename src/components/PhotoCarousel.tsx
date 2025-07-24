@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Icon from "@/components/ui/icon";
+import { useEffect } from "react";
 
 interface Photo {
   url: string;
@@ -22,6 +23,32 @@ const PhotoCarousel = ({
   onNext, 
   onPrev 
 }: PhotoCarouselProps) => {
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (selectedImageIndex === null) return;
+      
+      switch (event.key) {
+        case 'ArrowLeft':
+          onPrev();
+          break;
+        case 'ArrowRight':
+          onNext();
+          break;
+        case 'Escape':
+          onClose();
+          break;
+      }
+    };
+
+    if (selectedImageIndex !== null) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedImageIndex, onNext, onPrev, onClose]);
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl w-full p-0 bg-black/95">
@@ -70,13 +97,29 @@ const PhotoCarousel = ({
               <Icon name="X" size={24} />
             </Button>
             
+            {/* Photo indicators */}
+            {selectedPvzPhotos.length > 1 && (
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {selectedPvzPhotos.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === selectedImageIndex 
+                        ? 'bg-white scale-125' 
+                        : 'bg-white/50 hover:bg-white/75'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+            
             {/* Photo info */}
             <div className="absolute bottom-4 left-4 right-4 text-center">
-              <p className="text-white text-sm bg-black/50 px-3 py-1 rounded">
+              <p className="text-white text-sm bg-black/70 px-4 py-2 rounded-lg backdrop-blur-sm">
                 {selectedPvzPhotos[selectedImageIndex].caption}
               </p>
               {selectedPvzPhotos.length > 1 && (
-                <p className="text-white/70 text-xs mt-1">
+                <p className="text-white/80 text-xs mt-2 bg-black/50 px-3 py-1 rounded-full inline-block">
                   {selectedImageIndex + 1} из {selectedPvzPhotos.length}
                 </p>
               )}
