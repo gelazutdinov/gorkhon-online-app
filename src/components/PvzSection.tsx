@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
 
 interface PvzPhoto {
   url: string;
@@ -20,6 +21,117 @@ interface PvzSectionProps {
   onOpenPhotoCarousel: (photos: PvzPhoto[], startIndex: number) => void;
 }
 
+interface PhotoCarouselProps {
+  photos: PvzPhoto[];
+  onPhotoClick: (photos: PvzPhoto[], startIndex: number) => void;
+}
+
+const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  const nextPhoto = () => {
+    setCurrentIndex((prev) => (prev + 1) % photos.length);
+  };
+  
+  const prevPhoto = () => {
+    setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
+  };
+  
+  const goToPhoto = (index: number) => {
+    setCurrentIndex(index);
+  };
+  
+  return (
+    <div className="space-y-3">
+      {/* Main photo */}
+      <div className="relative overflow-hidden rounded-2xl group">
+        <img 
+          src={photos[currentIndex].url}
+          alt={photos[currentIndex].caption}
+          className="w-full h-48 object-cover border-2 border-slate-200 shadow-sm cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gorkhon-pink/30"
+          onClick={() => onPhotoClick(photos, currentIndex)}
+          loading="lazy"
+          style={{ 
+            imageRendering: 'crisp-edges',
+            filter: 'contrast(1.05) saturate(1.1)'
+          }}
+        />
+        
+        {/* Navigation arrows */}
+        {photos.length > 1 && (
+          <>
+            <button
+              onClick={prevPhoto}
+              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            >
+              <Icon name="ChevronLeft" size={20} className="text-gorkhon-pink" />
+            </button>
+            <button
+              onClick={nextPhoto}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+            >
+              <Icon name="ChevronRight" size={20} className="text-gorkhon-pink" />
+            </button>
+          </>
+        )}
+        
+        {/* Zoom icon */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent hover:from-black/40 transition-all duration-300 rounded-2xl flex items-center justify-center">
+          <div className="p-2 rounded-full bg-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100">
+            <Icon name="ZoomIn" size={16} className="text-gorkhon-pink" />
+          </div>
+        </div>
+      </div>
+      
+      {/* Photo indicators */}
+      {photos.length > 1 && (
+        <div className="flex justify-center gap-2">
+          {photos.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToPhoto(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'bg-gorkhon-pink scale-125' 
+                  : 'bg-slate-300 hover:bg-slate-400'
+              }`}
+            />
+          ))}
+        </div>
+      )}
+      
+      {/* Caption */}
+      <p className="text-xs text-slate-600 font-medium leading-relaxed text-center">
+        {photos[currentIndex].caption}
+      </p>
+      
+      {/* Thumbnail strip for multiple photos */}
+      {photos.length > 1 && (
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {photos.map((photo, index) => (
+            <button
+              key={index}
+              onClick={() => goToPhoto(index)}
+              className={`flex-shrink-0 w-16 h-12 overflow-hidden rounded-lg border-2 transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'border-gorkhon-pink shadow-lg scale-105' 
+                  : 'border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              <img 
+                src={photo.url}
+                alt={photo.caption}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
   const pvzData: PvzItem[] = [
     {
@@ -30,20 +142,16 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       icon: "Package",
       photos: [
         {
-          url: "https://cdn.poehali.dev/files/effd940b-46bf-46ab-b102-56fc7574bce1.png", 
+          url: "img/ba2c8749-c717-4944-8a8c-754c819b85dd.jpg", 
           caption: "Вход в ПВЗ Wildberries"
         },
         {
-          url: "https://cdn.poehali.dev/files/db11a90a-322e-4e28-acdb-1230afb19cf1.png",
+          url: "img/d0569d3f-3790-4199-882a-496a988fae81.jpg",
           caption: "Интерьер ПВЗ Wildberries"
         },
         {
-          url: "https://cdn.poehali.dev/files/dd085655-24de-4ab0-8877-256127c92015.png",
+          url: "img/de710559-da33-448a-b659-e5ac80f6b41d.jpg",
           caption: "Зона обслуживания ПВЗ Wildberries"
-        },
-        {
-          url: "https://cdn.poehali.dev/files/93fc597d-3650-43d1-ad6c-7ce489b8e9c8.png",
-          caption: "Примерочные кабины ПВЗ Wildberries"
         }
       ]
     },
@@ -55,16 +163,16 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       icon: "Package",
       photos: [
         {
-          url: "https://cdn.poehali.dev/files/4cb01698-d8de-4264-b9bc-e863b3667eb4.jpg",
-          caption: "Фасад здания с ПВЗ OZON"
+          url: "img/de710559-da33-448a-b659-e5ac80f6b41d.jpg",
+          caption: "Интерьер ПВЗ OZON"
         },
         {
-          url: "https://cdn.poehali.dev/files/528564ea-ccc2-46de-be3b-2faec284f4ea.jpg", 
+          url: "img/d0569d3f-3790-4199-882a-496a988fae81.jpg", 
           caption: "Рабочее место ПВЗ OZON"
         },
         {
-          url: "https://cdn.poehali.dev/files/25a0c47e-7995-4c0b-a44e-440b27806401.jpg",
-          caption: "Примерочные кабины ПВЗ OZON"
+          url: "img/ba2c8749-c717-4944-8a8c-754c819b85dd.jpg",
+          caption: "Фасад здания с ПВЗ OZON"
         }
       ]
     },
@@ -176,34 +284,10 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                       <Icon name="Camera" size={16} className="text-gorkhon-pink" />
                       <p className="text-sm font-semibold text-gorkhon-pink">Фотографии ПВЗ:</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      {pvz.photos.map((photo, photoIndex) => (
-                        <div 
-                          key={photoIndex} 
-                          className="relative cursor-pointer group/photo"
-                          onClick={() => pvz.photos && onOpenPhotoCarousel(pvz.photos, photoIndex)}
-                        >
-                          <div className="relative overflow-hidden rounded-2xl">
-                            <img 
-                              src={photo.url} 
-                              alt={photo.caption}
-                              className="w-full h-28 object-cover border-2 border-slate-200 shadow-sm transition-all duration-300 group-hover/photo:scale-110 group-hover/photo:shadow-xl group-hover/photo:border-gorkhon-pink/30"
-                              loading="lazy"
-                              style={{ 
-                                imageRendering: 'crisp-edges',
-                                filter: 'contrast(1.05) saturate(1.1)'
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover/photo:from-black/40 transition-all duration-300 rounded-2xl flex items-center justify-center">
-                              <div className="p-2 rounded-full bg-white/90 opacity-0 group-hover/photo:opacity-100 transition-all duration-300 transform scale-75 group-hover/photo:scale-100">
-                                <Icon name="ZoomIn" size={16} className="text-gorkhon-pink" />
-                              </div>
-                            </div>
-                          </div>
-                          <p className="text-xs text-slate-600 mt-2 font-medium leading-relaxed">{photo.caption}</p>
-                        </div>
-                      ))}
-                    </div>
+                    <PhotoCarousel 
+                      photos={pvz.photos} 
+                      onPhotoClick={(photos, startIndex) => onOpenPhotoCarousel(photos, startIndex)}
+                    />
                   </div>
                 )}
               </div>
