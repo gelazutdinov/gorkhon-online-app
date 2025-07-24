@@ -120,6 +120,12 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                     alt="OZON Logo" 
                     className="w-8 h-8 object-cover rounded-full group-hover:scale-110 transition-transform duration-300"
                   />
+                ) : pvz.name.includes("Wildberries") ? (
+                  <img 
+                    src="https://cdn.poehali.dev/files/38960a87-147c-4cc0-b90c-f662509e11d0.jpg" 
+                    alt="Wildberries Logo" 
+                    className="w-8 h-8 object-cover rounded-full group-hover:scale-110 transition-transform duration-300"
+                  />
                 ) : (
                   <Icon name={pvz.icon as any} size={22} className="text-purple-600 group-hover:text-gorkhon-pink group-hover:scale-110 transition-all duration-300" />
                 )}
