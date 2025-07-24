@@ -21,19 +21,7 @@ const Header = () => {
         <p className="text-white/90">Вся нужная информация под рукой</p>
       </div>
       
-      {/* Quick Actions */}
-      <div className="max-w-md mx-auto px-4 mt-6">
-        <div className="grid grid-cols-2 gap-3">
-          <Button className="h-16 bg-gorkhon-blue hover:bg-gorkhon-blue/90 text-white flex flex-col items-center gap-1 rounded-2xl">
-            <Icon name="Phone" size={20} />
-            <span className="text-xs text-center px-1">Экстренные службы</span>
-          </Button>
-          <Button className="h-16 bg-gorkhon-green hover:bg-gorkhon-green/90 text-white flex flex-col items-center gap-1 rounded-2xl">
-            <Icon name="Bus" size={20} />
-            <span className="text-xs text-center px-1">Расписание</span>
-          </Button>
-        </div>
-      </div>
+
     </div>
   );
 };
