@@ -53,7 +53,7 @@ const Header = () => {
             <div className="text-xs text-white/70">Доступ</div>
           </div>
           <div className="text-center">
-            <div className="text-lg font-bold text-white">∞</div>
+            <div className="text-4xl font-black text-white">∞</div>
             <div className="text-xs text-white/70">Возможности</div>
           </div>
         </div>
