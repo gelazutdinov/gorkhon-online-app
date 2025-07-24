@@ -4,7 +4,68 @@ import Icon from "@/components/ui/icon";
 const Header = () => {
   return (
     <div className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
+      {/* Diagonal animated ribbons */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* First diagonal ribbon - top to bottom */}
+        <div 
+          className="absolute -top-10 -left-10 w-96 h-16 transform rotate-45 animate-pulse"
+          style={{backgroundColor: '#005BFF'}}
+        >
+          <div className="flex items-center justify-center h-full">
+            <span 
+              className="text-lg font-bold whitespace-nowrap animate-pulse"
+              style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}
+            >
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
 
+        {/* Second diagonal ribbon - parallel to first */}
+        <div 
+          className="absolute top-8 -left-16 w-80 h-12 transform rotate-45 animate-pulse delay-1000"
+          style={{backgroundColor: '#005BFF'}}
+        >
+          <div className="flex items-center justify-center h-full">
+            <span 
+              className="text-sm font-bold whitespace-nowrap animate-pulse"
+              style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}
+            >
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
+
+        {/* Third diagonal ribbon - different angle */}
+        <div 
+          className="absolute -top-6 right-4 w-72 h-10 transform -rotate-45 animate-pulse delay-500"
+          style={{backgroundColor: '#005BFF'}}
+        >
+          <div className="flex items-center justify-center h-full">
+            <span 
+              className="text-sm font-bold whitespace-nowrap animate-pulse"
+              style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}
+            >
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
+
+        {/* Fourth diagonal ribbon - bottom area */}
+        <div 
+          className="absolute bottom-2 -right-12 w-64 h-8 transform -rotate-45 animate-pulse delay-1500"
+          style={{backgroundColor: '#005BFF'}}
+        >
+          <div className="flex items-center justify-center h-full">
+            <span 
+              className="text-xs font-bold whitespace-nowrap animate-pulse"
+              style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}
+            >
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
+      </div>
       
       <div className="max-w-md mx-auto text-center relative z-10">
         <div className="flex items-center justify-center gap-4 mb-4 group">
