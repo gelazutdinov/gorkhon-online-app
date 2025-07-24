@@ -27,7 +27,7 @@ const Header = () => {
             </div>
             <div className="flex items-center gap-1 text-xs text-white/80">
               <Icon name="Users" size={12} />
-              <span>Платформа для жителей Горхон</span>
+              <span>Платформа для жителей Горхона</span>
             </div>
           </div>
         </div>
