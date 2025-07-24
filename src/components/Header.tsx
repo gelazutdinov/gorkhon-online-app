@@ -53,7 +53,9 @@ const Header = () => {
             <div className="text-xs text-white/70">Доступ</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-black text-white">∞</div>
+            <div className="text-lg font-bold text-white flex items-center justify-center h-6">
+              <span className="text-2xl">∞</span>
+            </div>
             <div className="text-xs text-white/70">Возможности</div>
           </div>
         </div>
