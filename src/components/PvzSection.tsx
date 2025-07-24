@@ -118,7 +118,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                   <img 
                     src="https://cdn.poehali.dev/files/32eb6963-076a-4663-ae00-1f8c03ea5d9b.jpg" 
                     alt="OZON Logo" 
-                    className="w-6 h-6 object-contain group-hover:scale-110 transition-transform duration-300"
+                    className="w-8 h-8 object-cover rounded-full group-hover:scale-110 transition-transform duration-300"
                   />
                 ) : (
                   <Icon name={pvz.icon as any} size={22} className="text-purple-600 group-hover:text-gorkhon-pink group-hover:scale-110 transition-all duration-300" />
