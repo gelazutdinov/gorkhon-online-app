@@ -53,9 +53,7 @@ const WorkSchedule = () => {
                   <p className="font-bold text-slate-800 group-hover:text-gorkhon-blue transition-colors">
                     {item.service}
                   </p>
-                  <div className="px-2 py-1 rounded-full bg-gorkhon-blue/10 group-hover:bg-gorkhon-blue/20 transition-colors">
-                    <span className="text-xs font-medium text-gorkhon-blue">Открыто</span>
-                  </div>
+
                 </div>
                 <div className="flex items-start gap-2">
                   <Icon name="Calendar" size={12} className="text-slate-500 mt-0.5" />
