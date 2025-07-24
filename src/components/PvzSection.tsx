@@ -23,7 +23,7 @@ interface PvzSectionProps {
 const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
   const pvzData: PvzItem[] = [
     {
-      name: "ПВЗ Wildberries",
+      name: "Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
       note: "",
@@ -48,7 +48,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       ]
     },
     {
-      name: "ПВЗ OZON",
+      name: "OZON",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
       note: "",
@@ -69,7 +69,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       ]
     },
     {
-      name: "ПВЗ OZON",
+      name: "OZON",
       address: "посёлок Горхон, ул. Железнодорожная, 31/2",
       schedule: "Ежедневно: 10:00 – 19:00",
       note: "",
@@ -82,7 +82,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       ]
     },
     {
-      name: "ПВЗ Wildberries",
+      name: "Wildberries",
       address: "п. Горхон, ул. Железнодорожная, д. 15",
       schedule: "Пн, Ср-Пт: 09:00-17:00 (перерыв 13:00-14:00), Сб: 09:00-16:00 (перерыв 13:00-14:00), Вт, Вс: выходной",
       note: "",
