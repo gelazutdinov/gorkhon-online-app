@@ -4,53 +4,7 @@ import Icon from "@/components/ui/icon";
 const Header = () => {
   return (
     <div className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
-      {/* Animated ribbons */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* First ribbon - top left */}
-        <div className="absolute -top-4 -left-20 w-80 h-12 transform rotate-12 animate-pulse" style={{backgroundColor: '#005BFF'}}>
-          <div className="flex items-center justify-center h-full whitespace-nowrap">
-            <span className="text-sm font-bold animate-pulse" style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}>
-              Для жителей. С заботой. Всегда рядом.
-            </span>
-          </div>
-        </div>
-        
-        {/* Second ribbon - top right */}
-        <div className="absolute -top-6 -right-16 w-72 h-10 transform -rotate-15 animate-pulse delay-1000" style={{backgroundColor: '#005BFF'}}>
-          <div className="flex items-center justify-center h-full whitespace-nowrap">
-            <span className="text-xs font-bold animate-pulse" style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}>
-              Для жителей. С заботой. Всегда рядом.
-            </span>
-          </div>
-        </div>
-        
-        {/* Third ribbon - middle left */}
-        <div className="absolute top-16 -left-24 w-64 h-8 transform rotate-18 animate-pulse delay-500" style={{backgroundColor: '#005BFF'}}>
-          <div className="flex items-center justify-center h-full whitespace-nowrap">
-            <span className="text-xs font-bold animate-pulse" style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}>
-              Для жителей. С заботой. Всегда рядом.
-            </span>
-          </div>
-        </div>
-        
-        {/* Fourth ribbon - bottom right */}
-        <div className="absolute -bottom-2 -right-20 w-76 h-10 transform -rotate-12 animate-pulse delay-1500" style={{backgroundColor: '#005BFF'}}>
-          <div className="flex items-center justify-center h-full whitespace-nowrap">
-            <span className="text-sm font-bold animate-pulse" style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}>
-              Для жителей. С заботой. Всегда рядом.
-            </span>
-          </div>
-        </div>
-        
-        {/* Fifth ribbon - bottom left */}
-        <div className="absolute -bottom-4 -left-18 w-68 h-8 transform rotate-20 animate-pulse delay-750" style={{backgroundColor: '#005BFF'}}>
-          <div className="flex items-center justify-center h-full whitespace-nowrap">
-            <span className="text-xs font-bold animate-pulse" style={{color: '#F1117E', fontFamily: 'Unbounded, sans-serif'}}>
-              Для жителей. С заботой. Всегда рядом.
-            </span>
-          </div>
-        </div>
-      </div>
+
       
       <div className="max-w-md mx-auto text-center relative z-10">
         <div className="flex items-center justify-center gap-4 mb-4 group">
