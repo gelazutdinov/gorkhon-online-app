@@ -56,7 +56,10 @@ const ActionButtons = () => {
             <div className="flex-shrink-0">
               <Button 
                 size="sm"
-                className="bg-black hover:bg-black/80 text-white border-2 border-black px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm"
+                className="text-white border-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm"
+                style={{backgroundColor: '#F1117E', borderColor: '#F1117E'}}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#d10e6b'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F1117E'}
                 onClick={() => window.open('https://forms.yandex.ru/u/687f5b9a84227c08790f3222/', '_blank')}
               >
                 <Icon name="MessageSquare" size={14} className="mr-1" />
