@@ -97,33 +97,46 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
   ];
 
   return (
-    <Card className="animate-fade-in rounded-2xl">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
-          <Icon name="Package" size={20} />
-          Пункты выдачи заказов
+    <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-pink-50/30 border-2 border-gorkhon-pink/10 shadow-lg hover:shadow-xl transition-all duration-300">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-3 text-gorkhon-pink">
+          <div className="p-2 rounded-full bg-gorkhon-pink/10 animate-pulse">
+            <Icon name="Package" size={20} />
+          </div>
+          <div>
+            <span className="text-lg font-bold">📦 Пункты выдачи заказов</span>
+            <p className="text-sm text-slate-600 font-normal">Доставка 360° прямо к вам</p>
+          </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4">
         {pvzData.map((pvz, index) => (
-          <div key={index} className="p-4 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-3 rounded-2xl bg-purple-100">
-                <Icon name={pvz.icon as any} size={20} className="text-purple-600" />
+          <div key={index} className="group p-5 rounded-2xl bg-gradient-to-r from-purple-50/80 to-pink-50/80 hover:from-gorkhon-pink/5 hover:to-gorkhon-pink/10 border-2 border-purple-100/50 hover:border-gorkhon-pink/20 transition-all duration-300 hover:shadow-lg">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 group-hover:from-gorkhon-pink/20 group-hover:to-gorkhon-pink/10 transition-all duration-300">
+                <Icon name={pvz.icon as any} size={22} className="text-purple-600 group-hover:text-gorkhon-pink group-hover:scale-110 transition-all duration-300" />
               </div>
-              <div>
-                <h4 className="font-medium text-slate-800">{pvz.name}</h4>
-                <p className="text-sm text-slate-600">{pvz.address}</p>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-bold text-slate-800 group-hover:text-gorkhon-pink transition-colors">{pvz.name}</h4>
+                  <div className="px-2 py-1 rounded-full bg-green-100 group-hover:bg-green-200 transition-colors">
+                    <span className="text-xs font-medium text-green-700">Работает</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Icon name="MapPin" size={14} className="text-slate-500" />
+                  <p className="text-sm text-slate-600">{pvz.address}</p>
+                </div>
               </div>
             </div>
             
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Icon name="Clock" size={14} className="text-green-600" />
-                <span className="text-sm font-medium text-green-600">{pvz.schedule}</span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-green-50 border border-green-200/50">
+                <Icon name="Clock" size={16} className="text-green-600" />
+                <span className="text-sm font-semibold text-green-700">{pvz.schedule}</span>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {pvz.photos ? (
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-blue-600">{pvz.note}</span>
@@ -147,28 +160,35 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                 
                 {pvz.photos && (
                   <div>
-                    <p className="text-xs font-medium text-slate-700 mb-2">Фотографии ПВЗ:</p>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Icon name="Camera" size={16} className="text-gorkhon-pink" />
+                      <p className="text-sm font-semibold text-gorkhon-pink">Фотографии ПВЗ:</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
                       {pvz.photos.map((photo, photoIndex) => (
                         <div 
                           key={photoIndex} 
-                          className="relative cursor-pointer group"
+                          className="relative cursor-pointer group/photo"
                           onClick={() => pvz.photos && onOpenPhotoCarousel(pvz.photos, photoIndex)}
                         >
-                          <img 
-                            src={photo.url} 
-                            alt={photo.caption}
-                            className="w-full h-24 object-cover rounded-2xl border-2 border-slate-200 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:border-purple-300"
-                            loading="lazy"
-                            style={{ 
-                              imageRendering: 'crisp-edges',
-                              filter: 'contrast(1.05) saturate(1.1)'
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-2xl flex items-center justify-center">
-                            <Icon name="ZoomIn" size={16} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="relative overflow-hidden rounded-2xl">
+                            <img 
+                              src={photo.url} 
+                              alt={photo.caption}
+                              className="w-full h-28 object-cover border-2 border-slate-200 shadow-sm transition-all duration-300 group-hover/photo:scale-110 group-hover/photo:shadow-xl group-hover/photo:border-gorkhon-pink/30"
+                              loading="lazy"
+                              style={{ 
+                                imageRendering: 'crisp-edges',
+                                filter: 'contrast(1.05) saturate(1.1)'
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover/photo:from-black/40 transition-all duration-300 rounded-2xl flex items-center justify-center">
+                              <div className="p-2 rounded-full bg-white/90 opacity-0 group-hover/photo:opacity-100 transition-all duration-300 transform scale-75 group-hover/photo:scale-100">
+                                <Icon name="ZoomIn" size={16} className="text-gorkhon-pink" />
+                              </div>
+                            </div>
                           </div>
-                          <p className="text-xs text-slate-600 mt-1">{photo.caption}</p>
+                          <p className="text-xs text-slate-600 mt-2 font-medium leading-relaxed">{photo.caption}</p>
                         </div>
                       ))}
                     </div>
@@ -178,6 +198,14 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
             </div>
           </div>
         ))}
+        
+        <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200/50">
+          <div className="flex items-center gap-2 text-purple-800 mb-2">
+            <Icon name="Truck" size={16} />
+            <p className="text-sm font-semibold">Удобство 360°</p>
+          </div>
+          <p className="text-xs text-purple-700">Получайте заказы в удобных для вас точках! Мы работаем для вашего комфорта 🎁</p>
+        </div>
       </CardContent>
     </Card>
   );
