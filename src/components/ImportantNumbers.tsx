@@ -20,34 +20,51 @@ const ImportantNumbers = () => {
   ];
 
   return (
-    <Card className="animate-fade-in rounded-2xl">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-gorkhon-blue">
-          <Icon name="Phone" size={20} />
-          Важные номера
+    <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-blue-50/30 border-2 border-gorkhon-blue/10 shadow-lg hover:shadow-xl transition-all duration-300">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-3 text-gorkhon-blue">
+          <div className="p-2 rounded-full bg-gorkhon-blue/10 animate-pulse">
+            <Icon name="Phone" size={20} />
+          </div>
+          <div>
+            <span className="text-lg font-bold">📞 Важные номера</span>
+            <p className="text-sm text-slate-600 font-normal">Всегда под рукой в трудную минуту</p>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {importantNumbers.map((contact, index) => (
-          <div key={index} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-slate-100 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-2xl bg-gorkhon-blue/10">
-                <Icon name={contact.icon} size={16} className="text-gorkhon-blue" />
+          <div key={index} className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-slate-50 to-blue-50/50 hover:from-gorkhon-blue/5 hover:to-gorkhon-green/5 transition-all duration-300 border border-slate-200/50 hover:border-gorkhon-blue/20 hover:shadow-md">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-gorkhon-blue/10 to-gorkhon-blue/5 group-hover:from-gorkhon-blue/20 group-hover:to-gorkhon-blue/10 transition-all duration-300">
+                <Icon name={contact.icon} size={18} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <div>
-                <p className="font-medium text-sm">{contact.name}</p>
-                <p className="text-xs text-slate-600">{contact.person}</p>
+              <div className="space-y-1">
+                <p className="font-semibold text-sm text-slate-800 group-hover:text-gorkhon-blue transition-colors">{contact.name}</p>
+                <p className="text-xs text-slate-600 flex items-center gap-1">
+                  <Icon name="User" size={10} />
+                  {contact.person}
+                </p>
+                <p className="text-xs text-gorkhon-blue/70 font-mono">{contact.phone}</p>
               </div>
             </div>
             <Button 
               size="sm" 
-              className="bg-gorkhon-green hover:bg-gorkhon-green/90 text-white px-3 py-1 h-8"
+              className="bg-gradient-to-r from-gorkhon-green to-gorkhon-green/90 hover:from-gorkhon-green/90 hover:to-gorkhon-green text-white px-4 py-2 h-10 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105"
               onClick={() => window.open(`tel:${contact.phone}`, '_self')}
             >
-              <Icon name="Phone" size={14} />
+              <Icon name="Phone" size={16} className="mr-1" />
+              Позвонить
             </Button>
           </div>
         ))}
+        
+        <div className="mt-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50">
+          <div className="flex items-center gap-2 text-amber-800">
+            <Icon name="Heart" size={16} />
+            <p className="text-sm font-medium">Мы всегда готовы помочь нашим соседям! 💛</p>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

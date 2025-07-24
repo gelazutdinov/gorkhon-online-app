@@ -40,10 +40,18 @@ const Index = () => {
   }, [selectedImageIndex, selectedPvzPhotos.length]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-white to-green-50/20 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gorkhon-blue/5 rounded-full blur-2xl"></div>
+        <div className="absolute top-40 right-8 w-24 h-24 bg-gorkhon-pink/5 rounded-full blur-xl"></div>
+        <div className="absolute bottom-40 left-8 w-28 h-28 bg-gorkhon-green/5 rounded-full blur-xl"></div>
+        <div className="absolute bottom-20 right-12 w-20 h-20 bg-gorkhon-orange/5 rounded-full blur-lg"></div>
+      </div>
+      
       <Header />
 
-      <main className="max-w-md mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-md mx-auto px-4 py-6 space-y-6 relative z-10">
         <ImportantNumbers />
         <Schedule />
         <DonationSection />
