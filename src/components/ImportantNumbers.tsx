@@ -19,6 +19,11 @@ const ImportantNumbers = () => {
     { name: "Почта Горхон", person: "Юлия Паук", phone: "+89836307423", icon: "Mail" }
   ];
 
+  const transitNumbers: ImportantNumber[] = [
+    { name: "Диспетчер Город", person: "Заиграевский транзит", phone: "8-983-420-04-03", icon: "Bus" },
+    { name: "Диспетчер Заиграево", person: "Заиграевский транзит", phone: "8-983-420-04-90", icon: "Bus" }
+  ];
+
   return (
     <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-blue-50/30 border-2 border-gorkhon-blue/10 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardHeader className="pb-4">
@@ -57,6 +62,38 @@ const ImportantNumbers = () => {
             </div>
           </div>
         ))}
+        
+        {/* Заиграевский транзит section */}
+        <div className="mt-4 pt-4 border-t border-slate-200/50">
+          <div className="flex items-center gap-2 mb-3">
+            <Icon name="Bus" size={16} className="text-gorkhon-orange" />
+            <h4 className="font-bold text-gorkhon-orange">Заиграевский транзит</h4>
+          </div>
+          {transitNumbers.map((contact, index) => (
+            <div key={index} className="group p-3 rounded-xl bg-gradient-to-r from-orange-50/50 to-amber-50/50 hover:from-gorkhon-orange/5 hover:to-gorkhon-orange/10 transition-all duration-300 border border-orange-200/50 hover:border-gorkhon-orange/20 hover:shadow-md mb-2">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="p-2 rounded-xl bg-gradient-to-br from-gorkhon-orange/10 to-gorkhon-orange/5 group-hover:from-gorkhon-orange/20 group-hover:to-gorkhon-orange/10 transition-all duration-300 flex-shrink-0">
+                    <Icon name={contact.icon} size={16} className="text-gorkhon-orange group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm text-slate-800 group-hover:text-gorkhon-orange transition-colors truncate">{contact.name}</p>
+                    <p className="text-xs text-slate-600 truncate">{contact.person}</p>
+                    <p className="text-xs text-gorkhon-orange/70 font-mono">{contact.phone}</p>
+                  </div>
+                </div>
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-gorkhon-orange to-gorkhon-orange/90 hover:from-gorkhon-orange/90 hover:to-gorkhon-orange text-white px-3 py-1.5 h-8 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-xs flex-shrink-0"
+                  onClick={() => window.open(`tel:${contact.phone}`, '_self')}
+                >
+                  <Icon name="Phone" size={14} className="mr-1" />
+                  Звонок
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
         
 
       </CardContent>
