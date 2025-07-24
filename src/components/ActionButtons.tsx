@@ -47,8 +47,8 @@ const ActionButtons = () => {
               <Icon name="MessageCircle" size={20} className="text-white group-hover:scale-110 transition-transform duration-300" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-base truncate">Чат поддержки</p>
-              <p className="text-sm opacity-90 truncate">
+              <p className="font-bold text-base">Чат поддержки</p>
+              <p className="text-sm opacity-90">
                 Есть вопросы? Мы поможем!
               </p>
               <p className="text-xs opacity-75">Всегда на связи с вами</p>
