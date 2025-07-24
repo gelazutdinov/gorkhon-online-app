@@ -7,28 +7,28 @@ const ActionButtons = () => {
     <div className="space-y-6">
       {/* Medical Link */}
       <Card className="animate-fade-in bg-gradient-to-r from-gorkhon-blue/5 to-gorkhon-green/5 border-2 border-gorkhon-blue/20 rounded-2xl hover:shadow-lg transition-all duration-300 group">
-        <CardContent className="p-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-full bg-gorkhon-blue/10 group-hover:bg-gorkhon-blue/20 transition-colors duration-300">
-                <Icon name="Stethoscope" size={22} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
-              </div>
-              <div>
-                <p className="font-bold text-gorkhon-blue text-lg">Запись к врачу</p>
-                <p className="text-sm text-slate-600 flex items-center gap-1">
-                  <Icon name="MessageCircle" size={12} />
-                  Чат с Заиграевской ЦРБ
-                </p>
-                <p className="text-xs text-gorkhon-blue/70 mt-1">Быстро и удобно</p>
-              </div>
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full bg-gorkhon-blue/10 group-hover:bg-gorkhon-blue/20 transition-colors duration-300 flex-shrink-0">
+              <Icon name="Stethoscope" size={20} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
             </div>
-            <Button 
-              className="bg-gorkhon-blue hover:bg-gorkhon-blue/90 text-white px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105"
-              onClick={() => window.open('https://t.me/ZaigrCRB/8', '_blank')}
-            >
-              <Icon name="ExternalLink" size={18} className="mr-2" />
-              Записаться
-            </Button>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-gorkhon-blue text-base truncate">Запись к врачу</p>
+              <p className="text-sm text-slate-600 truncate">
+                Чат с Заиграевской ЦРБ
+              </p>
+              <p className="text-xs text-gorkhon-blue/70">Быстро и удобно</p>
+            </div>
+            <div className="flex-shrink-0">
+              <Button 
+                size="sm"
+                className="bg-gorkhon-blue hover:bg-gorkhon-blue/90 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm"
+                onClick={() => window.open('https://t.me/ZaigrCRB/8', '_blank')}
+              >
+                <Icon name="ExternalLink" size={14} className="mr-1" />
+                Записаться
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -41,29 +41,29 @@ const ActionButtons = () => {
           <div className="absolute bottom-4 left-4 w-10 h-10 bg-white/5 rounded-full opacity-30 group-hover:opacity-50 transition-opacity"></div>
         </div>
         
-        <CardContent className="p-5 relative z-10">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors duration-300">
-                <Icon name="MessageCircle" size={22} className="text-white group-hover:scale-110 transition-transform duration-300" />
-              </div>
-              <div>
-                <p className="font-bold text-lg">Чат поддержки</p>
-                <p className="text-sm opacity-90 flex items-center gap-1">
-                  <Icon name="Heart" size={12} />
-                  Есть вопросы? Мы поможем!
-                </p>
-                <p className="text-xs opacity-75 mt-1">Всегда на связи с вами</p>
-              </div>
+        <CardContent className="p-4 relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors duration-300 flex-shrink-0">
+              <Icon name="MessageCircle" size={20} className="text-white group-hover:scale-110 transition-transform duration-300" />
             </div>
-            <Button 
-              variant="outline" 
-              className="border-2 border-white/40 text-white hover:bg-white/20 px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105 backdrop-blur-sm"
-              onClick={() => window.open('https://forms.yandex.ru/u/687f5b9a84227c08790f3222/', '_blank')}
-            >
-              <Icon name="MessageSquare" size={18} className="mr-2" />
-              Написать
-            </Button>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-base truncate">Чат поддержки</p>
+              <p className="text-sm opacity-90 truncate">
+                Есть вопросы? Мы поможем!
+              </p>
+              <p className="text-xs opacity-75">Всегда на связи с вами</p>
+            </div>
+            <div className="flex-shrink-0">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="border-2 border-white/40 text-white hover:bg-white/20 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 backdrop-blur-sm text-sm"
+                onClick={() => window.open('https://forms.yandex.ru/u/687f5b9a84227c08790f3222/', '_blank')}
+              >
+                <Icon name="MessageSquare" size={14} className="mr-1" />
+                Написать
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
