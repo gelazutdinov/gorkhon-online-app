@@ -21,7 +21,7 @@ const Header = () => {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">
                 Горхон.Online
               </h1>
-              <span className="text-xs bg-gorkhon-green/90 px-2 py-1 rounded-full font-medium shadow-lg">
+              <span className="text-xs bg-gorkhon-green/90 px-2 py-1 rounded-full font-medium shadow-lg animate-spin">
                 360°
               </span>
             </div>
