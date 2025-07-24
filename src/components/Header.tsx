@@ -4,12 +4,7 @@ import Icon from "@/components/ui/icon";
 const Header = () => {
   return (
     <div className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
-      {/* Floating decorative elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-4 right-8 w-20 h-20 bg-white/5 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-6 left-6 w-16 h-16 bg-gorkhon-blue/20 rounded-full animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 right-4 w-8 h-8 bg-gorkhon-green/30 rounded-full animate-bounce delay-500"></div>
-      </div>
+
       
       <div className="max-w-md mx-auto text-center relative z-10">
         <div className="flex items-center justify-center gap-4 mb-4 group">
@@ -26,7 +21,7 @@ const Header = () => {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">
                 Горхон.Online
               </h1>
-              <span className="text-xs bg-gorkhon-green/90 px-2 py-1 rounded-full font-medium shadow-lg animate-pulse">
+              <span className="text-xs bg-gorkhon-green/90 px-2 py-1 rounded-full font-medium shadow-lg">
                 360°
               </span>
             </div>
