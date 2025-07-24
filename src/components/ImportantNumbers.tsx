@@ -58,12 +58,7 @@ const ImportantNumbers = () => {
           </div>
         ))}
         
-        <div className="mt-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50">
-          <div className="flex items-center gap-2 text-amber-800">
-            <Icon name="Heart" size={16} />
-            <p className="text-sm font-medium">Мы всегда готовы помочь нашим соседям!</p>
-          </div>
-        </div>
+
       </CardContent>
     </Card>
   );

@@ -202,7 +202,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
             <Icon name="Truck" size={16} />
             <p className="text-sm font-semibold">Удобство 360°</p>
           </div>
-          <p className="text-xs text-purple-700">Получайте заказы в удобных для вас точках! Мы работаем для вашего комфорта</p>
+          <p className="text-xs text-purple-700">Получайте заказы в удобных для вас точках!</p>
         </div>
       </CardContent>
     </Card>

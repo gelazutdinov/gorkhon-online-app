@@ -86,13 +86,7 @@ const WorkSchedule = () => {
           </div>
         ))}
         
-        <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/50">
-          <div className="flex items-center gap-2 text-blue-800 mb-2">
-            <Icon name="Sparkles" size={16} />
-            <p className="text-sm font-semibold">Режим работы 360°</p>
-          </div>
-          <p className="text-xs text-blue-700">Мы стараемся быть доступными для вас в максимально удобное время!</p>
-        </div>
+
       </CardContent>
     </Card>
   );
