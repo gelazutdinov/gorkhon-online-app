@@ -43,7 +43,7 @@ const Schedule = () => {
           </div>
           <div>
             <span className="text-lg font-bold">Расписание транспорта</span>
-            <p className="text-sm text-slate-600 font-normal">Путешествуйте с комфортом 3<span className="text-8xl font-black text-gorkhon-orange inline-block transform -translate-y-3 scale-150">∞</span>°</p>
+            <p className="text-sm text-slate-600 font-normal">Путешествуйте с комфортом 360°</p>
           </div>
         </CardTitle>
       </CardHeader>
