@@ -104,7 +104,7 @@ const Schedule = () => {
             <Icon name="Info" size={16} />
             <p className="text-sm font-semibold">Полезная информация</p>
           </div>
-          <p className="text-xs text-orange-700">Расписание может изменяться в праздничные дни. Следите за обновлениями!</p>
+          <p className="text-xs text-orange-700">Возможны изменения в расписании или отмены рейсов "Горхон - УУ", "УУ - Горхон", "Заиграево - Горхон", "Горхон - Заиграево". Уточняйте информацию в поселковых чатах в Telegram.</p>
         </div>
       </CardContent>
     </Card>
