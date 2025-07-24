@@ -114,7 +114,15 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
           <div key={index} className="group p-5 rounded-2xl bg-gradient-to-r from-purple-50/80 to-pink-50/80 hover:from-gorkhon-pink/5 hover:to-gorkhon-pink/10 border-2 border-purple-100/50 hover:border-gorkhon-pink/20 transition-all duration-300 hover:shadow-lg">
             <div className="flex items-center gap-4 mb-4">
               <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 group-hover:from-gorkhon-pink/20 group-hover:to-gorkhon-pink/10 transition-all duration-300">
-                <Icon name={pvz.icon as any} size={22} className="text-purple-600 group-hover:text-gorkhon-pink group-hover:scale-110 transition-all duration-300" />
+                {pvz.name.includes("OZON") ? (
+                  <img 
+                    src="https://cdn.poehali.dev/files/32eb6963-076a-4663-ae00-1f8c03ea5d9b.jpg" 
+                    alt="OZON Logo" 
+                    className="w-6 h-6 object-contain group-hover:scale-110 transition-transform duration-300"
+                  />
+                ) : (
+                  <Icon name={pvz.icon as any} size={22} className="text-purple-600 group-hover:text-gorkhon-pink group-hover:scale-110 transition-all duration-300" />
+                )}
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
