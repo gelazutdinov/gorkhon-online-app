@@ -34,28 +34,25 @@ const ImportantNumbers = () => {
       </CardHeader>
       <CardContent className="space-y-3">
         {importantNumbers.map((contact, index) => (
-          <div key={index} className="group flex items-center p-4 rounded-2xl bg-gradient-to-r from-slate-50 to-blue-50/50 hover:from-gorkhon-blue/5 hover:to-gorkhon-green/5 transition-all duration-300 border border-slate-200/50 hover:border-gorkhon-blue/20 hover:shadow-md">
-            <div className="flex items-center gap-4 flex-1">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-gorkhon-blue/10 to-gorkhon-blue/5 group-hover:from-gorkhon-blue/20 group-hover:to-gorkhon-blue/10 transition-all duration-300 flex-shrink-0">
-                <Icon name={contact.icon} size={18} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
+          <div key={index} className="group p-3 rounded-xl bg-gradient-to-r from-slate-50 to-blue-50/50 hover:from-gorkhon-blue/5 hover:to-gorkhon-green/5 transition-all duration-300 border border-slate-200/50 hover:border-gorkhon-blue/20 hover:shadow-md">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-gorkhon-blue/10 to-gorkhon-blue/5 group-hover:from-gorkhon-blue/20 group-hover:to-gorkhon-blue/10 transition-all duration-300 flex-shrink-0">
+                  <Icon name={contact.icon} size={16} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm text-slate-800 group-hover:text-gorkhon-blue transition-colors truncate">{contact.name}</p>
+                  <p className="text-xs text-slate-600 truncate">{contact.person}</p>
+                  <p className="text-xs text-gorkhon-blue/70 font-mono">{contact.phone}</p>
+                </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm text-slate-800 group-hover:text-gorkhon-blue transition-colors truncate">{contact.name}</p>
-                <p className="text-xs text-slate-600 flex items-center gap-1 truncate">
-                  <Icon name="User" size={10} className="flex-shrink-0" />
-                  <span className="truncate">{contact.person}</span>
-                </p>
-                <p className="text-xs text-gorkhon-blue/70 font-mono">{contact.phone}</p>
-              </div>
-            </div>
-            <div className="flex-shrink-0 ml-4">
               <Button 
                 size="sm" 
-                className="bg-gradient-to-r from-gorkhon-green to-gorkhon-green/90 hover:from-gorkhon-green/90 hover:to-gorkhon-green text-white px-4 py-2 h-10 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105 whitespace-nowrap"
+                className="bg-gradient-to-r from-gorkhon-green to-gorkhon-green/90 hover:from-gorkhon-green/90 hover:to-gorkhon-green text-white px-3 py-1.5 h-8 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-xs flex-shrink-0"
                 onClick={() => window.open(`tel:${contact.phone}`, '_self')}
               >
-                <Icon name="Phone" size={16} className="mr-1" />
-                Позвонить
+                <Icon name="Phone" size={14} className="mr-1" />
+                Звонок
               </Button>
             </div>
           </div>
