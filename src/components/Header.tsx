@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 
 const Header = () => {
   return (
-    <div className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
+    <div data-tutorial="header" className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
 
       
       <div className="max-w-md mx-auto text-center relative z-10">

@@ -35,7 +35,7 @@ const Schedule = () => {
   ];
 
   return (
-    <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-gorkhon-orange/10 shadow-lg hover:shadow-xl transition-all duration-300">
+    <Card data-tutorial="city-map" className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-gorkhon-orange/10 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-3 text-gorkhon-orange">
           <div className="p-2 rounded-full bg-gorkhon-orange/10 animate-pulse">

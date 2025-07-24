@@ -7,6 +7,7 @@ import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import PhotoCarousel from "@/components/PhotoCarousel";
+import Tutorial from "@/components/Tutorial";
 
 interface Photo {
   url: string;
@@ -53,13 +54,15 @@ const Index = () => {
       <Header />
 
       <main className="max-w-md mx-auto px-4 py-6 space-y-6 relative z-10">
-        <ImportantNumbers />
-        <Schedule />
+        <ImportantNumbers data-tutorial="search-input" />
+        <Schedule data-tutorial="categories" />
         <DonationSection />
         <WorkSchedule />
         <PvzSection onOpenPhotoCarousel={openPhotoCarousel} />
         <ActionButtons />
       </main>
+
+      <Tutorial />
 
       <PhotoCarousel 
         selectedImageIndex={selectedImageIndex}
