@@ -119,9 +119,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-bold text-slate-800 group-hover:text-gorkhon-pink transition-colors">{pvz.name}</h4>
-                  <div className="px-2 py-1 rounded-full bg-green-100 group-hover:bg-green-200 transition-colors">
-                    <span className="text-xs font-medium text-green-700">Работает</span>
-                  </div>
+
                 </div>
                 <div className="flex items-center gap-2">
                   <Icon name="MapPin" size={14} className="text-slate-500" />
