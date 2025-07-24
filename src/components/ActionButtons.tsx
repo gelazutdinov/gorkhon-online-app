@@ -13,8 +13,8 @@ const ActionButtons = () => {
               <Icon name="Stethoscope" size={20} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-gorkhon-blue text-base truncate">Запись к врачу</p>
-              <p className="text-sm text-slate-600 truncate">
+              <p className="font-bold text-gorkhon-blue text-base">Запись к врачу</p>
+              <p className="text-sm text-slate-600">
                 Чат с Заиграевской ЦРБ
               </p>
               <p className="text-xs text-gorkhon-blue/70">Быстро и удобно</p>
