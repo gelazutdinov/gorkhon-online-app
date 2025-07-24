@@ -81,9 +81,15 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
           </>
         )}
         
-        {/* Zoom icon */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent hover:from-black/40 transition-all duration-300 rounded-2xl flex items-center justify-center">
-          <div className="p-2 rounded-full bg-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100">
+        {/* Zoom icon - clickable overlay */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent hover:from-black/40 transition-all duration-300 rounded-2xl flex items-center justify-center cursor-pointer"
+          onClick={() => {
+            console.log('Photo clicked:', photos[currentIndex], currentIndex);
+            onPhotoClick(photos, currentIndex);
+          }}
+        >
+          <div className="p-2 rounded-full bg-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100 pointer-events-none">
             <Icon name="ZoomIn" size={16} className="text-gorkhon-pink" />
           </div>
         </div>

@@ -18,6 +18,7 @@ const Index = () => {
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
+    console.log('openPhotoCarousel called:', photos, startIndex);
     setSelectedPvzPhotos(photos);
     setSelectedImageIndex(startIndex);
   }, []);

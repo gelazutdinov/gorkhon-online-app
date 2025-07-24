@@ -49,6 +49,9 @@ const PhotoCarousel = ({
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [selectedImageIndex, onNext, onPrev, onClose]);
+  
+  console.log('PhotoCarousel render:', { selectedImageIndex, selectedPvzPhotos: selectedPvzPhotos.length });
+  
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl w-full p-0 bg-black/95">
