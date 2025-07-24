@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 
 const Header = () => {
   return (
-    <div className="bg-gradient-to-br from-gorkhon-pink via-gorkhon-pink/90 to-gorkhon-blue/20 text-white px-4 py-8 relative overflow-hidden rounded-b-3xl">
+    <div className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
       {/* Floating decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-4 right-8 w-20 h-20 bg-white/5 rounded-full animate-pulse"></div>
