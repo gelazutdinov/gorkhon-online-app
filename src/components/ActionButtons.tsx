@@ -46,7 +46,7 @@ const ActionButtons = () => {
             <Button 
               variant="outline" 
               className="border-white/30 text-white hover:bg-white/20"
-              onClick={() => window.open('https://jivo.chat/9GPwkXQFfM', '_blank')}
+              onClick={() => window.open('https://forms.yandex.ru/u/687f5b9a84227c08790f3222/', '_blank')}
             >
               <Icon name="MessageSquare" size={16} />
             </Button>
