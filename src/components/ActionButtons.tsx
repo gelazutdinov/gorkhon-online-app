@@ -85,7 +85,7 @@ const ActionButtons = () => {
           <div className="flex items-center justify-center gap-4 text-xs text-slate-400">
             <span className="flex items-center gap-1">
               <Icon name="Users" size={10} />
-              Для соседей
+              Для жителей
             </span>
             <span className="flex items-center gap-1">
               <Icon name="Globe" size={10} />
