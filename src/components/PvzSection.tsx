@@ -142,16 +142,20 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       icon: "Package",
       photos: [
         {
-          url: "img/ba2c8749-c717-4944-8a8c-754c819b85dd.jpg", 
+          url: "https://cdn.poehali.dev/files/effd940b-46bf-46ab-b102-56fc7574bce1.png", 
           caption: "Вход в ПВЗ Wildberries"
         },
         {
-          url: "img/d0569d3f-3790-4199-882a-496a988fae81.jpg",
+          url: "https://cdn.poehali.dev/files/db11a90a-322e-4e28-acdb-1230afb19cf1.png",
           caption: "Интерьер ПВЗ Wildberries"
         },
         {
-          url: "img/de710559-da33-448a-b659-e5ac80f6b41d.jpg",
+          url: "https://cdn.poehali.dev/files/dd085655-24de-4ab0-8877-256127c92015.png",
           caption: "Зона обслуживания ПВЗ Wildberries"
+        },
+        {
+          url: "https://cdn.poehali.dev/files/93fc597d-3650-43d1-ad6c-7ce489b8e9c8.png",
+          caption: "Примерочные кабины ПВЗ Wildberries"
         }
       ]
     },
