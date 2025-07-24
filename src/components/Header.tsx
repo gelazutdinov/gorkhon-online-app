@@ -4,7 +4,44 @@ import Icon from "@/components/ui/icon";
 const Header = () => {
   return (
     <div className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
-
+      {/* Animated ribbons */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* First ribbon */}
+        <div className="absolute -top-2 -left-32 w-96 h-8 transform rotate-12 animate-pulse" style={{backgroundColor: '#005BFF'}}>
+          <div className="flex items-center justify-center h-full">
+            <span className="text-xs font-medium animate-pulse" style={{color: '#F1117E'}}>
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
+        
+        {/* Second ribbon */}
+        <div className="absolute top-16 -right-32 w-96 h-8 transform -rotate-12 animate-pulse delay-1000" style={{backgroundColor: '#005BFF'}}>
+          <div className="flex items-center justify-center h-full">
+            <span className="text-xs font-medium animate-pulse" style={{color: '#F1117E'}}>
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
+        
+        {/* Third ribbon */}
+        <div className="absolute bottom-4 -left-24 w-80 h-6 transform rotate-6 animate-pulse delay-500" style={{backgroundColor: '#005BFF'}}>
+          <div className="flex items-center justify-center h-full">
+            <span className="text-xs font-medium animate-pulse" style={{color: '#F1117E'}}>
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
+        
+        {/* Fourth ribbon */}
+        <div className="absolute bottom-12 -right-28 w-72 h-6 transform -rotate-8 animate-pulse delay-1500" style={{backgroundColor: '#005BFF'}}>
+          <div className="flex items-center justify-center h-full">
+            <span className="text-xs font-medium animate-pulse" style={{color: '#F1117E'}}>
+              Для жителей. С заботой. Всегда рядом.
+            </span>
+          </div>
+        </div>
+      </div>
       
       <div className="max-w-md mx-auto text-center relative z-10">
         <div className="flex items-center justify-center gap-4 mb-4 group">
