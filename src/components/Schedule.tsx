@@ -42,7 +42,7 @@ const Schedule = () => {
             <Icon name="Bus" size={20} />
           </div>
           <div>
-            <span className="text-lg font-bold">🚌 Расписание транспорта</span>
+            <span className="text-lg font-bold">Расписание транспорта</span>
             <p className="text-sm text-slate-600 font-normal">Путешествуйте с комфортом 360°</p>
           </div>
         </CardTitle>
@@ -104,7 +104,7 @@ const Schedule = () => {
             <Icon name="Info" size={16} />
             <p className="text-sm font-semibold">Полезная информация</p>
           </div>
-          <p className="text-xs text-orange-700">Расписание может изменяться в праздничные дни. Следите за обновлениями! 🎯</p>
+          <p className="text-xs text-orange-700">Расписание может изменяться в праздничные дни. Следите за обновлениями!</p>
         </div>
       </CardContent>
     </Card>

@@ -37,7 +37,7 @@ const DonationSection = () => {
             <Icon name="Heart" size={20} />
           </div>
           <div>
-            <span className="text-lg font-bold">💝 Помощь поселку</span>
+            <span className="text-lg font-bold">Помощь поселку</span>
             <p className="text-sm text-slate-600 font-normal">Вместе мы сильнее!</p>
           </div>
         </CardTitle>
@@ -54,7 +54,7 @@ const DonationSection = () => {
                 <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
                   <Icon name={donation.icon as any} size={20} />
                 </div>
-                <h4 className="font-bold text-lg">{donation.title}</h4>
+                <h4 className="font-bold text-lg">{donation.title.replace(/⛪️|🪖/g, '').trim()}</h4>
               </div>
               
               <div className="space-y-2">
@@ -83,7 +83,7 @@ const DonationSection = () => {
             <Icon name="Users" size={16} />
             <p className="text-sm font-semibold">Благодарим за поддержку!</p>
           </div>
-          <p className="text-xs text-emerald-700">Каждый вклад делает наш поселок лучше и уютнее для всех жителей 🏘️</p>
+          <p className="text-xs text-emerald-700">Каждый вклад делает наш поселок лучше и уютнее для всех жителей</p>
         </div>
       </CardContent>
     </Card>

@@ -36,7 +36,7 @@ const WorkSchedule = () => {
             <Icon name="Clock" size={20} />
           </div>
           <div>
-            <span className="text-lg font-bold">⏰ Режим работы</span>
+            <span className="text-lg font-bold">Режим работы</span>
             <p className="text-sm text-slate-600 font-normal">Сервис 360° в удобное время</p>
           </div>
         </CardTitle>
@@ -93,7 +93,7 @@ const WorkSchedule = () => {
             <Icon name="Sparkles" size={16} />
             <p className="text-sm font-semibold">Режим работы 360°</p>
           </div>
-          <p className="text-xs text-blue-700">Мы стараемся быть доступными для вас в максимально удобное время! 🕐</p>
+          <p className="text-xs text-blue-700">Мы стараемся быть доступными для вас в максимально удобное время!</p>
         </div>
       </CardContent>
     </Card>

@@ -38,7 +38,7 @@ const Header = () => {
         </div>
         
         <div className="space-y-2">
-          <p className="text-white/95 font-medium">🏘️ Вся нужная информация под рукой</p>
+          <p className="text-white/95 font-medium">Вся нужная информация под рукой</p>
           <p className="text-white/80 text-sm">Добро пожаловать в цифровое сердце нашего поселка</p>
         </div>
 

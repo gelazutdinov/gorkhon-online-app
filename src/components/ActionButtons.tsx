@@ -14,7 +14,7 @@ const ActionButtons = () => {
                 <Icon name="Stethoscope" size={22} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
               </div>
               <div>
-                <p className="font-bold text-gorkhon-blue text-lg">🏥 Запись к врачу</p>
+                <p className="font-bold text-gorkhon-blue text-lg">Запись к врачу</p>
                 <p className="text-sm text-slate-600 flex items-center gap-1">
                   <Icon name="MessageCircle" size={12} />
                   Чат с Заиграевской ЦРБ
@@ -48,7 +48,7 @@ const ActionButtons = () => {
                 <Icon name="MessageCircle" size={22} className="text-white group-hover:scale-110 transition-transform duration-300" />
               </div>
               <div>
-                <p className="font-bold text-lg">💬 Чат поддержки</p>
+                <p className="font-bold text-lg">Чат поддержки</p>
                 <p className="text-sm opacity-90 flex items-center gap-1">
                   <Icon name="Heart" size={12} />
                   Есть вопросы? Мы поможем!

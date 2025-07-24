@@ -104,7 +104,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
             <Icon name="Package" size={20} />
           </div>
           <div>
-            <span className="text-lg font-bold">📦 Пункты выдачи заказов</span>
+            <span className="text-lg font-bold">Пункты выдачи заказов</span>
             <p className="text-sm text-slate-600 font-normal">Доставка 360° прямо к вам</p>
           </div>
         </CardTitle>
@@ -204,7 +204,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
             <Icon name="Truck" size={16} />
             <p className="text-sm font-semibold">Удобство 360°</p>
           </div>
-          <p className="text-xs text-purple-700">Получайте заказы в удобных для вас точках! Мы работаем для вашего комфорта 🎁</p>
+          <p className="text-xs text-purple-700">Получайте заказы в удобных для вас точках! Мы работаем для вашего комфорта</p>
         </div>
       </CardContent>
     </Card>

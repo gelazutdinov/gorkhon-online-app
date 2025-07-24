@@ -27,7 +27,7 @@ const ImportantNumbers = () => {
             <Icon name="Phone" size={20} />
           </div>
           <div>
-            <span className="text-lg font-bold">📞 Важные номера</span>
+            <span className="text-lg font-bold">Важные номера</span>
             <p className="text-sm text-slate-600 font-normal">Всегда под рукой в трудную минуту</p>
           </div>
         </CardTitle>
@@ -62,7 +62,7 @@ const ImportantNumbers = () => {
         <div className="mt-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50">
           <div className="flex items-center gap-2 text-amber-800">
             <Icon name="Heart" size={16} />
-            <p className="text-sm font-medium">Мы всегда готовы помочь нашим соседям! 💛</p>
+            <p className="text-sm font-medium">Мы всегда готовы помочь нашим соседям!</p>
           </div>
         </div>
       </CardContent>
