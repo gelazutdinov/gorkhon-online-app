@@ -66,29 +66,7 @@ const Support = () => {
         </div>
       </div>
 
-      {/* Часто задаваемые вопросы */}
-      <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-        <div className="flex items-center gap-3 mb-4">
-          <Icon name="HelpCircle" size={24} className="text-gray-600" />
-          <h3 className="text-lg font-semibold text-gray-800">Частые вопросы</h3>
-        </div>
-        <div className="space-y-3 text-sm">
-          <div className="flex items-start gap-3">
-            <Icon name="ArrowRight" size={14} className="text-gray-400 mt-0.5" />
-            <div>
-              <span className="font-medium text-gray-700">Как обновить информацию на сайте?</span>
-              <p className="text-gray-600 mt-1">Обратитесь в службу поддержки с вашими предложениями</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <Icon name="ArrowRight" size={14} className="text-gray-400 mt-0.5" />
-            <div>
-              <span className="font-medium text-gray-700">Не работает функция сайта</span>
-              <p className="text-gray-600 mt-1">Опишите проблему в форме поддержки с подробностями</p>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 };
