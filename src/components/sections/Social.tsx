@@ -1,5 +1,5 @@
 import { useUser } from '@/hooks/useUser';
-import SocialNetwork from '@/components/SocialNetwork';
+import VkStyleSocialNetwork from '@/components/social/VkStyleSocialNetwork';
 import Icon from '@/components/ui/icon';
 
 const Social = () => {
@@ -60,7 +60,7 @@ const Social = () => {
   }
 
   // Если пользователь авторизован, показываем социальную сеть
-  return <SocialNetwork currentUser={user} />;
+  return <VkStyleSocialNetwork currentUser={user} />;
 };
 
 export default Social;

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { useUser } from '@/hooks/useUser';
 import RegistrationForm from '@/components/RegistrationForm';
-import UserDashboard from '@/components/UserDashboard.simple';
+import UserDashboard from '@/components/UserDashboard';
 
 const PersonalAccount = () => {
   const { user, isLoading, register, logout, updateUser, getDaysWithUs, getFormattedTimeSpent } = useUser();

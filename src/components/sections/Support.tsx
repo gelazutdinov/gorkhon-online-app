@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
-import TicketSystem from '@/components/TicketSystem';
+import MobileSupportSystem from '@/components/support/MobileSupportSystem';
 import { useUser } from '@/hooks/useUser';
 
 const Support = () => {
@@ -11,23 +11,9 @@ const Support = () => {
     window.open('https://forms.yandex.ru/u/687f5b9a84227c08790f3222/', '_blank');
   };
 
-  // Если пользователь авторизован, показываем тикет-систему
-  if (user && activeView === 'tickets') {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setActiveView('main')}
-            className="flex items-center gap-2 text-gorkhon-pink hover:text-gorkhon-pink/80 transition-colors"
-          >
-            <Icon name="ArrowLeft" size={20} />
-            <span>Назад</span>
-          </button>
-          <h2 className="text-2xl font-bold text-gray-800">Тикет-система</h2>
-        </div>
-        <TicketSystem user={user} />
-      </div>
-    );
+  // Если пользователь авторизован, показываем мобильную систему поддержки
+  if (user) {
+    return <MobileSupportSystem user={user} />;
   }
 
   return (

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import NotificationPanel from '@/components/NotificationPanel';
-import { useNewsNotifications } from '@/hooks/useNewsNotifications';
+import { useVkNewsTracker } from '@/hooks/useVkNewsTracker';
 import { useUser } from '@/hooks/useUser';
 
 declare global {
@@ -12,7 +12,7 @@ declare global {
 
 const News = () => {
   const [showNotifications, setShowNotifications] = useState(false);
-  const { unreadCount } = useNewsNotifications();
+  const { isTracking, notifications, startTracking, stopTracking, hasNewNotifications } = useVkNewsTracker();
   const { trackFeatureUse } = useUser();
   useEffect(() => {
     // Загружаем VK API если еще не загружен
@@ -52,23 +52,37 @@ const News = () => {
         <p className="text-gray-600">Следите за последними событиями в Горхоне</p>
         
         {/* Кнопка уведомлений */}
-        <button
-          onClick={() => {
-            setShowNotifications(true);
-            trackFeatureUse('notifications');
-          }}
-          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gorkhon-pink text-white rounded-full hover:bg-gorkhon-pink/90 transition-all duration-200 relative"
-        >
-          <Icon name="Bell" size={16} />
-          <span>Уведомления</span>
-          {unreadCount > 0 && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs font-bold">
-                {unreadCount > 9 ? '9+' : unreadCount}
-              </span>
-            </div>
-          )}
-        </button>
+        <div className="flex gap-3 mt-4">
+          <button
+            onClick={() => {
+              setShowNotifications(true);
+              trackFeatureUse('notifications');
+            }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gorkhon-pink text-white rounded-full hover:bg-gorkhon-pink/90 transition-all duration-200 relative"
+          >
+            <Icon name="Bell" size={16} />
+            <span>Уведомления</span>
+            {hasNewNotifications && (
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-bold">
+                  {notifications.length > 9 ? '9+' : notifications.length}
+                </span>
+              </div>
+            )}
+          </button>
+          
+          <button
+            onClick={isTracking ? stopTracking : startTracking}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${
+              isTracking 
+                ? 'bg-green-500 text-white hover:bg-green-600' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            <Icon name={isTracking ? "BellRing" : "BellOff"} size={16} />
+            <span>{isTracking ? 'Отслеживание ВКЛ' : 'Включить отслеживание'}</span>
+          </button>
+        </div>
       </div>
 
       {/* VK Widget Container */}
