@@ -1,16 +1,34 @@
-import { SocialPost, SocialUser, formatTimeAgo } from '../types/SocialTypes';
+import { useState } from 'react';
+import { SocialPost, SocialUser, formatTimeAgo, Comment } from '../types/SocialTypes';
 import { UserProfile } from '@/hooks/useUser';
 import Icon from '@/components/ui/icon';
+import Comments from './Comments';
 
 interface PostItemProps {
   post: SocialPost;
   author: SocialUser | undefined;
   currentUser: UserProfile;
+  socialUsers: SocialUser[];
   onToggleLike: (postId: string) => void;
   onDeletePost?: (postId: string) => void;
+  onAddComment: (postId: string, content: string) => void;
+  onToggleCommentLike: (postId: string, commentId: string) => void;
+  onDeleteComment?: (postId: string, commentId: string) => void;
 }
 
-const PostItem = ({ post, author, currentUser, onToggleLike, onDeletePost }: PostItemProps) => {
+const PostItem = ({ 
+  post, 
+  author, 
+  currentUser, 
+  socialUsers,
+  onToggleLike, 
+  onDeletePost,
+  onAddComment,
+  onToggleCommentLike,
+  onDeleteComment
+}: PostItemProps) => {
+  const [showComments, setShowComments] = useState(false);
+  
   if (!author) return null;
 
   const canDelete = post.authorId === currentUser.id;
@@ -105,9 +123,14 @@ const PostItem = ({ post, author, currentUser, onToggleLike, onDeletePost }: Pos
             <span className="text-sm font-medium">Нравится</span>
           </button>
           
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
+          <button 
+            onClick={() => setShowComments(!showComments)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+          >
             <Icon name="MessageCircle" size={16} />
-            <span className="text-sm font-medium">Комментировать</span>
+            <span className="text-sm font-medium">
+              {post.comments.length > 0 ? `${post.comments.length} комментариев` : 'Комментировать'}
+            </span>
           </button>
           
           <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
@@ -116,6 +139,20 @@ const PostItem = ({ post, author, currentUser, onToggleLike, onDeletePost }: Pos
           </button>
         </div>
       </div>
+
+      {/* Комментарии */}
+      {showComments && (
+        <div className="px-4 pb-4">
+          <Comments
+            comments={post.comments}
+            socialUsers={socialUsers}
+            currentUser={currentUser}
+            onAddComment={(content) => onAddComment(post.id, content)}
+            onToggleCommentLike={(commentId) => onToggleCommentLike(post.id, commentId)}
+            onDeleteComment={onDeleteComment ? (commentId) => onDeleteComment(post.id, commentId) : undefined}
+          />
+        </div>
+      )}
     </div>
   );
 };

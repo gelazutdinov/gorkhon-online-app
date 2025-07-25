@@ -76,7 +76,7 @@ const ProfileSettings = ({ currentSocialUser, onUpdateProfile }: ProfileSettings
         {/* Аватар */}
         <div className="text-center">
           <div className="relative inline-block">
-            {avatar.startsWith('data:') ? (
+            {avatar && (avatar.startsWith('data:') || avatar.startsWith('http')) ? (
               <img
                 src={avatar}
                 alt="Аватар"
@@ -84,24 +84,30 @@ const ProfileSettings = ({ currentSocialUser, onUpdateProfile }: ProfileSettings
               />
             ) : (
               <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-3xl mx-auto border-4 border-gray-200">
-                {avatar}
+                {avatar || '👤'}
               </div>
             )}
             
-            {isEditing && (
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
-              >
-                <Icon name="Camera" size={16} />
-              </button>
-            )}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg"
+              title="Изменить фото"
+            >
+              <Icon name="Camera" size={16} />
+            </button>
           </div>
           
-          {isEditing && (
-            <p className="text-sm text-gray-500 mt-2">
-              Нажмите на камеру, чтобы изменить фото
-            </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Нажмите на камеру, чтобы изменить фото
+          </p>
+          
+          {avatar && avatar.startsWith('data:') && (
+            <button
+              onClick={() => setAvatar('👤')}
+              className="text-xs text-red-500 hover:text-red-700 mt-1"
+            >
+              Удалить фото
+            </button>
           )}
         </div>
 

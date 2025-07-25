@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { SocialUser, FriendRequest } from '../types/SocialTypes';
 import { UserProfile } from '@/hooks/useUser';
 import Icon from '@/components/ui/icon';
@@ -19,7 +20,15 @@ const FriendsTab = ({
   onSendFriendRequest, 
   onRespondToFriendRequest 
 }: FriendsTabProps) => {
+  const [searchTerm, setSearchTerm] = useState('');
   const pendingRequests = friendRequests.filter(r => r.toUserId === currentUser.id && r.status === 'pending');
+
+  // Фильтрация пользователей по поиску
+  const filteredUsers = socialUsers.filter(u => 
+    u.id !== currentUser.id && 
+    (u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     u.bio?.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <div className="space-y-6">
@@ -64,11 +73,25 @@ const FriendsTab = ({
         </div>
       )}
 
-      {/* Список пользователей */}
+      {/* Поиск пользователей */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-        <h3 className="font-semibold text-gray-800 mb-4">Жители Горхона</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-gray-800">Жители Горхона</h3>
+        </div>
+        
+        <div className="relative mb-4">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Поиск по имени или интересам..."
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          />
+          <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        </div>
+
         <div className="space-y-3">
-          {socialUsers.filter(u => u.id !== currentUser.id).map(user => {
+          {filteredUsers.map(user => {
             const isFollowing = currentSocialUser?.following.includes(user.id);
             const hasPendingRequest = friendRequests.some(r => 
               r.fromUserId === currentUser.id && r.toUserId === user.id && r.status === 'pending'

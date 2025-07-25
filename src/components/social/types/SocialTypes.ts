@@ -18,6 +18,35 @@ export interface SocialPost {
   likes: string[];
   comments: Comment[];
   shares: number;
+  isFromVk?: boolean;
+  location?: string;
+}
+
+export interface Story {
+  id: string;
+  authorId: string;
+  image: string;
+  text?: string;
+  timestamp: string;
+  views: string[];
+  isActive: boolean;
+}
+
+export interface DirectMessage {
+  id: string;
+  fromUserId: string;
+  toUserId: string;
+  content: string;
+  timestamp: string;
+  isRead: boolean;
+  image?: string;
+}
+
+export interface Chat {
+  id: string;
+  participants: string[];
+  lastMessage: DirectMessage;
+  unreadCount: number;
 }
 
 export interface Comment {
