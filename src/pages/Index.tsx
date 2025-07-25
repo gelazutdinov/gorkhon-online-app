@@ -11,6 +11,8 @@ import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
 import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
+import BottomNavigation from "@/components/BottomNavigation";
+import Icon from "@/components/ui/icon";
 
 interface Photo {
   url: string;
@@ -55,7 +57,7 @@ const Index = () => {
         <div className="absolute bottom-20 right-12 w-20 h-20 bg-gorkhon-orange/5 rounded-full blur-lg"></div>
       </div>
       
-      <Header activeSection={activeSection} onSectionChange={setActiveSection} />
+      <Header />
 
       <main className="max-w-md mx-auto px-4 py-6 space-y-6 relative z-10">
         {activeSection === 'home' && (
@@ -64,6 +66,20 @@ const Index = () => {
         {activeSection === 'profile' && <PersonalAccount />}
         {activeSection === 'news' && <News />}
         {activeSection === 'support' && <Support />}
+        {activeSection === 'search' && (
+          <div className="text-center py-12">
+            <Icon name="Search" size={48} className="text-gray-400 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Поиск</h2>
+            <p className="text-gray-600">Функция поиска в разработке</p>
+          </div>
+        )}
+        {activeSection === 'menu' && (
+          <div className="text-center py-12">
+            <Icon name="Menu" size={48} className="text-gray-400 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Меню</h2>
+            <p className="text-gray-600">Дополнительные функции в разработке</p>
+          </div>
+        )}
       </main>
 
       <PhotoCarousel 
@@ -73,6 +89,8 @@ const Index = () => {
         onNext={nextPhoto}
         onPrev={prevPhoto}
       />
+
+      <BottomNavigation activeSection={activeSection} onSectionChange={setActiveSection} />
     </div>
   );
 };

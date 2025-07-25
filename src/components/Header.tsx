@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
-import Navigation from '@/components/Navigation';
 
-interface HeaderProps {
-  activeSection: string;
-  onSectionChange: (section: string) => void;
-}
-
-const Header = ({ activeSection, onSectionChange }: HeaderProps) => {
+const Header = () => {
   return (
     <div data-tutorial="header" className="bg-gorkhon-pink text-white px-4 py-8 relative overflow-hidden rounded-b-3xl" style={{backgroundColor: '#F1117E'}}>
 
@@ -60,7 +54,7 @@ const Header = ({ activeSection, onSectionChange }: HeaderProps) => {
         </div>
       </div>
       
-      <Navigation activeSection={activeSection} onSectionChange={onSectionChange} />
+
     </div>
   );
 };
