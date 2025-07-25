@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
+import NotificationPanel from '@/components/NotificationPanel';
+import { useNewsNotifications } from '@/hooks/useNewsNotifications';
 
 declare global {
   interface Window {
@@ -8,6 +10,8 @@ declare global {
 }
 
 const News = () => {
+  const [showNotifications, setShowNotifications] = useState(false);
+  const { unreadCount } = useNewsNotifications();
   useEffect(() => {
     // Загружаем VK API если еще не загружен
     if (!window.VK) {
@@ -44,6 +48,22 @@ const News = () => {
           <h2 className="text-2xl font-bold text-gray-800">Новости поселка</h2>
         </div>
         <p className="text-gray-600">Следите за последними событиями в Горхоне</p>
+        
+        {/* Кнопка уведомлений */}
+        <button
+          onClick={() => setShowNotifications(true)}
+          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gorkhon-pink text-white rounded-full hover:bg-gorkhon-pink/90 transition-all duration-200 relative"
+        >
+          <Icon name="Bell" size={16} />
+          <span>Уведомления</span>
+          {unreadCount > 0 && (
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            </div>
+          )}
+        </button>
       </div>
 
       {/* VK Widget Container */}
@@ -80,6 +100,12 @@ const News = () => {
           объявлений и изменений в работе служб поселка.
         </p>
       </div>
+      
+      {/* Панель уведомлений */}
+      <NotificationPanel 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </div>
   );
 };

@@ -1,4 +1,6 @@
 import Icon from '@/components/ui/icon';
+import NotificationBadge from '@/components/NotificationBadge';
+import { useNewsNotifications } from '@/hooks/useNewsNotifications';
 
 interface BottomNavigationProps {
   activeSection: string;
@@ -6,6 +8,7 @@ interface BottomNavigationProps {
 }
 
 const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationProps) => {
+  const { unreadCount } = useNewsNotifications();
   const menuItems = [
     {
       id: 'home',
@@ -15,8 +18,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
     {
       id: 'news',
       label: 'Новости',
-      icon: 'MessageCircle',
-      badge: '1'
+      icon: 'MessageCircle'
     },
     {
       id: 'support',
@@ -57,10 +59,8 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
                       ${activeSection === item.id ? 'text-blue-600' : 'text-gray-500'}
                     `}
                   />
-                  {item.badge && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs font-medium">{item.badge}</span>
-                    </div>
+                  {item.id === 'news' && (
+                    <NotificationBadge count={unreadCount} />
                   )}
                 </div>
                 <span className={`
