@@ -79,12 +79,17 @@ export const useUser = () => {
     };
   }, [user]);
 
-  const register = (userData: { name: string; email: string; phone: string }) => {
+  const register = (userData: { name: string; email: string; phone: string; gender: 'male' | 'female'; birthDate: string; avatar: string }) => {
     const newUser: UserProfile = {
       id: `user_${Date.now()}`,
       name: userData.name,
       email: userData.email,
       phone: userData.phone,
+      gender: userData.gender,
+      birthDate: userData.birthDate,
+      avatar: userData.avatar,
+      interests: [],
+      status: '',
       registeredAt: Date.now(),
       lastActiveAt: Date.now(),
       stats: {

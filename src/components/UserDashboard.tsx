@@ -6,6 +6,7 @@ import PhotoUpload from '@/components/PhotoUpload';
 import AvatarSelector from '@/components/AvatarSelector';
 import BirthdayGreeting from '@/components/BirthdayGreeting';
 import InterestsEditor from '@/components/InterestsEditor';
+import BirthdayWishesAI from '@/components/BirthdayWishesAI';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -296,6 +297,9 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
         </div>
       </div>
 
+      {/* Поздравления AI */}
+      <BirthdayWishesAI user={user} />
+
       {/* Информация профиля */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
@@ -375,7 +379,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
         </>
       ) : (
         /* Социальная сеть */
-        <SocialNetwork />
+        <SocialNetwork currentUser={user} />
       )}
     </div>
   );

@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
 interface RegistrationFormProps {
-  onRegister: (userData: { name: string; email: string; phone: string }) => void;
+  onRegister: (userData: { name: string; email: string; phone: string; gender: 'male' | 'female'; birthDate: string; avatar: string }) => void;
 }
 
 const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    gender: 'male' as 'male' | 'female',
+    birthDate: '',
+    avatar: '👤'
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -33,6 +36,16 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
       newErrors.phone = 'Введите номер телефона';
     } else if (!/^[\+]?[0-9\-\(\)\s]+$/.test(formData.phone)) {
       newErrors.phone = 'Введите корректный номер телефона';
+    }
+
+    if (!formData.birthDate) {
+      newErrors.birthDate = 'Выберите дату рождения';
+    } else {
+      const birthYear = new Date(formData.birthDate).getFullYear();
+      const currentYear = new Date().getFullYear();
+      if (currentYear - birthYear < 14) {
+        newErrors.birthDate = 'Возраст должен быть не менее 14 лет';
+      }
     }
 
     if (!acceptedTerms) {
@@ -133,6 +146,96 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
           {errors.phone && (
             <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
           )}
+        </div>
+
+        {/* Пол */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Пол
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => handleChange('gender', 'male')}
+              className={`p-4 rounded-xl border-2 transition-all ${
+                formData.gender === 'male'
+                  ? 'border-gorkhon-blue bg-gorkhon-blue/10 text-gorkhon-blue'
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-2xl">👨</span>
+                <span className="font-medium">Мужской</span>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChange('gender', 'female')}
+              className={`p-4 rounded-xl border-2 transition-all ${
+                formData.gender === 'female'
+                  ? 'border-gorkhon-pink bg-gorkhon-pink/10 text-gorkhon-pink'
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-2xl">👩</span>
+                <span className="font-medium">Женский</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Дата рождения */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Дата рождения
+          </label>
+          <div className="relative">
+            <Icon name="Calendar" size={18} className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="date"
+              value={formData.birthDate}
+              onChange={(e) => handleChange('birthDate', e.target.value)}
+              max={new Date(new Date().setFullYear(new Date().getFullYear() - 14)).toISOString().split('T')[0]}
+              className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent transition-all ${
+                errors.birthDate ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+          </div>
+          {errors.birthDate && (
+            <p className="mt-1 text-sm text-red-600">{errors.birthDate}</p>
+          )}
+        </div>
+
+        {/* Выбор аватара */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Аватар профиля
+          </label>
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-2xl">
+              {formData.avatar}
+            </div>
+            <div className="flex-1">
+              <div className="grid grid-cols-6 gap-2 mb-3">
+                {['👤', '😊', '🙂', '😎', '🤓', '🥳', '😇', '🤠', '👑', '🎯', '🚀', '⭐'].map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => handleChange('avatar', emoji)}
+                    className={`w-8 h-8 rounded-lg text-lg hover:bg-gray-100 transition-colors ${
+                      formData.avatar === emoji ? 'bg-gorkhon-pink/20' : ''
+                    }`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500">
+                Выберите эмодзи или загрузите фото в личном кабинете
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Согласие с правовыми документами */}

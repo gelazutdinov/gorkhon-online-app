@@ -1,9 +1,34 @@
+import { useState } from 'react';
 import Icon from '@/components/ui/icon';
+import TicketSystem from '@/components/TicketSystem';
+import { useUser } from '@/hooks/useUser';
 
 const Support = () => {
+  const { user } = useUser();
+  const [activeView, setActiveView] = useState<'main' | 'tickets'>('main');
+  
   const handleSupportClick = () => {
     window.open('https://forms.yandex.ru/u/687f5b9a84227c08790f3222/', '_blank');
   };
+
+  // Если пользователь авторизован, показываем тикет-систему
+  if (user && activeView === 'tickets') {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setActiveView('main')}
+            className="flex items-center gap-2 text-gorkhon-pink hover:text-gorkhon-pink/80 transition-colors"
+          >
+            <Icon name="ArrowLeft" size={20} />
+            <span>Назад</span>
+          </button>
+          <h2 className="text-2xl font-bold text-gray-800">Тикет-система</h2>
+        </div>
+        <TicketSystem user={user} />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -38,6 +63,35 @@ const Support = () => {
           </button>
         </div>
       </div>
+
+      {/* Кнопка тикет-системы для авторизованных пользователей */}
+      {user && (
+        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white">
+                🤖
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800">Лина - AI помощник</h3>
+                <p className="text-sm text-gray-600">Умная тикет-система с ботом поддержки</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setActiveView('tickets')}
+              className="px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all flex items-center gap-2"
+            >
+              <Icon name="MessageSquare" size={16} />
+              <span>Открыть чат</span>
+            </button>
+          </div>
+          <div className="mt-4 text-sm text-gray-600 space-y-1">
+            <p>• Мгновенные ответы на частые вопросы</p>
+            <p>• Техническая поддержка 24/7</p>
+            <p>• Перевод на живого агента при необходимости</p>
+          </div>
+        </div>
+      )}
 
       {/* Информация о поддержке */}
       <div className="grid gap-4">
