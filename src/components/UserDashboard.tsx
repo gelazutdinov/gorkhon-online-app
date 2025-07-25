@@ -1,5 +1,10 @@
+import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
+import SocialNetwork from '@/components/SocialNetwork';
+import PhotoUpload from '@/components/PhotoUpload';
+import AvatarSelector from '@/components/AvatarSelector';
+import BirthdayGreeting from '@/components/BirthdayGreeting';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -9,6 +14,8 @@ interface UserDashboardProps {
 }
 
 const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserDashboardProps) => {
+  const [showAvatarEditor, setShowAvatarEditor] = useState(false);
+  const [activeTab, setActiveTab] = useState<'stats' | 'social'>('stats');
   const getRegistrationDate = () => {
     return new Date(user.registeredAt).toLocaleDateString('ru-RU', {
       day: 'numeric',
@@ -61,17 +68,90 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
     return { level: 'Мастер платформы', color: 'text-purple-600', bg: 'bg-purple-100' };
   };
 
+  const getAvatarEmoji = (avatar: string): string => {
+    const avatarMap: Record<string, string> = {
+      default_male: '👨',
+      default_female: '👩',
+      businessman: '👨‍💼',
+      businesswoman: '👩‍💼',
+      worker: '👨‍🔧',
+      worker_woman: '👩‍🔧',
+      farmer: '👨‍🌾',
+      farmer_woman: '👩‍🌾',
+      teacher: '👨‍🏫',
+      teacher_woman: '👩‍🏫',
+      doctor: '👨‍⚕️',
+      doctor_woman: '👩‍⚕️',
+      artist: '👨‍🎨',
+      artist_woman: '👩‍🎨',
+      chef: '👨‍🍳',
+      chef_woman: '👩‍🍳',
+      oldman: '👴',
+      oldwoman: '👵',
+      boy: '👦',
+      girl: '👧'
+    };
+    return avatarMap[avatar] || '👤';
+  };
+
   const activityLevel = getActivityLevel();
 
   return (
     <div className="space-y-6">
       {/* Заголовок профиля */}
       <div className="text-center">
-        <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-          <Icon name="User" size={32} className="text-white" />
+        <div className="relative w-20 h-20 mx-auto mb-4">
+          {showAvatarEditor ? (
+            <div className="absolute inset-0">
+              <PhotoUpload
+                currentPhoto={user.avatar.startsWith('data:') ? user.avatar : undefined}
+                onPhotoChange={(photo) => {
+                  if (photo) {
+                    // Обновляем аватар пользователя
+                    const updatedUser = { ...user, avatar: photo };
+                    localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
+                    window.location.reload(); // Перезагружаем для обновления
+                  }
+                  setShowAvatarEditor(false);
+                }}
+                className="w-full h-full"
+              />
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowAvatarEditor(true)}
+              className="relative w-full h-full group"
+            >
+              {user.avatar.startsWith('data:') ? (
+                <img 
+                  src={user.avatar} 
+                  alt={user.name}
+                  className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
+                />
+              ) : (
+                <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full w-full h-full flex items-center justify-center text-3xl">
+                  {getAvatarEmoji(user.avatar)}
+                </div>
+              )}
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center">
+                <Icon name="Camera" size={20} className="text-white" />
+              </div>
+            </button>
+          )}
         </div>
         <h2 className="text-2xl font-bold text-gray-800 mb-1">Добро пожаловать, {user.name}!</h2>
         <p className="text-gray-600">Ваш личный кабинет жителя Горхона</p>
+        
+        {/* Поздравление с днем рождения */}
+        {user.birthDate && (
+          <div className="mt-4">
+            <BirthdayGreeting
+              name={user.name}
+              birthDate={user.birthDate}
+              gender={user.gender}
+            />
+          </div>
+        )}
         
         {/* Уровень активности */}
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full mt-2 ${activityLevel.bg}`}>
@@ -82,8 +162,41 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
         </div>
       </div>
 
-      {/* Основная статистика */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Табы */}
+      <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
+        <button
+          onClick={() => setActiveTab('stats')}
+          className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
+            activeTab === 'stats'
+              ? 'bg-white text-gorkhon-pink shadow-sm'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          <div className="flex items-center justify-center gap-2">
+            <Icon name="BarChart3" size={18} />
+            <span>Статистика</span>
+          </div>
+        </button>
+        <button
+          onClick={() => setActiveTab('social')}
+          className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
+            activeTab === 'social'
+              ? 'bg-white text-gorkhon-pink shadow-sm'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          <div className="flex items-center justify-center gap-2">
+            <Icon name="Users" size={18} />
+            <span>Друзья</span>
+          </div>
+        </button>
+      </div>
+
+      {/* Контент в зависимости от таба */}
+      {activeTab === 'stats' ? (
+        <>
+          {/* Основная статистика */}
+          <div className="grid grid-cols-2 gap-4">
         <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
           <Icon name="Calendar" size={24} className="text-gorkhon-pink mx-auto mb-2" />
           <div className="text-2xl font-bold text-gray-800">{daysWithUs}</div>
@@ -200,6 +313,11 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
         <Icon name="LogOut" size={18} />
         <span>Выйти из аккаунта</span>
       </button>
+        </>
+      ) : (
+        /* Социальная сеть */
+        <SocialNetwork />
+      )}
     </div>
   );
 };

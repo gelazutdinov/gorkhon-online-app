@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Анимации для поздравлений и конфетти */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-confetti {
+  animation: confetti linear infinite;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
