@@ -1,42 +1,11 @@
 import { useState, useEffect } from 'react';
 import { UserProfile } from '@/hooks/useUser';
-import Icon from '@/components/ui/icon';
-
-interface SocialUser extends UserProfile {
-  followers: string[];
-  following: string[];
-  posts: SocialPost[];
-  bio?: string;
-  isOnline?: boolean;
-  lastSeen?: string;
-}
-
-interface SocialPost {
-  id: string;
-  authorId: string;
-  content: string;
-  images?: string[];
-  timestamp: string;
-  likes: string[];
-  comments: Comment[];
-  shares: number;
-}
-
-interface Comment {
-  id: string;
-  authorId: string;
-  content: string;
-  timestamp: string;
-  likes: string[];
-}
-
-interface FriendRequest {
-  id: string;
-  fromUserId: string;
-  toUserId: string;
-  timestamp: string;
-  status: 'pending' | 'accepted' | 'rejected';
-}
+import { SocialUser, SocialPost, FriendRequest } from './types/SocialTypes';
+import PostCreator from './components/PostCreator';
+import PostItem from './components/PostItem';
+import FriendsTab from './components/FriendsTab';
+import ProfileTab from './components/ProfileTab';
+import SocialNavTabs from './components/SocialNavTabs';
 
 interface AdvancedSocialNetworkProps {
   currentUser: UserProfile;
@@ -247,358 +216,57 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
     localStorage.setItem('gorkhon_social_posts', JSON.stringify(updatedPosts));
   };
 
-  const formatTimeAgo = (timestamp: string) => {
-    const now = Date.now();
-    const postTime = new Date(timestamp).getTime();
-    const diffInMinutes = Math.floor((now - postTime) / (1000 * 60));
-
-    if (diffInMinutes < 1) return 'только что';
-    if (diffInMinutes < 60) return `${diffInMinutes} мин назад`;
-    
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours} ч назад`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} дн назад`;
-  };
-
   const getUserById = (userId: string) => socialUsers.find(u => u.id === userId);
-
-  const pendingRequests = friendRequests.filter(r => r.toUserId === currentUser.id && r.status === 'pending');
 
   return (
     <div className="max-w-4xl mx-auto">
       {/* Навигационные табы */}
-      <div className="flex gap-1 bg-gray-100 p-1 rounded-xl mb-6">
-        <button
-          onClick={() => setActiveTab('feed')}
-          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all ${
-            activeTab === 'feed'
-              ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <Icon name="Home" size={18} />
-            <span>Лента</span>
-          </div>
-        </button>
-        <button
-          onClick={() => setActiveTab('friends')}
-          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all relative ${
-            activeTab === 'friends'
-              ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <Icon name="Users" size={18} />
-            <span>Друзья</span>
-            {pendingRequests.length > 0 && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">{pendingRequests.length}</span>
-              </div>
-            )}
-          </div>
-        </button>
-        <button
-          onClick={() => setActiveTab('profile')}
-          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all ${
-            activeTab === 'profile'
-              ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <Icon name="User" size={18} />
-            <span>Профиль</span>
-          </div>
-        </button>
-      </div>
+      <SocialNavTabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        friendRequests={friendRequests}
+        currentUser={currentUser}
+      />
 
       {/* Контент в зависимости от активного таба */}
       {activeTab === 'feed' && (
         <div className="space-y-6">
           {/* Форма создания поста */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-            <div className="flex gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-lg flex-shrink-0">
-                {currentUser.avatar}
-              </div>
-              <div className="flex-1">
-                <textarea
-                  value={newPost}
-                  onChange={(e) => setNewPost(e.target.value)}
-                  placeholder="Что у вас нового?"
-                  className="w-full resize-none border-none outline-none text-gray-700 placeholder-gray-400 bg-gray-50 rounded-lg p-3 min-h-[80px]"
-                />
-                <div className="flex justify-between items-center mt-3">
-                  <div className="flex gap-3">
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
-                      <Icon name="Camera" size={16} />
-                      <span className="text-sm">Фото</span>
-                    </button>
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
-                      <Icon name="MapPin" size={16} />
-                      <span className="text-sm">Место</span>
-                    </button>
-                  </div>
-                  <button
-                    onClick={createPost}
-                    disabled={!newPost.trim()}
-                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
-                  >
-                    Опубликовать
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <PostCreator
+            currentUser={currentUser}
+            newPost={newPost}
+            onPostChange={setNewPost}
+            onCreatePost={createPost}
+          />
 
           {/* Лента постов */}
           <div className="space-y-4">
-            {posts.map(post => {
-              const author = getUserById(post.authorId);
-              if (!author) return null;
-
-              return (
-                <div key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200">
-                  {/* Заголовок поста */}
-                  <div className="p-4 border-b border-gray-100">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-lg flex-shrink-0">
-                        {author.avatar}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-gray-900">{author.name}</h3>
-                          {author.id === 'gorkhon_official' && (
-                            <>
-                              <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                                <Icon name="Check" size={12} className="text-white" />
-                              </div>
-                              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
-                                Официальный
-                              </span>
-                            </>
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-500">{formatTimeAgo(post.timestamp)}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Содержимое поста */}
-                  <div className="p-4">
-                    <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">{post.content}</p>
-                    
-                    {/* Изображения */}
-                    {post.images && post.images.length > 0 && (
-                      <div className="mt-3 rounded-lg overflow-hidden">
-                        <img 
-                          src={post.images[0]} 
-                          alt="Post attachment" 
-                          className="w-full h-64 object-cover"
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Статистика и кнопки действий */}
-                  <div className="px-4 py-2 border-t border-gray-100">
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
-                      <div className="flex items-center gap-4">
-                        {post.likes.length > 0 && (
-                          <span className="flex items-center gap-1">
-                            <Icon name="Heart" size={14} className="text-red-500" />
-                            {post.likes.length}
-                          </span>
-                        )}
-                        {post.comments.length > 0 && (
-                          <span>{post.comments.length} комментариев</span>
-                        )}
-                        {post.shares > 0 && (
-                          <span>{post.shares} репостов</span>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <button
-                        onClick={() => toggleLike(post.id)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                          post.likes.includes(currentUser.id)
-                            ? 'text-red-600 bg-red-50 hover:bg-red-100' 
-                            : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                      >
-                        <Icon name="Heart" size={16} className={post.likes.includes(currentUser.id) ? 'fill-current' : ''} />
-                        <span className="text-sm font-medium">Нравится</span>
-                      </button>
-                      
-                      <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
-                        <Icon name="MessageCircle" size={16} />
-                        <span className="text-sm font-medium">Комментировать</span>
-                      </button>
-                      
-                      <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
-                        <Icon name="Share" size={16} />
-                        <span className="text-sm font-medium">Поделиться</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {posts.map(post => (
+              <PostItem
+                key={post.id}
+                post={post}
+                author={getUserById(post.authorId)}
+                currentUser={currentUser}
+                onToggleLike={toggleLike}
+              />
+            ))}
           </div>
         </div>
       )}
 
       {activeTab === 'friends' && (
-        <div className="space-y-6">
-          {/* Заявки в друзья */}
-          {pendingRequests.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-              <h3 className="font-semibold text-gray-800 mb-4">Заявки в друзья ({pendingRequests.length})</h3>
-              <div className="space-y-3">
-                {pendingRequests.map(request => {
-                  const sender = getUserById(request.fromUserId);
-                  if (!sender) return null;
-
-                  return (
-                    <div key={request.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-lg">
-                          {sender.avatar}
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-800">{sender.name}</h4>
-                          <p className="text-sm text-gray-600">{sender.bio}</p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => respondToFriendRequest(request.id, 'accepted')}
-                          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
-                        >
-                          Принять
-                        </button>
-                        <button
-                          onClick={() => respondToFriendRequest(request.id, 'rejected')}
-                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm"
-                        >
-                          Отклонить
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Список пользователей */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-            <h3 className="font-semibold text-gray-800 mb-4">Жители Горхона</h3>
-            <div className="space-y-3">
-              {socialUsers.filter(u => u.id !== currentUser.id).map(user => {
-                const isFollowing = currentSocialUser?.following.includes(user.id);
-                const hasPendingRequest = friendRequests.some(r => 
-                  r.fromUserId === currentUser.id && r.toUserId === user.id && r.status === 'pending'
-                );
-
-                return (
-                  <div key={user.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="relative">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-lg">
-                          {user.avatar}
-                        </div>
-                        {user.isOnline && (
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-                        )}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-medium text-gray-800">{user.name}</h4>
-                          {user.id === 'gorkhon_official' && (
-                            <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                              <Icon name="Check" size={12} className="text-white" />
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-600">{user.bio}</p>
-                        <div className="text-xs text-gray-500 mt-1">
-                          {user.followers.length} подписчиков • {user.following.length} подписок
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      {isFollowing ? (
-                        <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm">
-                          Друг
-                        </button>
-                      ) : hasPendingRequest ? (
-                        <button disabled className="px-4 py-2 bg-gray-100 text-gray-500 rounded-lg text-sm cursor-not-allowed">
-                          Заявка отправлена
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => sendFriendRequest(user.id)}
-                          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
-                        >
-                          Добавить в друзья
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        <FriendsTab
+          socialUsers={socialUsers}
+          currentUser={currentUser}
+          currentSocialUser={currentSocialUser}
+          friendRequests={friendRequests}
+          onSendFriendRequest={sendFriendRequest}
+          onRespondToFriendRequest={respondToFriendRequest}
+        />
       )}
 
       {activeTab === 'profile' && currentSocialUser && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="text-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-3xl mx-auto mb-4">
-              {currentSocialUser.avatar}
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800">{currentSocialUser.name}</h2>
-            <p className="text-gray-600">{currentSocialUser.bio}</p>
-            
-            <div className="flex justify-center gap-8 mt-4">
-              <div className="text-center">
-                <div className="text-xl font-bold text-gray-800">{currentSocialUser.posts.length}</div>
-                <div className="text-sm text-gray-600">публикаций</div>
-              </div>
-              <div className="text-center">
-                <div className="text-xl font-bold text-gray-800">{currentSocialUser.followers.length}</div>
-                <div className="text-sm text-gray-600">подписчиков</div>
-              </div>
-              <div className="text-center">
-                <div className="text-xl font-bold text-gray-800">{currentSocialUser.following.length}</div>
-                <div className="text-sm text-gray-600">подписок</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <Icon name="Calendar" size={24} className="text-blue-500 mx-auto mb-2" />
-              <div className="text-sm text-gray-600">Присоединился</div>
-              <div className="font-medium text-gray-800">
-                {new Date(currentSocialUser.registeredAt).toLocaleDateString('ru-RU')}
-              </div>
-            </div>
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <Icon name="MapPin" size={24} className="text-green-500 mx-auto mb-2" />
-              <div className="text-sm text-gray-600">Местоположение</div>
-              <div className="font-medium text-gray-800">п. Горхон</div>
-            </div>
-          </div>
-        </div>
+        <ProfileTab currentSocialUser={currentSocialUser} />
       )}
     </div>
   );
