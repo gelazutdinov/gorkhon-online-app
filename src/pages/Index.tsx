@@ -66,20 +66,6 @@ const Index = () => {
         {activeSection === 'profile' && <PersonalAccount />}
         {activeSection === 'news' && <News />}
         {activeSection === 'support' && <Support />}
-        {activeSection === 'search' && (
-          <div className="text-center py-12">
-            <Icon name="Search" size={48} className="text-gray-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Поиск</h2>
-            <p className="text-gray-600">Функция поиска в разработке</p>
-          </div>
-        )}
-        {activeSection === 'menu' && (
-          <div className="text-center py-12">
-            <Icon name="Menu" size={48} className="text-gray-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Меню</h2>
-            <p className="text-gray-600">Дополнительные функции в разработке</p>
-          </div>
-        )}
       </main>
 
       <PhotoCarousel 
