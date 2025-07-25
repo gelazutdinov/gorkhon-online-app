@@ -234,12 +234,18 @@ export const useUser = () => {
     return `${hours} ч ${remainingMinutes} мин`;
   };
 
+  const updateUser = (updatedUser: UserProfile) => {
+    setUser(updatedUser);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
+  };
+
   return {
     user,
     isLoading,
     register,
     logout,
     updateProfile,
+    updateUser,
     trackSectionVisit,
     trackFeatureUse,
     getDaysWithUs,

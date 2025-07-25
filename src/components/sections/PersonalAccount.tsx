@@ -5,7 +5,7 @@ import RegistrationForm from '@/components/RegistrationForm';
 import UserDashboard from '@/components/UserDashboard';
 
 const PersonalAccount = () => {
-  const { user, isLoading, register, logout, getDaysWithUs, getFormattedTimeSpent } = useUser();
+  const { user, isLoading, register, logout, updateUser, getDaysWithUs, getFormattedTimeSpent } = useUser();
 
   if (isLoading) {
     return (
@@ -24,6 +24,7 @@ const PersonalAccount = () => {
           daysWithUs={getDaysWithUs()}
           formattedTimeSpent={getFormattedTimeSpent()}
           onLogout={logout}
+          onUserUpdate={updateUser}
         />
         
         {/* Правовая информация */}

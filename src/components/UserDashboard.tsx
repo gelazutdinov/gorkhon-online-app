@@ -13,9 +13,10 @@ interface UserDashboardProps {
   daysWithUs: number;
   formattedTimeSpent: string;
   onLogout: () => void;
+  onUserUpdate?: (user: UserProfile) => void;
 }
 
-const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserDashboardProps) => {
+const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserUpdate }: UserDashboardProps) => {
   const [showAvatarEditor, setShowAvatarEditor] = useState(false);
   const [activeTab, setActiveTab] = useState<'stats' | 'social'>('stats');
   const [showInterestsEditor, setShowInterestsEditor] = useState(false);
@@ -102,7 +103,9 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
     const updatedUser = { ...user, interests };
     localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
     setShowInterestsEditor(false);
-    window.location.reload(); // Перезагружаем для обновления
+    if (onUserUpdate) {
+      onUserUpdate(updatedUser);
+    }
   };
 
   const activityLevel = getActivityLevel();
