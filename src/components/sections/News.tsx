@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import NotificationPanel from '@/components/NotificationPanel';
 import { useNewsNotifications } from '@/hooks/useNewsNotifications';
+import { useUser } from '@/hooks/useUser';
 
 declare global {
   interface Window {
@@ -12,6 +13,7 @@ declare global {
 const News = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { unreadCount } = useNewsNotifications();
+  const { trackFeatureUse } = useUser();
   useEffect(() => {
     // Загружаем VK API если еще не загружен
     if (!window.VK) {
@@ -51,7 +53,10 @@ const News = () => {
         
         {/* Кнопка уведомлений */}
         <button
-          onClick={() => setShowNotifications(true)}
+          onClick={() => {
+            setShowNotifications(true);
+            trackFeatureUse('notifications');
+          }}
           className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gorkhon-pink text-white rounded-full hover:bg-gorkhon-pink/90 transition-all duration-200 relative"
         >
           <Icon name="Bell" size={16} />

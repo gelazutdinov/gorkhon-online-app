@@ -13,6 +13,7 @@ import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
 import BottomNavigation from "@/components/BottomNavigation";
 import Icon from "@/components/ui/icon";
+import { useUser } from "@/hooks/useUser";
 
 interface Photo {
   url: string;
@@ -23,6 +24,7 @@ const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
   const [activeSection, setActiveSection] = useState('home');
+  const { trackSectionVisit } = useUser();
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
     console.log('openPhotoCarousel called:', photos, startIndex);
@@ -46,6 +48,12 @@ const Index = () => {
       setSelectedImageIndex(selectedImageIndex === 0 ? selectedPvzPhotos.length - 1 : selectedImageIndex - 1);
     }
   }, [selectedImageIndex, selectedPvzPhotos.length]);
+
+  // Отслеживание переходов между разделами
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    trackSectionVisit(section as any);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-white to-green-50/20 relative overflow-hidden">
@@ -76,7 +84,7 @@ const Index = () => {
         onPrev={prevPhoto}
       />
 
-      <BottomNavigation activeSection={activeSection} onSectionChange={setActiveSection} />
+      <BottomNavigation activeSection={activeSection} onSectionChange={handleSectionChange} />
     </div>
   );
 };

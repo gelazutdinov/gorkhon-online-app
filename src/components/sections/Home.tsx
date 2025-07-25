@@ -4,6 +4,7 @@ import DonationSection from "@/components/DonationSection";
 import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
+import TrackableComponent from "@/components/TrackableComponent";
 
 interface Photo {
   url: string;
@@ -17,11 +18,26 @@ interface HomeProps {
 const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   return (
     <>
-      <ImportantNumbers data-tutorial="search-input" />
-      <Schedule data-tutorial="categories" />
-      <DonationSection />
-      <WorkSchedule />
-      <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />
+      <TrackableComponent feature="importantNumbers">
+        <ImportantNumbers data-tutorial="search-input" />
+      </TrackableComponent>
+      
+      <TrackableComponent feature="schedule">
+        <Schedule data-tutorial="categories" />
+      </TrackableComponent>
+      
+      <TrackableComponent feature="donation">
+        <DonationSection />
+      </TrackableComponent>
+      
+      <TrackableComponent feature="workSchedule">
+        <WorkSchedule />
+      </TrackableComponent>
+      
+      <TrackableComponent feature="pvz">
+        <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />
+      </TrackableComponent>
+      
       <ActionButtons />
     </>
   );
