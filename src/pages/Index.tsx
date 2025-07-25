@@ -12,7 +12,6 @@ import News from "@/components/sections/News";
 import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
 import BottomNavigation from "@/components/BottomNavigation";
-import Footer from "@/components/Footer";
 import Icon from "@/components/ui/icon";
 import { useUser } from "@/hooks/useUser";
 
@@ -86,9 +85,6 @@ const Index = () => {
       />
 
       <BottomNavigation activeSection={activeSection} onSectionChange={handleSectionChange} />
-      
-      {/* Футер только на главной странице */}
-      {activeSection === 'home' && <Footer />}
     </div>
   );
 };
