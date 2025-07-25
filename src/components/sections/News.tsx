@@ -48,11 +48,6 @@ const News = () => {
 
       {/* VK Widget Container */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-        <div className="flex items-center gap-3 mb-4">
-          <Icon name="ExternalLink" size={20} className="text-blue-500" />
-          <h3 className="text-lg font-semibold text-gray-800">Официальная группа ВКонтакте</h3>
-        </div>
-        
         <div className="w-full overflow-hidden rounded-xl bg-gray-50 min-h-[400px]">
           <div id="vk_groups" className="w-full"></div>
         </div>
