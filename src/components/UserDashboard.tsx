@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
-import SocialNetwork from '@/components/SocialNetwork';
-import PhotoUpload from '@/components/PhotoUpload';
-import AvatarSelector from '@/components/AvatarSelector';
-import BirthdayGreeting from '@/components/BirthdayGreeting';
-import InterestsEditor from '@/components/InterestsEditor';
-import BirthdayWishesAI from '@/components/BirthdayWishesAI';
+import VkStyleSocialNetwork from '@/components/social/VkStyleSocialNetwork';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -114,56 +109,18 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
     <div className="space-y-6">
       {/* Заголовок профиля */}
       <div className="text-center">
-        <div className="relative w-20 h-20 mx-auto mb-4">
-          {showAvatarEditor ? (
-            <div className="absolute inset-0">
-              <PhotoUpload
-                currentPhoto={user.avatar.startsWith('data:') ? user.avatar : undefined}
-                onPhotoChange={(photo) => {
-                  if (photo) {
-                    // Обновляем аватар пользователя
-                    const updatedUser = { ...user, avatar: photo };
-                    localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
-                    window.location.reload(); // Перезагружаем для обновления
-                  }
-                  setShowAvatarEditor(false);
-                }}
-                className="w-full h-full"
-              />
-            </div>
-          ) : (
-            <button
-              onClick={() => setShowAvatarEditor(true)}
-              className="relative w-full h-full group"
-            >
-              {user.avatar.startsWith('data:') ? (
-                <img 
-                  src={user.avatar} 
-                  alt={user.name}
-                  className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
-                />
-              ) : (
-                <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full w-full h-full flex items-center justify-center text-3xl">
-                  {getAvatarEmoji(user.avatar)}
-                </div>
-              )}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center">
-                <Icon name="Camera" size={20} className="text-white" />
-              </div>
-            </button>
-          )}
+        <div className="w-20 h-20 mx-auto mb-4">
+          <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full w-full h-full flex items-center justify-center text-3xl">
+            {getAvatarEmoji(user.avatar)}
+          </div>
         </div>
         <h2 className="text-2xl font-bold text-gray-800 mb-1">Добро пожаловать, {user.name}!</h2>
         <p className="text-gray-600">Ваш личный кабинет жителя Горхона</p>
         
         {/* Поздравление с днем рождения */}
         {user.birthDate && (
-          <div className="mt-4">
-            <BirthdayGreeting
-              name={user.name}
-              birthDate={user.birthDate}
-              gender={user.gender}
-            />
+          <div className="mt-4 text-sm text-gray-600">
+            День рождения: {new Date(user.birthDate).toLocaleDateString('ru-RU')}
           </div>
         )}
         
@@ -301,8 +258,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         </div>
       </div>
 
-      {/* Поздравления AI */}
-      <BirthdayWishesAI user={user} />
+      {/* Поздравления AI - в разработке */}
 
       {/* Информация профиля */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
@@ -362,11 +318,16 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         {showInterestsEditor && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
-              <InterestsEditor
-                interests={user.interests || []}
-                onSave={handleSaveInterests}
-                onCancel={() => setShowInterestsEditor(false)}
-              />
+              <div className="text-center py-8">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Редактор интересов</h3>
+                <p className="text-gray-600 mb-4">Функция в разработке</p>
+                <button
+                  onClick={() => setShowInterestsEditor(false)}
+                  className="px-4 py-2 bg-gorkhon-pink text-white rounded-lg"
+                >
+                  Закрыть
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -383,7 +344,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         </>
       ) : (
         /* Социальная сеть */
-        <SocialNetwork currentUser={user} />
+        <VkStyleSocialNetwork currentUser={user} />
       )}
     </div>
   );

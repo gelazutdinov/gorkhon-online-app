@@ -11,28 +11,7 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
   const [showFullSupport, setShowFullSupport] = useState(false);
   const [showLinaChat, setShowLinaChat] = useState(false);
 
-  const quickQuestions = [
-    {
-      id: 'schedule',
-      question: 'Расписание транспорта',
-      answer: 'Автобус ходит по маршруту:\n• 8:00 - из Горхона в Сретенск\n• 15:30 - из Сретенска в Горхон\n\nВ выходные дни рейсы могут отменяться.'
-    },
-    {
-      id: 'contacts',
-      question: 'Важные номера',
-      answer: 'Администрация: +7 (30132) 2-XX-XX\nМедпункт: +7 (30132) 2-XX-XX\nПочта: +7 (30132) 2-XX-XX\nЭкстренные службы: 112'
-    },
-    {
-      id: 'hours',
-      question: 'Режим работы',
-      answer: 'Администрация: ПН-ПТ 8:00-17:00\nМедпункт: ПН-ПТ 9:00-17:00, СБ 10:00-14:00\nПочта: ПН-ПТ 9:00-18:00, СБ 9:00-14:00'
-    }
-  ];
-
-  const handleQuickQuestion = (answer: string) => {
-    // Показываем быстрый ответ
-    alert(answer); // В реальном приложении это будет модальное окно
-  };
+  // Убираем популярные вопросы по запросу
 
   return (
     <div className="relative">
@@ -62,22 +41,7 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
               <p className="text-gray-600">Лина поможет с любыми вопросами 24/7</p>
             </div>
 
-            {/* Быстрые вопросы */}
-            <div className="space-y-3">
-              <h3 className="font-semibold text-gray-800 mb-3">Популярные вопросы:</h3>
-              {quickQuestions.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => handleQuickQuestion(item.answer)}
-                  className="w-full text-left p-4 bg-white rounded-xl border border-gray-200 hover:border-gorkhon-pink transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-800">{item.question}</span>
-                    <Icon name="ChevronRight" size={16} className="text-gray-400" />
-                  </div>
-                </button>
-              ))}
-            </div>
+            {/* Быстрые вопросы убраны по запросу */}
 
             {/* Кнопки действий */}
             <div className="space-y-3">
@@ -113,10 +77,10 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
             </div>
           </div>
 
-          {/* Плавающий чат с Линой */}
+          {/* Плавающий чат с Линой - поднят выше */}
           {showLinaChat && (
-            <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-end p-4">
-              <div className="bg-white rounded-2xl w-80 h-96 flex flex-col shadow-2xl animate-in slide-in-from-bottom-5">
+            <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-end p-4 pb-24">
+              <div className="bg-white rounded-2xl w-80 h-96 flex flex-col shadow-2xl animate-in slide-in-from-right-5">
                 {/* Заголовок чата */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-t-2xl">
                   <div className="flex items-center gap-3">
@@ -171,11 +135,11 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
         </>
       )}
 
-      {/* Плавающая кнопка Лина (показывается только если чат не открыт) */}
+      {/* Плавающая кнопка Лина - поднята выше меню */}
       {!showLinaChat && !showFullSupport && (
         <button
           onClick={() => setShowLinaChat(true)}
-          className="fixed bottom-20 right-4 w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center animate-pulse z-40"
+          className="fixed bottom-32 right-4 w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center animate-pulse z-40"
         >
           <span className="text-xl">🤖</span>
         </button>
