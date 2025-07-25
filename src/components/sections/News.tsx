@@ -27,7 +27,7 @@ const News = () => {
       window.VK.Widgets.Group("vk_groups", {
         mode: 4, 
         wide: 1, 
-        width: "100%", 
+        width: 100, 
         height: 800, 
         color1: "FFFFFF", 
         color2: "000000", 
