@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
 const TermsOfService = () => {
@@ -10,6 +11,17 @@ const TermsOfService = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      {/* Кнопка возврата на платформу */}
+      <div className="mb-6">
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gorkhon-blue text-white rounded-lg hover:bg-gorkhon-blue/90 transition-colors"
+        >
+          <Icon name="ArrowLeft" size={16} />
+          <span>Вернуться на платформу</span>
+        </Link>
+      </div>
+
       {/* Заголовок */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-3 mb-4">
