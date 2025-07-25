@@ -5,6 +5,11 @@ export interface UserProfile {
   name: string;
   email: string;
   phone: string;
+  gender: 'male' | 'female';
+  birthDate: string;
+  avatar: string;
+  interests?: string[];
+  status?: string;
   registeredAt: number;
   lastActiveAt: number;
   stats: {
@@ -117,7 +122,7 @@ export const useUser = () => {
     localStorage.removeItem(SESSION_KEY);
   };
 
-  const updateProfile = (updates: Partial<Pick<UserProfile, 'name' | 'email' | 'phone'>>) => {
+  const updateProfile = (updates: Partial<Pick<UserProfile, 'name' | 'email' | 'phone' | 'avatar' | 'gender' | 'birthDate'>>) => {
     if (!user) return;
 
     const updatedUser = { ...user, ...updates };

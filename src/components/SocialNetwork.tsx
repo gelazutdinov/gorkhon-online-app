@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import FriendsSearch from '@/components/FriendsSearch';
 import FriendsList from '@/components/FriendsList';
-import BirthdayGreeting from '@/components/BirthdayGreeting';
-import { useSocialNetwork } from '@/hooks/useSocialNetwork';
+import UserProfileModal from '@/components/UserProfileModal';
+import { useSocialNetwork, ResidentProfile } from '@/hooks/useSocialNetwork';
 import { useUser } from '@/hooks/useUser';
 
 const SocialNetwork = () => {
   const [activeTab, setActiveTab] = useState<'search' | 'friends'>('friends');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<ResidentProfile | null>(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const { user } = useUser();
   const {
     currentUser,
@@ -63,9 +65,9 @@ const SocialNetwork = () => {
     removeFriend(friendId);
   };
 
-  const handleViewProfile = (user: any) => {
-    // Можно добавить модальное окно с профилем пользователя
-    console.log('Просмотр профиля:', user);
+  const handleViewProfile = (user: ResidentProfile) => {
+    setSelectedUser(user);
+    setShowProfileModal(true);
   };
 
   if (!user || !currentUser) {
@@ -82,15 +84,6 @@ const SocialNetwork = () => {
 
   return (
     <div className="space-y-6">
-      {/* Поздравление с днем рождения */}
-      {user.birthDate && (
-        <BirthdayGreeting
-          name={user.name}
-          birthDate={user.birthDate}
-          gender={user.gender}
-        />
-      )}
-
       {/* Заголовок с счетчиками */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
         <div className="flex items-center justify-between mb-6">
@@ -185,6 +178,28 @@ const SocialNetwork = () => {
           </div>
         </div>
       </div>
+
+      {/* Модальное окно профиля */}
+      {selectedUser && (
+        <UserProfileModal
+          user={selectedUser}
+          isOpen={showProfileModal}
+          onClose={() => {
+            setShowProfileModal(false);
+            setSelectedUser(null);
+          }}
+          onSendFriendRequest={handleSendRequest}
+          onAcceptRequest={(userId) => {
+            // Нужно найти ID заявки для acceptFriendRequest
+            const request = incomingRequests.find(req => req.fromUserId === userId);
+            if (request) {
+              handleAcceptRequest(request.id);
+            }
+          }}
+          onRemoveFriend={handleRemoveFriend}
+          friendshipStatus={getFriendshipStatus(selectedUser.id)}
+        />
+      )}
     </div>
   );
 };

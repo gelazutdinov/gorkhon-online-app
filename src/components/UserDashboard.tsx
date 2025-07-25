@@ -5,6 +5,7 @@ import SocialNetwork from '@/components/SocialNetwork';
 import PhotoUpload from '@/components/PhotoUpload';
 import AvatarSelector from '@/components/AvatarSelector';
 import BirthdayGreeting from '@/components/BirthdayGreeting';
+import InterestsEditor from '@/components/InterestsEditor';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -16,6 +17,7 @@ interface UserDashboardProps {
 const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserDashboardProps) => {
   const [showAvatarEditor, setShowAvatarEditor] = useState(false);
   const [activeTab, setActiveTab] = useState<'stats' | 'social'>('stats');
+  const [showInterestsEditor, setShowInterestsEditor] = useState(false);
   const getRegistrationDate = () => {
     return new Date(user.registeredAt).toLocaleDateString('ru-RU', {
       day: 'numeric',
@@ -92,6 +94,14 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
       girl: '👧'
     };
     return avatarMap[avatar] || '👤';
+  };
+
+  const handleSaveInterests = (interests: string[]) => {
+    // Обновляем профиль пользователя с новыми интересами
+    const updatedUser = { ...user, interests };
+    localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
+    setShowInterestsEditor(false);
+    window.location.reload(); // Перезагружаем для обновления
   };
 
   const activityLevel = getActivityLevel();
@@ -302,7 +312,56 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout }: UserD
             <Icon name="Phone" size={16} className="text-gray-400" />
             <span className="text-gray-600">{user.phone}</span>
           </div>
+          
+          {/* Интересы */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Icon name="Heart" size={16} className="text-gray-400" />
+                <span className="text-gray-600">Интересы:</span>
+              </div>
+              <button
+                onClick={() => setShowInterestsEditor(true)}
+                className="text-gorkhon-pink hover:text-gorkhon-pink/80 text-sm"
+              >
+                {user.interests && user.interests.length > 0 ? 'Изменить' : 'Добавить'}
+              </button>
+            </div>
+            
+            {user.interests && user.interests.length > 0 ? (
+              <div className="flex flex-wrap gap-1 ml-6">
+                {user.interests.slice(0, 5).map((interest, idx) => (
+                  <span 
+                    key={idx}
+                    className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full"
+                  >
+                    {interest}
+                  </span>
+                ))}
+                {user.interests.length > 5 && (
+                  <span className="text-xs text-gray-400">
+                    +{user.interests.length - 5}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400 ml-6">Не указаны</p>
+            )}
+          </div>
         </div>
+        
+        {/* Модальное окно редактора интересов */}
+        {showInterestsEditor && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
+              <InterestsEditor
+                interests={user.interests || []}
+                onSave={handleSaveInterests}
+                onCancel={() => setShowInterestsEditor(false)}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Кнопка выхода */}
