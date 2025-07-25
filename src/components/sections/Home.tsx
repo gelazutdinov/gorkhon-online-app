@@ -4,7 +4,6 @@ import DonationSection from "@/components/DonationSection";
 import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
-import DoctorAppointment from "@/components/DoctorAppointment";
 
 interface Photo {
   url: string;
@@ -23,7 +22,6 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
       <DonationSection />
       <WorkSchedule />
       <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />
-      <DoctorAppointment />
       <ActionButtons />
     </>
   );
