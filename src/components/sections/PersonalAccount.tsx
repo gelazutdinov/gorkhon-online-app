@@ -2,10 +2,19 @@ import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { useUser } from '@/hooks/useUser';
 import RegistrationForm from '@/components/RegistrationForm';
-import UserDashboard from '@/components/UserDashboard';
+import UserDashboard from '@/components/UserDashboard.simple';
 
 const PersonalAccount = () => {
   const { user, isLoading, register, logout, updateUser, getDaysWithUs, getFormattedTimeSpent } = useUser();
+
+  // Дополнительная защита от ошибок
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gorkhon-pink"></div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -17,15 +26,17 @@ const PersonalAccount = () => {
 
   // Если пользователь авторизован, показываем дашборд
   if (user) {
-    return (
-      <div className="space-y-8">
-        <UserDashboard 
-          user={user}
-          daysWithUs={getDaysWithUs()}
-          formattedTimeSpent={getFormattedTimeSpent()}
-          onLogout={logout}
-          onUserUpdate={updateUser}
-        />
+    console.log('User data:', user); // Отладочная информация
+    try {
+      return (
+        <div className="space-y-8">
+          <UserDashboard 
+            user={user}
+            daysWithUs={getDaysWithUs()}
+            formattedTimeSpent={getFormattedTimeSpent()}
+            onLogout={logout}
+            onUserUpdate={updateUser}
+          />
         
         {/* Правовая информация */}
         <div className="border-t border-gray-200 pt-6">
@@ -80,7 +91,25 @@ const PersonalAccount = () => {
           </div>
         </div>
       </div>
-    );
+      );
+    } catch (error) {
+      console.error('Error in UserDashboard:', error);
+      return (
+        <div className="text-center py-12">
+          <div className="text-red-500 mb-4">
+            <Icon name="AlertCircle" size={48} className="mx-auto mb-2" />
+            <h3 className="text-lg font-semibold">Произошла ошибка</h3>
+            <p className="text-gray-600">Попробуйте перезагрузить страницу</p>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-gorkhon-pink text-white rounded-lg hover:bg-gorkhon-pink/90"
+          >
+            Перезагрузить
+          </button>
+        </div>
+      );
+    }
   }
 
   // Если пользователь не авторизован, показываем форму регистрации + информацию о проекте
