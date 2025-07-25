@@ -16,6 +16,7 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
   const [posts, setPosts] = useState<SocialPost[]>([]);
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
   const [newPost, setNewPost] = useState('');
+  const [postImages, setPostImages] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<'feed' | 'friends' | 'profile'>('feed');
   const [currentSocialUser, setCurrentSocialUser] = useState<SocialUser | null>(null);
 
@@ -104,6 +105,17 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
       if (savedPosts) {
         setPosts(JSON.parse(savedPosts));
       }
+
+      // Загружаем сохраненные данные профиля
+      const savedProfile = localStorage.getItem('gorkhon_current_social_user');
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        setCurrentSocialUser(profile);
+        // Обновляем пользователя в списке
+        setSocialUsers(prev => 
+          prev.map(user => user.id === currentUser.id ? profile : user)
+        );
+      }
     };
 
     initializeSocialData();
@@ -111,25 +123,34 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
 
   // Интеграция с ВК виджетом для официальных постов
   useEffect(() => {
-    // Симуляция получения постов из ВК виджета
     const fetchVkPosts = () => {
-      // В реальном приложении здесь будет интеграция с VK API
+      const currentTime = Date.now();
       const vkPosts: SocialPost[] = [
         {
           id: 'vk_post_1',
           authorId: 'gorkhon_official',
-          content: '🎄 НОВОГОДНИЕ МЕРОПРИЯТИЯ В ГОРХОНЕ\n\n📅 30 декабря, 15:00 - Детский утренник в клубе\n📅 31 декабря, 23:00 - Новогодняя елка на площади\n\nПриглашаем всех жителей! Горячий чай и сладости для детей! ☕🍪',
-          images: ['https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=500'],
-          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          likes: [currentUser.id],
+          content: '🎉 ДОБРО ПОЖАЛОВАТЬ В СОЦИАЛЬНУЮ СЕТЬ ГОРХОНА!\n\nТеперь жители поселка могут:\n• Делиться новостями и фотографиями\n• Общаться друг с другом\n• Быть в курсе всех событий\n\nПриглашаем всех присоединиться к нашему сообществу! 🏘️',
+          images: ['https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500'],
+          timestamp: new Date(currentTime - 30 * 60 * 1000).toISOString(),
+          likes: [],
           comments: [],
-          shares: 15
+          shares: 5
         },
         {
           id: 'vk_post_2',
           authorId: 'gorkhon_official',
-          content: '⚠️ ВАЖНОЕ ОБЪЯВЛЕНИЕ\n\nЗавтра, 26 декабря, с 9:00 до 15:00 планируется отключение электроэнергии на улицах:\n\n• Центральная\n• Молодежная\n• Садовая\n\nПриносим извинения за неудобства.',
-          timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+          content: '📢 РАСПИСАНИЕ РАБОТЫ СЛУЖБ НА ПРАЗДНИКИ\n\n🏪 Магазин: с 9:00 до 18:00\n🏥 Медпункт: с 8:00 до 16:00\n📮 Почта: с 10:00 до 15:00\n\nОстальные службы работают в обычном режиме.',
+          timestamp: new Date(currentTime - 2 * 60 * 60 * 1000).toISOString(),
+          likes: [],
+          comments: [],
+          shares: 12
+        },
+        {
+          id: 'vk_post_3',
+          authorId: 'gorkhon_official',
+          content: '🌟 БЛАГОДАРНОСТЬ ЖИТЕЛЯМ\n\nВыражаем искреннюю благодарность всем жителям поселка за активное участие в благоустройстве территории!\n\nВместе мы делаем наш Горхон еще красивее! 💪',
+          images: ['https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500'],
+          timestamp: new Date(currentTime - 4 * 60 * 60 * 1000).toISOString(),
           likes: [],
           comments: [],
           shares: 8
@@ -139,11 +160,20 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
       setPosts(prev => {
         const existingIds = prev.map(p => p.id);
         const newPosts = vkPosts.filter(p => !existingIds.includes(p.id));
-        return [...newPosts, ...prev];
+        const updatedPosts = [...newPosts, ...prev];
+        
+        // Сохраняем в localStorage
+        localStorage.setItem('gorkhon_social_posts', JSON.stringify(updatedPosts));
+        
+        return updatedPosts;
       });
     };
 
-    fetchVkPosts();
+    // Загружаем посты только если их еще нет
+    const savedPosts = localStorage.getItem('gorkhon_social_posts');
+    if (!savedPosts || JSON.parse(savedPosts).length === 0) {
+      fetchVkPosts();
+    }
   }, [currentUser.id]);
 
   const sendFriendRequest = (toUserId: string) => {
@@ -187,6 +217,7 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
       id: `post_${Date.now()}`,
       authorId: currentUser.id,
       content: newPost,
+      images: postImages.length > 0 ? postImages : undefined,
       timestamp: new Date().toISOString(),
       likes: [],
       comments: [],
@@ -197,6 +228,50 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
     setPosts(updatedPosts);
     localStorage.setItem('gorkhon_social_posts', JSON.stringify(updatedPosts));
     setNewPost('');
+    setPostImages([]);
+
+    // Обновляем счетчик постов пользователя
+    if (currentSocialUser) {
+      const updatedUser = {
+        ...currentSocialUser,
+        posts: [...currentSocialUser.posts, post.id]
+      };
+      setCurrentSocialUser(updatedUser);
+    }
+  };
+
+  const addImageToPost = (image: string) => {
+    setPostImages(prev => [...prev, image]);
+  };
+
+  const deletePost = (postId: string) => {
+    const updatedPosts = posts.filter(p => p.id !== postId);
+    setPosts(updatedPosts);
+    localStorage.setItem('gorkhon_social_posts', JSON.stringify(updatedPosts));
+
+    // Обновляем счетчик постов пользователя
+    if (currentSocialUser) {
+      const updatedUser = {
+        ...currentSocialUser,
+        posts: currentSocialUser.posts.filter(id => id !== postId)
+      };
+      setCurrentSocialUser(updatedUser);
+    }
+  };
+
+  const updateProfile = (updates: Partial<SocialUser>) => {
+    if (!currentSocialUser) return;
+
+    const updatedUser = { ...currentSocialUser, ...updates };
+    setCurrentSocialUser(updatedUser);
+    
+    // Обновляем в списке пользователей
+    setSocialUsers(prev => 
+      prev.map(user => user.id === currentUser.id ? updatedUser : user)
+    );
+
+    // Сохраняем в localStorage
+    localStorage.setItem('gorkhon_current_social_user', JSON.stringify(updatedUser));
   };
 
   const toggleLike = (postId: string) => {
@@ -237,6 +312,7 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
             newPost={newPost}
             onPostChange={setNewPost}
             onCreatePost={createPost}
+            onAddImage={addImageToPost}
           />
 
           {/* Лента постов */}
@@ -248,6 +324,7 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
                 author={getUserById(post.authorId)}
                 currentUser={currentUser}
                 onToggleLike={toggleLike}
+                onDeletePost={deletePost}
               />
             ))}
           </div>
@@ -266,7 +343,10 @@ const AdvancedSocialNetwork = ({ currentUser }: AdvancedSocialNetworkProps) => {
       )}
 
       {activeTab === 'profile' && currentSocialUser && (
-        <ProfileTab currentSocialUser={currentSocialUser} />
+        <ProfileTab 
+          currentSocialUser={currentSocialUser} 
+          onUpdateProfile={updateProfile}
+        />
       )}
     </div>
   );

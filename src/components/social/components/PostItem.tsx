@@ -7,10 +7,13 @@ interface PostItemProps {
   author: SocialUser | undefined;
   currentUser: UserProfile;
   onToggleLike: (postId: string) => void;
+  onDeletePost?: (postId: string) => void;
 }
 
-const PostItem = ({ post, author, currentUser, onToggleLike }: PostItemProps) => {
+const PostItem = ({ post, author, currentUser, onToggleLike, onDeletePost }: PostItemProps) => {
   if (!author) return null;
+
+  const canDelete = post.authorId === currentUser.id;
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -21,20 +24,35 @@ const PostItem = ({ post, author, currentUser, onToggleLike }: PostItemProps) =>
             {author.avatar}
           </div>
           <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-gray-900">{author.name}</h3>
-              {author.id === 'gorkhon_official' && (
-                <>
-                  <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Icon name="Check" size={12} className="text-white" />
-                  </div>
-                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
-                    Официальный
-                  </span>
-                </>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-gray-900">{author.name}</h3>
+                  {author.id === 'gorkhon_official' && (
+                    <>
+                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                        <Icon name="Check" size={12} className="text-white" />
+                      </div>
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+                        Официальный
+                      </span>
+                    </>
+                  )}
+                </div>
+                <p className="text-sm text-gray-500">{formatTimeAgo(post.timestamp)}</p>
+              </div>
+              
+              {/* Кнопка удаления для автора поста */}
+              {canDelete && onDeletePost && (
+                <button
+                  onClick={() => onDeletePost(post.id)}
+                  className="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
+                  title="Удалить пост"
+                >
+                  <Icon name="Trash2" size={16} />
+                </button>
               )}
             </div>
-            <p className="text-sm text-gray-500">{formatTimeAgo(post.timestamp)}</p>
           </div>
         </div>
       </div>
