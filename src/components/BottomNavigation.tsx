@@ -19,14 +19,14 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       badge: '1'
     },
     {
-      id: 'profile',
-      label: 'Личный кабинет',
-      icon: 'User'
-    },
-    {
       id: 'support',
       label: 'Поддержка',
       icon: 'Users'
+    },
+    {
+      id: 'profile',
+      label: 'Личный кабинет',
+      icon: 'User'
     }
   ];
 
