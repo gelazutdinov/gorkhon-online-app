@@ -7,6 +7,10 @@ import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import PhotoCarousel from "@/components/PhotoCarousel";
+import PersonalAccount from "@/components/sections/PersonalAccount";
+import News from "@/components/sections/News";
+import Support from "@/components/sections/Support";
+import Home from "@/components/sections/Home";
 
 interface Photo {
   url: string;
@@ -16,6 +20,7 @@ interface Photo {
 const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
+  const [activeSection, setActiveSection] = useState('home');
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
     console.log('openPhotoCarousel called:', photos, startIndex);
@@ -50,15 +55,15 @@ const Index = () => {
         <div className="absolute bottom-20 right-12 w-20 h-20 bg-gorkhon-orange/5 rounded-full blur-lg"></div>
       </div>
       
-      <Header />
+      <Header activeSection={activeSection} onSectionChange={setActiveSection} />
 
       <main className="max-w-md mx-auto px-4 py-6 space-y-6 relative z-10">
-        <ImportantNumbers data-tutorial="search-input" />
-        <Schedule data-tutorial="categories" />
-        <DonationSection />
-        <WorkSchedule />
-        <PvzSection onOpenPhotoCarousel={openPhotoCarousel} />
-        <ActionButtons />
+        {activeSection === 'home' && (
+          <Home onOpenPhotoCarousel={openPhotoCarousel} />
+        )}
+        {activeSection === 'profile' && <PersonalAccount />}
+        {activeSection === 'news' && <News />}
+        {activeSection === 'support' && <Support />}
       </main>
 
       <PhotoCarousel 
