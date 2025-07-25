@@ -46,7 +46,43 @@ export const useUser = () => {
     if (savedProfile) {
       try {
         const profile = JSON.parse(savedProfile);
-        setUser(profile);
+        
+        // Миграция старого профиля для совместимости
+        const migratedProfile: UserProfile = {
+          id: profile.id || `user_${Date.now()}`,
+          name: profile.name || '',
+          email: profile.email || '',
+          phone: profile.phone || '',
+          gender: profile.gender || 'male',
+          birthDate: profile.birthDate || '',
+          avatar: profile.avatar || 'default_male',
+          interests: profile.interests || [],
+          status: profile.status || '',
+          registeredAt: profile.registeredAt || Date.now(),
+          lastActiveAt: profile.lastActiveAt || Date.now(),
+          stats: {
+            totalSessions: profile.stats?.totalSessions || 1,
+            totalTimeSpent: profile.stats?.totalTimeSpent || 0,
+            sectionsVisited: {
+              home: profile.stats?.sectionsVisited?.home || 0,
+              news: profile.stats?.sectionsVisited?.news || 0,
+              support: profile.stats?.sectionsVisited?.support || 0,
+              profile: profile.stats?.sectionsVisited?.profile || 1
+            },
+            featuresUsed: {
+              importantNumbers: profile.stats?.featuresUsed?.importantNumbers || 0,
+              schedule: profile.stats?.featuresUsed?.schedule || 0,
+              donation: profile.stats?.featuresUsed?.donation || 0,
+              workSchedule: profile.stats?.featuresUsed?.workSchedule || 0,
+              pvz: profile.stats?.featuresUsed?.pvz || 0,
+              notifications: profile.stats?.featuresUsed?.notifications || 0
+            },
+            daysActive: profile.stats?.daysActive || 1
+          }
+        };
+        
+        setUser(migratedProfile);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migratedProfile));
         
         // Обновляем последнюю активность и начинаем новую сессию
         updateLastActive(profile);

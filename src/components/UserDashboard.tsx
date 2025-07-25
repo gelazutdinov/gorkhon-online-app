@@ -29,7 +29,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
   };
 
   const getMostUsedFeature = () => {
-    const features = user.stats.featuresUsed;
+    const features = user.stats?.featuresUsed || {};
     const entries = Object.entries(features);
     if (entries.length === 0) return 'Пока нет данных';
     
@@ -48,7 +48,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
   };
 
   const getMostVisitedSection = () => {
-    const sections = user.stats.sectionsVisited;
+    const sections = user.stats?.sectionsVisited || {};
     const entries = Object.entries(sections);
     if (entries.length === 0) return 'Пока нет данных';
     
@@ -65,7 +65,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
   };
 
   const getActivityLevel = () => {
-    const totalActions = Object.values(user.stats.featuresUsed).reduce((sum, count) => sum + count, 0);
+    const totalActions = Object.values(user.stats?.featuresUsed || {}).reduce((sum, count) => sum + count, 0);
     if (totalActions < 10) return { level: 'Новичок', color: 'text-gray-600', bg: 'bg-gray-100' };
     if (totalActions < 50) return { level: 'Активный пользователь', color: 'text-blue-600', bg: 'bg-blue-100' };
     if (totalActions < 100) return { level: 'Опытный житель', color: 'text-green-600', bg: 'bg-green-100' };
@@ -225,13 +225,13 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         
         <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
           <Icon name="BarChart3" size={24} className="text-blue-500 mx-auto mb-2" />
-          <div className="text-2xl font-bold text-gray-800">{user.stats.totalSessions}</div>
+          <div className="text-2xl font-bold text-gray-800">{user.stats?.totalSessions || 0}</div>
           <div className="text-sm text-gray-600">сессий</div>
         </div>
         
         <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
           <Icon name="Target" size={24} className="text-orange-500 mx-auto mb-2" />
-          <div className="text-2xl font-bold text-gray-800">{user.stats.daysActive}</div>
+          <div className="text-2xl font-bold text-gray-800">{user.stats?.daysActive || 0}</div>
           <div className="text-sm text-gray-600">активных дней</div>
         </div>
       </div>
@@ -269,7 +269,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         </h3>
         
         <div className="space-y-3">
-          {Object.entries(user.stats.featuresUsed).map(([feature, count]) => {
+          {Object.entries(user.stats?.featuresUsed || {}).map(([feature, count]) => {
             const featureNames: Record<string, string> = {
               importantNumbers: 'Важные номера',
               schedule: 'Расписание транспорта',
@@ -279,7 +279,8 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
               notifications: 'Уведомления'
             };
             
-            const maxCount = Math.max(...Object.values(user.stats.featuresUsed));
+            const allCounts = Object.values(user.stats?.featuresUsed || {});
+            const maxCount = allCounts.length > 0 ? Math.max(...allCounts) : 0;
             const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
             
             return (
