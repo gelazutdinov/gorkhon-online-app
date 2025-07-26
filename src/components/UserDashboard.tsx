@@ -156,19 +156,25 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
 
       {/* Модальное окно настроек */}
       {showProfileSettings && (
-        <div className="z-[60]">
-          <ProfileSettings
-            user={user}
-            onUserUpdate={onUserUpdate}
-            onClose={() => setShowProfileSettings(false)}
-          />
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          {/* Жидкое стекло iOS фон */}
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+          <div className="relative">
+            <ProfileSettings
+              user={user}
+              onUserUpdate={onUserUpdate}
+              onClose={() => setShowProfileSettings(false)}
+            />
+          </div>
         </div>
       )}
 
       {/* Модальное окно статистики */}
       {showStatistics && (
-        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          {/* Жидкое стекло iOS фон */}
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+          <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-white/20 shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-800">Статистика активности</h2>
               <button
@@ -182,25 +188,25 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
             <div className="p-6 space-y-6">
               {/* Основная статистика */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30 text-center">
                   <Icon name="Calendar" size={24} className="text-gorkhon-pink mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-800">{daysWithUs}</div>
                   <div className="text-sm text-gray-600">дней с нами</div>
                 </div>
                 
-                <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30 text-center">
                   <Icon name="Clock" size={24} className="text-gorkhon-green mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-800">{formattedTimeSpent}</div>
                   <div className="text-sm text-gray-600">времени в сервисе</div>
                 </div>
                 
-                <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30 text-center">
                   <Icon name="BarChart3" size={24} className="text-blue-500 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-800">{user.stats?.totalSessions || 0}</div>
                   <div className="text-sm text-gray-600">сессий</div>
                 </div>
                 
-                <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30 text-center">
                   <Icon name="Target" size={24} className="text-orange-500 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-800">{user.stats?.daysActive || 0}</div>
                   <div className="text-sm text-gray-600">активных дней</div>

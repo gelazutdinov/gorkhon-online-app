@@ -64,25 +64,31 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   const handleSave = () => {
     const finalAvatar = customAvatar || selectedAvatar;
     
-    const updatedUser: UserProfile = {
-      ...user,
-      name,
-      email,
-      phone,
-      birthDate: birthDate || '',
-      avatar: finalAvatar,
-    };
-
     try {
-      console.log('Saving user profile:', updatedUser);
-      // Сохраняем в localStorage
-      localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
+      console.log('Saving profile with avatar:', finalAvatar ? 'Custom image' : 'Default avatar');
+      
+      const updates = {
+        name,
+        email,
+        phone,
+        birthDate: birthDate || '',
+        avatar: finalAvatar,
+      };
+      
+      console.log('Profile updates:', updates);
       
       if (onUserUpdate) {
+        const updatedUser: UserProfile = {
+          ...user,
+          ...updates
+        };
         onUserUpdate(updatedUser);
+        
+        // Дополнительно сохраняем в localStorage для надежности
+        localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
+        console.log('Profile saved to localStorage');
       }
       
-      console.log('Profile saved successfully');
       onClose();
     } catch (error) {
       console.error('Ошибка сохранения профиля:', error);
@@ -123,8 +129,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+    <div className="bg-white/90 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl border border-white/20">
         {/* Заголовок */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">Настройки профиля</h2>
@@ -169,10 +174,10 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                       setSelectedAvatar(option.id);
                       setCustomAvatar('');
                     }}
-                    className={`p-3 rounded-lg border-2 transition-all hover:scale-105 ${
+                    className={`p-3 rounded-lg border-2 transition-all hover:scale-105 backdrop-blur-sm ${
                       selectedAvatar === option.id && selectedAvatar !== 'custom'
                         ? 'border-gorkhon-pink bg-gorkhon-pink/10'
-                        : 'border-gray-200 hover:border-gray-300'
+                        : 'border-white/30 bg-white/50 hover:border-white/50 hover:bg-white/70'
                     }`}
                   >
                     <span className="text-2xl">{option.emoji}</span>
