@@ -50,27 +50,35 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   };
 
   const handleSave = () => {
+    const finalAvatar = selectedAvatar === 'custom' && customAvatar ? customAvatar : selectedAvatar;
+    
     const updatedUser: UserProfile = {
       ...user,
       name,
       email,
       phone,
       birthDate: birthDate || undefined,
-      avatar: selectedAvatar === 'custom' ? customAvatar : selectedAvatar,
+      avatar: finalAvatar,
     };
 
-    // Сохраняем в localStorage
-    localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
-    
-    if (onUserUpdate) {
-      onUserUpdate(updatedUser);
+    try {
+      // Сохраняем в localStorage
+      localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
+      
+      if (onUserUpdate) {
+        onUserUpdate(updatedUser);
+      }
+      
+      onClose();
+    } catch (error) {
+      console.error('Ошибка сохранения профиля:', error);
+      alert('Произошла ошибка при сохранении. Попробуйте снова.');
     }
-    
-    onClose();
   };
 
   const getCurrentAvatarDisplay = () => {
-    if (selectedAvatar === 'custom' && customAvatar) {
+    // Проверяем сначала customAvatar, потом selectedAvatar
+    if (customAvatar) {
       return (
         <img 
           src={customAvatar} 
@@ -80,6 +88,18 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
       );
     }
     
+    // Если выбранный аватар - это base64 строка (загруженное фото)
+    if (selectedAvatar && selectedAvatar.startsWith('data:')) {
+      return (
+        <img 
+          src={selectedAvatar} 
+          alt="Аватар" 
+          className="w-full h-full object-cover rounded-full"
+        />
+      );
+    }
+    
+    // Иначе показываем эмодзи
     const avatarOption = avatarOptions.find(option => option.id === selectedAvatar);
     return (
       <span className="text-4xl">
@@ -89,7 +109,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Заголовок */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
