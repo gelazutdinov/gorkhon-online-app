@@ -719,12 +719,8 @@ const InstagramStories: React.FC = () => {
 
   // Main Stories View
   return (
-    <div className="w-full max-w-md mx-auto bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-        Instagram Stories
-      </h1>
-      
-      <div className="flex gap-4 overflow-x-auto pb-4">
+    <div className="w-full max-w-md mx-auto p-2">
+      <div className="flex gap-4 overflow-x-auto pb-2">
         {users.map(user => (
           <div key={user.id} className="flex-shrink-0 text-center">
             <div className="relative">
@@ -752,9 +748,7 @@ const InstagramStories: React.FC = () => {
               )}
             </div>
             
-            <p className="text-xs text-gray-600 mt-2 max-w-[80px] truncate">
-              {user.username}
-            </p>
+
             
             {user.hasStory && user.id !== 'current_user' && (
               <button
@@ -765,25 +759,12 @@ const InstagramStories: React.FC = () => {
               </button>
             )}
             
-            {user.hasStory && user.id === 'current_user' && (
-              <button
-                onClick={() => viewStory(user.id)}
-                className="text-xs text-blue-500 mt-1 hover:underline"
-              >
-                Посмотреть
-              </button>
-            )}
+
           </div>
         ))}
       </div>
 
-      {stories.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
-          <Icon name="Camera" size={48} className="mx-auto mb-4 text-gray-300" />
-          <p className="text-lg font-medium mb-2">Пока нет историй</p>
-          <p className="text-sm">Создайте свою первую историю!</p>
-        </div>
-      )}
+
     </div>
   );
 };
