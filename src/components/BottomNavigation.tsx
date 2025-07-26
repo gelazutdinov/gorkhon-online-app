@@ -15,11 +15,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       label: 'Главная',
       icon: 'Home'
     },
-    {
-      id: 'social',
-      label: 'Соцсеть',
-      icon: 'Users'
-    },
+
     {
       id: 'news',
       label: 'Новости',

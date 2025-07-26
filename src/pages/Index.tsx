@@ -11,7 +11,7 @@ import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
 import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
-import Social from "@/components/sections/Social";
+
 import BottomNavigation from "@/components/BottomNavigation";
 import Icon from "@/components/ui/icon";
 import { useUser } from "@/hooks/useUser";
@@ -73,7 +73,7 @@ const Index = () => {
           <Home onOpenPhotoCarousel={openPhotoCarousel} />
         )}
         {activeSection === 'profile' && <PersonalAccount />}
-        {activeSection === 'social' && <Social />}
+
         {activeSection === 'news' && <News />}
         {activeSection === 'support' && <Support />}
       </main>
