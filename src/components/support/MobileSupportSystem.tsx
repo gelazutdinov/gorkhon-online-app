@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { UserProfile } from '@/hooks/useUser';
 import Icon from '@/components/ui/icon';
 import TicketSystem from '../TicketSystem';
@@ -7,9 +7,98 @@ interface MobileSupportSystemProps {
   user: UserProfile;
 }
 
+interface Message {
+  id: string;
+  text: string;
+  isUser: boolean;
+  timestamp: Date;
+}
+
 const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
   const [showFullSupport, setShowFullSupport] = useState(false);
   const [showLinaChat, setShowLinaChat] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: 'Привет! Я Лина, ваш AI-помощник. Чем могу помочь? 😊',
+      isUser: false,
+      timestamp: new Date()
+    }
+  ]);
+  const [inputMessage, setInputMessage] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const getLinaResponse = (userMessage: string): string => {
+    const message = userMessage.toLowerCase();
+    
+    if (message.includes('привет') || message.includes('здравствуй')) {
+      return 'Привет! Рада вас видеть! Как дела в Горхоне? 😊';
+    }
+    
+    if (message.includes('помощь') || message.includes('проблема')) {
+      return 'Конечно, помогу! Расскажите подробнее о вашей проблеме, и я постараюсь найти решение 🔧';
+    }
+    
+    if (message.includes('транспорт') || message.includes('автобус') || message.includes('расписание')) {
+      return 'По вопросам транспорта: автобусы ходят по расписанию в разделе "Главная". Если есть изменения - сообщим через уведомления! 🚌';
+    }
+    
+    if (message.includes('платеж') || message.includes('оплата') || message.includes('помощь поселку')) {
+      return 'Для помощи поселку перейдите в раздел "Главная" → "Помощь поселку". Там доступны разные способы поддержки 💝';
+    }
+    
+    if (message.includes('новости') || message.includes('что нового')) {
+      return 'Все актуальные новости поселка в разделе "Новости". Там публикуются объявления администрации и важные события! 📰';
+    }
+    
+    if (message.includes('пвз') || message.includes('пункт выдачи') || message.includes('посылка')) {
+      return 'Информация о пунктах выдачи доступна в разделе "Главная" → "Пункты выдачи заказов". Там адреса и время работы 📦';
+    }
+    
+    if (message.includes('техподдержка') || message.includes('тикет') || message.includes('жалоба')) {
+      return 'Для серьезных вопросов создайте тикет через "Создать тикет". Я переведу вас на живого специалиста 🎫';
+    }
+    
+    if (message.includes('спасибо') || message.includes('благодарю')) {
+      return 'Пожалуйста! Всегда рада помочь жителям Горхона! Обращайтесь в любое время 💙';
+    }
+    
+    return 'Интересный вопрос! Если не нашла точный ответ, могу создать тикет для специалиста или попробуйте переформулировать вопрос 🤔';
+  };
+
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputMessage.trim()) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: inputMessage,
+      isUser: true,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage('');
+
+    // Имитация задержки ответа Лины
+    setTimeout(() => {
+      const linaResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: getLinaResponse(inputMessage),
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, linaResponse]);
+    }, 1000);
+  };
 
   // Убираем популярные вопросы по запросу
 
@@ -103,31 +192,49 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
                 {/* Сообщения */}
                 <div className="flex-1 p-4 overflow-y-auto">
                   <div className="space-y-3">
-                    <div className="flex gap-3">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-sm">
-                        🤖
+                    {messages.map((message) => (
+                      <div key={message.id} className={`flex gap-3 ${message.isUser ? 'justify-end' : ''}`}>
+                        {!message.isUser && (
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-sm flex-shrink-0">
+                            🤖
+                          </div>
+                        )}
+                        <div className={`rounded-2xl px-4 py-2 max-w-[80%] ${
+                          message.isUser 
+                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white ml-auto' 
+                            : 'bg-gray-100 text-gray-800'
+                        }`}>
+                          <p className="text-sm">{message.text}</p>
+                        </div>
+                        {message.isUser && (
+                          <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-sm flex-shrink-0">
+                            {user.avatar ? user.avatar.charAt(0).toUpperCase() : '👤'}
+                          </div>
+                        )}
                       </div>
-                      <div className="bg-gray-100 rounded-2xl px-4 py-2 max-w-[80%]">
-                        <p className="text-sm text-gray-800">
-                          Привет! Я Лина, ваш AI-помощник. Чем могу помочь? 😊
-                        </p>
-                      </div>
-                    </div>
+                    ))}
+                    <div ref={messagesEndRef} />
                   </div>
                 </div>
 
                 {/* Поле ввода */}
                 <div className="p-4 border-t border-gray-200">
-                  <div className="flex gap-2">
+                  <form onSubmit={handleSendMessage} className="flex gap-2">
                     <input
                       type="text"
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
                       placeholder="Напишите сообщение..."
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                     />
-                    <button className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full flex items-center justify-center hover:from-purple-600 hover:to-blue-600 transition-all">
+                    <button 
+                      type="submit"
+                      disabled={!inputMessage.trim()}
+                      className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full flex items-center justify-center hover:from-purple-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
                       <Icon name="Send" size={14} />
                     </button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
