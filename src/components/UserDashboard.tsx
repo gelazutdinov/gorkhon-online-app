@@ -182,7 +182,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           {/* Жидкое стекло iOS фон */}
           <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
-          <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-white/20 shadow-2xl">
+          <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[75vh] overflow-y-auto border border-white/20 shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-800">Статистика активности</h2>
               <button
