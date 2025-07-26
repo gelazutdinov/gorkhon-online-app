@@ -309,7 +309,6 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                   </div>
                 </div>
               )}
-            </div>
           </div>
 
           {/* Основная информация */}
