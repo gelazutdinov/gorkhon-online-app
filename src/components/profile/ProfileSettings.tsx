@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
 
@@ -26,7 +26,28 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
   const [birthDate, setBirthDate] = useState(user.birthDate || '');
+  const [isUploading, setIsUploading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Синхронизируем состояние с данными пользователя
+  useEffect(() => {
+    console.log('User data changed, updating states');
+    console.log('User avatar:', user.avatar?.startsWith?.('data:') ? 'Custom image' : user.avatar);
+    
+    setName(user.name);
+    setEmail(user.email);
+    setPhone(user.phone);
+    setBirthDate(user.birthDate || '');
+    
+    if (user.avatar && user.avatar.startsWith('data:')) {
+      setCustomAvatar(user.avatar);
+      setSelectedAvatar(user.avatar);
+    } else {
+      setCustomAvatar('');
+      setSelectedAvatar(user.avatar || 'default_male');
+    }
+  }, [user]);
 
   const avatarOptions = [
     { id: 'default_male', emoji: '👨', label: 'Мужчина' },
@@ -47,7 +68,47 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     { id: 'oldwoman', emoji: '👵', label: 'Пожилая женщина' }
   ];
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = () => {
+        // Устанавливаем максимальные размеры
+        const MAX_WIDTH = 400;
+        const MAX_HEIGHT = 400;
+        
+        let { width, height } = img;
+        
+        // Масштабируем изображение
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = (height * MAX_WIDTH) / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = (width * MAX_HEIGHT) / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Рисуем и сжимаем
+        ctx?.drawImage(img, 0, 0, width, height);
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        resolve(compressedDataUrl);
+      };
+      
+      img.onerror = () => reject(new Error('Ошибка загрузки изображения'));
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       // Проверяем размер файла (макс 5MB)
@@ -56,28 +117,29 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         return;
       }
       
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        console.log('=== IMAGE LOADED ===');
-        console.log('Image size:', result.length);
-        console.log('Image format:', result.substring(0, 30));
+      setIsUploading(true);
+      
+      try {
+        console.log('=== COMPRESSING IMAGE ===');
+        const compressedImage = await compressImage(file);
+        console.log('Original size:', file.size);
+        console.log('Compressed size:', compressedImage.length);
         
-        setCustomAvatar(result);
-        setSelectedAvatar(result);
+        setCustomAvatar(compressedImage);
+        setSelectedAvatar(compressedImage);
         
-        console.log('States updated - customAvatar and selectedAvatar set');
-        console.log('customAvatar length:', result.length);
-        console.log('selectedAvatar length:', result.length);
-      };
-      reader.onerror = () => {
+        console.log('Image states updated successfully');
+      } catch (error) {
+        console.error('Ошибка при обработке изображения:', error);
         alert('Ошибка при загрузке файла');
-      };
-      reader.readAsDataURL(file);
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
   const handleSave = () => {
+    setIsSaving(true);
     const finalAvatar = customAvatar || selectedAvatar;
     
     try {
@@ -118,20 +180,35 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         onUserUpdate(updatedUser);
         
         // Проверяем, что действительно сохранилось
-        const saved = localStorage.getItem('gorkhon_user_profile');
-        const parsedSaved = saved ? JSON.parse(saved) : null;
-        console.log('Saved to localStorage:', {
-          ...parsedSaved,
-          avatar: parsedSaved?.avatar?.startsWith?.('data:') 
-            ? `Custom image (${parsedSaved.avatar.length} chars)` 
-            : parsedSaved?.avatar
-        });
+        try {
+          const saved = localStorage.getItem('gorkhon_user_profile');
+          const parsedSaved = saved ? JSON.parse(saved) : null;
+          console.log('Verification - saved to localStorage:', {
+            ...parsedSaved,
+            avatar: parsedSaved?.avatar?.startsWith?.('data:') 
+              ? `Custom image (${parsedSaved.avatar.length} chars)` 
+              : parsedSaved?.avatar
+          });
+          
+          // Дополнительная проверка размера localStorage
+          const totalSize = JSON.stringify(updatedUser).length;
+          console.log('Total localStorage size:', totalSize, 'characters');
+          
+          if (totalSize > 5000000) { // 5MB
+            console.warn('Profile data is very large, might cause issues');
+          }
+        } catch (error) {
+          console.error('Error verifying localStorage save:', error);
+          alert('Профиль сохранен, но возможны проблемы с локальным хранилищем');
+        }
       }
       
       onClose();
     } catch (error) {
       console.error('Ошибка сохранения профиля:', error);
       alert('Произошла ошибка при сохранении. Попробуйте снова.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -198,10 +275,20 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                disabled={isUploading}
+                className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Icon name="Camera" size={18} />
-                <span>Загрузить фото</span>
+                {isUploading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Загрузка...</span>
+                  </>
+                ) : (
+                  <>
+                    <Icon name="Camera" size={18} />
+                    <span>Загрузить фото</span>
+                  </>
+                )}
               </button>
               
               {/* Сетка эмодзи аватаров */}
@@ -311,9 +398,17 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
             </button>
             <button
               onClick={handleSave}
-              className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all font-medium"
+              disabled={isSaving || isUploading}
+              className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Сохранить
+              {isSaving ? (
+                <div className="flex items-center gap-2 justify-center">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Сохранение...</span>
+                </div>
+              ) : (
+                'Сохранить'
+              )}
             </button>
           </div>
         </div>
