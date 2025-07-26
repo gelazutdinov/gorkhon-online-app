@@ -257,7 +257,6 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
             </button>
           </div>
         </div>
-      </div>
     </div>
   );
 };
