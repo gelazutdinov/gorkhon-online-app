@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
+import VerificationRequestComponent from '@/components/verification/VerificationRequest';
+import { VerificationRequest } from '@/types/verification';
 
 interface ProfileSettingsProps {
   user: UserProfile;
@@ -29,6 +31,8 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   const [aiPrompt, setAiPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showVerification, setShowVerification] = useState(false);
+  const [currentVerificationRequest, setCurrentVerificationRequest] = useState<VerificationRequest | null>(null);
 
   // Синхронизируем состояние с данными пользователя
   useEffect(() => {
@@ -47,7 +51,60 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
       setCustomAvatar('');
       setSelectedAvatar(user.avatar || 'default_male');
     }
+
+    // Загружаем текущую заявку на верификацию
+    loadCurrentVerificationRequest();
   }, [user]);
+
+  const loadCurrentVerificationRequest = () => {
+    try {
+      const stored = localStorage.getItem('gorkhon_verification_requests');
+      if (stored) {
+        const requests: VerificationRequest[] = JSON.parse(stored);
+        const userRequest = requests.find(req => req.userId === user.id && req.status === 'pending');
+        setCurrentVerificationRequest(userRequest || null);
+      }
+    } catch (error) {
+      console.error('Ошибка загрузки заявки на верификацию:', error);
+    }
+  };
+
+  const handleVerificationSubmit = (request: VerificationRequest) => {
+    try {
+      // Сохраняем или обновляем заявку
+      const stored = localStorage.getItem('gorkhon_verification_requests');
+      const requests: VerificationRequest[] = stored ? JSON.parse(stored) : [];
+      
+      const existingIndex = requests.findIndex(req => req.id === request.id);
+      if (existingIndex >= 0) {
+        requests[existingIndex] = request;
+      } else {
+        requests.push(request);
+      }
+      
+      localStorage.setItem('gorkhon_verification_requests', JSON.stringify(requests));
+      
+      // Обновляем состояние пользователя
+      if (onUserUpdate) {
+        const updatedUser = {
+          ...user,
+          verification: {
+            status: 'pending' as const,
+            requestId: request.id
+          }
+        };
+        onUserUpdate(updatedUser);
+      }
+      
+      setCurrentVerificationRequest(request);
+      setShowVerification(false);
+      
+      console.log('Заявка на верификацию отправлена:', request.id);
+    } catch (error) {
+      console.error('Ошибка отправки заявки:', error);
+      alert('Произошла ошибка при отправке заявки');
+    }
+  };
 
   const avatarOptions = [
     { id: 'default_male', emoji: '👨', label: 'Мужчина' },
@@ -311,6 +368,82 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
               )}
           </div>
 
+          {/* Верификация */}
+          <div className="text-center">
+            <h3 className="text-lg font-medium text-gray-800 mb-4">Верификация жителя Горхона</h3>
+            
+            {user.verification?.status === 'approved' && (
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200 mb-4">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Icon name="CheckCircle" size={24} className="text-green-600" />
+                  <span className="text-green-800 font-medium">Вы верифицированы!</span>
+                </div>
+                <p className="text-green-700 text-sm">
+                  Вы подтвердили, что являетесь жителем Лесозаводской (Горхон)
+                </p>
+                {user.verification.verifiedAt && (
+                  <p className="text-green-600 text-xs mt-1">
+                    Верифицирован: {new Date(user.verification.verifiedAt).toLocaleDateString('ru-RU')}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {user.verification?.status === 'pending' && (
+              <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200 mb-4">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Icon name="Clock" size={24} className="text-yellow-600" />
+                  <span className="text-yellow-800 font-medium">Заявка на рассмотрении</span>
+                </div>
+                <p className="text-yellow-700 text-sm">
+                  Ваша заявка на верификацию обрабатывается администрацией
+                </p>
+                <button
+                  onClick={() => setShowVerification(true)}
+                  className="mt-2 text-sm text-yellow-700 hover:text-yellow-800 underline"
+                >
+                  Просмотреть заявку
+                </button>
+              </div>
+            )}
+
+            {user.verification?.status === 'rejected' && (
+              <div className="p-4 bg-red-50 rounded-lg border border-red-200 mb-4">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Icon name="XCircle" size={24} className="text-red-600" />
+                  <span className="text-red-800 font-medium">Заявка отклонена</span>
+                </div>
+                <p className="text-red-700 text-sm">
+                  К сожалению, ваша заявка на верификацию была отклонена
+                </p>
+                <button
+                  onClick={() => setShowVerification(true)}
+                  className="mt-2 text-sm text-red-700 hover:text-red-800 underline"
+                >
+                  Подать новую заявку
+                </button>
+              </div>
+            )}
+
+            {(!user.verification || user.verification.status === 'none') && (
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200 mb-4">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Icon name="Shield" size={24} className="text-blue-600" />
+                  <span className="text-blue-800 font-medium">Получите галочку жителя</span>
+                </div>
+                <p className="text-blue-700 text-sm mb-3">
+                  Подтвердите, что вы живете в Лесозаводской, и получите синюю галочку
+                </p>
+                <button
+                  onClick={() => setShowVerification(true)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                >
+                  Подать заявку на верификацию
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* Основная информация */}
           <div className="space-y-4">
             <div>
@@ -390,6 +523,21 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
           </div>
         </div>
       </div>
+
+      {/* Модальное окно верификации */}
+      {showVerification && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowVerification(false)}></div>
+          <div className="relative z-10">
+            <VerificationRequestComponent
+              user={user}
+              onClose={() => setShowVerification(false)}
+              onSubmit={handleVerificationSubmit}
+              currentRequest={currentVerificationRequest}
+            />
+          </div>
+        </div>
+      )}
   );
 };
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
+import AdminPanel from '@/components/verification/AdminPanel';
 import ProfileSettings from '@/components/profile/ProfileSettings';
 
 interface UserDashboardProps {
@@ -15,6 +16,10 @@ interface UserDashboardProps {
 const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserUpdate, onSectionChange }: UserDashboardProps) => {
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  
+  // Проверяем, является ли пользователь администратором
+  const isAdmin = user.email === 'admin@gorkhon.ru' || user.name.toLowerCase().includes('админ');
   
   const getRegistrationDate = () => {
     return new Date(user.registeredAt).toLocaleDateString('ru-RU', {
@@ -109,7 +114,15 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
             )}
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">Добро пожаловать, {user.name}!</h2>
+        <div className="flex items-center justify-center gap-2 mb-1">
+          <h2 className="text-2xl font-bold text-gray-800">Добро пожаловать, {user.name}!</h2>
+          {user.verification?.status === 'approved' && (
+            <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+              <Icon name="CheckCircle" size={16} className="text-blue-600" />
+              <span>Житель</span>
+            </div>
+          )}
+        </div>
         <p className="text-gray-600">Ваш личный кабинет жителя Горхона</p>
         
         {/* Поздравление с днем рождения */}
@@ -128,7 +141,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         </div>
         
         {/* Кнопки действий */}
-        <div className="grid grid-cols-3 gap-2 mt-4 max-w-xs mx-auto">
+        <div className={`grid gap-2 mt-4 max-w-xs mx-auto ${isAdmin ? 'grid-cols-4' : 'grid-cols-3'}`}>
           <button
             onClick={() => setShowProfileSettings(true)}
             className="flex flex-col items-center gap-1 px-3 py-2 bg-gorkhon-pink text-white rounded-lg hover:bg-gorkhon-pink/90 transition-colors"
@@ -150,6 +163,17 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
             <Icon name="MessageCircle" size={16} />
             <span className="text-xs">Поддержка</span>
           </button>
+          
+          {/* Админ кнопка */}
+          {isAdmin && (
+            <button
+              onClick={() => setShowAdminPanel(true)}
+              className="flex flex-col items-center gap-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              <Icon name="Shield" size={16} />
+              <span className="text-xs">Админ</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -286,6 +310,19 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно админ-панели */}
+      {showAdminPanel && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowAdminPanel(false)}></div>
+          <div className="relative z-10">
+            <AdminPanel
+              onClose={() => setShowAdminPanel(false)}
+              isAdmin={isAdmin}
+            />
           </div>
         </div>
       )}
