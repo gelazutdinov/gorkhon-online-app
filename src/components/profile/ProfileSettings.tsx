@@ -59,10 +59,16 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
-        console.log('Image loaded, size:', result.length);
+        console.log('=== IMAGE LOADED ===');
+        console.log('Image size:', result.length);
+        console.log('Image format:', result.substring(0, 30));
+        
         setCustomAvatar(result);
-        setSelectedAvatar(result); // Устанавливаем загруженное фото как выбранный аватар
-        console.log('Custom avatar set:', result.substring(0, 50) + '...');
+        setSelectedAvatar(result);
+        
+        console.log('States updated - customAvatar and selectedAvatar set');
+        console.log('customAvatar length:', result.length);
+        console.log('selectedAvatar length:', result.length);
       };
       reader.onerror = () => {
         alert('Ошибка при загрузке файла');
@@ -75,7 +81,11 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     const finalAvatar = customAvatar || selectedAvatar;
     
     try {
-      console.log('Saving profile with avatar:', finalAvatar ? 'Custom image' : 'Default avatar');
+      console.log('=== SAVING PROFILE ===');
+      console.log('customAvatar exists:', !!customAvatar);
+      console.log('selectedAvatar:', selectedAvatar);
+      console.log('finalAvatar type:', finalAvatar?.startsWith?.('data:') ? 'Custom image' : 'Default emoji');
+      console.log('finalAvatar length:', finalAvatar?.length || 0);
       
       const updates = {
         name,
@@ -85,18 +95,37 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         avatar: finalAvatar,
       };
       
-      console.log('Profile updates:', updates);
+      console.log('Updates to save:', {
+        ...updates,
+        avatar: updates.avatar?.startsWith?.('data:') 
+          ? `Custom image (${updates.avatar.length} chars)` 
+          : updates.avatar
+      });
       
       if (onUserUpdate) {
         const updatedUser: UserProfile = {
           ...user,
           ...updates
         };
+        
+        console.log('Calling onUserUpdate with:', {
+          ...updatedUser,
+          avatar: updatedUser.avatar?.startsWith?.('data:') 
+            ? `Custom image (${updatedUser.avatar.length} chars)` 
+            : updatedUser.avatar
+        });
+        
         onUserUpdate(updatedUser);
         
-        // Дополнительно сохраняем в localStorage для надежности
-        localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
-        console.log('Profile saved to localStorage');
+        // Проверяем, что действительно сохранилось
+        const saved = localStorage.getItem('gorkhon_user_profile');
+        const parsedSaved = saved ? JSON.parse(saved) : null;
+        console.log('Saved to localStorage:', {
+          ...parsedSaved,
+          avatar: parsedSaved?.avatar?.startsWith?.('data:') 
+            ? `Custom image (${parsedSaved.avatar.length} chars)` 
+            : parsedSaved?.avatar
+        });
       }
       
       onClose();
