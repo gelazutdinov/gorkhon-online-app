@@ -9,10 +9,19 @@ interface ProfileSettingsProps {
 }
 
 const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) => {
-  const [selectedAvatar, setSelectedAvatar] = useState(user.avatar);
-  const [customAvatar, setCustomAvatar] = useState<string>(
-    user.avatar && user.avatar.startsWith('data:') ? user.avatar : ''
-  );
+  const [selectedAvatar, setSelectedAvatar] = useState(() => {
+    // Если у пользователя загруженное фото (base64), то selectedAvatar должен быть этим фото
+    if (user.avatar && user.avatar.startsWith('data:')) {
+      return user.avatar;
+    }
+    // Иначе используем avatar ID или по умолчанию
+    return user.avatar || 'default_male';
+  });
+  
+  const [customAvatar, setCustomAvatar] = useState<string>(() => {
+    // Если у пользователя загруженное фото, сохраняем его в customAvatar
+    return user.avatar && user.avatar.startsWith('data:') ? user.avatar : '';
+  });
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
@@ -52,7 +61,8 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         const result = e.target?.result as string;
         console.log('Image loaded, size:', result.length);
         setCustomAvatar(result);
-        setSelectedAvatar(result); // Сразу устанавливаем как выбранный
+        setSelectedAvatar(result); // Устанавливаем загруженное фото как выбранный аватар
+        console.log('Custom avatar set:', result.substring(0, 50) + '...');
       };
       reader.onerror = () => {
         alert('Ошибка при загрузке файла');
@@ -175,7 +185,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                       setCustomAvatar('');
                     }}
                     className={`p-3 rounded-lg border-2 transition-all hover:scale-105 backdrop-blur-sm ${
-                      selectedAvatar === option.id && selectedAvatar !== 'custom'
+                      selectedAvatar === option.id && !selectedAvatar.startsWith('data:')
                         ? 'border-gorkhon-pink bg-gorkhon-pink/10'
                         : 'border-white/30 bg-white/50 hover:border-white/50 hover:bg-white/70'
                     }`}
@@ -184,6 +194,27 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                   </button>
                 ))}
               </div>
+              
+              {/* Индикатор загруженного фото */}
+              {customAvatar && (
+                <div className="mt-4 p-3 bg-gorkhon-green/10 rounded-lg border border-gorkhon-green/20">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Icon name="Camera" size={16} className="text-gorkhon-green" />
+                      <span className="text-sm text-gorkhon-green font-medium">Загружено ваше фото</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setCustomAvatar('');
+                        setSelectedAvatar('default_male');
+                      }}
+                      className="text-sm text-red-600 hover:text-red-700 underline"
+                    >
+                      Удалить
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
