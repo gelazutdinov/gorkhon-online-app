@@ -36,30 +36,21 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
                 key={item.id}
                 onClick={() => onSectionChange(item.id)}
                 className={`
-                  relative flex flex-col items-center gap-1 p-2 rounded-lg transition-all duration-200
+                  relative flex items-center justify-center p-4 rounded-lg transition-all duration-200
                   ${activeSection === item.id 
                     ? 'text-blue-600' 
                     : 'text-gray-500 hover:text-gray-700'
                   }
                 `}
               >
-                <div className="relative">
-                  <Icon 
-                    name={item.icon as any} 
-                    size={20} 
-                    className={`
-                      transition-all duration-200
-                      ${activeSection === item.id ? 'text-blue-600' : 'text-gray-500'}
-                    `}
-                  />
-
-                </div>
-                <span className={`
-                  text-xs font-medium transition-all duration-200
-                  ${activeSection === item.id ? 'text-blue-600' : 'text-gray-500'}
-                `}>
-                  {item.label}
-                </span>
+                <Icon 
+                  name={item.icon as any} 
+                  size={28} 
+                  className={`
+                    transition-all duration-200
+                    ${activeSection === item.id ? 'text-blue-600' : 'text-gray-500'}
+                  `}
+                />
               </button>
             ))}
           </div>
