@@ -11,6 +11,7 @@ import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
 import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
+import InstagramStories from "@/components/InstagramStories";
 
 import BottomNavigation from "@/components/BottomNavigation";
 import Icon from "@/components/ui/icon";
@@ -70,7 +71,10 @@ const Index = () => {
 
       <main className="max-w-md mx-auto px-4 py-6 space-y-6 relative z-10">
         {activeSection === 'home' && (
-          <Home onOpenPhotoCarousel={openPhotoCarousel} />
+          <>
+            <InstagramStories />
+            <Home onOpenPhotoCarousel={openPhotoCarousel} />
+          </>
         )}
         {activeSection === 'profile' && <PersonalAccount />}
 
