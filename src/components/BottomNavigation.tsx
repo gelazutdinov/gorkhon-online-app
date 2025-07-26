@@ -27,39 +27,34 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
 
   return (
     <>
-      {/* Фиксированное меню внизу экрана */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-4 py-2">
-        <div className="max-w-md mx-auto">
-          <div className="flex items-center justify-between">
+      {/* Фиксированное меню внизу экрана - жидкое стекло капсула */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="bg-white/20 backdrop-blur-xl rounded-full px-6 py-3 shadow-2xl border border-white/30">
+          <div className="flex items-center gap-4">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onSectionChange(item.id)}
                 className={`
-                  relative flex items-center justify-center p-4 rounded-lg transition-all duration-200
+                  relative flex items-center justify-center p-3 rounded-full transition-all duration-300
                   ${activeSection === item.id 
-                    ? 'text-blue-600' 
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'bg-white/40 backdrop-blur-sm scale-110 shadow-lg' 
+                    : 'hover:bg-white/20 hover:scale-105'
                   }
                 `}
               >
                 <Icon 
                   name={item.icon as any} 
-                  size={28} 
+                  size={24} 
                   className={`
-                    transition-all duration-200
-                    ${activeSection === item.id ? 'text-blue-600' : 'text-gray-500'}
+                    transition-all duration-300
+                    ${activeSection === item.id ? 'text-gray-800' : 'text-gray-600'}
                   `}
                 />
               </button>
             ))}
           </div>
         </div>
-      </div>
-      
-      {/* Черная полоса-индикатор */}
-      <div className="fixed bottom-1 left-1/2 transform -translate-x-1/2 z-50">
-        <div className="w-32 h-1 bg-black rounded-full"></div>
       </div>
       
       {/* Отступ для контента, чтобы он не перекрывался меню */}
