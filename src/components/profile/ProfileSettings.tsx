@@ -10,7 +10,9 @@ interface ProfileSettingsProps {
 
 const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) => {
   const [selectedAvatar, setSelectedAvatar] = useState(user.avatar);
-  const [customAvatar, setCustomAvatar] = useState<string>('');
+  const [customAvatar, setCustomAvatar] = useState<string>(
+    user.avatar && user.avatar.startsWith('data:') ? user.avatar : ''
+  );
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
@@ -39,29 +41,40 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Проверяем размер файла (макс 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Файл слишком большой. Максимальный размер: 5MB');
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
+        console.log('Image loaded, size:', result.length);
         setCustomAvatar(result);
-        setSelectedAvatar('custom');
+        setSelectedAvatar(result); // Сразу устанавливаем как выбранный
+      };
+      reader.onerror = () => {
+        alert('Ошибка при загрузке файла');
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleSave = () => {
-    const finalAvatar = selectedAvatar === 'custom' && customAvatar ? customAvatar : selectedAvatar;
+    const finalAvatar = customAvatar || selectedAvatar;
     
     const updatedUser: UserProfile = {
       ...user,
       name,
       email,
       phone,
-      birthDate: birthDate || undefined,
+      birthDate: birthDate || '',
       avatar: finalAvatar,
     };
 
     try {
+      console.log('Saving user profile:', updatedUser);
       // Сохраняем в localStorage
       localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
       
@@ -69,6 +82,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         onUserUpdate(updatedUser);
       }
       
+      console.log('Profile saved successfully');
       onClose();
     } catch (error) {
       console.error('Ошибка сохранения профиля:', error);

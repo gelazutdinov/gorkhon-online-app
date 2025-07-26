@@ -271,8 +271,14 @@ export const useUser = () => {
   };
 
   const updateUser = (updatedUser: UserProfile) => {
-    setUser(updatedUser);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
+    try {
+      setUser(updatedUser);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
+      console.log('User profile updated successfully:', updatedUser);
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
   };
 
   return {
