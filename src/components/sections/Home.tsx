@@ -5,7 +5,7 @@ import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import TrackableComponent from "@/components/TrackableComponent";
-import InstagramStories from "@/components/stories/InstagramStories";
+import AdvancedInstagramStories from "@/components/stories/AdvancedInstagramStories";
 import { useUser } from "@/hooks/useUser";
 
 interface Photo {
@@ -23,7 +23,7 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   return (
     <>
       {/* Stories как в Instagram */}
-      <InstagramStories currentUser={user} />
+      <AdvancedInstagramStories currentUser={user} />
       
       <TrackableComponent feature="importantNumbers">
         <ImportantNumbers data-tutorial="search-input" />
