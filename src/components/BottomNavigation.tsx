@@ -1,6 +1,5 @@
 import Icon from '@/components/ui/icon';
-import NotificationBadge from '@/components/NotificationBadge';
-import { useNewsNotifications } from '@/hooks/useNewsNotifications';
+
 
 interface BottomNavigationProps {
   activeSection: string;
@@ -8,7 +7,6 @@ interface BottomNavigationProps {
 }
 
 const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationProps) => {
-  const { unreadCount } = useNewsNotifications();
   const menuItems = [
     {
       id: 'home',
@@ -60,9 +58,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
                       ${activeSection === item.id ? 'text-blue-600' : 'text-gray-500'}
                     `}
                   />
-                  {item.id === 'news' && (
-                    <NotificationBadge count={unreadCount} />
-                  )}
+
                 </div>
                 <span className={`
                   text-xs font-medium transition-all duration-200
