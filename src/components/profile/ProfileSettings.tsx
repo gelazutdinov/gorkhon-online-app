@@ -118,12 +118,16 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
 
   const handleSave = () => {
     setIsSaving(true);
-    const finalAvatar = customAvatar || selectedAvatar;
+    // Если есть customAvatar (загруженное изображение или сгенерированное ИИ), используем его
+    // Иначе используем selectedAvatar (ID эмодзи или base64)
+    const finalAvatar = customAvatar ? customAvatar : selectedAvatar;
     
     try {
       console.log('=== SAVING PROFILE ===');
       console.log('customAvatar exists:', !!customAvatar);
+      console.log('customAvatar value:', customAvatar || 'EMPTY');
       console.log('selectedAvatar:', selectedAvatar);
+      console.log('finalAvatar:', finalAvatar);
       console.log('finalAvatar type:', finalAvatar?.startsWith?.('data:') ? 'Custom image' : 'Default emoji');
       console.log('finalAvatar length:', finalAvatar?.length || 0);
       
@@ -281,7 +285,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                       setCustomAvatar('');
                     }}
                     className={`p-3 rounded-lg border-2 transition-all hover:scale-105 backdrop-blur-sm ${
-                      selectedAvatar === option.id && !selectedAvatar.startsWith('data:')
+                      selectedAvatar === option.id && !customAvatar
                         ? 'border-gorkhon-pink bg-gorkhon-pink/10'
                         : 'border-white/30 bg-white/50 hover:border-white/50 hover:bg-white/70'
                     }`}
