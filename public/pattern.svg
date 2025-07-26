@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <defs>
+    <style>
+      .pattern-stroke {
+        fill: none;
+        stroke: #e91e63;
+        stroke-width: 20;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.08;
+      }
+    </style>
+  </defs>
+  
+  <!-- Волнистые линии -->
+  <path class="pattern-stroke" d="M100,300 Q200,200 300,300 Q400,400 500,300 Q600,200 700,300 Q800,400 900,300"/>
+  <path class="pattern-stroke" d="M50,500 Q150,400 250,500 Q350,600 450,500 Q550,400 650,500 Q750,600 850,500"/>
+  <path class="pattern-stroke" d="M150,700 Q250,600 350,700 Q450,800 550,700 Q650,600 750,700 Q850,800 950,700"/>
+  
+  <!-- Овальные формы -->
+  <ellipse class="pattern-stroke" cx="200" cy="150" rx="80" ry="40" transform="rotate(45 200 150)"/>
+  <ellipse class="pattern-stroke" cx="600" cy="250" rx="80" ry="40" transform="rotate(-30 600 250)"/>
+  <ellipse class="pattern-stroke" cx="400" cy="650" rx="80" ry="40" transform="rotate(60 400 650)"/>
+  <ellipse class="pattern-stroke" cx="800" cy="750" rx="80" ry="40" transform="rotate(-45 800 750)"/>
+  
+  <!-- Дополнительные элементы для создания более плотного паттерна -->
+  <path class="pattern-stroke" d="M0,100 Q100,50 200,100 Q300,150 400,100 Q500,50 600,100 Q700,150 800,100 Q900,50 1000,100"/>
+  <path class="pattern-stroke" d="M0,900 Q100,850 200,900 Q300,950 400,900 Q500,850 600,900 Q700,950 800,900 Q900,850 1000,900"/>
+</svg>
