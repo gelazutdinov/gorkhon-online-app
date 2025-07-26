@@ -118,9 +118,14 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
 
   const handleSave = () => {
     setIsSaving(true);
-    // Если есть customAvatar (загруженное изображение или сгенерированное ИИ), используем его
-    // Иначе используем selectedAvatar (ID эмодзи или base64)
-    const finalAvatar = customAvatar ? customAvatar : selectedAvatar;
+    // Логика определения финального аватара:
+    // 1. Если есть customAvatar (загруженное или сгенерированное ИИ) - используем его
+    // 2. Иначе используем selectedAvatar (ID эмодзи)
+    let finalAvatar = selectedAvatar;
+    
+    if (customAvatar && customAvatar.trim() !== '') {
+      finalAvatar = customAvatar;
+    }
     
     try {
       console.log('=== SAVING PROFILE ===');
@@ -160,6 +165,20 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         });
         
         onUserUpdate(updatedUser);
+        
+        // Принудительно обновляем локальное состояние
+        setTimeout(() => {
+          console.log('=== VERIFICATION AFTER SAVE ===');
+          const saved = localStorage.getItem('gorkhon_user_profile');
+          const parsedSaved = saved ? JSON.parse(saved) : null;
+          console.log('Final saved avatar:', parsedSaved?.avatar);
+          
+          // Если аватар не сохранился, попробуем принудительно
+          if (parsedSaved?.avatar !== finalAvatar) {
+            console.warn('Avatar not saved correctly, forcing save...');
+            localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
+          }
+        }, 100);
         
         // Проверяем, что действительно сохранилось
         try {
@@ -281,8 +300,16 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                   <button
                     key={option.id}
                     onClick={() => {
+                      console.log('=== EMOJI AVATAR SELECTED ===');
+                      console.log('Selected emoji ID:', option.id);
+                      console.log('Before: customAvatar=', customAvatar || 'EMPTY');
+                      console.log('Before: selectedAvatar=', selectedAvatar);
+                      
                       setSelectedAvatar(option.id);
                       setCustomAvatar('');
+                      
+                      console.log('After: setting selectedAvatar to', option.id);
+                      console.log('After: clearing customAvatar');
                     }}
                     className={`p-3 rounded-lg border-2 transition-all hover:scale-105 backdrop-blur-sm ${
                       selectedAvatar === option.id && !customAvatar
