@@ -69,17 +69,7 @@ const News = () => {
         </noscript>
       </div>
 
-      {/* Дополнительная информация */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-        <div className="flex items-center gap-3 mb-3">
-          <Icon name="Info" size={20} className="text-blue-600" />
-          <h4 className="font-semibold text-blue-900">Не пропустите важное!</h4>
-        </div>
-        <p className="text-blue-700 text-sm leading-relaxed">
-          Подпишитесь на нашу группу ВКонтакте, чтобы быть в курсе всех событий, 
-          объявлений и изменений в работе служб поселка.
-        </p>
-      </div>
+
     </div>
   );
 };
