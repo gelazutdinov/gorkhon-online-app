@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
-import VkStyleSocialNetwork from '@/components/social/VkStyleSocialNetwork';
+
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -13,7 +13,7 @@ interface UserDashboardProps {
 
 const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserUpdate }: UserDashboardProps) => {
   const [showAvatarEditor, setShowAvatarEditor] = useState(false);
-  const [activeTab, setActiveTab] = useState<'stats' | 'social'>('stats');
+  const [activeTab, setActiveTab] = useState<'stats'>('stats');
   const [showInterestsEditor, setShowInterestsEditor] = useState(false);
   const getRegistrationDate = () => {
     return new Date(user.registeredAt).toLocaleDateString('ru-RU', {
@@ -133,40 +133,9 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         </div>
       </div>
 
-      {/* Табы */}
-      <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
-        <button
-          onClick={() => setActiveTab('stats')}
-          className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
-            activeTab === 'stats'
-              ? 'bg-white text-gorkhon-pink shadow-sm'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <Icon name="BarChart3" size={18} />
-            <span>Статистика</span>
-          </div>
-        </button>
-        <button
-          onClick={() => setActiveTab('social')}
-          className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
-            activeTab === 'social'
-              ? 'bg-white text-gorkhon-pink shadow-sm'
-              : 'text-gray-600 hover:text-gray-800'
-          }`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <Icon name="Users" size={18} />
-            <span>Друзья</span>
-          </div>
-        </button>
-      </div>
 
-      {/* Контент в зависимости от таба */}
-      {activeTab === 'stats' ? (
-        <>
-          {/* Основная статистика */}
+
+      {/* Основная статистика */}
           <div className="grid grid-cols-2 gap-4">
         <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 text-center">
           <Icon name="Calendar" size={24} className="text-gorkhon-pink mx-auto mb-2" />
@@ -341,11 +310,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         <Icon name="LogOut" size={18} />
         <span>Выйти из аккаунта</span>
       </button>
-        </>
-      ) : (
-        /* Социальная сеть */
-        <VkStyleSocialNetwork currentUser={user} />
-      )}
+
     </div>
   );
 };
