@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { UserVerification } from '@/types/verification';
 
 export interface UserProfile {
   id: string;
@@ -13,7 +12,6 @@ export interface UserProfile {
   status?: string;
   registeredAt: number;
   lastActiveAt: number;
-  verification?: UserVerification;
   stats: {
     totalSessions: number;
     totalTimeSpent: number; // в минутах
