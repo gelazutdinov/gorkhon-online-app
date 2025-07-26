@@ -14,7 +14,16 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     if (user.avatar && user.avatar.startsWith('data:')) {
       return user.avatar;
     }
-    // Иначе используем avatar ID или по умолчанию
+    
+    // Если user.avatar это эмодзи, найдем соответствующий ID
+    if (user.avatar) {
+      const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
+      if (matchingOption) {
+        return matchingOption.id;
+      }
+    }
+    
+    // По умолчанию
     return user.avatar || 'default_male';
   });
   
@@ -45,7 +54,18 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
       setSelectedAvatar(user.avatar);
     } else {
       setCustomAvatar('');
-      setSelectedAvatar(user.avatar || 'default_male');
+      
+      // Если user.avatar это эмодзи, найдем соответствующий ID
+      if (user.avatar) {
+        const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
+        if (matchingOption) {
+          setSelectedAvatar(matchingOption.id);
+        } else {
+          setSelectedAvatar(user.avatar); // Если не нашли, оставляем как есть
+        }
+      } else {
+        setSelectedAvatar('default_male');
+      }
     }
 
   }, [user]);
@@ -119,12 +139,17 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   const handleSave = () => {
     setIsSaving(true);
     // Логика определения финального аватара:
-    // 1. Если есть customAvatar (загруженное или сгенерированное ИИ) - используем его
-    // 2. Иначе используем selectedAvatar (ID эмодзи)
     let finalAvatar = selectedAvatar;
     
     if (customAvatar && customAvatar.trim() !== '') {
+      // Если есть customAvatar (загруженное или сгенерированное ИИ) - используем его
       finalAvatar = customAvatar;
+    } else if (selectedAvatar) {
+      // Если selectedAvatar это ID эмодзи, преобразуем в сам эмодзи
+      const selectedOption = avatarOptions.find(option => option.id === selectedAvatar);
+      if (selectedOption) {
+        finalAvatar = selectedOption.emoji;
+      }
     }
     
     try {
@@ -132,8 +157,9 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
       console.log('customAvatar exists:', !!customAvatar);
       console.log('customAvatar value:', customAvatar || 'EMPTY');
       console.log('selectedAvatar:', selectedAvatar);
+      console.log('selectedAvatar option:', selectedAvatar ? avatarOptions.find(opt => opt.id === selectedAvatar) : 'None');
       console.log('finalAvatar:', finalAvatar);
-      console.log('finalAvatar type:', finalAvatar?.startsWith?.('data:') ? 'Custom image' : 'Default emoji');
+      console.log('finalAvatar type:', finalAvatar?.startsWith?.('data:') ? 'Custom image' : 'Emoji');
       console.log('finalAvatar length:', finalAvatar?.length || 0);
       
       const updates = {
