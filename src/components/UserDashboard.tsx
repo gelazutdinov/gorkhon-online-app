@@ -9,9 +9,10 @@ interface UserDashboardProps {
   formattedTimeSpent: string;
   onLogout: () => void;
   onUserUpdate?: (user: UserProfile) => void;
+  onSectionChange: (section: string) => void;
 }
 
-const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserUpdate }: UserDashboardProps) => {
+const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserUpdate, onSectionChange }: UserDashboardProps) => {
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
   
@@ -127,20 +128,27 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         </div>
         
         {/* Кнопки действий */}
-        <div className="flex gap-3 mt-4 justify-center">
+        <div className="grid grid-cols-3 gap-2 mt-4 max-w-xs mx-auto">
           <button
             onClick={() => setShowProfileSettings(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gorkhon-pink text-white rounded-lg hover:bg-gorkhon-pink/90 transition-colors"
+            className="flex flex-col items-center gap-1 px-3 py-2 bg-gorkhon-pink text-white rounded-lg hover:bg-gorkhon-pink/90 transition-colors"
           >
             <Icon name="Settings" size={16} />
-            <span>Настройки</span>
+            <span className="text-xs">Настройки</span>
           </button>
           <button
             onClick={() => setShowStatistics(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+            className="flex flex-col items-center gap-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
           >
             <Icon name="BarChart3" size={16} />
-            <span>Статистика</span>
+            <span className="text-xs">Статистика</span>
+          </button>
+          <button
+            onClick={() => onSectionChange('support')}
+            className="flex flex-col items-center gap-1 px-3 py-2 bg-gorkhon-green text-white rounded-lg hover:bg-gorkhon-green/90 transition-colors"
+          >
+            <Icon name="MessageCircle" size={16} />
+            <span className="text-xs">Поддержка</span>
           </button>
         </div>
       </div>

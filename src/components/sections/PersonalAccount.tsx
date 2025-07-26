@@ -4,7 +4,11 @@ import { useUser } from '@/hooks/useUser';
 import RegistrationForm from '@/components/RegistrationForm';
 import UserDashboard from '@/components/UserDashboard';
 
-const PersonalAccount = () => {
+interface PersonalAccountProps {
+  onSectionChange: (section: string) => void;
+}
+
+const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
   const { user, isLoading, register, logout, updateUser, getDaysWithUs, getFormattedTimeSpent } = useUser();
 
   // Дополнительная защита от ошибок
@@ -36,6 +40,7 @@ const PersonalAccount = () => {
             formattedTimeSpent={getFormattedTimeSpent()}
             onLogout={logout}
             onUserUpdate={updateUser}
+            onSectionChange={onSectionChange}
           />
         
         {/* Правовая информация */}

@@ -73,7 +73,7 @@ const Index = () => {
         {activeSection === 'home' && (
           <Home onOpenPhotoCarousel={openPhotoCarousel} />
         )}
-        {activeSection === 'profile' && <PersonalAccount />}
+        {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
 
         {activeSection === 'news' && <News />}
         {activeSection === 'support' && <Support />}
