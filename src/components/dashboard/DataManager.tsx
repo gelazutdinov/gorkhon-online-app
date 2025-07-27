@@ -121,7 +121,7 @@ const DataManager = ({ user, onClose }: DataManagerProps) => {
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
+    <div className="bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[75vh] overflow-y-auto shadow-2xl border border-white/20">
       {/* Заголовок */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl">
         <h2 className="text-xl font-semibold text-gray-800">Управление данными</h2>

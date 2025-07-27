@@ -262,7 +262,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
       {showStatistics && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowStatistics(false)}></div>
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
+          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[75vh] overflow-y-auto shadow-2xl border border-white/20">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl">
               <h2 className="text-xl font-semibold text-gray-800">Статистика активности</h2>
               <button
@@ -343,7 +343,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
       {showBackup && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowBackup(false)}></div>
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
+          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[75vh] overflow-y-auto shadow-2xl border border-white/20">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl">
               <h2 className="text-xl font-semibold text-gray-800">Резервное копирование</h2>
               <button
@@ -394,7 +394,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
       {showAccessibility && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowAccessibility(false)}></div>
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
+          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[75vh] overflow-y-auto shadow-2xl border border-white/20">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl">
               <h2 className="text-xl font-semibold text-gray-800">Настройки доступности</h2>
               <button
@@ -475,7 +475,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
       {showSettings && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowSettings(false)}></div>
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
+          <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[75vh] overflow-y-auto shadow-2xl border border-white/20">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl">
               <h2 className="text-xl font-semibold text-gray-800">Настройки</h2>
               <button
@@ -487,44 +487,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
             </div>
             
             <div className="p-6 space-y-6">
-              {/* Системные уведомления */}
-              <div>
-                <h3 className="font-medium text-gray-800 mb-3 flex items-center gap-2">
-                  <Icon name="Bell" size={16} />
-                  Системные уведомления
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <div className="font-medium text-gray-800">Уведомления об обновлениях</div>
-                      <div className="text-sm text-gray-600">Новые функции и исправления</div>
-                    </div>
-                    <button className="w-12 h-6 bg-gorkhon-pink rounded-full relative">
-                      <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1 transition-transform"></div>
-                    </button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <div className="font-medium text-gray-800">Важные объявления</div>
-                      <div className="text-sm text-gray-600">Изменения в работе сервисов</div>
-                    </div>
-                    <button className="w-12 h-6 bg-gorkhon-pink rounded-full relative">
-                      <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1 transition-transform"></div>
-                    </button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <div className="font-medium text-gray-800">Статистика активности</div>
-                      <div className="text-sm text-gray-600">Еженедельные отчеты</div>
-                    </div>
-                    <button className="w-12 h-6 bg-gray-300 rounded-full relative">
-                      <div className="w-4 h-4 bg-white rounded-full absolute left-1 top-1 transition-transform"></div>
-                    </button>
-                  </div>
-                </div>
-              </div>
+
 
               {/* Приватность */}
               <div>
