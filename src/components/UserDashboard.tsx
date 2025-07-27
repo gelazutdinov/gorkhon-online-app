@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
 import ProfileSettings from '@/components/profile/ProfileSettings';
+import NotificationCenter from '@/components/features/NotificationCenter';
+import DataExportImport from '@/components/features/DataExportImport';
+import ThemeSelector from '@/components/features/ThemeSelector';
+import QuickActions from '@/components/features/QuickActions';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -15,6 +19,46 @@ interface UserDashboardProps {
 const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserUpdate, onSectionChange }: UserDashboardProps) => {
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showDataManager, setShowDataManager] = useState(false);
+  const [showThemeSelector, setShowThemeSelector] = useState(false);
+  const [showQuickActions, setShowQuickActions] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+
+  // Инициализация темы и подсчет непрочитанных уведомлений
+  useEffect(() => {
+    // Применяем сохраненную тему
+    const savedTheme = localStorage.getItem('gorkhon_theme');
+    if (savedTheme && savedTheme !== 'default') {
+      const themes = {
+        nature: { primary: '#10B981', secondary: '#059669', accent: '#34D399' },
+        ocean: { primary: '#0EA5E9', secondary: '#0284C7', accent: '#38BDF8' },
+        sunset: { primary: '#F97316', secondary: '#EA580C', accent: '#FB923C' },
+        purple: { primary: '#8B5CF6', secondary: '#7C3AED', accent: '#A78BFA' },
+        dark: { primary: '#374151', secondary: '#1F2937', accent: '#6B7280' }
+      };
+      
+      const theme = themes[savedTheme as keyof typeof themes];
+      if (theme) {
+        const root = document.documentElement;
+        root.style.setProperty('--color-gorkhon-pink', theme.primary);
+        root.style.setProperty('--color-gorkhon-green', theme.secondary);
+        root.style.setProperty('--color-gorkhon-blue', theme.accent);
+      }
+    }
+
+    // Подсчет непрочитанных уведомлений
+    const savedNotifications = localStorage.getItem('gorkhon_notifications');
+    if (savedNotifications) {
+      try {
+        const notifications = JSON.parse(savedNotifications);
+        const unreadCount = notifications.filter((n: any) => !n.read).length;
+        setUnreadNotifications(unreadCount);
+      } catch (error) {
+        console.error('Error loading notifications:', error);
+      }
+    }
+  }, []);
   
   const getRegistrationDate = () => {
     return new Date(user.registeredAt).toLocaleDateString('ru-RU', {
@@ -105,7 +149,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
             {user.avatar && user.avatar.startsWith('data:') ? (
               <img src={user.avatar} alt="Аватар" className="w-full h-full object-cover rounded-full" />
             ) : (
-              getAvatarEmoji(user.avatar)
+              <span>{user.avatar || '👤'}</span>
             )}
           </div>
         </div>
@@ -144,11 +188,45 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
             <span className="text-xs">Статистика</span>
           </button>
           <button
-            onClick={() => onSectionChange('support')}
+            onClick={() => setShowQuickActions(true)}
             className="flex flex-col items-center gap-1 px-3 py-2 bg-gorkhon-green text-white rounded-lg hover:bg-gorkhon-green/90 transition-colors"
           >
-            <Icon name="MessageCircle" size={16} />
-            <span className="text-xs">Поддержка</span>
+            <Icon name="Zap" size={16} />
+            <span className="text-xs">Быстрые</span>
+          </button>
+        </div>
+
+        {/* Дополнительные функции */}
+        <div className="grid grid-cols-2 gap-2 mt-3 max-w-xs mx-auto">
+          <button
+            onClick={() => setShowNotifications(true)}
+            className="relative flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+          >
+            <Icon name="Bell" size={16} className="text-gray-600" />
+            <span className="text-gray-700">Уведомления</span>
+            {unreadNotifications > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {unreadNotifications}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setShowThemeSelector(true)}
+            className="flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+          >
+            <Icon name="Palette" size={16} className="text-gray-600" />
+            <span className="text-gray-700">Темы</span>
+          </button>
+        </div>
+
+        {/* Управление данными */}
+        <div className="mt-3 max-w-xs mx-auto">
+          <button
+            onClick={() => setShowDataManager(true)}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+          >
+            <Icon name="Database" size={16} className="text-gray-600" />
+            <span className="text-gray-700">Управление данными</span>
           </button>
         </div>
       </div>
@@ -286,6 +364,74 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно уведомлений */}
+      {showNotifications && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+          <div className="relative">
+            <NotificationCenter
+              onClose={() => {
+                setShowNotifications(false);
+                // Обновляем счетчик непрочитанных
+                const savedNotifications = localStorage.getItem('gorkhon_notifications');
+                if (savedNotifications) {
+                  try {
+                    const notifications = JSON.parse(savedNotifications);
+                    const unreadCount = notifications.filter((n: any) => !n.read).length;
+                    setUnreadNotifications(unreadCount);
+                  } catch (error) {
+                    console.error('Error updating notification count:', error);
+                  }
+                }
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно управления данными */}
+      {showDataManager && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+          <div className="relative">
+            <DataExportImport
+              user={user}
+              onClose={() => setShowDataManager(false)}
+              onImportSuccess={(importedUser) => {
+                if (onUserUpdate) {
+                  onUserUpdate(importedUser);
+                }
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно выбора темы */}
+      {showThemeSelector && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+          <div className="relative">
+            <ThemeSelector
+              onClose={() => setShowThemeSelector(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно быстрых действий */}
+      {showQuickActions && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+          <div className="relative">
+            <QuickActions
+              onClose={() => setShowQuickActions(false)}
+              onSectionChange={onSectionChange}
+            />
           </div>
         </div>
       )}
