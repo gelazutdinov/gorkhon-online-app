@@ -345,7 +345,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
             </button>
             <button
               onClick={handleSave}
-              disabled={isSaving || isGenerating}
+              disabled={isSaving}
               className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSaving ? (
