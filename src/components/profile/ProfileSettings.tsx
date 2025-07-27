@@ -43,7 +43,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     }
     
     // По умолчанию
-    return user.avatar || 'default_male';
+    return 'default_male';
   });
   
   const [customAvatar, setCustomAvatar] = useState<string>(() => {
@@ -54,8 +54,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
   const [birthDate, setBirthDate] = useState(user.birthDate || '');
-  const [aiPrompt, setAiPrompt] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
+
   const [isSaving, setIsSaving] = useState(false);
 
 
@@ -91,52 +90,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
 
   }, [user]);
 
-  const handleGenerateAvatar = async () => {
-    if (!aiPrompt.trim()) return;
-    
-    setIsGenerating(true);
-    
-    try {
-      console.log('=== GENERATING AI AVATAR ===');
-      console.log('Prompt:', aiPrompt);
-      
-      // Используем generate_image инструмент
-      const enhancedPrompt = `Professional portrait avatar: ${aiPrompt}, high quality, clean background, realistic style, headshot`;
-      
-      // Имитируем использование generate_image инструмента
-      // В реальности это будет вызван через доступный API
-      const imageUrl = await new Promise<string>((resolve, reject) => {
-        // Симуляция генерации изображения
-        setTimeout(() => {
-          // В реальной реализации здесь будет вызов generate_image
-          const demoImageUrl = 'https://cdn.poehali.dev/files/a4296cfc-034c-41b3-891d-14f871dc1497.jpg';
-          resolve(demoImageUrl);
-        }, 2000);
-      });
-      
-      if (imageUrl) {
-        // Конвертируем URL в base64 для хранения
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64Image = reader.result as string;
-          console.log('Generated avatar saved, size:', base64Image.length);
-          
-          setCustomAvatar(base64Image);
-          setSelectedAvatar(base64Image);
-          setAiPrompt(''); // Очищаем промпт после успешной генерации
-        };
-        reader.readAsDataURL(blob);
-      }
-    } catch (error) {
-      console.error('Ошибка при генерации аватара:', error);
-      alert('Ошибка при генерации аватара. Попробуйте другое описание.');
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+
 
   const handleSave = () => {
     setIsSaving(true);
@@ -294,33 +248,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
               {getCurrentAvatarDisplay()}
             </div>
             
-            {/* Генерация ИИ аватара */}
-            <div className="space-y-3">
-              <input
-                type="text"
-                value={aiPrompt}
-                onChange={(e) => setAiPrompt(e.target.value)}
-                placeholder="Опишите желаемый аватар (например: мужчина в костюме, улыбается)"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm"
-              />
-              <button
-                onClick={handleGenerateAvatar}
-                disabled={isGenerating || !aiPrompt.trim()}
-                className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isGenerating ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Создаём аватар...</span>
-                  </>
-                ) : (
-                  <>
-                    <Icon name="Sparkles" size={18} />
-                    <span>Создать ИИ аватар</span>
-                  </>
-                )}
-              </button>
-            </div>
+
               
               {/* Сетка эмодзи аватаров */}
               <div className="grid grid-cols-4 gap-2">
@@ -350,26 +278,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 ))}
               </div>
               
-              {/* Индикатор ИИ аватара */}
-              {customAvatar && (
-                <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Icon name="Sparkles" size={16} className="text-purple-600" />
-                      <span className="text-sm text-purple-600 font-medium">Создан ИИ аватар</span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setCustomAvatar('');
-                        setSelectedAvatar('default_male');
-                      }}
-                      className="text-sm text-red-600 hover:text-red-700 underline"
-                    >
-                      Удалить
-                    </button>
-                  </div>
-                </div>
-              )}
+
           </div>
 
           {/* Основная информация */}
