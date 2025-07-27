@@ -143,6 +143,10 @@ export default {
 				'gradient-brand': 'linear-gradient(135deg, #005BFF 0%, #F1117E 50%, #00BE6C 100%)',
 				'gradient-blue': 'linear-gradient(135deg, #005BFF 0%, #00A2FF 100%)',
 				'gradient-warm': 'linear-gradient(135deg, #F1117E 0%, #FFA800 100%)'
+			},
+			spacing: {
+				'safe-area-bottom': 'env(safe-area-inset-bottom)',
+				'safe-area-top': 'env(safe-area-inset-top)'
 			}
 		}
 	},

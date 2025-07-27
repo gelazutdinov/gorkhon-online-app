@@ -127,9 +127,9 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
       <div className="fixed bottom-4 right-4 z-50">
         <button
           onClick={() => setIsMinimized(false)}
-          className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
         >
-          <Icon name="MessageCircle" size={24} />
+          <Icon name="MessageCircle" size={20} className="sm:w-6 sm:h-6" />
           <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
         </button>
       </div>
@@ -137,23 +137,23 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 w-80 h-96 flex flex-col overflow-hidden">
+    <div className="fixed inset-0 sm:bottom-4 sm:right-4 sm:inset-auto z-50 flex sm:block">
+      <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-80 h-full sm:h-96 flex flex-col overflow-hidden">
         {/* Заголовок */}
-        <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <Icon name="Bot" size={16} />
+        <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-3 sm:p-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <Icon name="Bot" size={14} className="sm:w-4 sm:h-4" />
             </div>
             <div>
-              <h3 className="font-semibold">Лина</h3>
-              <p className="text-xs text-white/80">Ваш цифровой помощник</p>
+              <h3 className="font-semibold text-sm sm:text-base">Лина</h3>
+              <p className="text-xs text-white/80 hidden sm:block">Ваш цифровой помощник</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               onClick={() => setIsMinimized(true)}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
+              className="p-1 hover:bg-white/20 rounded transition-colors hidden sm:block"
             >
               <Icon name="Minus" size={16} />
             </button>
@@ -167,20 +167,20 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
         </div>
 
         {/* Сообщения */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-4">
+        <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-3 sm:space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] p-3 rounded-2xl ${
+                className={`max-w-[85%] sm:max-w-[80%] p-2 sm:p-3 rounded-2xl ${
                   message.isUser
                     ? 'bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white'
                     : 'bg-gray-100 text-gray-800'
                 }`}
               >
-                <p className="text-sm leading-relaxed">{message.text}</p>
+                <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
                 <p className={`text-xs mt-1 ${
                   message.isUser ? 'text-white/70' : 'text-gray-500'
                 }`}>
@@ -192,7 +192,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
 
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 p-3 rounded-2xl">
+              <div className="bg-gray-100 p-2 sm:p-3 rounded-2xl">
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -204,10 +204,8 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
           <div ref={messagesEndRef} />
         </div>
 
-
-
         {/* Ввод сообщения */}
-        <div className="p-4 border-t border-gray-100">
+        <div className="p-3 sm:p-4 border-t border-gray-100 safe-area-bottom">
           <div className="flex items-center gap-2">
             <input
               type="text"
@@ -220,7 +218,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
             <button
               onClick={handleSendMessage}
               disabled={!inputValue.trim()}
-              className="p-2 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-full hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-full hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
             >
               <Icon name="Send" size={16} />
             </button>
