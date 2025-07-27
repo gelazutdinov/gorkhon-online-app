@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { UserProfile } from '@/hooks/useUser';
 import Icon from '@/components/ui/icon';
-import NotificationCenter from '@/components/dashboard/NotificationCenter';
+import LinaAssistant from '@/components/features/LinaAssistant';
 import DataManager from '@/components/dashboard/DataManager';
 
 interface UserDashboardProps {
@@ -15,12 +15,12 @@ interface UserDashboardProps {
 
 const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserUpdate, onSectionChange }: UserDashboardProps) => {
   const [showStatistics, setShowStatistics] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
+  const [showLina, setShowLina] = useState(false);
   const [showDataManager, setShowDataManager] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showBackup, setShowBackup] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
-  const [unreadNotifications, setUnreadNotifications] = useState(0);
+
 
   // Инициализация темы и подсчет непрочитанных уведомлений
   useEffect(() => {
@@ -43,17 +43,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
       }
     }
 
-    // Подсчет непрочитанных уведомлений
-    const savedNotifications = localStorage.getItem('gorkhon_notifications');
-    if (savedNotifications) {
-      try {
-        const notifications = JSON.parse(savedNotifications);
-        const unreadCount = notifications.filter((n: any) => !n.read).length;
-        setUnreadNotifications(unreadCount);
-      } catch (error) {
-        console.error('Error loading notifications:', error);
-      }
-    }
+
   }, []);
   
   const getRegistrationDate = () => {
@@ -108,18 +98,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
     return { level: 'Мастер платформы', color: 'text-purple-600', bg: 'bg-purple-100', icon: 'Award' };
   };
 
-  const updateNotificationCount = () => {
-    const savedNotifications = localStorage.getItem('gorkhon_notifications');
-    if (savedNotifications) {
-      try {
-        const notifications = JSON.parse(savedNotifications);
-        const unreadCount = notifications.filter((n: any) => !n.read).length;
-        setUnreadNotifications(unreadCount);
-      } catch (error) {
-        console.error('Error updating notification count:', error);
-      }
-    }
-  };
+
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -201,21 +180,14 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
           </button>
           
           <button
-            onClick={() => setShowNotifications(true)}
+            onClick={() => setShowLina(true)}
             className="flex items-center gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors relative"
           >
-            <Icon name="Bell" size={20} className="text-green-600" />
+            <Icon name="Bot" size={20} className="text-green-600" />
             <div className="text-left">
-              <div className="font-medium text-gray-800">Уведомления</div>
-              <div className="text-sm text-green-600">
-                {unreadNotifications > 0 ? `${unreadNotifications} новых` : 'Все прочитаны'}
-              </div>
+              <div className="font-medium text-gray-800">Лина</div>
+              <div className="text-sm text-green-600">Цифровой помощник</div>
             </div>
-            {unreadNotifications > 0 && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                {unreadNotifications}
-              </div>
-            )}
           </button>
           
           <button
@@ -349,17 +321,9 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
         </div>
       )}
 
-      {/* Уведомления */}
-      {showNotifications && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowNotifications(false)}></div>
-          <div className="relative">
-            <NotificationCenter 
-              onClose={() => setShowNotifications(false)}
-              onUpdateCount={updateNotificationCount}
-            />
-          </div>
-        </div>
+      {/* Лина */}
+      {showLina && (
+        <LinaAssistant onClose={() => setShowLina(false)} />
       )}
 
       {/* Управление данными */}

@@ -21,6 +21,9 @@ const Header = () => {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">
                 Горхон.Online
               </h1>
+              <span className="text-xs bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-white/90 font-medium">
+                360°
+              </span>
 
             </div>
             <div className="flex items-center gap-1 text-xs text-white/80">

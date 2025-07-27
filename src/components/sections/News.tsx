@@ -48,31 +48,8 @@ const News = () => {
     }
   };
 
-  // Фейковые новости для демонстрации
-  const localNews: NewsItem[] = [
-    {
-      id: '1',
-      title: 'Изменения в расписании автобусов',
-      preview: 'С 1 февраля изменится расписание движения автобусов по маршруту Горхон-Улан-Удэ',
-      date: '30 января 2025',
-      category: 'Транспорт',
-      urgent: true
-    },
-    {
-      id: '2', 
-      title: 'Работы по благоустройству территории',
-      preview: 'Начинаются работы по установке новых детских площадок в микрорайоне',
-      date: '28 января 2025',
-      category: 'Благоустройство'
-    },
-    {
-      id: '3',
-      title: 'График работы поликлиники',
-      preview: 'Уведомляем о работе поликлиники в праздничные дни февраля',
-      date: '25 января 2025',
-      category: 'Здравоохранение'
-    }
-  ];
+  // Убираем локальные новости
+  const localNews: NewsItem[] = [];
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -93,65 +70,7 @@ const News = () => {
         <p className="text-gray-600">Следите за последними событиями в Горхоне</p>
       </div>
 
-      {/* Срочные новости */}
-      {localNews.filter(news => news.urgent).length > 0 && (
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500 rounded-2xl p-4 shadow-sm">
-          <div className="flex items-center gap-2 mb-3">
-            <Icon name="AlertTriangle" size={20} className="text-red-600" />
-            <h3 className="font-semibold text-red-800">Срочные новости</h3>
-          </div>
-          <div className="space-y-2">
-            {localNews.filter(news => news.urgent).map((news) => (
-              <div key={news.id} className="bg-white/70 rounded-lg p-3">
-                <h4 className="font-medium text-gray-800 mb-1">{news.title}</h4>
-                <p className="text-sm text-gray-600 mb-2">{news.preview}</p>
-                <div className="flex items-center justify-between">
-                  <span className={`px-2 py-1 text-xs rounded-full border ${getCategoryColor(news.category)}`}>
-                    {news.category}
-                  </span>
-                  <span className="text-xs text-gray-500">{news.date}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Местные новости */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Icon name="MapPin" size={16} className="text-gorkhon-green" />
-            Местные новости
-          </h3>
-          <div className="text-sm text-gray-500">Обновлено сегодня</div>
-        </div>
-        
-        <div className="space-y-4">
-          {localNews.filter(news => !news.urgent).map((news) => (
-            <div key={news.id} className="border-b border-gray-100 last:border-b-0 pb-4 last:pb-0">
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="font-medium text-gray-800 hover:text-gorkhon-pink cursor-pointer transition-colors">
-                  {news.title}
-                </h4>
-                <span className={`px-2 py-1 text-xs rounded-full border ml-3 ${getCategoryColor(news.category)}`}>
-                  {news.category}
-                </span>
-              </div>
-              <p className="text-sm text-gray-600 mb-2 leading-relaxed">{news.preview}</p>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500 flex items-center gap-1">
-                  <Icon name="Calendar" size={12} />
-                  {news.date}
-                </span>
-                <button className="text-xs text-gorkhon-pink hover:text-gorkhon-pink/80 transition-colors">
-                  Читать далее →
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* VK Widget Container */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
@@ -200,32 +119,7 @@ const News = () => {
         </noscript>
       </div>
 
-      {/* Информационные блоки */}
-      <div className="grid gap-4">
-        <div className="bg-gradient-to-r from-gorkhon-pink/10 to-gorkhon-green/10 rounded-2xl p-4 border border-gray-100">
-          <div className="flex items-center gap-3">
-            <Icon name="Info" size={20} className="text-gorkhon-pink" />
-            <div>
-              <h4 className="font-medium text-gray-800">Есть новость?</h4>
-              <p className="text-sm text-gray-600">
-                Поделитесь важной информацией с жителями поселка
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-blue-50 rounded-2xl p-4 border border-blue-100">
-          <div className="flex items-center gap-3">
-            <Icon name="Bell" size={20} className="text-blue-600" />
-            <div>
-              <h4 className="font-medium text-blue-800">Уведомления</h4>
-              <p className="text-sm text-blue-600">
-                Включите уведомления, чтобы не пропустить важные новости
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 };
