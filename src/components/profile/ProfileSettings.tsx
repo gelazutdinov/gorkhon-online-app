@@ -27,163 +27,132 @@ interface ProfileSettingsProps {
   onClose: () => void;
 }
 
+interface ValidationErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+}
+
 const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) => {
+  // Правильная инициализация selectedAvatar
   const [selectedAvatar, setSelectedAvatar] = useState(() => {
-    // Если у пользователя загруженное фото (base64), то selectedAvatar должен быть этим фото
     if (user.avatar && user.avatar.startsWith('data:')) {
-      return user.avatar;
+      return 'custom';
     }
     
-    // Если user.avatar это эмодзи, найдем соответствующий ID
-    if (user.avatar) {
-      const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
-      if (matchingOption) {
-        return matchingOption.id;
-      }
-    }
-    
-    // По умолчанию
-    return 'default_male';
+    const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
+    return matchingOption ? matchingOption.id : 'default_male';
   });
   
   const [customAvatar, setCustomAvatar] = useState<string>(() => {
-    // Если у пользователя загруженное фото, сохраняем его в customAvatar
     return user.avatar && user.avatar.startsWith('data:') ? user.avatar : '';
   });
+  
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
   const [birthDate, setBirthDate] = useState(user.birthDate || '');
-
+  const [status, setStatus] = useState(user.status || '');
+  const [interests, setInterests] = useState<string[]>(user.interests || []);
+  
   const [isSaving, setIsSaving] = useState(false);
-
-
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Синхронизируем состояние с данными пользователя
   useEffect(() => {
-    console.log('User data changed, updating states');
-    console.log('User avatar:', user.avatar?.startsWith?.('data:') ? 'Custom image' : user.avatar);
-    
     setName(user.name);
     setEmail(user.email);
     setPhone(user.phone);
     setBirthDate(user.birthDate || '');
+    setStatus(user.status || '');
+    setInterests(user.interests || []);
     
     if (user.avatar && user.avatar.startsWith('data:')) {
       setCustomAvatar(user.avatar);
-      setSelectedAvatar(user.avatar);
+      setSelectedAvatar('custom');
     } else {
       setCustomAvatar('');
-      
-      // Если user.avatar это эмодзи, найдем соответствующий ID
-      if (user.avatar) {
-        const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
-        if (matchingOption) {
-          setSelectedAvatar(matchingOption.id);
-        } else {
-          setSelectedAvatar(user.avatar); // Если не нашли, оставляем как есть
-        }
-      } else {
-        setSelectedAvatar('default_male');
-      }
+      const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
+      setSelectedAvatar(matchingOption ? matchingOption.id : 'default_male');
     }
-
   }, [user]);
 
-
-
-  const handleSave = () => {
-    setIsSaving(true);
-    // Логика определения финального аватара:
-    let finalAvatar = selectedAvatar;
+  // Валидация полей
+  const validateFields = (): boolean => {
+    const errors: ValidationErrors = {};
     
-    if (customAvatar && customAvatar.trim() !== '') {
-      // Если есть customAvatar (загруженное или сгенерированное ИИ) - используем его
+    if (!name.trim()) {
+      errors.name = 'Имя обязательно для заполнения';
+    }
+    
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = 'Некорректный email адрес';
+    }
+    
+    if (phone && !/^[\+]?[0-9\(\)\-\s]+$/.test(phone)) {
+      errors.phone = 'Некорректный номер телефона';
+    }
+    
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // Загрузка фото
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Размер файла не должен превышать 5 МБ');
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert('Можно загружать только изображения');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+      setCustomAvatar(base64);
+      setSelectedAvatar('custom');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Сохранение
+  const handleSave = () => {
+    if (!validateFields()) return;
+    
+    setIsSaving(true);
+    
+    let finalAvatar = user.avatar;
+    
+    if (selectedAvatar === 'custom' && customAvatar) {
       finalAvatar = customAvatar;
-    } else if (selectedAvatar) {
-      // Если selectedAvatar это ID эмодзи, преобразуем в сам эмодзи
+    } else if (selectedAvatar !== 'custom') {
       const selectedOption = avatarOptions.find(option => option.id === selectedAvatar);
-      if (selectedOption) {
-        finalAvatar = selectedOption.emoji;
-      }
+      finalAvatar = selectedOption ? selectedOption.emoji : '👤';
     }
     
     try {
-      console.log('=== SAVING PROFILE ===');
-      console.log('customAvatar exists:', !!customAvatar);
-      console.log('customAvatar value:', customAvatar || 'EMPTY');
-      console.log('selectedAvatar:', selectedAvatar);
-      console.log('selectedAvatar option:', selectedAvatar ? avatarOptions.find(opt => opt.id === selectedAvatar) : 'None');
-      console.log('finalAvatar:', finalAvatar);
-      console.log('finalAvatar type:', finalAvatar?.startsWith?.('data:') ? 'Custom image' : 'Emoji');
-      console.log('finalAvatar length:', finalAvatar?.length || 0);
-      
-      const updates = {
-        name,
-        email,
-        phone,
-        birthDate: birthDate || '',
+      const updatedUser: UserProfile = {
+        ...user,
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        birthDate,
+        status: status.trim(),
+        interests,
         avatar: finalAvatar,
       };
       
-      console.log('Updates to save:', {
-        ...updates,
-        avatar: updates.avatar?.startsWith?.('data:') 
-          ? `Custom image (${updates.avatar.length} chars)` 
-          : updates.avatar
-      });
-      
       if (onUserUpdate) {
-        const updatedUser: UserProfile = {
-          ...user,
-          ...updates
-        };
-        
-        console.log('Calling onUserUpdate with:', {
-          ...updatedUser,
-          avatar: updatedUser.avatar?.startsWith?.('data:') 
-            ? `Custom image (${updatedUser.avatar.length} chars)` 
-            : updatedUser.avatar
-        });
-        
         onUserUpdate(updatedUser);
-        
-        // Принудительно обновляем локальное состояние
-        setTimeout(() => {
-          console.log('=== VERIFICATION AFTER SAVE ===');
-          const saved = localStorage.getItem('gorkhon_user_profile');
-          const parsedSaved = saved ? JSON.parse(saved) : null;
-          console.log('Final saved avatar:', parsedSaved?.avatar);
-          
-          // Если аватар не сохранился, попробуем принудительно
-          if (parsedSaved?.avatar !== finalAvatar) {
-            console.warn('Avatar not saved correctly, forcing save...');
-            localStorage.setItem('gorkhon_user_profile', JSON.stringify(updatedUser));
-          }
-        }, 100);
-        
-        // Проверяем, что действительно сохранилось
-        try {
-          const saved = localStorage.getItem('gorkhon_user_profile');
-          const parsedSaved = saved ? JSON.parse(saved) : null;
-          console.log('Verification - saved to localStorage:', {
-            ...parsedSaved,
-            avatar: parsedSaved?.avatar?.startsWith?.('data:') 
-              ? `Custom image (${parsedSaved.avatar.length} chars)` 
-              : parsedSaved?.avatar
-          });
-          
-          // Дополнительная проверка размера localStorage
-          const totalSize = JSON.stringify(updatedUser).length;
-          console.log('Total localStorage size:', totalSize, 'characters');
-          
-          if (totalSize > 5000000) { // 5MB
-            console.warn('Profile data is very large, might cause issues');
-          }
-        } catch (error) {
-          console.error('Error verifying localStorage save:', error);
-          alert('Профиль сохранен, но возможны проблемы с локальным хранилищем');
-        }
       }
       
       onClose();
@@ -195,9 +164,9 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     }
   };
 
+  // Отображение текущего аватара
   const getCurrentAvatarDisplay = () => {
-    // Проверяем сначала customAvatar, потом selectedAvatar
-    if (customAvatar) {
+    if (selectedAvatar === 'custom' && customAvatar) {
       return (
         <img 
           src={customAvatar} 
@@ -207,18 +176,6 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
       );
     }
     
-    // Если выбранный аватар - это base64 строка (загруженное фото)
-    if (selectedAvatar && selectedAvatar.startsWith('data:')) {
-      return (
-        <img 
-          src={selectedAvatar} 
-          alt="Аватар" 
-          className="w-full h-full object-cover rounded-full"
-        />
-      );
-    }
-    
-    // Иначе показываем эмодзи
     const avatarOption = avatarOptions.find(option => option.id === selectedAvatar);
     return (
       <span className="text-4xl">
@@ -227,73 +184,144 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     );
   };
 
+  // Добавление интереса
+  const addInterest = (interest: string) => {
+    if (interest.trim() && !interests.includes(interest.trim())) {
+      setInterests([...interests, interest.trim()]);
+    }
+  };
+
+  // Удаление интереса
+  const removeInterest = (index: number) => {
+    setInterests(interests.filter((_, i) => i !== index));
+  };
+
+  const availableInterests = [
+    'Спорт', 'Музыка', 'Кино', 'Чтение', 'Путешествия', 
+    'Кулинария', 'Фотография', 'Искусство', 'Технологии', 'Природа'
+  ];
+
+  const hasChanges = () => {
+    return name !== user.name || 
+           email !== user.email || 
+           phone !== user.phone || 
+           birthDate !== (user.birthDate || '') ||
+           status !== (user.status || '') ||
+           JSON.stringify(interests) !== JSON.stringify(user.interests || []) ||
+           (selectedAvatar === 'custom' && customAvatar !== user.avatar) ||
+           (selectedAvatar !== 'custom' && avatarOptions.find(opt => opt.id === selectedAvatar)?.emoji !== user.avatar);
+  };
+
   return (
     <>
-      <div className="bg-white/90 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[75vh] overflow-y-auto shadow-2xl border border-white/20">
+      <div className="bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
         {/* Заголовок */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-800">Настройки профиля</h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <Icon name="X" size={20} className="text-gray-500" />
-          </button>
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl rounded-t-2xl">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">Настройки профиля</h2>
+            {hasChanges() && (
+              <p className="text-sm text-orange-600 mt-1">У вас есть несохранённые изменения</p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsPreviewMode(!isPreviewMode)}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title={isPreviewMode ? "Режим редактирования" : "Предпросмотр"}
+            >
+              <Icon name={isPreviewMode ? "Edit" : "Eye"} size={18} className="text-gray-500" />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <Icon name="X" size={20} className="text-gray-500" />
+            </button>
+          </div>
         </div>
 
         <div className="p-6 space-y-6">
           {/* Аватар */}
           <div className="text-center">
-            <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden">
+            <div className="w-28 h-28 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white shadow-lg">
               {getCurrentAvatarDisplay()}
             </div>
             
-
-              
-              {/* Сетка эмодзи аватаров */}
-              <div className="grid grid-cols-4 gap-2">
-                {avatarOptions.map((option) => (
+            {!isPreviewMode && (
+              <>
+                <div className="flex justify-center gap-2 mb-4">
                   <button
-                    key={option.id}
-                    onClick={() => {
-                      console.log('=== EMOJI AVATAR SELECTED ===');
-                      console.log('Selected emoji ID:', option.id);
-                      console.log('Before: customAvatar=', customAvatar || 'EMPTY');
-                      console.log('Before: selectedAvatar=', selectedAvatar);
-                      
-                      setSelectedAvatar(option.id);
-                      setCustomAvatar('');
-                      
-                      console.log('After: setting selectedAvatar to', option.id);
-                      console.log('After: clearing customAvatar');
-                    }}
-                    className={`p-3 rounded-lg border-2 transition-all hover:scale-105 backdrop-blur-sm ${
-                      selectedAvatar === option.id && !customAvatar
-                        ? 'border-gorkhon-pink bg-gorkhon-pink/10'
-                        : 'border-white/30 bg-white/50 hover:border-white/50 hover:bg-white/70'
-                    }`}
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center gap-2 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
                   >
-                    <span className="text-2xl">{option.emoji}</span>
+                    <Icon name="Upload" size={16} />
+                    Загрузить фото
                   </button>
-                ))}
-              </div>
-              
-
+                  {customAvatar && (
+                    <button
+                      onClick={() => {
+                        setCustomAvatar('');
+                        setSelectedAvatar('default_male');
+                      }}
+                      className="flex items-center gap-2 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
+                    >
+                      <Icon name="Trash2" size={16} />
+                      Удалить
+                    </button>
+                  )}
+                </div>
+                
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                
+                {/* Сетка эмодзи аватаров */}
+                <div className="grid grid-cols-4 gap-2">
+                  {avatarOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      onClick={() => {
+                        setSelectedAvatar(option.id);
+                        setCustomAvatar('');
+                      }}
+                      className={`p-3 rounded-lg border-2 transition-all hover:scale-105 ${
+                        selectedAvatar === option.id && !customAvatar
+                          ? 'border-gorkhon-pink bg-gorkhon-pink/10'
+                          : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100'
+                      }`}
+                      title={option.label}
+                    >
+                      <span className="text-2xl">{option.emoji}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Основная информация */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Имя
+                Имя *
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                disabled={isPreviewMode}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                  validationErrors.name ? 'border-red-300' : 'border-gray-300'
+                } ${isPreviewMode ? 'bg-gray-50' : ''}`}
                 placeholder="Ваше имя"
               />
+              {validationErrors.name && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.name}</p>
+              )}
             </div>
 
             <div>
@@ -304,9 +332,15 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                disabled={isPreviewMode}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                  validationErrors.email ? 'border-red-300' : 'border-gray-300'
+                } ${isPreviewMode ? 'bg-gray-50' : ''}`}
                 placeholder="email@example.com"
               />
+              {validationErrors.email && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+              )}
             </div>
 
             <div>
@@ -317,9 +351,15 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                disabled={isPreviewMode}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                  validationErrors.phone ? 'border-red-300' : 'border-gray-300'
+                } ${isPreviewMode ? 'bg-gray-50' : ''}`}
                 placeholder="+7 (999) 123-45-67"
               />
+              {validationErrors.phone && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
+              )}
             </div>
 
             <div>
@@ -330,34 +370,102 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 type="date"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                disabled={isPreviewMode}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                  isPreviewMode ? 'bg-gray-50' : ''
+                }`}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Статус
+              </label>
+              <input
+                type="text"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                disabled={isPreviewMode}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                  isPreviewMode ? 'bg-gray-50' : ''
+                }`}
+                placeholder="Ваш статус или девиз"
+                maxLength={100}
+              />
+              <p className="text-xs text-gray-500 mt-1">{status.length}/100</p>
             </div>
           </div>
 
-          {/* Кнопки */}
-          <div className="flex gap-3 pt-4">
-            <button
-              onClick={onClose}
-              className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-            >
-              Отмена
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSaving ? (
-                <div className="flex items-center gap-2 justify-center">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Сохранение...</span>
-                </div>
-              ) : (
-                'Сохранить'
-              )}
-            </button>
+          {/* Интересы */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Интересы
+            </label>
+            
+            {/* Выбранные интересы */}
+            {interests.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-3">
+                {interests.map((interest, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-gorkhon-pink/10 text-gorkhon-pink rounded-full text-sm"
+                  >
+                    {interest}
+                    {!isPreviewMode && (
+                      <button
+                        onClick={() => removeInterest(index)}
+                        className="text-gorkhon-pink hover:text-red-600"
+                      >
+                        <Icon name="X" size={14} />
+                      </button>
+                    )}
+                  </span>
+                ))}
+              </div>
+            )}
+            
+            {!isPreviewMode && (
+              <div className="flex flex-wrap gap-2">
+                {availableInterests
+                  .filter(interest => !interests.includes(interest))
+                  .map(interest => (
+                  <button
+                    key={interest}
+                    onClick={() => addInterest(interest)}
+                    className="px-3 py-1 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition-colors"
+                  >
+                    + {interest}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
+
+          {/* Кнопки */}
+          {!isPreviewMode && (
+            <div className="flex gap-3 pt-4 sticky bottom-0 bg-white/95 backdrop-blur-xl pb-2">
+              <button
+                onClick={onClose}
+                className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+              >
+                Отмена
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={isSaving || !hasChanges()}
+                className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSaving ? (
+                  <div className="flex items-center gap-2 justify-center">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Сохранение...</span>
+                  </div>
+                ) : (
+                  'Сохранить'
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
