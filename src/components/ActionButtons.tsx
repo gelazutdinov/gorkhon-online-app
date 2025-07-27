@@ -33,42 +33,7 @@ const ActionButtons = () => {
         </CardContent>
       </Card>
 
-      {/* Chat Support */}
-      <Card className="animate-fade-in bg-gradient-warm text-white rounded-2xl hover:shadow-xl transition-all duration-300 group overflow-hidden">
-        {/* Floating decorative elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-3 right-6 w-16 h-16 bg-white/10 rounded-full opacity-50 group-hover:opacity-70 transition-opacity"></div>
-          <div className="absolute bottom-4 left-4 w-10 h-10 bg-white/5 rounded-full opacity-30 group-hover:opacity-50 transition-opacity"></div>
-        </div>
-        
-        <CardContent className="p-4 relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors duration-300 flex-shrink-0">
-              <Icon name="MessageCircle" size={20} className="text-white group-hover:scale-110 transition-transform duration-300" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-base">Чат поддержки</p>
-              <p className="text-sm opacity-90">
-                Есть вопросы? Мы поможем!
-              </p>
-              <p className="text-xs opacity-75">Всегда на связи с вами</p>
-            </div>
-            <div className="flex-shrink-0">
-              <Button 
-                size="sm"
-                className="text-white border-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm"
-                style={{backgroundColor: '#F1117E', borderColor: '#F1117E'}}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#d10e6b'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F1117E'}
-                onClick={() => window.open('https://forms.yandex.ru/u/687f5b9a84227c08790f3222/', '_blank')}
-              >
-                <Icon name="MessageSquare" size={14} className="mr-1" />
-                Написать
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
 
       {/* Footer */}
       <div className="text-center py-6 space-y-3">
