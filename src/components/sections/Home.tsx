@@ -5,6 +5,8 @@ import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import TrackableComponent from "@/components/TrackableComponent";
+import WeatherWidget from "@/components/features/WeatherWidget";
+import HoroscopeWidget from "@/components/features/HoroscopeWidget";
 import Icon from "@/components/ui/icon";
 import { useUser } from "@/hooks/useUser";
 
@@ -20,54 +22,17 @@ interface HomeProps {
 const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   const { user } = useUser();
   
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 6) return 'Доброй ночи';
-    if (hour < 12) return 'Доброе утро';
-    if (hour < 18) return 'Добрый день';
-    return 'Добрый вечер';
-  };
 
-  const getCurrentDate = () => {
-    return new Date().toLocaleDateString('ru-RU', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long'
-    });
-  };
+
+
   
   return (
     <>
-      {/* Приветственная карточка */}
-      {user && (
-        <div className="bg-gradient-to-r from-gorkhon-pink/10 to-gorkhon-green/10 rounded-2xl p-6 mb-6 border border-gray-100">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-bold text-gray-800 mb-1">
-                {getGreeting()}, {user.name}!
-              </h2>
-              <p className="text-gray-600 flex items-center gap-2">
-                <Icon name="Calendar" size={16} />
-                {getCurrentDate()}
-              </p>
-            </div>
-            <div className="text-4xl">👋</div>
-          </div>
-          
-          <div className="mt-4 flex items-center justify-between">
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-1 text-gorkhon-pink">
-                <Icon name="MapPin" size={14} />
-                <span>Горхон</span>
-              </div>
-              <div className="flex items-center gap-1 text-gorkhon-green">
-                <Icon name="Users" size={14} />
-                <span>Активный житель</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Погода и гороскоп */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <WeatherWidget />
+        <HoroscopeWidget />
+      </div>
 
       {/* Быстрый доступ */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-6">
