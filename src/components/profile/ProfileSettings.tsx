@@ -2,6 +2,25 @@ import { useState, useRef, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
 
+const avatarOptions = [
+  { id: 'default_male', emoji: '👨', label: 'Мужчина' },
+  { id: 'default_female', emoji: '👩', label: 'Женщина' },
+  { id: 'businessman', emoji: '👨‍💼', label: 'Бизнесмен' },
+  { id: 'businesswoman', emoji: '👩‍💼', label: 'Бизнесвумен' },
+  { id: 'worker', emoji: '👨‍🔧', label: 'Рабочий' },
+  { id: 'worker_woman', emoji: '👩‍🔧', label: 'Рабочая' },
+  { id: 'farmer', emoji: '👨‍🌾', label: 'Фермер' },
+  { id: 'farmer_woman', emoji: '👩‍🌾', label: 'Фермерша' },
+  { id: 'teacher', emoji: '👨‍🏫', label: 'Учитель' },
+  { id: 'teacher_woman', emoji: '👩‍🏫', label: 'Учительница' },
+  { id: 'doctor', emoji: '👨‍⚕️', label: 'Врач' },
+  { id: 'doctor_woman', emoji: '👩‍⚕️', label: 'Врач' },
+  { id: 'student', emoji: '👨‍🎓', label: 'Студент' },
+  { id: 'student_woman', emoji: '👩‍🎓', label: 'Студентка' },
+  { id: 'elderly_man', emoji: '👴', label: 'Пожилой мужчина' },
+  { id: 'elderly_woman', emoji: '👵', label: 'Пожилая женщина' }
+];
+
 interface ProfileSettingsProps {
   user: UserProfile;
   onUserUpdate?: (user: UserProfile) => void;
@@ -39,24 +58,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const avatarOptions = [
-    { id: 'default_male', emoji: '👨', label: 'Мужчина' },
-    { id: 'default_female', emoji: '👩', label: 'Женщина' },
-    { id: 'businessman', emoji: '👨‍💼', label: 'Бизнесмен' },
-    { id: 'businesswoman', emoji: '👩‍💼', label: 'Бизнесвумен' },
-    { id: 'worker', emoji: '👨‍🔧', label: 'Рабочий' },
-    { id: 'worker_woman', emoji: '👩‍🔧', label: 'Рабочая' },
-    { id: 'farmer', emoji: '👨‍🌾', label: 'Фермер' },
-    { id: 'farmer_woman', emoji: '👩‍🌾', label: 'Фермерша' },
-    { id: 'teacher', emoji: '👨‍🏫', label: 'Учитель' },
-    { id: 'teacher_woman', emoji: '👩‍🏫', label: 'Учительница' },
-    { id: 'doctor', emoji: '👨‍⚕️', label: 'Врач' },
-    { id: 'doctor_woman', emoji: '👩‍⚕️', label: 'Врач' },
-    { id: 'student', emoji: '👨‍🎓', label: 'Студент' },
-    { id: 'student_woman', emoji: '👩‍🎓', label: 'Студентка' },
-    { id: 'elderly_man', emoji: '👴', label: 'Пожилой мужчина' },
-    { id: 'elderly_woman', emoji: '👵', label: 'Пожилая женщина' }
-  ];
+
 
   // Синхронизируем состояние с данными пользователя
   useEffect(() => {
