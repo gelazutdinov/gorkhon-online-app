@@ -1,25 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/hooks/useUser';
-
-const avatarOptions = [
-  { id: 'default_male', emoji: '👨', label: 'Мужчина' },
-  { id: 'default_female', emoji: '👩', label: 'Женщина' },
-  { id: 'businessman', emoji: '👨‍💼', label: 'Бизнесмен' },
-  { id: 'businesswoman', emoji: '👩‍💼', label: 'Бизнесвумен' },
-  { id: 'worker', emoji: '👨‍🔧', label: 'Рабочий' },
-  { id: 'worker_woman', emoji: '👩‍🔧', label: 'Рабочая' },
-  { id: 'farmer', emoji: '👨‍🌾', label: 'Фермер' },
-  { id: 'farmer_woman', emoji: '👩‍🌾', label: 'Фермерша' },
-  { id: 'teacher', emoji: '👨‍🏫', label: 'Учитель' },
-  { id: 'teacher_woman', emoji: '👩‍🏫', label: 'Учительница' },
-  { id: 'doctor', emoji: '👨‍⚕️', label: 'Врач' },
-  { id: 'doctor_woman', emoji: '👩‍⚕️', label: 'Врач' },
-  { id: 'student', emoji: '👨‍🎓', label: 'Студент' },
-  { id: 'student_woman', emoji: '👩‍🎓', label: 'Студентка' },
-  { id: 'elderly_man', emoji: '👴', label: 'Пожилой мужчина' },
-  { id: 'elderly_woman', emoji: '👵', label: 'Пожилая женщина' }
-];
 
 interface ProfileSettingsProps {
   user: UserProfile;
@@ -34,32 +15,14 @@ interface ValidationErrors {
 }
 
 const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) => {
-  // Правильная инициализация selectedAvatar
-  const [selectedAvatar, setSelectedAvatar] = useState(() => {
-    if (user.avatar && user.avatar.startsWith('data:')) {
-      return 'custom';
-    }
-    
-    const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
-    return matchingOption ? matchingOption.id : 'default_male';
-  });
-  
-  const [customAvatar, setCustomAvatar] = useState<string>(() => {
-    return user.avatar && user.avatar.startsWith('data:') ? user.avatar : '';
-  });
-  
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
   const [birthDate, setBirthDate] = useState(user.birthDate || '');
-  const [status, setStatus] = useState(user.status || '');
-  const [interests, setInterests] = useState<string[]>(user.interests || []);
+  const [gender, setGender] = useState<'male' | 'female'>(user.gender);
   
   const [isSaving, setIsSaving] = useState(false);
-  const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Синхронизируем состояние с данными пользователя
   useEffect(() => {
@@ -67,17 +30,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     setEmail(user.email);
     setPhone(user.phone);
     setBirthDate(user.birthDate || '');
-    setStatus(user.status || '');
-    setInterests(user.interests || []);
-    
-    if (user.avatar && user.avatar.startsWith('data:')) {
-      setCustomAvatar(user.avatar);
-      setSelectedAvatar('custom');
-    } else {
-      setCustomAvatar('');
-      const matchingOption = avatarOptions.find(option => option.emoji === user.avatar);
-      setSelectedAvatar(matchingOption ? matchingOption.id : 'default_male');
-    }
+    setGender(user.gender);
   }, [user]);
 
   // Валидация полей
@@ -100,44 +53,11 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     return Object.keys(errors).length === 0;
   };
 
-  // Загрузка фото
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Размер файла не должен превышать 5 МБ');
-      return;
-    }
-
-    if (!file.type.startsWith('image/')) {
-      alert('Можно загружать только изображения');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const base64 = e.target?.result as string;
-      setCustomAvatar(base64);
-      setSelectedAvatar('custom');
-    };
-    reader.readAsDataURL(file);
-  };
-
   // Сохранение
   const handleSave = () => {
     if (!validateFields()) return;
     
     setIsSaving(true);
-    
-    let finalAvatar = user.avatar;
-    
-    if (selectedAvatar === 'custom' && customAvatar) {
-      finalAvatar = customAvatar;
-    } else if (selectedAvatar !== 'custom') {
-      const selectedOption = avatarOptions.find(option => option.id === selectedAvatar);
-      finalAvatar = selectedOption ? selectedOption.emoji : '👤';
-    }
     
     try {
       const updatedUser: UserProfile = {
@@ -146,9 +66,7 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         email: email.trim(),
         phone: phone.trim(),
         birthDate,
-        status: status.trim(),
-        interests,
-        avatar: finalAvatar,
+        gender,
       };
       
       if (onUserUpdate) {
@@ -164,52 +82,38 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
     }
   };
 
-  // Отображение текущего аватара
-  const getCurrentAvatarDisplay = () => {
-    if (selectedAvatar === 'custom' && customAvatar) {
-      return (
-        <img 
-          src={customAvatar} 
-          alt="Аватар" 
-          className="w-full h-full object-cover rounded-full"
-        />
-      );
-    }
+  // Отображение силуэта аватара
+  const getAvatarSilhouette = () => {
+    const isFemale = gender === 'female';
     
-    const avatarOption = avatarOptions.find(option => option.id === selectedAvatar);
     return (
-      <span className="text-4xl">
-        {avatarOption?.emoji || '👤'}
-      </span>
+      <div className={`w-full h-full rounded-full flex items-center justify-center ${
+        isFemale ? 'bg-gradient-to-br from-gorkhon-pink to-pink-600' : 'bg-gradient-to-br from-blue-500 to-blue-700'
+      }`}>
+        <div className={`w-12 h-12 ${
+          isFemale ? 'text-blue-100' : 'text-pink-100'
+        } flex items-center justify-center`}>
+          <svg width="48" height="48" viewBox="0 0 64 64" fill="currentColor">
+            <path d="M32 8c-6.627 0-12 5.373-12 12 0 4.411 2.387 8.257 5.926 10.361C21.724 32.768 18 37.187 18 42.5V56h28V42.5c0-5.313-3.724-9.732-7.926-12.139C41.613 28.257 44 24.411 44 20c0-6.627-5.373-12-12-12z"/>
+            {isFemale && (
+              <>
+                <path d="M24 24c0 2 1 4 2 5s3 1 6 1 5 0 6-1 2-3 2-5" strokeWidth="1" stroke="currentColor" fill="none"/>
+                <circle cx="28" cy="22" r="1"/>
+                <circle cx="36" cy="22" r="1"/>
+              </>
+            )}
+          </svg>
+        </div>
+      </div>
     );
   };
-
-  // Добавление интереса
-  const addInterest = (interest: string) => {
-    if (interest.trim() && !interests.includes(interest.trim())) {
-      setInterests([...interests, interest.trim()]);
-    }
-  };
-
-  // Удаление интереса
-  const removeInterest = (index: number) => {
-    setInterests(interests.filter((_, i) => i !== index));
-  };
-
-  const availableInterests = [
-    'Спорт', 'Музыка', 'Кино', 'Чтение', 'Путешествия', 
-    'Кулинария', 'Фотография', 'Искусство', 'Технологии', 'Природа'
-  ];
 
   const hasChanges = () => {
     return name !== user.name || 
            email !== user.email || 
            phone !== user.phone || 
            birthDate !== (user.birthDate || '') ||
-           status !== (user.status || '') ||
-           JSON.stringify(interests) !== JSON.stringify(user.interests || []) ||
-           (selectedAvatar === 'custom' && customAvatar !== user.avatar) ||
-           (selectedAvatar !== 'custom' && avatarOptions.find(opt => opt.id === selectedAvatar)?.emoji !== user.avatar);
+           gender !== user.gender;
   };
 
   return (
@@ -218,89 +122,28 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
         {/* Заголовок */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl rounded-t-2xl">
           <div>
-            <h2 className="text-xl font-semibold text-gray-800">Настройки профиля</h2>
+            <h2 className="text-xl font-semibold text-gray-800">Основные настройки</h2>
             {hasChanges() && (
               <p className="text-sm text-orange-600 mt-1">У вас есть несохранённые изменения</p>
             )}
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsPreviewMode(!isPreviewMode)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title={isPreviewMode ? "Режим редактирования" : "Предпросмотр"}
-            >
-              <Icon name={isPreviewMode ? "Edit" : "Eye"} size={18} className="text-gray-500" />
-            </button>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Icon name="X" size={20} className="text-gray-500" />
-            </button>
-          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <Icon name="X" size={20} className="text-gray-500" />
+          </button>
         </div>
 
         <div className="p-6 space-y-6">
           {/* Аватар */}
           <div className="text-center">
-            <div className="w-28 h-28 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white shadow-lg">
-              {getCurrentAvatarDisplay()}
+            <div className="w-24 h-24 mx-auto mb-4 overflow-hidden ring-4 ring-white shadow-lg">
+              {getAvatarSilhouette()}
             </div>
-            
-            {!isPreviewMode && (
-              <>
-                <div className="flex justify-center gap-2 mb-4">
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center gap-2 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
-                  >
-                    <Icon name="Upload" size={16} />
-                    Загрузить фото
-                  </button>
-                  {customAvatar && (
-                    <button
-                      onClick={() => {
-                        setCustomAvatar('');
-                        setSelectedAvatar('default_male');
-                      }}
-                      className="flex items-center gap-2 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
-                    >
-                      <Icon name="Trash2" size={16} />
-                      Удалить
-                    </button>
-                  )}
-                </div>
-                
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-                
-                {/* Сетка эмодзи аватаров */}
-                <div className="grid grid-cols-4 gap-2">
-                  {avatarOptions.map((option) => (
-                    <button
-                      key={option.id}
-                      onClick={() => {
-                        setSelectedAvatar(option.id);
-                        setCustomAvatar('');
-                      }}
-                      className={`p-3 rounded-lg border-2 transition-all hover:scale-105 ${
-                        selectedAvatar === option.id && !customAvatar
-                          ? 'border-gorkhon-pink bg-gorkhon-pink/10'
-                          : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100'
-                      }`}
-                      title={option.label}
-                    >
-                      <span className="text-2xl">{option.emoji}</span>
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
+            <p className="text-sm text-gray-500">
+              Силуэт генерируется автоматически на основе пола
+            </p>
           </div>
 
           {/* Основная информация */}
@@ -313,15 +156,54 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                disabled={isPreviewMode}
                 className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
                   validationErrors.name ? 'border-red-300' : 'border-gray-300'
-                } ${isPreviewMode ? 'bg-gray-50' : ''}`}
+                }`}
                 placeholder="Ваше имя"
               />
               {validationErrors.name && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors.name}</p>
               )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Пол *
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setGender('male')}
+                  className={`p-3 border-2 rounded-lg transition-all ${
+                    gender === 'male'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center">
+                      <span className="text-pink-100 text-xs">♂</span>
+                    </div>
+                    <span>Мужской</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGender('female')}
+                  className={`p-3 border-2 rounded-lg transition-all ${
+                    gender === 'female'
+                      ? 'border-gorkhon-pink bg-pink-50 text-pink-700'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-6 h-6 bg-gradient-to-br from-gorkhon-pink to-pink-600 rounded-full flex items-center justify-center">
+                      <span className="text-blue-100 text-xs">♀</span>
+                    </div>
+                    <span>Женский</span>
+                  </div>
+                </button>
+              </div>
             </div>
 
             <div>
@@ -332,10 +214,9 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={isPreviewMode}
                 className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
                   validationErrors.email ? 'border-red-300' : 'border-gray-300'
-                } ${isPreviewMode ? 'bg-gray-50' : ''}`}
+                }`}
                 placeholder="email@example.com"
               />
               {validationErrors.email && (
@@ -351,10 +232,9 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                disabled={isPreviewMode}
                 className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
                   validationErrors.phone ? 'border-red-300' : 'border-gray-300'
-                } ${isPreviewMode ? 'bg-gray-50' : ''}`}
+                }`}
                 placeholder="+7 (999) 123-45-67"
               />
               {validationErrors.phone && (
@@ -370,102 +250,47 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
                 type="date"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                disabled={isPreviewMode}
-                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
-                  isPreviewMode ? 'bg-gray-50' : ''
-                }`}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Статус
-              </label>
-              <input
-                type="text"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                disabled={isPreviewMode}
-                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
-                  isPreviewMode ? 'bg-gray-50' : ''
-                }`}
-                placeholder="Ваш статус или девиз"
-                maxLength={100}
-              />
-              <p className="text-xs text-gray-500 mt-1">{status.length}/100</p>
             </div>
           </div>
 
-          {/* Интересы */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Интересы
-            </label>
-            
-            {/* Выбранные интересы */}
-            {interests.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-3">
-                {interests.map((interest, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-gorkhon-pink/10 text-gorkhon-pink rounded-full text-sm"
-                  >
-                    {interest}
-                    {!isPreviewMode && (
-                      <button
-                        onClick={() => removeInterest(index)}
-                        className="text-gorkhon-pink hover:text-red-600"
-                      >
-                        <Icon name="X" size={14} />
-                      </button>
-                    )}
-                  </span>
-                ))}
-              </div>
-            )}
-            
-            {!isPreviewMode && (
-              <div className="flex flex-wrap gap-2">
-                {availableInterests
-                  .filter(interest => !interests.includes(interest))
-                  .map(interest => (
-                  <button
-                    key={interest}
-                    onClick={() => addInterest(interest)}
-                    className="px-3 py-1 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition-colors"
-                  >
-                    + {interest}
-                  </button>
-                ))}
-              </div>
-            )}
+          {/* Информация */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <h4 className="font-medium text-blue-800 mb-2 flex items-center gap-2">
+              <Icon name="Info" size={16} />
+              О силуэтах
+            </h4>
+            <div className="space-y-1 text-sm text-blue-700">
+              <div>• Женский силуэт: розовый на синем фоне</div>
+              <div>• Мужской силуэт: синий на розовом фоне</div>
+              <div>• Силуэт автоматически обновляется при смене пола</div>
+            </div>
           </div>
 
           {/* Кнопки */}
-          {!isPreviewMode && (
-            <div className="flex gap-3 pt-4 sticky bottom-0 bg-white/95 backdrop-blur-xl pb-2">
-              <button
-                onClick={onClose}
-                className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-              >
-                Отмена
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={isSaving || !hasChanges()}
-                className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSaving ? (
-                  <div className="flex items-center gap-2 justify-center">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Сохранение...</span>
-                  </div>
-                ) : (
-                  'Сохранить'
-                )}
-              </button>
-            </div>
-          )}
+          <div className="flex gap-3 pt-4 sticky bottom-0 bg-white/95 backdrop-blur-xl pb-2">
+            <button
+              onClick={onClose}
+              className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Отмена
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={isSaving || !hasChanges()}
+              className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSaving ? (
+                <div className="flex items-center gap-2 justify-center">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Сохранение...</span>
+                </div>
+              ) : (
+                'Сохранить'
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </>
