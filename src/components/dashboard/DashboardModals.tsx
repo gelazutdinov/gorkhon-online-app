@@ -5,7 +5,7 @@ import NotificationCenter from '@/components/features/NotificationCenter';
 import DataExportImport from '@/components/features/DataExportImport';
 import ThemeSelector from '@/components/features/ThemeSelector';
 import QuickActions from '@/components/features/QuickActions';
-import SocialProfile from '@/components/social/SocialProfile';
+import VKProfile from '@/components/social/VKProfile';
 import ResidentsFeed from '@/components/social/ResidentsFeed';
 
 interface DashboardModalsProps {
@@ -128,7 +128,7 @@ const DashboardModals = ({
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
           <div className="relative">
-            <SocialProfile
+            <VKProfile
               user={user}
               onUserUpdate={onUserUpdate}
               onClose={onCloseSocialProfile}

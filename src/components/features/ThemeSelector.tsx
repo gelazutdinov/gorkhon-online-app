@@ -11,6 +11,7 @@ interface Theme {
     accent: string;
   };
   preview: string;
+  isDark?: boolean;
 }
 
 interface ThemeSelectorProps {
@@ -28,6 +29,29 @@ const themes: Theme[] = [
       accent: '#FFE066'
     },
     preview: 'bg-gradient-to-r from-gorkhon-pink to-gorkhon-green'
+  },
+  {
+    id: 'auto',
+    name: 'Автоматическая',
+    description: 'Следует системным настройкам',
+    colors: {
+      primary: '#F1117E',
+      secondary: '#4ECDC4',
+      accent: '#FFE066'
+    },
+    preview: 'bg-gradient-to-r from-gray-600 via-gorkhon-pink to-gray-800'
+  },
+  {
+    id: 'dark',
+    name: 'Темная',
+    description: 'Элегантная темная тема',
+    colors: {
+      primary: '#6366F1',
+      secondary: '#8B5CF6',
+      accent: '#EC4899'
+    },
+    preview: 'bg-gradient-to-r from-gray-800 to-gray-900',
+    isDark: true
   },
   {
     id: 'nature',
@@ -72,23 +96,13 @@ const themes: Theme[] = [
       accent: '#A78BFA'
     },
     preview: 'bg-gradient-to-r from-violet-500 to-purple-600'
-  },
-  {
-    id: 'dark',
-    name: 'Темная тема',
-    description: 'Элегантная темная тема',
-    colors: {
-      primary: '#374151',
-      secondary: '#1F2937',
-      accent: '#6B7280'
-    },
-    preview: 'bg-gradient-to-r from-gray-700 to-gray-800'
   }
 ];
 
 const ThemeSelector = ({ onClose }: ThemeSelectorProps) => {
   const [selectedTheme, setSelectedTheme] = useState('default');
   const [previewTheme, setPreviewTheme] = useState<string | null>(null);
+  const [systemPrefersDark, setSystemPrefersDark] = useState(false);
 
   useEffect(() => {
     // Загружаем сохраненную тему
@@ -96,13 +110,45 @@ const ThemeSelector = ({ onClose }: ThemeSelectorProps) => {
     if (savedTheme) {
       setSelectedTheme(savedTheme);
     }
-  }, []);
+
+    // Определяем системные настройки темы
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setSystemPrefersDark(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setSystemPrefersDark(e.matches);
+      // Если выбрана автоматическая тема, применяем изменения
+      if (selectedTheme === 'auto') {
+        applyAutoTheme(e.matches);
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [selectedTheme]);
+
+  const applyAutoTheme = (isDark: boolean) => {
+    const root = document.documentElement;
+    
+    if (isDark) {
+      // Темная тема
+      root.style.setProperty('--color-gorkhon-pink', '#6366F1');
+      root.style.setProperty('--color-gorkhon-green', '#8B5CF6');
+      root.style.setProperty('--color-gorkhon-blue', '#EC4899');
+      document.body.classList.add('dark');
+    } else {
+      // Светлая тема (default)
+      root.style.removeProperty('--color-gorkhon-pink');
+      root.style.removeProperty('--color-gorkhon-green');
+      root.style.removeProperty('--color-gorkhon-blue');
+      document.body.classList.remove('dark');
+    }
+  };
 
   const applyTheme = (themeId: string) => {
     const theme = themes.find(t => t.id === themeId);
     if (!theme) return;
 
-    // Применяем CSS переменные для темы
     const root = document.documentElement;
     
     if (themeId === 'default') {
@@ -110,10 +156,21 @@ const ThemeSelector = ({ onClose }: ThemeSelectorProps) => {
       root.style.removeProperty('--color-gorkhon-pink');
       root.style.removeProperty('--color-gorkhon-green');
       root.style.removeProperty('--color-gorkhon-blue');
+      document.body.classList.remove('dark');
+    } else if (themeId === 'auto') {
+      // Применяем автоматическую тему
+      applyAutoTheme(systemPrefersDark);
     } else {
+      // Применяем выбранную тему
       root.style.setProperty('--color-gorkhon-pink', theme.colors.primary);
       root.style.setProperty('--color-gorkhon-green', theme.colors.secondary);
       root.style.setProperty('--color-gorkhon-blue', theme.colors.accent);
+      
+      if (theme.isDark) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
     }
 
     // Сохраняем выбор
@@ -142,19 +199,10 @@ const ThemeSelector = ({ onClose }: ThemeSelectorProps) => {
     onClose();
   };
 
-  const getContrastColor = (hexColor: string) => {
-    // Простая функция для определения контрастного цвета
-    const r = parseInt(hexColor.slice(1, 3), 16);
-    const g = parseInt(hexColor.slice(3, 5), 16);
-    const b = parseInt(hexColor.slice(5, 7), 16);
-    const brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    return brightness > 128 ? '#000000' : '#FFFFFF';
-  };
-
   return (
-    <div className="bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto shadow-2xl border border-white/20">
+    <div className="bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
       {/* Заголовок */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-200">
+      <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl">
         <h2 className="text-xl font-semibold text-gray-800">Темы оформления</h2>
         <div className="flex items-center gap-2">
           {previewTheme && (
@@ -184,6 +232,17 @@ const ThemeSelector = ({ onClose }: ThemeSelectorProps) => {
           </div>
         )}
 
+        {/* Системная информация */}
+        <div className="bg-gray-50 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <Icon name="Monitor" size={16} className="text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">Системные настройки</span>
+          </div>
+          <p className="text-sm text-gray-600">
+            Система предпочитает: {systemPrefersDark ? 'Темную тему' : 'Светлую тему'}
+          </p>
+        </div>
+
         <div className="grid gap-3">
           {themes.map((theme) => (
             <div
@@ -196,29 +255,56 @@ const ThemeSelector = ({ onClose }: ThemeSelectorProps) => {
               onClick={() => previewThemeTemporary(theme.id)}
             >
               {/* Превью цветов */}
-              <div className={`h-20 ${theme.preview} relative`}>
+              <div className={`h-16 ${theme.preview} relative`}>
                 <div className="absolute inset-0 bg-black/10"></div>
-                <div className="absolute top-2 left-2 text-white font-medium">
+                <div className="absolute top-2 left-3 text-white font-medium text-sm">
                   {theme.name}
                 </div>
                 {(previewTheme || selectedTheme) === theme.id && (
                   <div className="absolute top-2 right-2">
-                    <Icon name="Check" size={20} className="text-white" />
+                    <Icon name="Check" size={16} className="text-white" />
+                  </div>
+                )}
+                
+                {/* Специальные иконки */}
+                {theme.id === 'auto' && (
+                  <div className="absolute bottom-2 right-2">
+                    <Icon name="RefreshCw" size={14} className="text-white/80" />
+                  </div>
+                )}
+                {theme.isDark && (
+                  <div className="absolute bottom-2 right-2">
+                    <Icon name="Moon" size={14} className="text-white/80" />
                   </div>
                 )}
               </div>
 
               {/* Информация о теме */}
-              <div className="p-4">
+              <div className="p-3">
                 <h4 className="font-medium text-gray-800 mb-1">{theme.name}</h4>
-                <p className="text-sm text-gray-600 mb-3">{theme.description}</p>
+                <p className="text-sm text-gray-600 mb-2">{theme.description}</p>
+                
+                {/* Дополнительная информация */}
+                {theme.id === 'auto' && (
+                  <div className="flex items-center gap-1 text-xs text-blue-600">
+                    <Icon name="Smartphone" size={12} />
+                    <span>Адаптируется к системе</span>
+                  </div>
+                )}
+                
+                {theme.isDark && (
+                  <div className="flex items-center gap-1 text-xs text-purple-600">
+                    <Icon name="Moon" size={12} />
+                    <span>Темная тема</span>
+                  </div>
+                )}
                 
                 {/* Цветовая палитра */}
-                <div className="flex gap-2">
+                <div className="flex gap-1 mt-2">
                   {Object.entries(theme.colors).map(([key, color]) => (
                     <div
                       key={key}
-                      className="w-6 h-6 rounded-full border border-gray-300"
+                      className="w-4 h-4 rounded-full border border-gray-300"
                       style={{ backgroundColor: color }}
                       title={`${key}: ${color}`}
                     />
@@ -235,10 +321,11 @@ const ThemeSelector = ({ onClose }: ThemeSelectorProps) => {
             <Icon name="Info" size={20} className="text-gray-600 mt-0.5" />
             <div>
               <h4 className="font-medium text-gray-800 mb-1">О темах</h4>
-              <p className="text-sm text-gray-600">
-                Темы изменяют цветовую схему всего приложения. 
-                Ваш выбор сохраняется локально в браузере.
-              </p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• <strong>Автоматическая</strong> - адаптируется к системным настройкам</li>
+                <li>• <strong>Темная</strong> - комфортна для глаз в темное время</li>
+                <li>• Ваш выбор сохраняется локально в браузере</li>
+              </ul>
             </div>
           </div>
         </div>
