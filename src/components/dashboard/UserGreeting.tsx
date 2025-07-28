@@ -29,9 +29,10 @@ const UserGreeting = ({ user, daysWithUs, formattedTimeSpent, activityLevel }: U
         background: 'linear-gradient(135deg, #005BFF 0%, #F1117E 100%)'
       }}>
         <div className="relative z-10">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <h2 className="text-lg sm:text-2xl font-bold mb-1 truncate">{getGreeting()}, {user.name}!</h2>
+          <div className="flex items-start justify-between">
+            <div className="flex-1 min-w-0 pr-3">
+              <h2 className="text-lg sm:text-2xl font-bold mb-1">{getGreeting()}!</h2>
+              <div className="text-xl sm:text-3xl font-extrabold mb-2 truncate">{user.name}</div>
               <p className="text-white/90 text-sm sm:text-base">Добро пожаловать в личный кабинет</p>
             </div>
             <div className="ml-4 p-2 sm:p-3 bg-white/20 backdrop-blur-sm rounded-full flex-shrink-0">
