@@ -14,9 +14,9 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       icon: 'Home'
     },
     {
-      id: 'ecosystem',
-      label: 'Экосистема',
-      icon: 'Grid3X3'
+      id: 'news',
+      label: 'Новости',
+      icon: 'Newspaper'
     },
     {
       id: 'smart',
