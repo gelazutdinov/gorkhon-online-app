@@ -124,7 +124,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
 
   if (isMinimized) {
     return (
-      <div className="fixed bottom-4 right-4 z-50">
+      <div className="fixed bottom-28 right-4 z-[60]">
         <button
           onClick={() => setIsMinimized(false)}
           className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
@@ -137,50 +137,52 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
   }
 
   return (
-    <div className="fixed inset-0 sm:bottom-4 sm:right-4 sm:inset-auto z-50 flex sm:block">
-      <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-80 h-full sm:h-96 flex flex-col overflow-hidden">
+    <div className="fixed inset-0 sm:bottom-28 sm:right-4 sm:inset-auto z-[60] flex sm:block">
+      <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-96 h-full sm:h-[32rem] flex flex-col overflow-hidden">
         {/* Заголовок */}
-        <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-3 sm:p-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <Icon name="Bot" size={14} className="sm:w-4 sm:h-4" />
+        <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-4 sm:p-5 flex items-center justify-between shadow-lg">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center animate-pulse">
+              <Icon name="Bot" size={16} className="sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm sm:text-base">Лина</h3>
-              <p className="text-xs text-white/80 hidden sm:block">Ваш цифровой помощник</p>
+              <h3 className="font-bold text-base sm:text-lg">🤖 Лина</h3>
+              <p className="text-sm text-white/90 sm:block">Цифровой помощник Горхона</p>
             </div>
           </div>
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setIsMinimized(true)}
-              className="p-1 hover:bg-white/20 rounded transition-colors hidden sm:block"
+              className="p-2 hover:bg-white/20 rounded-lg transition-colors hidden sm:block"
+              title="Свернуть"
             >
-              <Icon name="Minus" size={16} />
+              <Icon name="Minus" size={18} />
             </button>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
+              className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+              title="Закрыть"
             >
-              <Icon name="X" size={16} />
+              <Icon name="X" size={18} />
             </button>
           </div>
         </div>
 
         {/* Сообщения */}
-        <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-3 sm:space-y-4">
+        <div className="flex-1 p-4 sm:p-5 overflow-y-auto space-y-4 sm:space-y-5 bg-gradient-to-b from-gray-50/50 to-white">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[85%] sm:max-w-[80%] p-2 sm:p-3 rounded-2xl ${
+                className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 rounded-2xl shadow-sm ${
                   message.isUser
-                    ? 'bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white'
-                    : 'bg-gray-100 text-gray-800'
+                    ? 'bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white shadow-pink-200'
+                    : 'bg-white text-gray-800 border border-gray-100'
                 }`}
               >
-                <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
+                <p className="text-sm sm:text-base leading-relaxed whitespace-pre-line">{message.text}</p>
                 <p className={`text-xs mt-1 ${
                   message.isUser ? 'text-white/70' : 'text-gray-500'
                 }`}>
@@ -205,22 +207,22 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
         </div>
 
         {/* Ввод сообщения */}
-        <div className="p-3 sm:p-4 border-t border-gray-100 safe-area-bottom">
-          <div className="flex items-center gap-2">
+        <div className="p-4 sm:p-5 border-t border-gray-200 bg-white safe-area-bottom">
+          <div className="flex items-center gap-3">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Напишите ваш вопрос..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm"
+              placeholder="Спросите что-нибудь..."
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base shadow-inner"
             />
             <button
               onClick={handleSendMessage}
               disabled={!inputValue.trim()}
-              className="p-2 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-full hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+              className="p-3 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-full hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 hover:scale-105"
             >
-              <Icon name="Send" size={16} />
+              <Icon name="Send" size={18} />
             </button>
           </div>
         </div>
