@@ -9,6 +9,7 @@ import StatisticsModal from '@/components/dashboard/StatisticsModal';
 import BackupModal from '@/components/dashboard/BackupModal';
 import AccessibilityModal from '@/components/dashboard/AccessibilityModal';
 import SettingsModal from '@/components/dashboard/SettingsModal';
+import SecuritySettings from '@/components/security/SecuritySettings';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -24,6 +25,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
   const [showLina, setShowLina] = useState(false);
   const [showDataManager, setShowDataManager] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showSecurity, setShowSecurity] = useState(false);
   const [showBackup, setShowBackup] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
 
@@ -78,6 +80,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
       <AdditionalTools 
         onShowDataManager={() => setShowDataManager(true)}
         onShowSettings={() => setShowSettings(true)}
+        onShowSecurity={() => setShowSecurity(true)}
         onLogout={onLogout}
       />
 
@@ -116,6 +119,28 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
 
       {showAccessibility && (
         <AccessibilityModal onClose={() => setShowAccessibility(false)} />
+      )}
+
+      {showSecurity && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={() => setShowSecurity(false)}></div>
+          <div className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-2xl shadow-2xl">
+              <div className="sticky top-0 bg-white rounded-t-2xl p-4 border-b border-gray-200 flex items-center justify-between">
+                <h2 className="text-xl font-bold">Настройки безопасности</h2>
+                <button
+                  onClick={() => setShowSecurity(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <Icon name="X" size={20} />
+                </button>
+              </div>
+              <div className="p-6">
+                <SecuritySettings />
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {showSettings && (

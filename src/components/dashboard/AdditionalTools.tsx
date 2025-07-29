@@ -3,10 +3,11 @@ import Icon from '@/components/ui/icon';
 interface AdditionalToolsProps {
   onShowDataManager: () => void;
   onShowSettings: () => void;
+  onShowSecurity: () => void;
   onLogout: () => void;
 }
 
-const AdditionalTools = ({ onShowDataManager, onShowSettings, onLogout }: AdditionalToolsProps) => {
+const AdditionalTools = ({ onShowDataManager, onShowSettings, onShowSecurity, onLogout }: AdditionalToolsProps) => {
   return (
     <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">Инструменты</h3>
@@ -19,6 +20,18 @@ const AdditionalTools = ({ onShowDataManager, onShowSettings, onLogout }: Additi
           <div className="text-left flex-1 min-w-0">
             <div className="font-medium text-gray-800 text-sm sm:text-base">Управление данными</div>
             <div className="text-xs sm:text-sm text-yellow-600">Экспорт и очистка данных</div>
+          </div>
+          <Icon name="ChevronRight" size={16} className="text-gray-400 flex-shrink-0" />
+        </button>
+        
+        <button
+          onClick={onShowSecurity}
+          className="w-full flex items-center gap-3 p-3 sm:p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors active:scale-95"
+        >
+          <Icon name="Shield" size={20} className="text-green-600 flex-shrink-0" />
+          <div className="text-left flex-1 min-w-0">
+            <div className="font-medium text-gray-800 text-sm sm:text-base">Безопасность</div>
+            <div className="text-xs sm:text-sm text-green-600">2FA и защита данных</div>
           </div>
           <Icon name="ChevronRight" size={16} className="text-gray-400 flex-shrink-0" />
         </button>

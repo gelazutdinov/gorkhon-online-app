@@ -14,9 +14,14 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       icon: 'Home'
     },
     {
-      id: 'news',
-      label: 'Новости',
-      icon: 'Newspaper'
+      id: 'forum',
+      label: 'Форум',
+      icon: 'MessageSquare'
+    },
+    {
+      id: 'events',
+      label: 'События',
+      icon: 'Calendar'
     },
     {
       id: 'profile',

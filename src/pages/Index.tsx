@@ -11,6 +11,9 @@ import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
 import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
+import Forum from "@/components/community/Forum";
+import EventsCalendar from "@/components/community/EventsCalendar";
+import SecuritySettings from "@/components/security/SecuritySettings";
 
 
 import BottomNavigation from "@/components/BottomNavigation";
@@ -67,7 +70,9 @@ const Index = () => {
           <Home onOpenPhotoCarousel={openPhotoCarousel} />
         )}
         {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
-
+        {activeSection === 'forum' && <Forum />}
+        {activeSection === 'events' && <EventsCalendar />}
+        {activeSection === 'security' && <SecuritySettings />}
         {activeSection === 'news' && <News />}
         {activeSection === 'support' && <Support />}
       </main>
