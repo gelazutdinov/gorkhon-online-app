@@ -14,14 +14,14 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       icon: 'Home'
     },
     {
-      id: 'forum',
-      label: 'Форум',
-      icon: 'MessageSquare'
+      id: 'ecosystem',
+      label: 'Экосистема',
+      icon: 'Grid3X3'
     },
     {
-      id: 'events',
-      label: 'События',
-      icon: 'Calendar'
+      id: 'smart',
+      label: 'Умный дом',
+      icon: 'Cpu'
     },
     {
       id: 'profile',
