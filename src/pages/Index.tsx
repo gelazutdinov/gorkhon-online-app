@@ -13,7 +13,7 @@ import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
 import SecuritySettings from "@/components/security/SecuritySettings";
 import DigitalRuble from "@/components/economy/DigitalRuble";
-import SmartHome from "@/components/smart/SmartHome";
+
 
 
 import BottomNavigation from "@/components/BottomNavigation";
@@ -70,7 +70,6 @@ const Index = () => {
           <Home onOpenPhotoCarousel={openPhotoCarousel} />
         )}
         {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
-        {activeSection === 'smart' && <SmartHome />}
         {activeSection === 'digital_ruble' && <DigitalRuble />}
         {activeSection === 'security' && <SecuritySettings />}
         {activeSection === 'news' && <News />}

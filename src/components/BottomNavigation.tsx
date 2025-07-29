@@ -19,11 +19,6 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       icon: 'Newspaper'
     },
     {
-      id: 'smart',
-      label: 'Умный дом',
-      icon: 'Cpu'
-    },
-    {
       id: 'profile',
       label: 'Профиль',
       icon: 'User'

@@ -47,11 +47,11 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
         <div className="border-t border-gray-200 pt-6">
           <div className="text-center space-y-4">
             {/* Ссылки на правовые документы */}
-            <div className="flex flex-wrap justify-center gap-4 text-base">
+            <div className="flex flex-col items-center gap-3 text-sm">
               <Link 
                 to="/privacy" 
                 target="_blank"
-                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-1"
+                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
               >
                 <Icon name="Shield" size={16} />
                 <span>Политика конфиденциальности</span>
@@ -59,7 +59,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
               <Link 
                 to="/terms" 
                 target="_blank"
-                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-1"
+                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
               >
                 <Icon name="FileText" size={16} />
                 <span>Пользовательское соглашение</span>
@@ -67,7 +67,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
               <Link 
                 to="/data-protection" 
                 target="_blank"
-                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-1"
+                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
               >
                 <Icon name="ShieldCheck" size={16} />
                 <span>Защита данных</span>
@@ -75,13 +75,13 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
             </div>
 
             {/* Информация о безопасности */}
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-gradient-to-r from-gorkhon-pink/5 to-gorkhon-blue/5 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <Icon name="Info" size={20} className="text-gorkhon-blue mt-0.5" />
+            <div className="px-2">
+              <div className="bg-gradient-to-r from-gorkhon-pink/5 to-gorkhon-blue/5 rounded-xl p-3">
+                <div className="flex items-start gap-2">
+                  <Icon name="Info" size={18} className="text-gorkhon-blue mt-0.5 flex-shrink-0" />
                   <div>
-                    <h5 className="font-medium text-gray-800 mb-1 text-base">О безопасности ваших данных</h5>
-                    <p className="text-base text-gray-600 leading-relaxed">
+                    <h5 className="font-medium text-gray-800 mb-1 text-sm">О безопасности ваших данных</h5>
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       Мы серьезно относимся к защите вашей приватности. Все персональные данные 
                       хранятся локально в вашем браузере и передаются только по защищенному 
                       соединению. Подробнее в наших{' '}
