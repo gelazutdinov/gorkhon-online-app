@@ -144,28 +144,27 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-gradient-to-r from-gorkhon-pink to-gorkhon-blue rounded-full flex items-center justify-center text-white font-bold text-xl">
-                {user?.firstName ? user.firstName[0]?.toUpperCase() : user?.username?.[0]?.toUpperCase() || 'U'}
+                {user.firstName ? user.firstName[0].toUpperCase() : user.username[0].toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h2 className="text-2xl font-bold text-gray-900">
-                    {user?.firstName && user?.lastName 
+                    {user.firstName && user.lastName 
                       ? `${user.firstName} ${user.lastName}`
-                      : user?.username || 'Пользователь'
+                      : user.username
                     }
                   </h2>
-                  {user?.isVerified && (
-                    <img 
-                      src="https://cdn.poehali.dev/files/d7d9ac7d-1d6d-4e53-aaf7-50bb2a1c66ea.png" 
-                      alt="Verified" 
-                      className="w-6 h-6"
-                      title="Верифицированный аккаунт"
-                    />
+                  {user.isVerified && (
+                    <div className="flex items-center">
+                      <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
                   )}
                 </div>
                 <p className="text-gray-600 mt-1">
-                  С нами {daysWithUs || 0} {daysWithUs === 1 ? 'день' : (daysWithUs || 0) < 5 ? 'дня' : 'дней'} • 
-                  Время в системе: {formattedTimeSpent || '0 мин'}
+                  С нами {daysWithUs} {daysWithUs === 1 ? 'день' : daysWithUs < 5 ? 'дня' : 'дней'} • 
+                  Время в системе: {formattedTimeSpent}
                 </p>
               </div>
             </div>
