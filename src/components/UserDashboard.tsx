@@ -29,6 +29,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
   const [showSecurity, setShowSecurity] = useState(false);
   const [showBackup, setShowBackup] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
+  const [activeSection, setActiveSection] = useState('profile');
 
   // Инициализация темы
   useEffect(() => {
@@ -62,28 +63,132 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
 
   const activityLevel = getActivityLevel();
 
+  const sidebarItems = [
+    { id: 'profile', label: 'Профиль', icon: 'User' },
+    { id: 'settings', label: 'Настройки', icon: 'Settings' },
+    { id: 'security', label: 'Безопасность', icon: 'Shield' },
+    { id: 'statistics', label: 'Статистика', icon: 'BarChart3' },
+    { id: 'backup', label: 'Резервная копия', icon: 'Database' },
+    { id: 'accessibility', label: 'Доступность', icon: 'Eye' },
+    { id: 'data', label: 'Управление данными', icon: 'FolderOpen' },
+    { id: 'lina', label: 'Ассистент Лина', icon: 'Bot' }
+  ];
+
+  const handleSectionClick = (sectionId: string) => {
+    setActiveSection(sectionId);
+    
+    // Открываем соответствующие модалы
+    switch(sectionId) {
+      case 'statistics':
+        setShowStatistics(true);
+        break;
+      case 'settings':
+        setShowSettings(true);
+        break;
+      case 'security':
+        setShowSecurity(true);
+        break;
+      case 'backup':
+        setShowBackup(true);
+        break;
+      case 'accessibility':
+        setShowAccessibility(true);
+        break;
+      case 'data':
+        setShowDataManager(true);
+        break;
+      case 'lina':
+        setShowLina(true);
+        break;
+    }
+  };
+
   return (
-    <div className="space-y-4 sm:space-y-6 px-4 sm:px-0">
-      <UserGreeting 
-        user={user}
-        daysWithUs={daysWithUs}
-        formattedTimeSpent={formattedTimeSpent}
-        activityLevel={activityLevel}
-      />
+    <div className="flex gap-6 px-4 sm:px-0">
+      {/* Левая панель навигации */}
+      <div className="w-64 bg-white rounded-2xl p-4 shadow-lg border border-gray-100 h-fit">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Функции</h3>
+        <nav className="space-y-1">
+          {sidebarItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleSectionClick(item.id)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
+                activeSection === item.id
+                  ? 'bg-gorkhon-pink/10 text-gorkhon-pink'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-gorkhon-pink'
+              }`}
+            >
+              <Icon name={item.icon as any} size={18} />
+              <span className="font-medium">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+        
+        {/* Кнопка выхода */}
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <button
+            onClick={onLogout}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+          >
+            <Icon name="LogOut" size={18} />
+            <span className="font-medium">Выйти</span>
+          </button>
+        </div>
+      </div>
 
-      <QuickActions 
-        onShowStatistics={() => setShowStatistics(true)}
-        onShowLina={() => setShowLina(true)}
-        onShowBackup={() => setShowBackup(true)}
-        onShowAccessibility={() => setShowAccessibility(true)}
-      />
+      {/* Основной контент */}
+      <div className="flex-1 space-y-6">
+        {/* Приветствие с именем и верификацией */}
+        <div className="bg-gradient-to-r from-gorkhon-pink/10 to-gorkhon-blue/10 rounded-2xl p-6 border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-gorkhon-pink to-gorkhon-blue rounded-full flex items-center justify-center text-white font-bold text-xl">
+                {user.firstName ? user.firstName[0].toUpperCase() : user.username[0].toUpperCase()}
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {user.firstName && user.lastName 
+                      ? `${user.firstName} ${user.lastName}`
+                      : user.username
+                    }
+                  </h2>
+                  {user.isVerified && (
+                    <img 
+                      src="https://cdn.poehali.dev/files/d7d9ac7d-1d6d-4e53-aaf7-50bb2a1c66ea.png" 
+                      alt="Verified" 
+                      className="w-6 h-6"
+                      title="Верифицированный аккаунт"
+                    />
+                  )}
+                </div>
+                <p className="text-gray-600 mt-1">
+                  С нами {daysWithUs} {daysWithUs === 1 ? 'день' : daysWithUs < 5 ? 'дня' : 'дней'} • 
+                  Время в системе: {formattedTimeSpent}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <AdditionalTools 
-        onShowDataManager={() => setShowDataManager(true)}
-        onShowSettings={() => setShowSettings(true)}
-        onShowSecurity={() => setShowSecurity(true)}
-        onLogout={onLogout}
-      />
+        {/* Быстрые действия */}
+        <QuickActions 
+          onShowStatistics={() => setShowStatistics(true)}
+          onShowLina={() => setShowLina(true)}
+          onShowBackup={() => setShowBackup(true)}
+          onShowAccessibility={() => setShowAccessibility(true)}
+        />
+
+        {/* Дополнительные инструменты */}
+        <AdditionalTools 
+          onShowDataManager={() => setShowDataManager(true)}
+          onShowSettings={() => setShowSettings(true)}
+          onShowSecurity={() => setShowSecurity(true)}
+          onLogout={onLogout}
+        />
+
+      </div>
 
       {/* Модальные окна */}
       {showStatistics && (
