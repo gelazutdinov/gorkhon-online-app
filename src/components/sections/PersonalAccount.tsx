@@ -4,6 +4,7 @@ import { useUser } from '@/hooks/useUser';
 import { useTheme } from '@/hooks/useTheme';
 import RegistrationForm from '@/components/RegistrationForm';
 import UserDashboard from '@/components/UserDashboard';
+import NotificationBanner from '@/components/NotificationBanner';
 
 interface PersonalAccountProps {
   onSectionChange: (section: string) => void;
@@ -39,10 +40,9 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
             onSectionChange={onSectionChange}
           />
         
-          {/* Дополнительные функции профиля */}
+          {/* Системные уведомления */}
           <div className="space-y-6">
-            
-
+            <NotificationBanner />
           </div>
         
           {/* Правовая информация */}
