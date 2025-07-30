@@ -6,6 +6,7 @@ import { useAdmin } from '@/hooks/useAdmin';
 import { SystemNotification, NotificationFormData } from '@/types/notification';
 import AdminLogin from './AdminLogin';
 import VerificationManager from './VerificationManager';
+import { Link } from 'react-router-dom';
 
 const NotificationManager: React.FC = () => {
   const { 
@@ -156,6 +157,13 @@ const NotificationManager: React.FC = () => {
               <div className="text-sm text-gray-600">
                 Привет, <span className="font-medium">{currentAdmin?.username}</span>
               </div>
+              <Link
+                to="/"
+                className="bg-gorkhon-blue text-white px-3 py-1.5 rounded-lg hover:bg-gorkhon-blue/90 flex items-center gap-2 text-sm"
+              >
+                <Icon name="Home" size={16} />
+                На главную
+              </Link>
               <button
                 onClick={logout}
                 className="bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-300 flex items-center gap-2 text-sm"
