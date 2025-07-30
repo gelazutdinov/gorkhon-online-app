@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { useUser } from '@/hooks/useUser';
+import { useTheme } from '@/hooks/useTheme';
 import RegistrationForm from '@/components/RegistrationForm';
 import UserDashboard from '@/components/UserDashboard';
 
@@ -11,7 +11,7 @@ interface PersonalAccountProps {
 
 const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
   const { user, isLoading, register, logout, updateUser, getDaysWithUs, getFormattedTimeSpent } = useUser();
-  const [selectedTheme, setSelectedTheme] = useState<'default' | 'dark' | 'blue'>('default');
+  const { currentTheme, changeTheme } = useTheme();
 
   // Защита от ошибок загрузки
   if (isLoading) {
@@ -22,11 +22,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
     );
   }
 
-  const handleThemeChange = (theme: 'default' | 'dark' | 'blue') => {
-    setSelectedTheme(theme);
-    // Здесь можно добавить логику применения темы
-    console.log('Выбрана тема:', theme);
-  };
+
 
   // Если пользователь авторизован, показываем дашборд
   if (user) {
@@ -82,46 +78,46 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
               </h3>
               <div className="grid grid-cols-3 gap-3">
                 <button 
-                  onClick={() => handleThemeChange('default')}
+                  onClick={() => changeTheme('default')}
                   className={`p-3 rounded-lg border-2 text-center transition-all ${
-                    selectedTheme === 'default' 
+                    currentTheme === 'default' 
                       ? 'border-gorkhon-pink bg-gorkhon-pink/10' 
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <div className="w-8 h-8 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full mx-auto mb-2"></div>
                   <span className={`text-sm font-medium ${
-                    selectedTheme === 'default' ? 'text-gorkhon-pink' : 'text-gray-600'
+                    currentTheme === 'default' ? 'text-gorkhon-pink' : 'text-gray-600'
                   }`}>
                     Стандартная
                   </span>
                 </button>
                 <button 
-                  onClick={() => handleThemeChange('dark')}
+                  onClick={() => changeTheme('dark')}
                   className={`p-3 rounded-lg border-2 text-center transition-all ${
-                    selectedTheme === 'dark' 
+                    currentTheme === 'dark' 
                       ? 'border-gray-800 bg-gray-100' 
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <div className="w-8 h-8 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full mx-auto mb-2"></div>
                   <span className={`text-sm font-medium ${
-                    selectedTheme === 'dark' ? 'text-gray-800' : 'text-gray-600'
+                    currentTheme === 'dark' ? 'text-gray-800' : 'text-gray-600'
                   }`}>
                     Темная
                   </span>
                 </button>
                 <button 
-                  onClick={() => handleThemeChange('blue')}
+                  onClick={() => changeTheme('blue')}
                   className={`p-3 rounded-lg border-2 text-center transition-all ${
-                    selectedTheme === 'blue' 
+                    currentTheme === 'blue' 
                       ? 'border-blue-500 bg-blue-50' 
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mx-auto mb-2"></div>
                   <span className={`text-sm font-medium ${
-                    selectedTheme === 'blue' ? 'text-blue-600' : 'text-gray-600'
+                    currentTheme === 'blue' ? 'text-blue-600' : 'text-gray-600'
                   }`}>
                     Голубая
                   </span>

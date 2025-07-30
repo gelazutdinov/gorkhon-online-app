@@ -40,7 +40,7 @@ const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccess
         >
           <Icon name="Shield" size={20} className="text-purple-600 flex-shrink-0" />
           <div className="text-left min-w-0 flex-1">
-            <div className="font-medium text-gray-800 text-sm sm:text-base">Резервное копирование</div>
+            <div className="font-medium text-gray-800 text-sm sm:text-base truncate">Резервное копирование</div>
             <div className="text-xs sm:text-sm text-purple-600 truncate">Сохранение данных</div>
           </div>
         </button>
@@ -51,7 +51,7 @@ const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccess
         >
           <Icon name="Eye" size={20} className="text-orange-600 flex-shrink-0" />
           <div className="text-left min-w-0 flex-1">
-            <div className="font-medium text-gray-800 text-sm sm:text-base">Доступность</div>
+            <div className="font-medium text-gray-800 text-sm sm:text-base truncate">Доступность</div>
             <div className="text-xs sm:text-sm text-orange-600 truncate">Настройки интерфейса</div>
           </div>
         </button>
