@@ -11,15 +11,7 @@ interface PersonalAccountProps {
 const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
   const { user, isLoading, register, logout, updateUser, getDaysWithUs, getFormattedTimeSpent } = useUser();
 
-  // Дополнительная защита от ошибок
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gorkhon-pink"></div>
-      </div>
-    );
-  }
-
+  // Защита от ошибок загрузки
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -43,59 +35,200 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
             onSectionChange={onSectionChange}
           />
         
-        {/* Правовая информация */}
-        <div className="border-t border-gray-200 pt-6">
-          <div className="text-center space-y-4">
-            {/* Ссылки на правовые документы */}
-            <div className="flex flex-col items-center gap-3 text-sm">
-              <Link 
-                to="/privacy" 
-                target="_blank"
-                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
-              >
-                <Icon name="Shield" size={16} />
-                <span>Политика конфиденциальности</span>
-              </Link>
-              <Link 
-                to="/terms" 
-                target="_blank"
-                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
-              >
-                <Icon name="FileText" size={16} />
-                <span>Пользовательское соглашение</span>
-              </Link>
-              <Link 
-                to="/data-protection" 
-                target="_blank"
-                className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
-              >
-                <Icon name="ShieldCheck" size={16} />
-                <span>Защита данных</span>
-              </Link>
+          {/* Дополнительные функции профиля */}
+          <div className="space-y-6">
+            
+            {/* Уведомления и настройки */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <Icon name="Bell" size={20} className="text-gorkhon-pink" />
+                Уведомления
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700">Новости поселка</span>
+                  <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-gorkhon-green transition-colors">
+                    <span className="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform" />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700">Важные объявления</span>
+                  <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-gorkhon-green transition-colors">
+                    <span className="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform" />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700">Расписание транспорта</span>
+                  <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors">
+                    <span className="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-white transition-transform" />
+                  </button>
+                </div>
+              </div>
             </div>
 
-            {/* Информация о безопасности */}
-            <div className="px-2">
-              <div className="bg-gradient-to-r from-gorkhon-pink/5 to-gorkhon-blue/5 rounded-xl p-3">
-                <div className="flex items-start gap-2">
-                  <Icon name="Info" size={18} className="text-gorkhon-blue mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h5 className="font-medium text-gray-800 mb-1 text-sm">О безопасности ваших данных</h5>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Мы серьезно относимся к защите вашей приватности. Все персональные данные 
-                      хранятся локально в вашем браузере и передаются только по защищенному 
-                      соединению. Подробнее в наших{' '}
-                      <Link to="/privacy" target="_blank" className="text-gorkhon-pink hover:underline">
-                        документах о конфиденциальности
-                      </Link>.
-                    </p>
+            {/* Темы оформления */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <Icon name="Palette" size={20} className="text-gorkhon-blue" />
+                Тема оформления
+              </h3>
+              <div className="grid grid-cols-3 gap-3">
+                <button className="p-3 rounded-lg border-2 border-gorkhon-pink bg-gorkhon-pink/10 text-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full mx-auto mb-2"></div>
+                  <span className="text-sm font-medium text-gorkhon-pink">Стандартная</span>
+                </button>
+                <button className="p-3 rounded-lg border border-gray-200 hover:border-gray-300 text-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full mx-auto mb-2"></div>
+                  <span className="text-sm text-gray-600">Темная</span>
+                </button>
+                <button className="p-3 rounded-lg border border-gray-200 hover:border-gray-300 text-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mx-auto mb-2"></div>
+                  <span className="text-sm text-gray-600">Голубая</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Экспорт данных */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <Icon name="Download" size={20} className="text-green-500" />
+                Экспорт данных
+              </h3>
+              <p className="text-gray-600 mb-4">Скачайте копию ваших данных для личного архива</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-green-50 hover:bg-green-100 text-green-700 rounded-lg transition-colors">
+                  <Icon name="FileJson" size={16} />
+                  <span>JSON</span>
+                </button>
+                <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors">
+                  <Icon name="FileSpreadsheet" size={16} />
+                  <span>CSV</span>
+                </button>
+                <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg transition-colors">
+                  <Icon name="FileText" size={16} />
+                  <span>PDF</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Социальные связи */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <Icon name="Users" size={20} className="text-purple-500" />
+                Мои связи
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      А
+                    </div>
+                    <div>
+                      <div className="font-medium text-gray-800">Анна Петрова</div>
+                      <div className="text-sm text-gray-500">Сосед • ул. Центральная 15</div>
+                    </div>
+                  </div>
+                  <Icon name="MessageCircle" size={20} className="text-gray-400" />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      И
+                    </div>
+                    <div>
+                      <div className="font-medium text-gray-800">Иван Сидоров</div>
+                      <div className="text-sm text-gray-500">Коллега • Местная администрация</div>
+                    </div>
+                  </div>
+                  <Icon name="MessageCircle" size={20} className="text-gray-400" />
+                </div>
+                <button className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-2">
+                  <Icon name="UserPlus" size={16} />
+                  <span>Добавить контакт</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Достижения */}
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <Icon name="Trophy" size={20} className="text-yellow-500" />
+                Достижения
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="text-center p-3 bg-white rounded-lg">
+                  <div className="text-2xl mb-1">🏆</div>
+                  <div className="text-xs font-medium text-gray-700">Первый вход</div>
+                </div>
+                <div className="text-center p-3 bg-white rounded-lg">
+                  <div className="text-2xl mb-1">📅</div>
+                  <div className="text-xs font-medium text-gray-700">7 дней активности</div>
+                </div>
+                <div className="text-center p-3 bg-white/50 rounded-lg opacity-50">
+                  <div className="text-2xl mb-1">💬</div>
+                  <div className="text-xs font-medium text-gray-700">Первое сообщение</div>
+                </div>
+                <div className="text-center p-3 bg-white/50 rounded-lg opacity-50">
+                  <div className="text-2xl mb-1">🌟</div>
+                  <div className="text-xs font-medium text-gray-700">Активный житель</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          {/* Правовая информация */}
+          <div className="border-t border-gray-200 pt-6">
+            <div className="text-center space-y-4">
+              {/* Ссылки на правовые документы */}
+              <div className="flex flex-col items-center gap-3 text-sm">
+                <Link 
+                  to="/privacy" 
+                  target="_blank"
+                  className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
+                >
+                  <Icon name="Shield" size={16} />
+                  <span>Политика конфиденциальности</span>
+                </Link>
+                <Link 
+                  to="/terms" 
+                  target="_blank"
+                  className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
+                >
+                  <Icon name="FileText" size={16} />
+                  <span>Пользовательское соглашение</span>
+                </Link>
+                <Link 
+                  to="/data-protection" 
+                  target="_blank"
+                  className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
+                >
+                  <Icon name="ShieldCheck" size={16} />
+                  <span>Защита данных</span>
+                </Link>
+              </div>
+
+              {/* Информация о безопасности */}
+              <div className="px-2">
+                <div className="bg-gradient-to-r from-gorkhon-pink/5 to-gorkhon-blue/5 rounded-xl p-3">
+                  <div className="flex items-start gap-2">
+                    <Icon name="Info" size={18} className="text-gorkhon-blue mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h5 className="font-medium text-gray-800 mb-1 text-sm">О безопасности ваших данных</h5>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Мы серьезно относимся к защите вашей приватности. Все персональные данные 
+                        хранятся локально в вашем браузере и передаются только по защищенному 
+                        соединению. Подробнее в наших{' '}
+                        <Link to="/privacy" target="_blank" className="text-gorkhon-pink hover:underline">
+                          документах о конфиденциальности
+                        </Link>.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       );
     } catch (error) {
       console.error('Error in UserDashboard:', error);
