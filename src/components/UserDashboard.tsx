@@ -144,17 +144,17 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-gradient-to-r from-gorkhon-pink to-gorkhon-blue rounded-full flex items-center justify-center text-white font-bold text-xl">
-                {user.firstName ? user.firstName[0].toUpperCase() : user.username[0].toUpperCase()}
+                {user?.firstName ? user.firstName[0].toUpperCase() : user?.username?.[0]?.toUpperCase() || 'U'}
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h2 className="text-2xl font-bold text-gray-900">
-                    {user.firstName && user.lastName 
+                    {user?.firstName && user?.lastName 
                       ? `${user.firstName} ${user.lastName}`
-                      : user.username
+                      : user?.username
                     }
                   </h2>
-                  {user.isVerified && (
+                  {user?.isVerified && (
                     <span className="text-blue-500 text-lg">✓</span>
                   )}
                 </div>
