@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { UserProfile } from '@/hooks/useUser';
+import Icon from '@/components/ui/icon';
 import LinaAssistant from '@/components/features/LinaAssistant';
 import DataManager from '@/components/dashboard/DataManager';
 import UserGreeting from '@/components/dashboard/UserGreeting';
