@@ -74,6 +74,15 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
                   <Icon name="ShieldCheck" size={16} />
                   <span>Защита данных</span>
                 </Link>
+                
+                {/* Админ-панель - для разработчиков */}
+                <Link 
+                  to="/admin/notifications"
+                  className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-blue text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 font-medium"
+                >
+                  <Icon name="Settings" size={16} />
+                  <span>Админ-панель уведомлений</span>
+                </Link>
               </div>
 
               {/* Информация о безопасности - исправлена верстка */}
