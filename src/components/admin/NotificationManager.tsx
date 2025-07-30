@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useAdmin } from '@/hooks/useAdmin';
 import { SystemNotification, NotificationFormData } from '@/types/notification';
+import AdminLogin from './AdminLogin';
+import VerificationManager from './VerificationManager';
 
 const NotificationManager: React.FC = () => {
   const { 
@@ -12,6 +15,9 @@ const NotificationManager: React.FC = () => {
     deleteNotification,
     getActiveNotifications 
   } = useNotifications();
+  
+  const { currentAdmin, isLoading, isAdmin, login, logout, getPendingRequests } = useAdmin();
+  const [activeTab, setActiveTab] = useState<'notifications' | 'verification'>('notifications');
 
   const [isCreateMode, setIsCreateMode] = useState(false);
   const [editingNotification, setEditingNotification] = useState<SystemNotification | null>(null);
@@ -94,19 +100,90 @@ const NotificationManager: React.FC = () => {
   };
 
   const activeNotifications = getActiveNotifications();
+  const pendingRequests = getPendingRequests();
+
+  // Показываем форму входа, если не авторизован
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gorkhon-pink"></div>
+      </div>
+    );
+  }
+
+  if (!isAdmin()) {
+    return <AdminLogin />;
+  }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Управление уведомлениями</h1>
-        <button
-          onClick={() => setIsCreateMode(true)}
-          className="bg-gorkhon-pink text-white px-4 py-2 rounded-lg hover:bg-gorkhon-pink/90 flex items-center gap-2"
-        >
-          <Icon name="Plus" size={16} />
-          Создать уведомление
-        </button>
+    <div className="min-h-screen bg-gray-50">
+      {/* Шапка админ-панели */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <h1 className="text-xl font-bold text-gray-900">Админ-панель</h1>
+              <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setActiveTab('notifications')}
+                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                    activeTab === 'notifications'
+                      ? 'bg-white text-gorkhon-pink shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Уведомления
+                </button>
+                <button
+                  onClick={() => setActiveTab('verification')}
+                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors relative ${
+                    activeTab === 'verification'
+                      ? 'bg-white text-gorkhon-pink shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Верификация
+                  {pendingRequests.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {pendingRequests.length}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <div className="text-sm text-gray-600">
+                Привет, <span className="font-medium">{currentAdmin?.username}</span>
+              </div>
+              <button
+                onClick={logout}
+                className="bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-300 flex items-center gap-2 text-sm"
+              >
+                <Icon name="LogOut" size={16} />
+                Выход
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Основной контент */}
+      <div className="max-w-6xl mx-auto p-6">
+        {activeTab === 'verification' ? (
+          <VerificationManager />
+        ) : (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Управление уведомлениями</h2>
+              <button
+                onClick={() => setIsCreateMode(true)}
+                className="bg-gorkhon-pink text-white px-4 py-2 rounded-lg hover:bg-gorkhon-pink/90 flex items-center gap-2"
+              >
+                <Icon name="Plus" size={16} />
+                Создать уведомление
+              </button>
+            </div>
 
       {isCreateMode && (
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6 border">
@@ -287,6 +364,9 @@ const NotificationManager: React.FC = () => {
                 )}
               </div>
             ))}
+          </div>
+        )}
+            </div>
           </div>
         )}
       </div>

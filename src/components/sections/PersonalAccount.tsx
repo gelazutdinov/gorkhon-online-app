@@ -5,6 +5,7 @@ import { useTheme } from '@/hooks/useTheme';
 import RegistrationForm from '@/components/RegistrationForm';
 import UserDashboard from '@/components/UserDashboard';
 import NotificationBanner from '@/components/NotificationBanner';
+import VerificationForm from '@/components/VerificationForm';
 
 interface PersonalAccountProps {
   onSectionChange: (section: string) => void;
@@ -43,6 +44,11 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
           {/* Системные уведомления */}
           <div className="space-y-6">
             <NotificationBanner />
+            
+            {/* Форма верификации - показываем только неверифицированным */}
+            {!user?.isVerified && (
+              <VerificationForm />
+            )}
           </div>
         
           {/* Правовая информация */}
