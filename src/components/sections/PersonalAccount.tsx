@@ -5,7 +5,7 @@ import { useTheme } from '@/hooks/useTheme';
 import RegistrationForm from '@/components/RegistrationForm';
 import UserDashboard from '@/components/UserDashboard';
 import NotificationBanner from '@/components/NotificationBanner';
-import VerificationForm from '@/components/VerificationForm';
+
 
 interface PersonalAccountProps {
   onSectionChange: (section: string) => void;
@@ -45,10 +45,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
           <div className="space-y-6">
             <NotificationBanner />
             
-            {/* Форма верификации - показываем только неверифицированным */}
-            {!user?.isVerified && (
-              <VerificationForm />
-            )}
+
           </div>
         
           {/* Правовая информация */}
@@ -81,14 +78,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
                   <span>Защита данных</span>
                 </Link>
                 
-                {/* Админ-панель - для разработчиков */}
-                <Link 
-                  to="/admin/notifications"
-                  className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-blue text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 font-medium"
-                >
-                  <Icon name="Settings" size={16} />
-                  <span>Админ-панель уведомлений</span>
-                </Link>
+
               </div>
 
               {/* Информация о безопасности - исправлена верстка */}

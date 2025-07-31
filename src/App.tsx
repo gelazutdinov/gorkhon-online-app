@@ -9,7 +9,7 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./components/legal/PrivacyPolicy";
 import TermsOfService from "./components/legal/TermsOfService";
 import DataProtection from "./components/legal/DataProtection";
-import NotificationManager from "./components/admin/NotificationManager";
+
 
 const queryClient = new QueryClient();
 
@@ -24,7 +24,7 @@ const App = () => (
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/data-protection" element={<DataProtection />} />
-          <Route path="/admin/notifications" element={<NotificationManager />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
