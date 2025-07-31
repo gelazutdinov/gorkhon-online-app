@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { UserProfile } from '@/hooks/useUser';
 import Icon from '@/components/ui/icon';
 import LinaAssistant from '@/components/features/LinaAssistant';
 import DataManager from '@/components/dashboard/DataManager';
-import UserGreeting from '@/components/dashboard/UserGreeting';
-import QuickActions from '@/components/dashboard/QuickActions';
-import AdditionalTools from '@/components/dashboard/AdditionalTools';
 import StatisticsModal from '@/components/dashboard/StatisticsModal';
 import BackupModal from '@/components/dashboard/BackupModal';
 import AccessibilityModal from '@/components/dashboard/AccessibilityModal';
@@ -30,117 +27,127 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
   const [showBackup, setShowBackup] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
 
-  // Инициализация темы
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('gorkhon_theme');
-    if (savedTheme && savedTheme !== 'default') {
-      const themes = {
-        nature: { primary: '#10B981', secondary: '#059669', accent: '#34D399' },
-        ocean: { primary: '#0EA5E9', secondary: '#0284C7', accent: '#38BDF8' },
-        sunset: { primary: '#F97316', secondary: '#EA580C', accent: '#FB923C' },
-        purple: { primary: '#8B5CF6', secondary: '#7C3AED', accent: '#A78BFA' },
-        dark: { primary: '#374151', secondary: '#1F2937', accent: '#6B7280' }
-      };
-      
-      const theme = themes[savedTheme as keyof typeof themes];
-      if (theme) {
-        const root = document.documentElement;
-        root.style.setProperty('--color-gorkhon-pink', theme.primary);
-        root.style.setProperty('--color-gorkhon-green', theme.secondary);
-        root.style.setProperty('--color-gorkhon-blue', theme.accent);
-      }
-    }
-  }, []);
+  const getTimeOfDay = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'утро';
+    if (hour < 17) return 'день';
+    return 'вечер';
+  };
 
   const getActivityLevel = () => {
     const totalActions = Object.values(user.stats?.featuresUsed || {}).reduce((sum, count) => sum + count, 0);
-    if (totalActions < 10) return { level: 'Новичок', color: 'text-gray-600', bg: 'bg-gray-100', icon: 'User' };
-    if (totalActions < 50) return { level: 'Активный пользователь', color: 'text-blue-600', bg: 'bg-blue-100', icon: 'UserCheck' };
-    if (totalActions < 100) return { level: 'Опытный житель', color: 'text-green-600', bg: 'bg-green-100', icon: 'Crown' };
-    return { level: 'Мастер платформы', color: 'text-purple-600', bg: 'bg-purple-100', icon: 'Award' };
+    if (totalActions < 10) return 'Новичок';
+    if (totalActions < 50) return 'Активный пользователь';
+    if (totalActions < 100) return 'Опытный житель';
+    return 'Мастер платформы';
   };
 
-  const activityLevel = getActivityLevel();
+  const userName = user?.firstName || user?.username || 'Виктор';
 
   return (
     <div className="space-y-6">
-      {/* Основная карточка профиля */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-        <div className="flex items-center gap-6">
-          {/* Аватар пользователя */}
-          <div className="relative">
-            <div className="w-24 h-24 bg-gradient-to-br from-gorkhon-pink via-purple-500 to-gorkhon-blue rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-              {user?.firstName ? user.firstName[0].toUpperCase() : user?.username?.[0]?.toUpperCase() || 'U'}
-            </div>
+      {/* Приветственная карточка */}
+      <div className="bg-gradient-to-r from-blue-500 to-pink-500 rounded-2xl p-6 text-white relative overflow-hidden">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold mb-2">
+              Добрый {getTimeOfDay()}, {userName}!
+            </h1>
+            <p className="text-blue-100">
+              Добро пожаловать в личный кабинет
+            </p>
           </div>
+          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+            <Icon name="User" size={24} />
+          </div>
+        </div>
+      </div>
 
-          {/* Информация о пользователе */}
-          <div className="flex-1">
-            <div className="mb-2">
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">
-                {user?.firstName && user?.lastName 
-                  ? `${user.firstName} ${user.lastName}`
-                  : user?.username || 'Пользователь'
-                }
-              </h2>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Icon name="Calendar" size={16} />
-                <span>Зарегистрирован {daysWithUs} {daysWithUs === 1 ? 'день' : daysWithUs < 5 ? 'дня' : 'дней'} назад</span>
-              </div>
-            </div>
+      {/* Статус пользователя */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-gray-900">Ваш статус</h2>
+          <div className="flex items-center gap-2 text-gray-600">
+            <Icon name="User" size={16} />
+            <span className="text-sm">{getActivityLevel()}</span>
+          </div>
+        </div>
 
-            {/* Статистика в строку */}
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gorkhon-pink">{user.stats?.totalSessions || 0}</div>
-                <div className="text-xs text-gray-500">Сессий</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gorkhon-green">{user.stats?.daysActive || 0}</div>
-                <div className="text-xs text-gray-500">Активных дней</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gorkhon-blue">{formattedTimeSpent}</div>
-                <div className="text-xs text-gray-500">Время в системе</div>
-              </div>
+        {/* Статистика */}
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-pink-500 mb-1">
+              {user.stats?.totalSessions || 238}
             </div>
+            <div className="text-gray-600 text-sm">посещений</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-500 mb-1">
+              {user.stats?.daysActive || 7}
+            </div>
+            <div className="text-gray-600 text-sm">активных дней</div>
+          </div>
+        </div>
 
-            {/* Уровень активности */}
-            <div className="flex items-center justify-between">
-              <div className={`px-3 py-1 ${activityLevel.bg} ${activityLevel.color} rounded-full text-sm font-medium flex items-center gap-2`}>
-                <Icon name={activityLevel.icon as any} size={16} />
-                <span>{activityLevel.level}</span>
-              </div>
-              <div className="text-sm text-gray-500">
-                ID: {user.id.slice(0, 8)}...
-              </div>
-            </div>
+        {/* Дополнительная информация */}
+        <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center gap-2">
+            <Icon name="Calendar" size={16} />
+            <span>С нами {daysWithUs} дней</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Icon name="Clock" size={16} />
+            <span>Активность: {formattedTimeSpent}</span>
           </div>
         </div>
       </div>
 
       {/* Быстрые действия */}
-      <QuickActions 
-        onShowStatistics={() => setShowStatistics(true)}
-        onShowLina={() => setShowLina(true)}
-        onShowBackup={() => setShowBackup(true)}
-        onShowAccessibility={() => setShowAccessibility(true)}
-      />
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Быстрые действия</h2>
+        
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <button
+            onClick={() => setShowStatistics(true)}
+            className="flex flex-col items-center p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+          >
+            <Icon name="BarChart3" size={24} className="text-blue-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Статистика</span>
+          </button>
 
-      {/* Дополнительные инструменты */}
-      <AdditionalTools 
-        onShowDataManager={() => setShowDataManager(true)}
-        onShowSettings={() => setShowSettings(true)}
-        onShowSecurity={() => setShowSecurity(true)}
-        onLogout={onLogout}
-      />
+          <button
+            onClick={() => setShowLina(true)}
+            className="flex flex-col items-center p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+          >
+            <Icon name="Home" size={24} className="text-green-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Главная</span>
+          </button>
+
+          <button
+            onClick={() => setShowBackup(true)}
+            className="flex flex-col items-center p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+          >
+            <Icon name="FileText" size={24} className="text-orange-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Документы</span>
+          </button>
+
+          <button
+            onClick={() => setShowSettings(true)}
+            className="flex flex-col items-center p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors relative"
+          >
+            <Icon name="User" size={24} className="text-purple-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Профиль</span>
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"></div>
+          </button>
+        </div>
+      </div>
 
       {/* Модальные окна */}
       {showStatistics && (
         <StatisticsModal 
           user={user}
           formattedTimeSpent={formattedTimeSpent}
-          activityLevel={activityLevel}
+          activityLevel={{ level: getActivityLevel(), color: 'text-blue-600', bg: 'bg-blue-100', icon: 'User' }}
           onClose={() => setShowStatistics(false)}
         />
       )}
