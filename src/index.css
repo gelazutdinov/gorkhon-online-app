@@ -2,12 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Улучшенная производительность анимаций */
+* {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Shimmer анимация для скелетонов */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Плавные переходы */
+@layer base {
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Оптимизация скроллинга */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Улучшенный фокус для доступности */
+@layer base {
+  *:focus-visible {
+    outline: 2px solid theme("colors.blue.500");
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* Переменные для высокой контрастности */
+@media (prefers-contrast: high) {
+  :root {
+    --tw-ring-color: #000000;
+    --tw-border-opacity: 1;
+  }
+}
+
 /* Поддержка мобильных safe area */
 @supports (padding: env(safe-area-inset-bottom)) {
   .safe-area-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
-  
+
   .safe-area-top {
     padding-top: env(safe-area-inset-top);
   }
@@ -15,7 +60,10 @@
 
 /* Улучшенные касательные зоны для мобильных */
 @media (hover: none) and (pointer: coarse) {
-  button, [role="button"], input[type="button"], input[type="submit"] {
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"] {
     min-height: 44px;
     min-width: 44px;
   }
@@ -147,9 +195,9 @@
 
   body {
     @apply text-foreground;
-    font-family: 'Unbounded', sans-serif;
+    font-family: "Unbounded", sans-serif;
     background-color: #d0d0d0;
-    background-image: url('/pattern.svg');
+    background-image: url("/pattern.svg");
     background-size: 500px 500px;
     background-repeat: repeat;
   }
@@ -231,7 +279,10 @@
 
 /* Text effects for Instagram Stories */
 .text-neon {
-  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+  text-shadow:
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 30px currentColor;
 }
 
 .text-gradient {
@@ -243,9 +294,15 @@
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Photo filters */
@@ -275,6 +332,10 @@
 
 /* Progress animation for story viewer */
 @keyframes progress {
-  0% { width: 0%; }
-  100% { width: 100%; }
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
 }
