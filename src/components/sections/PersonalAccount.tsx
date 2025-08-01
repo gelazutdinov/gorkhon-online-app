@@ -31,15 +31,16 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
     console.log('User data:', user); // Отладочная информация
     try {
       return (
-        <div className="space-y-8">
-          <UserDashboard 
-            user={user}
-            daysWithUs={getDaysWithUs()}
-            formattedTimeSpent={getFormattedTimeSpent()}
-            onLogout={logout}
-            onUserUpdate={updateUser}
-            onSectionChange={onSectionChange}
-          />
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+          <div className="space-y-8">
+            <UserDashboard 
+              user={user}
+              daysWithUs={getDaysWithUs()}
+              formattedTimeSpent={getFormattedTimeSpent()}
+              onLogout={logout}
+              onUserUpdate={updateUser}
+              onSectionChange={onSectionChange}
+            />
         
           {/* Системные уведомления */}
           <div className="space-y-6">
@@ -102,6 +103,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
               </div>
             </div>
           </div>
+        </div>
         </div>
       );
     } catch (error) {

@@ -25,6 +25,11 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
     }
   ];
 
+  // Скрываем навигацию когда активен профиль
+  if (activeSection === 'profile') {
+    return null;
+  }
+
   return (
     <>
       {/* Фиксированное меню внизу экрана - жидкое стекло капсула */}

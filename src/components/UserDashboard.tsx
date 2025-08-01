@@ -18,7 +18,7 @@ interface UserDashboardProps {
   onSectionChange: (section: string) => void;
 }
 
-const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout }: UserDashboardProps) => {
+const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, onSectionChange }: UserDashboardProps) => {
   const [showStatistics, setShowStatistics] = useState(false);
   const [showLina, setShowLina] = useState(false);
   const [showDataManager, setShowDataManager] = useState(false);
@@ -53,8 +53,18 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout }: 
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="space-y-6">
+      {/* Кнопка возврата */}
+      <div className="flex items-center gap-4 mb-4">
+        <button
+          onClick={() => onSectionChange('home')}
+          className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+          aria-label="Вернуться на главную"
+        >
+          <Icon name="ArrowLeft" size={20} />
+          <span className="font-medium">На главную</span>
+        </button>
+      </div>
         {/* Шапка профиля */}
         <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-20 translate-x-20"></div>
@@ -244,7 +254,6 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout }: 
             <Icon name="ChevronRight" size={20} className="text-gray-400 group-hover:text-red-600 transition-colors" />
           </button>
         </div>
-      </div>
 
       {/* Модальные окна */}
       {showStatistics && (
