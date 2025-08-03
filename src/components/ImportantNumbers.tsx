@@ -25,15 +25,15 @@ const ImportantNumbers = () => {
   ];
 
   return (
-    <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-blue-50/30 border-2 border-gorkhon-blue/10 shadow-lg hover:shadow-xl transition-all duration-300">
+    <Card className="animate-fade-in rounded-2xl bg-white border-2 border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-3 text-gorkhon-blue">
-          <div className="p-2 rounded-full bg-gorkhon-blue/10 animate-pulse">
-            <Icon name="Phone" size={20} />
+        <CardTitle className="flex items-center gap-3 text-gray-900">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gorkhon-blue to-gorkhon-lightBlue flex items-center justify-center shadow-lg">
+            <Icon name="Phone" size={20} className="text-white" />
           </div>
           <div>
-            <span className="text-lg font-bold">Важные номера</span>
-            <p className="text-sm text-slate-600 font-normal">Всегда под рукой в трудную минуту</p>
+            <span className="text-xl font-bold">Важные номера</span>
+            <p className="text-sm text-gray-600">Всегда под рукой в трудную минуту</p>
           </div>
         </CardTitle>
       </CardHeader>
