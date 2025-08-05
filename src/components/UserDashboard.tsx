@@ -54,175 +54,221 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
   return (
     <div className="space-y-6">
-      {/* Кнопка возврата */}
-      <button
-        onClick={() => onSectionChange('home')}
-        className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-      >
-        <Icon name="ArrowLeft" size={20} />
-        <span>На главную</span>
-      </button>
+      {/* Заголовок с навигацией */}
+      <div className="flex items-center justify-between">
+        <button
+          onClick={() => onSectionChange('home')}
+          className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all duration-200"
+        >
+          <Icon name="ArrowLeft" size={18} />
+          <span className="font-medium">На главную</span>
+        </button>
+        <div className="text-sm text-gray-500 flex items-center gap-2">
+          <Icon name="User" size={16} />
+          <span>Личный кабинет</span>
+        </div>
+      </div>
 
-      {/* Шапка профиля */}
-      <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl p-6 text-white">
+      {/* Профиль пользователя */}
+      <div className="bg-gradient-to-br from-gorkhon-pink via-purple-500 to-gorkhon-blue rounded-3xl p-6 text-white shadow-xl">
         <div className="flex items-start justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold mb-1">
-              Добрый {getTimeOfDay()}, {userName}!
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold mb-2">
+              Добрый {getTimeOfDay()}, {userName}! 👋
             </h1>
-            <p className="text-white/80">
-              {activityLevel}
-            </p>
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 w-fit">
+              <Icon name="Award" size={16} />
+              <span className="text-sm font-medium">{activityLevel}</span>
+            </div>
           </div>
-          <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-            <Icon name="User" size={24} />
+          <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+            <Icon name="User" size={28} className="text-white" />
           </div>
         </div>
         
         {/* Статистика */}
-        <div className="grid grid-cols-3 gap-4 text-center">
-          <div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
             <div className="text-2xl font-bold">2630</div>
-            <div className="text-white/70 text-sm">сессий</div>
+            <div className="text-white/80 text-sm">сессий</div>
           </div>
-          <div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
             <div className="text-2xl font-bold">6</div>
-            <div className="text-white/70 text-sm">дней с нами</div>
+            <div className="text-white/80 text-sm">дней с нами</div>
           </div>
-          <div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
             <div className="text-2xl font-bold">7</div>
-            <div className="text-white/70 text-sm">активных дней</div>
+            <div className="text-white/80 text-sm">активных дней</div>
           </div>
         </div>
       </div>
 
-      {/* Быстрые действия */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
-        <div className="flex items-center gap-2 mb-4">
-          <Icon name="Zap" size={20} className="text-blue-500" />
-          <h2 className="text-lg font-bold">Быстрые действия</h2>
-        </div>
-        
-        <div className="grid grid-cols-2 gap-4">
-          <button
-            onClick={() => setShowStatistics(true)}
-            className="p-4 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors text-left"
-          >
-            <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center mb-3">
+      {/* Основные функции */}
+      <div className="grid gap-6">
+        {/* Аналитика и статистика */}
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
               <Icon name="BarChart3" size={20} className="text-white" />
             </div>
-            <div className="font-semibold text-gray-900">Статистика</div>
-            <div className="text-sm text-blue-600">Ваша активность</div>
-          </button>
-
-          <button
-            onClick={() => setShowLina(true)}
-            className="p-4 rounded-xl bg-green-50 hover:bg-green-100 transition-colors text-left"
-          >
-            <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center mb-3">
-              <Icon name="MessageCircle" size={20} className="text-white" />
-            </div>
-            <div className="font-semibold text-gray-900">Лина</div>
-            <div className="text-sm text-green-600">Цифровой помощник</div>
-          </button>
-
-          <button
-            onClick={() => setShowBackup(true)}
-            className="p-4 rounded-xl bg-purple-50 hover:bg-purple-100 transition-colors text-left"
-          >
-            <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center mb-3">
-              <Icon name="Shield" size={20} className="text-white" />
-            </div>
-            <div className="font-semibold text-gray-900">Резервно...</div>
-            <div className="text-sm text-purple-600">Сохранени...</div>
-          </button>
-
-          <button
-            onClick={() => setShowAccessibility(true)}
-            className="p-4 rounded-xl bg-orange-50 hover:bg-orange-100 transition-colors text-left"
-          >
-            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mb-3">
-              <Icon name="Eye" size={20} className="text-white" />
-            </div>
-            <div className="font-semibold text-gray-900">Доступно...</div>
-            <div className="text-sm text-orange-600">Настройки ...</div>
-          </button>
-        </div>
-      </div>
-
-      {/* Инструменты */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
-        <div className="flex items-center gap-2 mb-4">
-          <Icon name="Settings" size={20} className="text-purple-500" />
-          <h2 className="text-lg font-bold">Инструменты</h2>
-        </div>
-        
-        <div className="space-y-3">
-          <button
-            onClick={() => setShowDataManager(true)}
-            className="w-full flex items-center justify-between p-4 rounded-xl bg-yellow-50 hover:bg-yellow-100 transition-colors text-left"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
-                <Icon name="Database" size={20} className="text-white" />
-              </div>
-              <div>
-                <div className="font-semibold text-gray-900">Управление данными</div>
-                <div className="text-sm text-yellow-600">Экспорт и очистка данных</div>
-              </div>
-            </div>
-            <Icon name="ChevronRight" size={20} className="text-gray-400" />
-          </button>
-
-          <button
-            onClick={() => setShowSecurity(true)}
-            className="w-full flex items-center justify-between p-4 rounded-xl bg-green-50 hover:bg-green-100 transition-colors text-left"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                <Icon name="Shield" size={20} className="text-white" />
-              </div>
-              <div>
-                <div className="font-semibold text-gray-900">Безопасность</div>
-                <div className="text-sm text-green-600">2FA и защита данных</div>
-              </div>
-            </div>
-            <Icon name="ChevronRight" size={20} className="text-gray-400" />
-          </button>
-
-          <button
-            onClick={() => setShowSettings(true)}
-            className="w-full flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors text-left"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center">
-                <Icon name="Settings" size={20} className="text-white" />
-              </div>
-              <div>
-                <div className="font-semibold text-gray-900">Настройки</div>
-                <div className="text-sm text-gray-600">Конфигурация аккаунта</div>
-              </div>
-            </div>
-            <Icon name="ChevronRight" size={20} className="text-gray-400" />
-          </button>
-        </div>
-      </div>
-      {/* Выход */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
-        <button
-          onClick={onLogout}
-          className="w-full flex items-center justify-between p-4 rounded-xl bg-red-50 hover:bg-red-100 transition-colors text-left"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-              <Icon name="LogOut" size={20} className="text-white" />
-            </div>
             <div>
-              <div className="font-semibold text-gray-900">Выйти из аккаунта</div>
-              <div className="text-sm text-red-600">Завершить сессию</div>
+              <h2 className="text-lg font-bold text-gray-900">Аналитика</h2>
+              <p className="text-sm text-gray-600">Статистика использования</p>
             </div>
           </div>
-          <Icon name="ChevronRight" size={20} className="text-gray-400" />
+          
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setShowStatistics(true)}
+              className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 hover:bg-blue-100 transition-all duration-200 text-left"
+            >
+              <Icon name="TrendingUp" size={18} className="text-blue-600" />
+              <div>
+                <div className="font-medium text-gray-900">Статистика</div>
+                <div className="text-xs text-blue-600">Подробная аналитика</div>
+              </div>
+            </button>
+            
+            <button
+              onClick={() => setShowLina(true)}
+              className="flex items-center gap-3 p-3 rounded-xl bg-green-50 hover:bg-green-100 transition-all duration-200 text-left"
+            >
+              <Icon name="Bot" size={18} className="text-green-600" />
+              <div>
+                <div className="font-medium text-gray-900">Лина ИИ</div>
+                <div className="text-xs text-green-600">Умный помощник</div>
+              </div>
+            </button>
+          </div>
+        </div>
+        
+        {/* Безопасность и конфиденциальность */}
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+              <Icon name="Shield" size={20} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Безопасность</h2>
+              <p className="text-sm text-gray-600">Защита данных и конфиденциальность</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setShowSecurity(true)}
+              className="flex items-center gap-3 p-3 rounded-xl bg-green-50 hover:bg-green-100 transition-all duration-200 text-left"
+            >
+              <Icon name="Lock" size={18} className="text-green-600" />
+              <div>
+                <div className="font-medium text-gray-900">Настройки</div>
+                <div className="text-xs text-green-600">2FA и защита</div>
+              </div>
+            </button>
+            
+            <button
+              onClick={() => setShowBackup(true)}
+              className="flex items-center gap-3 p-3 rounded-xl bg-purple-50 hover:bg-purple-100 transition-all duration-200 text-left"
+            >
+              <Icon name="HardDriveUpload" size={18} className="text-purple-600" />
+              <div>
+                <div className="font-medium text-gray-900">Резервные копии</div>
+                <div className="text-xs text-purple-600">Сохранение данных</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Управление и настройки */}
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <Icon name="Settings" size={20} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Управление</h2>
+              <p className="text-sm text-gray-600">Настройки и инструменты</p>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            <button
+              onClick={() => setShowDataManager(true)}
+              className="w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-yellow-50 to-orange-50 hover:from-yellow-100 hover:to-orange-100 transition-all duration-200 text-left border border-yellow-200"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+                  <Icon name="Database" size={18} className="text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Управление данными</div>
+                  <div className="text-sm text-yellow-700">Экспорт и очистка данных</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={18} className="text-gray-400" />
+            </button>
+
+            <button
+              onClick={() => setShowSettings(true)}
+              className="w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-gray-50 to-slate-50 hover:from-gray-100 hover:to-slate-100 transition-all duration-200 text-left border border-gray-200"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-500 to-slate-600 rounded-full flex items-center justify-center">
+                  <Icon name="Cog" size={18} className="text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Настройки профиля</div>
+                  <div className="text-sm text-gray-600">Конфигурация аккаунта</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={18} className="text-gray-400" />
+            </button>
+            
+            <button
+              onClick={() => setShowAccessibility(true)}
+              className="w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 transition-all duration-200 text-left border border-blue-200"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+                  <Icon name="Accessibility" size={18} className="text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Доступность</div>
+                  <div className="text-sm text-blue-700">Настройки для удобства</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={18} className="text-gray-400" />
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Выход из системы */}
+      <div className="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+            <Icon name="LogOut" size={20} className="text-white" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-gray-900">Завершение работы</h2>
+            <p className="text-sm text-gray-600">Безопасный выход из системы</p>
+          </div>
+        </div>
+        
+        <button
+          onClick={onLogout}
+          className="w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 transition-all duration-200 text-left border-2 border-red-200 hover:border-red-300"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+              <Icon name="Power" size={16} className="text-white" />
+            </div>
+            <div>
+              <div className="font-semibold text-red-700">Выйти из аккаунта</div>
+              <div className="text-sm text-red-600">Завершить текущую сессию</div>
+            </div>
+          </div>
+          <Icon name="ArrowRight" size={18} className="text-red-500" />
         </button>
       </div>
 
