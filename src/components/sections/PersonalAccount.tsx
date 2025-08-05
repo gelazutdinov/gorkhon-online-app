@@ -31,79 +31,86 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
     console.log('User data:', user); // Отладочная информация
     try {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4">
-          <div className="space-y-8">
-            <UserDashboard 
-              user={user}
-              daysWithUs={getDaysWithUs()}
-              formattedTimeSpent={getFormattedTimeSpent()}
-              onLogout={logout}
-              onUserUpdate={updateUser}
-              onSectionChange={onSectionChange}
-            />
+        <div className="space-y-6">
+          <UserDashboard 
+            user={user}
+            daysWithUs={getDaysWithUs()}
+            formattedTimeSpent={getFormattedTimeSpent()}
+            onLogout={logout}
+            onUserUpdate={updateUser}
+            onSectionChange={onSectionChange}
+          />
         
           {/* Системные уведомления */}
-          <div className="space-y-6">
-            <NotificationBanner />
-            
-
-          </div>
+          <NotificationBanner />
         
           {/* Правовая информация */}
-          <div className="border-t border-gray-200 pt-6">
-            <div className="text-center space-y-4">
-              {/* Ссылки на правовые документы - исправлена верстка */}
-              <div className="flex flex-col items-center gap-3 text-sm">
-                <Link 
-                  to="/privacy" 
-                  target="_blank"
-                  className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
-                >
-                  <Icon name="Shield" size={16} />
-                  <span>Политика конфиденциальности</span>
-                </Link>
-                <Link 
-                  to="/terms" 
-                  target="_blank"
-                  className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
-                >
-                  <Icon name="FileText" size={16} />
-                  <span>Пользовательское соглашение</span>
-                </Link>
-                <Link 
-                  to="/data-protection" 
-                  target="_blank"
-                  className="text-gray-600 hover:text-gorkhon-pink transition-colors flex items-center gap-2"
-                >
-                  <Icon name="ShieldCheck" size={16} />
-                  <span>Защита данных</span>
-                </Link>
-                
-
-              </div>
-
-              {/* Информация о безопасности - исправлена верстка */}
-              <div className="px-4">
-                <div className="bg-gradient-to-r from-gorkhon-pink/5 to-gorkhon-blue/5 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    <Icon name="Info" size={18} className="text-gorkhon-blue mt-0.5 flex-shrink-0" />
-                    <div className="text-left">
-                      <h5 className="font-medium text-gray-800 mb-2 text-sm">О безопасности ваших данных</h5>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        Мы серьезно относимся к защите вашей приватности. Все персональные данные 
-                        хранятся локально в вашем браузере и передаются только по защищенному 
-                        соединению.{' '}
-                        <Link to="/privacy" target="_blank" className="text-gorkhon-pink hover:underline">
-                          Подробнее в документах о конфиденциальности
-                        </Link>.
-                      </p>
-                    </div>
-                  </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <Icon name="Shield" size={20} className="text-gorkhon-blue" />
+              Правовая информация
+            </h3>
+            
+            <div className="space-y-3">
+              <Link 
+                to="/privacy" 
+                target="_blank"
+                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-gorkhon-pink hover:bg-gorkhon-pink/5 transition-all duration-200"
+              >
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Icon name="Shield" size={16} className="text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <span className="font-medium text-gray-800">Политика конфиденциальности</span>
+                  <p className="text-sm text-gray-600">Как мы защищаем ваши данные</p>
+                </div>
+                <Icon name="ExternalLink" size={16} className="text-gray-400" />
+              </Link>
+              
+              <Link 
+                to="/terms" 
+                target="_blank"
+                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-gorkhon-pink hover:bg-gorkhon-pink/5 transition-all duration-200"
+              >
+                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                  <Icon name="FileText" size={16} className="text-green-600" />
+                </div>
+                <div className="flex-1">
+                  <span className="font-medium text-gray-800">Пользовательское соглашение</span>
+                  <p className="text-sm text-gray-600">Правила использования платформы</p>
+                </div>
+                <Icon name="ExternalLink" size={16} className="text-gray-400" />
+              </Link>
+              
+              <Link 
+                to="/data-protection" 
+                target="_blank"
+                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-gorkhon-pink hover:bg-gorkhon-pink/5 transition-all duration-200"
+              >
+                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Icon name="ShieldCheck" size={16} className="text-purple-600" />
+                </div>
+                <div className="flex-1">
+                  <span className="font-medium text-gray-800">Защита данных</span>
+                  <p className="text-sm text-gray-600">Меры безопасности ваших данных</p>
+                </div>
+                <Icon name="ExternalLink" size={16} className="text-gray-400" />
+              </Link>
+            </div>
+            
+            {/* Информация о безопасности */}
+            <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
+              <div className="flex items-start gap-3">
+                <Icon name="Info" size={18} className="text-blue-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h5 className="font-medium text-gray-800 mb-1">О безопасности</h5>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    Все данные хранятся локально в вашем браузере и передаются только по защищенному соединению.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
       );
     } catch (error) {
@@ -139,12 +146,17 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
         </div>
 
         {/* О проекте */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-          <div className="flex items-center gap-3 mb-4">
-            <Icon name="Info" size={24} className="text-gorkhon-pink" />
-            <h4 className="text-lg font-semibold text-gray-800">О проекте</h4>
+        <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-2xl p-6 shadow-lg border border-blue-100">
+          <div className="flex items-start gap-4 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-gorkhon-pink to-gorkhon-green rounded-xl flex items-center justify-center shadow-lg">
+              <Icon name="Info" size={20} className="text-white" />
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-gray-800 mb-1">О проекте</h4>
+              <p className="text-sm text-gray-500">Наша миссия и цели</p>
+            </div>
           </div>
-          <p className="text-gray-600 leading-relaxed">
+          <p className="text-gray-700 leading-relaxed">
             Горхон.Online — это цифровая платформа, созданная для удобства жителей поселка Горхон. 
             Мы объединяем всю важную информацию в одном месте, делая жизнь нашего сообщества более 
             комфортной и связанной.
@@ -152,12 +164,17 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
         </div>
 
         {/* Миссия */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-          <div className="flex items-center gap-3 mb-4">
-            <Icon name="Target" size={24} className="text-gorkhon-green" />
-            <h4 className="text-lg font-semibold text-gray-800">Наша миссия</h4>
+        <div className="bg-gradient-to-br from-white to-green-50/30 rounded-2xl p-6 shadow-lg border border-green-100">
+          <div className="flex items-start gap-4 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-gorkhon-green to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Icon name="Target" size={20} className="text-white" />
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-gray-800 mb-1">Наша миссия</h4>
+              <p className="text-sm text-gray-500">К чему мы стремимся</p>
+            </div>
           </div>
-          <p className="text-gray-600 leading-relaxed">
+          <p className="text-gray-700 leading-relaxed">
             Сделать жизнь в Горхоне максимально удобной через цифровые технологии. 
             Мы стремимся создать единое информационное пространство, где каждый житель 
             может быстро найти нужную информацию и получить помощь.
@@ -166,26 +183,39 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
 
         {/* Преимущества */}
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-          <div className="flex items-center gap-3 mb-4">
-            <Icon name="CheckCircle" size={24} className="text-green-500" />
-            <h4 className="text-lg font-semibold text-gray-800">Преимущества</h4>
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Icon name="CheckCircle" size={20} className="text-white" />
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-gray-800 mb-1">Преимущества</h4>
+              <p className="text-sm text-gray-500">Почему стоит выбрать нас</p>
+            </div>
           </div>
-          <div className="grid gap-3">
-            <div className="flex items-center gap-3">
-              <Icon name="Clock" size={16} className="text-blue-500" />
-              <span className="text-gray-600">Доступ к информации 24/7</span>
+          <div className="grid gap-4">
+            <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <Icon name="Clock" size={16} className="text-blue-600" />
+              </div>
+              <span className="text-gray-700 font-medium">Доступ к информации 24/7</span>
             </div>
-            <div className="flex items-center gap-3">
-              <Icon name="Smartphone" size={16} className="text-blue-500" />
-              <span className="text-gray-600">Удобный мобильный интерфейс</span>
+            <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                <Icon name="Smartphone" size={16} className="text-purple-600" />
+              </div>
+              <span className="text-gray-700 font-medium">Удобный мобильный интерфейс</span>
             </div>
-            <div className="flex items-center gap-3">
-              <Icon name="Users" size={16} className="text-blue-500" />
-              <span className="text-gray-600">Связь с сообществом</span>
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                <Icon name="Users" size={16} className="text-green-600" />
+              </div>
+              <span className="text-gray-700 font-medium">Связь с сообществом</span>
             </div>
-            <div className="flex items-center gap-3">
-              <Icon name="Zap" size={16} className="text-blue-500" />
-              <span className="text-gray-600">Быстрый доступ к услугам</span>
+            <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                <Icon name="Zap" size={16} className="text-orange-600" />
+              </div>
+              <span className="text-gray-700 font-medium">Быстрый доступ к услугам</span>
             </div>
           </div>
         </div>
