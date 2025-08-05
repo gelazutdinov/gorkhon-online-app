@@ -117,29 +117,57 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => setShowStatistics(true)}
-              className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 hover:bg-blue-100 transition-all duration-200 text-left"
-            >
-              <Icon name="TrendingUp" size={18} className="text-blue-600" />
-              <div>
-                <div className="font-medium text-gray-900">Статистика</div>
-                <div className="text-xs text-blue-600">Подробная аналитика</div>
-              </div>
-            </button>
-            
-            <button
-              onClick={() => setShowLina(true)}
-              className="flex items-center gap-3 p-3 rounded-xl bg-green-50 hover:bg-green-100 transition-all duration-200 text-left"
-            >
-              <Icon name="Bot" size={18} className="text-green-600" />
-              <div>
-                <div className="font-medium text-gray-900">Лина ИИ</div>
-                <div className="text-xs text-green-600">Умный помощник</div>
-              </div>
-            </button>
+          <button
+            onClick={() => setShowStatistics(true)}
+            className="w-full flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-all duration-200 text-left border border-blue-200"
+          >
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+              <Icon name="TrendingUp" size={18} className="text-white" />
+            </div>
+            <div className="flex-1">
+              <div className="font-semibold text-gray-900">Подробная статистика</div>
+              <div className="text-sm text-blue-700">Анализ активности и использования функций</div>
+            </div>
+            <Icon name="ChevronRight" size={18} className="text-gray-400" />
+          </button>
+        </div>
+        
+        {/* ИИ-Помощник Лина */}
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gorkhon-blue rounded-xl flex items-center justify-center">
+              <Icon name="Sparkles" size={20} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">ИИ-Помощник</h2>
+              <p className="text-sm text-gray-600">Умный цифровой ассистент</p>
+            </div>
           </div>
+          
+          <button
+            onClick={() => setShowLina(true)}
+            className="w-full flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-gorkhon-blue/10 to-gorkhon-blue/5 hover:from-gorkhon-blue/20 hover:to-gorkhon-blue/10 transition-all duration-200 text-left border border-gorkhon-blue/20"
+          >
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+              <img 
+                src="https://images.unsplash.com/photo-1494790108755-2616b332c792?w=100&h=100&fit=crop&crop=face" 
+                alt="Лина" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-900">Лина</span>
+                <img 
+                  src="https://cdn.poehali.dev/files/8371ad18-b8e1-4b43-98dc-dd6b47da6cfa.png" 
+                  alt="Верифицирован" 
+                  className="w-4 h-4"
+                />
+              </div>
+              <div className="text-sm text-gorkhon-blue">Начать диалог с ИИ-помощником</div>
+            </div>
+            <Icon name="MessageCircle" size={18} className="text-gorkhon-blue" />
+          </button>
         </div>
         
         {/* Безопасность и конфиденциальность */}
@@ -283,7 +311,45 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
       )}
 
       {showLina && (
-        <LinaAssistant onClose={handleCloseModal(setShowLina)} />
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={handleCloseModal(setShowLina)}></div>
+          <div className="relative max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl">
+              <div className="sticky top-0 bg-gorkhon-blue rounded-t-2xl p-4 border-b border-gray-200 flex items-center justify-between text-white">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full overflow-hidden bg-white/20 flex-shrink-0">
+                    <img 
+                      src="https://images.unsplash.com/photo-1494790108755-2616b332c792?w=100&h=100&fit=crop&crop=face" 
+                      alt="Лина" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-lg font-bold">Лина</h2>
+                      <img 
+                        src="https://cdn.poehali.dev/files/8371ad18-b8e1-4b43-98dc-dd6b47da6cfa.png" 
+                        alt="Верифицирован" 
+                        className="w-4 h-4 filter brightness-0 invert"
+                      />
+                    </div>
+                    <p className="text-white/80 text-sm">ИИ-Помощник</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleCloseModal(setShowLina)}
+                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                  aria-label="Закрыть чат с Линой"
+                >
+                  <Icon name="X" size={20} />
+                </button>
+              </div>
+              <div className="p-6">
+                <LinaAssistant onClose={handleCloseModal(setShowLina)} />
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {showDataManager && (
