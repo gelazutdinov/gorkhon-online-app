@@ -127,7 +127,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
       <div className="fixed bottom-32 sm:bottom-28 right-4 z-[60]">
         <button
           onClick={() => setIsMinimized(false)}
-          className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          className="bg-gorkhon-blue text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
         >
           <Icon name="MessageCircle" size={20} className="sm:w-6 sm:h-6" />
           <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
@@ -140,13 +140,24 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
     <div className="fixed inset-0 pb-32 sm:pb-0 sm:bottom-28 sm:right-4 sm:inset-auto z-[60] flex sm:block">
       <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-96 h-full sm:h-[32rem] flex flex-col overflow-hidden">
         {/* Заголовок */}
-        <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white p-4 sm:p-5 flex items-center justify-between shadow-lg">
+        <div className="bg-gorkhon-blue text-white p-4 sm:p-5 flex items-center justify-between shadow-lg">
           <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center animate-pulse">
-              <Icon name="Bot" size={16} className="sm:w-5 sm:h-5" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-white/20 flex-shrink-0">
+              <img 
+                src="https://images.unsplash.com/photo-1494790108755-2616b332c792?w=100&h=100&fit=crop&crop=face" 
+                alt="Лина" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
-              <h3 className="font-bold text-base sm:text-lg">🤖 Лина</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-base sm:text-lg">Лина</h3>
+                <img 
+                  src="https://cdn.poehali.dev/files/8371ad18-b8e1-4b43-98dc-dd6b47da6cfa.png" 
+                  alt="Верифицирован" 
+                  className="w-3 h-3 sm:w-4 sm:h-4 filter brightness-0 invert"
+                />
+              </div>
               <p className="text-sm text-white/90 sm:block">Цифровой помощник Горхона</p>
             </div>
           </div>

@@ -311,45 +311,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
       )}
 
       {showLina && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={handleCloseModal(setShowLina)}></div>
-          <div className="relative max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <div className="bg-white rounded-2xl shadow-2xl">
-              <div className="sticky top-0 bg-gorkhon-blue rounded-t-2xl p-4 border-b border-gray-200 flex items-center justify-between text-white">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full overflow-hidden bg-white/20 flex-shrink-0">
-                    <img 
-                      src="https://images.unsplash.com/photo-1494790108755-2616b332c792?w=100&h=100&fit=crop&crop=face" 
-                      alt="Лина" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-lg font-bold">Лина</h2>
-                      <img 
-                        src="https://cdn.poehali.dev/files/8371ad18-b8e1-4b43-98dc-dd6b47da6cfa.png" 
-                        alt="Верифицирован" 
-                        className="w-4 h-4 filter brightness-0 invert"
-                      />
-                    </div>
-                    <p className="text-white/80 text-sm">ИИ-Помощник</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleCloseModal(setShowLina)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-                  aria-label="Закрыть чат с Линой"
-                >
-                  <Icon name="X" size={20} />
-                </button>
-              </div>
-              <div className="p-6">
-                <LinaAssistant onClose={handleCloseModal(setShowLina)} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <LinaAssistant onClose={handleCloseModal(setShowLina)} />
       )}
 
       {showDataManager && (
