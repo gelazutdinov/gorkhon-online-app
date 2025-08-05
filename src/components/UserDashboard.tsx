@@ -132,15 +132,15 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           </button>
         </div>
         
-        {/* ИИ-Помощник Лина */}
+        {/* Поддержка Лина */}
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-gorkhon-blue rounded-xl flex items-center justify-center">
-              <Icon name="Sparkles" size={20} className="text-white" />
+              <Icon name="MessageSquare" size={20} className="text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">ИИ-Помощник</h2>
-              <p className="text-sm text-gray-600">Умный цифровой ассистент</p>
+              <h2 className="text-lg font-bold text-gray-900">Поддержка</h2>
+              <p className="text-sm text-gray-600">Виртуальная помощница службы поддержки</p>
             </div>
           </div>
           
@@ -150,9 +150,14 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           >
             <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
               <img 
-                src="https://images.unsplash.com/photo-1494790108755-2616b332c792?w=100&h=100&fit=crop&crop=face" 
+                src="https://images.unsplash.com/photo-1494790108755-2616b332c792?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
                 alt="Лина" 
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.parentElement!.innerHTML = '<div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+                }}
               />
             </div>
             <div className="flex-1">

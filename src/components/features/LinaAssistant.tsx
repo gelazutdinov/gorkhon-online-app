@@ -36,7 +36,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
     // Приветственное сообщение
     const welcomeMessage: Message = {
       id: '1',
-      text: '👋 Привет! Я Лина, ваш цифровой помощник по Горхону.\n\n🔧 Помогаю с техническими вопросами и поиском информации о поселке. Все данные беру с главной страницы приложения.\n\n❓ О чем хотите узнать?',
+      text: 'Здравствуйте!\n\nЯ — Лина, виртуальная помощница службы поддержки.',
       isUser: false,
       timestamp: new Date()
     };
@@ -144,9 +144,14 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-white/20 flex-shrink-0">
               <img 
-                src="https://images.unsplash.com/photo-1494790108755-2616b332c792?w=100&h=100&fit=crop&crop=face" 
+                src="https://images.unsplash.com/photo-1494790108755-2616b332c792?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
                 alt="Лина" 
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.parentElement!.innerHTML = '<div class="w-full h-full bg-white/20 rounded-full flex items-center justify-center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+                }}
               />
             </div>
             <div>
