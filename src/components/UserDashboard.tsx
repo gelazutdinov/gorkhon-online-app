@@ -94,15 +94,15 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           {/* Статистика */}
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-              <div className="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform">2630</div>
+              <div className="text-2xl font-bold mb-1 group-hover:scale-110 transition-transform">263</div>
               <div className="text-white/90 text-sm font-medium">сессий</div>
             </div>
             <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-              <div className="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform">6</div>
+              <div className="text-2xl font-bold mb-1 group-hover:scale-110 transition-transform">6</div>
               <div className="text-white/90 text-sm font-medium">дней с нами</div>
             </div>
             <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-              <div className="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform">7</div>
+              <div className="text-2xl font-bold mb-1 group-hover:scale-110 transition-transform">7</div>
               <div className="text-white/90 text-sm font-medium">активных дней</div>
             </div>
           </div>
@@ -181,109 +181,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           </button>
         </div>
         
-        {/* Безопасность и конфиденциальность */}
-        <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 bg-gradient-to-br from-green-500 via-emerald-600 to-green-700 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Icon name="Shield" size={24} className="text-white" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">Безопасность</h2>
-              <p className="text-sm text-gray-600">Защита данных и конфиденциальность</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              onClick={() => setShowSecurity(true)}
-              className="flex flex-col items-center gap-3 p-5 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 transition-all duration-300 text-center border border-green-200 hover:border-green-300 hover:shadow-md group/button"
-            >
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-                <Icon name="Lock" size={20} className="text-white" />
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 mb-1">Настройки</div>
-                <div className="text-xs text-green-600 font-medium">2FA и защита</div>
-              </div>
-            </button>
-            
-            <button
-              onClick={() => setShowBackup(true)}
-              className="flex flex-col items-center gap-3 p-5 rounded-2xl bg-gradient-to-br from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 transition-all duration-300 text-center border border-purple-200 hover:border-purple-300 hover:shadow-md group/button"
-            >
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-                <Icon name="HardDriveUpload" size={20} className="text-white" />
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 mb-1">Резервные копии</div>
-                <div className="text-xs text-purple-600 font-medium">Сохранение данных</div>
-              </div>
-            </button>
-          </div>
-        </div>
 
-        {/* Управление и настройки */}
-        <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-violet-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Icon name="Settings" size={24} className="text-white" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">Управление</h2>
-              <p className="text-sm text-gray-600">Настройки и инструменты</p>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <button
-              onClick={() => setShowDataManager(true)}
-              className="w-full flex items-center justify-between p-5 rounded-2xl bg-gradient-to-r from-yellow-50 via-orange-50 to-amber-50 hover:from-yellow-100 hover:via-orange-100 hover:to-amber-100 transition-all duration-300 text-left border border-yellow-200 hover:border-orange-300 hover:shadow-lg group/button"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 via-orange-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-                  <Icon name="Database" size={20} className="text-white" />
-                </div>
-                <div>
-                  <div className="font-bold text-gray-900 mb-1">Управление данными</div>
-                  <div className="text-sm text-yellow-700">Экспорт и очистка данных</div>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={20} className="text-gray-400 group-hover/button:translate-x-1 transition-transform" />
-            </button>
-
-            <button
-              onClick={() => setShowSettings(true)}
-              className="w-full flex items-center justify-between p-5 rounded-2xl bg-gradient-to-r from-gray-50 via-slate-50 to-neutral-50 hover:from-gray-100 hover:via-slate-100 hover:to-neutral-100 transition-all duration-300 text-left border border-gray-200 hover:border-slate-300 hover:shadow-lg group/button"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-gray-500 via-slate-600 to-neutral-600 rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-                  <Icon name="Cog" size={20} className="text-white" />
-                </div>
-                <div>
-                  <div className="font-bold text-gray-900 mb-1">Настройки профиля</div>
-                  <div className="text-sm text-gray-600">Конфигурация аккаунта</div>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={20} className="text-gray-400 group-hover/button:translate-x-1 transition-transform" />
-            </button>
-            
-            <button
-              onClick={() => setShowAccessibility(true)}
-              className="w-full flex items-center justify-between p-5 rounded-2xl bg-gradient-to-r from-blue-50 via-cyan-50 to-sky-50 hover:from-blue-100 hover:via-cyan-100 hover:to-sky-100 transition-all duration-300 text-left border border-blue-200 hover:border-cyan-300 hover:shadow-lg group/button"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-cyan-500 to-sky-500 rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-                  <Icon name="Accessibility" size={20} className="text-white" />
-                </div>
-                <div>
-                  <div className="font-bold text-gray-900 mb-1">Доступность</div>
-                  <div className="text-sm text-blue-700">Настройки для удобства</div>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={20} className="text-gray-400 group-hover/button:translate-x-1 transition-transform" />
-            </button>
-          </div>
-        </div>
       </div>
       
       {/* Выход из системы */}

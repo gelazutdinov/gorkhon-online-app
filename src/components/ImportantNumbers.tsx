@@ -25,29 +25,36 @@ const ImportantNumbers = () => {
   ];
 
   return (
-    <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-blue-50/30 border-2 border-gorkhon-blue/10 shadow-lg hover:shadow-xl transition-all duration-300">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-3 text-gorkhon-blue">
-          <div className="p-2 rounded-full bg-gorkhon-blue/10 animate-pulse">
-            <Icon name="Phone" size={20} />
+    <Card className="animate-slide-up rounded-3xl bg-gradient-to-br from-white via-blue-50/20 to-indigo-50/30 border-2 border-gorkhon-blue/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 group overflow-hidden relative">
+      {/* Декоративные элементы */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gorkhon-blue/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-gorkhon-green/5 rounded-full translate-y-12 -translate-x-12 group-hover:scale-125 transition-transform duration-700"></div>
+      
+      <CardHeader className="pb-6 relative z-10">
+        <CardTitle className="flex items-center gap-4 text-gorkhon-blue">
+          <div className="p-3 rounded-2xl bg-gradient-to-br from-gorkhon-blue/10 to-gorkhon-blue/20 animate-pulse-soft shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <Icon name="Phone" size={24} className="group-hover:rotate-12 transition-transform duration-300" />
           </div>
           <div>
-            <span className="text-lg font-bold">Важные номера</span>
-            <p className="text-sm text-slate-600 font-normal">Всегда под рукой в трудную минуту</p>
+            <span className="text-xl font-bold bg-gradient-to-r from-gorkhon-blue to-gorkhon-green bg-clip-text text-transparent">Важные номера</span>
+            <p className="text-sm text-slate-600 font-medium mt-1">Всегда под рукой в трудную минуту</p>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4 relative z-10">
         {importantNumbers.map((contact, index) => (
-          <div key={index} className="group p-3 rounded-xl bg-gradient-to-r from-slate-50 to-blue-50/50 hover:from-gorkhon-blue/5 hover:to-gorkhon-green/5 transition-all duration-300 border border-slate-200/50 hover:border-gorkhon-blue/20 hover:shadow-md">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-gorkhon-blue/10 to-gorkhon-blue/5 group-hover:from-gorkhon-blue/20 group-hover:to-gorkhon-blue/10 transition-all duration-300 flex-shrink-0">
-                  <Icon name={contact.icon} size={16} className="text-gorkhon-blue group-hover:scale-110 transition-transform duration-300" />
+          <div key={index} className="group p-4 rounded-2xl bg-gradient-to-r from-white via-blue-50/30 to-indigo-50/20 hover:from-gorkhon-blue/10 hover:via-white hover:to-gorkhon-green/10 transition-all duration-500 border border-slate-200/60 hover:border-gorkhon-blue/40 hover:shadow-lg hover:-translate-y-0.5 relative overflow-hidden">
+            {/* Анимированный фон */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gorkhon-blue/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            
+            <div className="flex items-center justify-between gap-4 relative z-10">
+              <div className="flex items-center gap-4 flex-1 min-w-0">
+                <div className="p-3 rounded-2xl bg-gradient-to-br from-gorkhon-blue/15 via-gorkhon-blue/10 to-gorkhon-blue/5 group-hover:from-gorkhon-blue/25 group-hover:to-gorkhon-blue/15 transition-all duration-400 flex-shrink-0 shadow-md group-hover:shadow-lg">
+                  <Icon name={contact.icon} size={18} className="text-gorkhon-blue group-hover:scale-125 group-hover:rotate-6 transition-all duration-400" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm text-slate-800 group-hover:text-gorkhon-blue transition-colors truncate">{contact.name}</p>
-                  <p className="text-xs text-slate-600 truncate">{contact.person}</p>
+                  <p className="font-bold text-base text-slate-800 group-hover:text-gorkhon-blue transition-colors duration-300 truncate">{contact.name}</p>
+                  <p className="text-sm text-slate-600 group-hover:text-slate-700 transition-colors duration-300 truncate">{contact.person}</p>
                   <p className="text-xs text-gorkhon-blue/70 font-mono">{contact.phone}</p>
                 </div>
               </div>

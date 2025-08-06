@@ -22,29 +22,41 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   const { user } = useUser();
   
   return (
-    <>
+    <div className="space-y-8">
       <TrackableComponent feature="importantNumbers">
-        <ImportantNumbers data-tutorial="search-input" />
+        <div className="transform hover:scale-[1.02] transition-transform duration-300">
+          <ImportantNumbers data-tutorial="search-input" />
+        </div>
       </TrackableComponent>
       
       <TrackableComponent feature="schedule">
-        <Schedule data-tutorial="categories" />
+        <div className="transform hover:scale-[1.02] transition-transform duration-300">
+          <Schedule data-tutorial="categories" />
+        </div>
       </TrackableComponent>
       
       <TrackableComponent feature="donation">
-        <DonationSection />
+        <div className="transform hover:scale-[1.02] transition-transform duration-300">
+          <DonationSection />
+        </div>
       </TrackableComponent>
       
       <TrackableComponent feature="workSchedule">
-        <WorkSchedule />
+        <div className="transform hover:scale-[1.02] transition-transform duration-300">
+          <WorkSchedule />
+        </div>
       </TrackableComponent>
       
       <TrackableComponent feature="pvz">
-        <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />
+        <div className="transform hover:scale-[1.02] transition-transform duration-300">
+          <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />
+        </div>
       </TrackableComponent>
       
-      <ActionButtons />
-    </>
+      <div className="transform hover:scale-[1.02] transition-transform duration-300">
+        <ActionButtons />
+      </div>
+    </div>
   );
 };
 

@@ -35,8 +35,12 @@ const Schedule = () => {
   ];
 
   return (
-    <Card data-tutorial="city-map" className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-gorkhon-orange/10 shadow-lg hover:shadow-xl transition-all duration-300">
-      <CardHeader className="pb-4">
+    <Card data-tutorial="city-map" className="animate-slide-up rounded-3xl bg-gradient-to-br from-white via-orange-50/20 to-amber-50/30 border-2 border-gorkhon-orange/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 group overflow-hidden relative">
+      {/* Декоративные элементы */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gorkhon-orange/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-amber-500/5 rounded-full translate-y-12 -translate-x-12 group-hover:scale-125 transition-transform duration-700"></div>
+      
+      <CardHeader className="pb-6 relative z-10">
         <CardTitle className="flex items-center gap-3 text-gorkhon-orange">
           <div className="p-2 rounded-full bg-gorkhon-orange/10 animate-pulse">
             <Icon name="Bus" size={20} />
