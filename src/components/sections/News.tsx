@@ -83,7 +83,7 @@ const News = () => {
             rel="noopener noreferrer"
             className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 flex-shrink-0"
           >
-            <Icon name="ExternalLink" size={12} sm:size={14} />
+            <Icon name="ExternalLink" size={14} />
             <span className="hidden sm:inline">Открыть в ВК</span>
             <span className="sm:hidden">ВК</span>
           </a>
