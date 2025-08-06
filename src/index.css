@@ -196,10 +196,16 @@
   body {
     @apply text-foreground;
     font-family: "Unbounded", sans-serif;
-    background-color: #d0d0d0;
-    background-image: url("/pattern.svg");
-    background-size: 500px 500px;
-    background-repeat: repeat;
+    background-color: #f8fafc;
+    /* Убираем фоновый паттерн для мобильного приложения */
+    /* background-image: url("/pattern.svg"); */
+    /* background-size: 500px 500px; */
+    /* background-repeat: repeat; */
+
+    /* Мобильные оптимизации */
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 }
 

@@ -13,6 +13,8 @@ import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
 import SecuritySettings from "@/components/security/SecuritySettings";
 import DigitalRuble from "@/components/economy/DigitalRuble";
+import ServicesScreen from "@/screens/ServicesScreen";
+import NotificationsScreen from "@/screens/NotificationsScreen";
 
 
 
@@ -65,15 +67,39 @@ const Index = () => {
       
       <Header />
 
-      <main className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6 relative z-10">
+      <main className="relative z-10">
         {activeSection === 'home' && (
-          <Home onOpenPhotoCarousel={openPhotoCarousel} />
+          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+            <Home onOpenPhotoCarousel={openPhotoCarousel} />
+          </div>
         )}
-        {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
-        {activeSection === 'digital_ruble' && <DigitalRuble />}
-        {activeSection === 'security' && <SecuritySettings />}
-        {activeSection === 'news' && <News />}
-        {activeSection === 'support' && <Support />}
+        {activeSection === 'services' && <ServicesScreen />}
+        {activeSection === 'notifications' && <NotificationsScreen />}
+        {activeSection === 'profile' && (
+          <div className="max-w-md mx-auto px-4 py-6">
+            <PersonalAccount onSectionChange={handleSectionChange} />
+          </div>
+        )}
+        {activeSection === 'digital_ruble' && (
+          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+            <DigitalRuble />
+          </div>
+        )}
+        {activeSection === 'security' && (
+          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+            <SecuritySettings />
+          </div>
+        )}
+        {activeSection === 'news' && (
+          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+            <News />
+          </div>
+        )}
+        {activeSection === 'support' && (
+          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+            <Support />
+          </div>
+        )}
       </main>
 
       <PhotoCarousel 

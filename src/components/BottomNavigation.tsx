@@ -14,9 +14,14 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       icon: 'Home'
     },
     {
-      id: 'news',
-      label: 'Новости',
-      icon: 'Newspaper'
+      id: 'services',
+      label: 'Услуги',
+      icon: 'Grid3X3'
+    },
+    {
+      id: 'notifications',
+      label: 'Уведомления',
+      icon: 'Bell'
     },
     {
       id: 'profile',
@@ -25,10 +30,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
     }
   ];
 
-  // Скрываем навигацию когда активен профиль
-  if (activeSection === 'profile') {
-    return null;
-  }
+  // Показываем навигацию всегда для приложения
 
   return (
     <>

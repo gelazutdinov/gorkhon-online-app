@@ -53,7 +53,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 pb-24">
       {/* Заголовок с навигацией */}
       <div className="flex items-center justify-between">
         <button
