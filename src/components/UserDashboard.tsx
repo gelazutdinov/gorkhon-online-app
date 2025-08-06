@@ -92,18 +92,18 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           </div>
           
           {/* Статистика */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-              <div className="text-2xl font-bold mb-1 group-hover:scale-110 transition-transform">263</div>
-              <div className="text-white/90 text-sm font-medium">сессий</div>
+          <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 sm:p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group min-w-0">
+              <div className="text-lg sm:text-2xl font-bold mb-1 group-hover:scale-110 transition-transform truncate">263</div>
+              <div className="text-white/90 text-xs sm:text-sm font-medium leading-tight">сессий</div>
             </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-              <div className="text-2xl font-bold mb-1 group-hover:scale-110 transition-transform">6</div>
-              <div className="text-white/90 text-sm font-medium">дней с нами</div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 sm:p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group min-w-0">
+              <div className="text-lg sm:text-2xl font-bold mb-1 group-hover:scale-110 transition-transform truncate">6</div>
+              <div className="text-white/90 text-xs sm:text-sm font-medium leading-tight">дней с нами</div>
             </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group">
-              <div className="text-2xl font-bold mb-1 group-hover:scale-110 transition-transform">7</div>
-              <div className="text-white/90 text-sm font-medium">активных дней</div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 sm:p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group min-w-0">
+              <div className="text-lg sm:text-2xl font-bold mb-1 group-hover:scale-110 transition-transform truncate">7</div>
+              <div className="text-white/90 text-xs sm:text-sm font-medium leading-tight">активных дней</div>
             </div>
           </div>
         </div>

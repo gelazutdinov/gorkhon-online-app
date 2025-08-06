@@ -17,10 +17,10 @@ const WorkSchedule = () => {
       icon: "CreditCard",
       detailed: {
         "Понедельник": "Выходной",
-        "Вторник": "09:00 - 17:00 (Обед: 12:30 - 13:30)",
+        "Вторник": "09:00 - 17:00\n(Обед: 12:30 - 13:30)",
         "Среда": "Выходной", 
         "Четверг": "Выходной",
-        "Пятница": "09:00 - 17:00 (Обед: 12:30 - 13:30)",
+        "Пятница": "09:00 - 17:00\n(Обед: 12:30 - 13:30)",
         "Суббота": "Выходной",
         "Воскресенье": "Выходной"
       }
@@ -70,12 +70,12 @@ const WorkSchedule = () => {
                 </div>
                 <div className="grid gap-2 bg-white/50 p-3 rounded-xl border border-slate-200/30">
                   {Object.entries(item.detailed).map(([day, hours]) => (
-                    <div key={day} className="flex justify-between items-center text-xs py-1">
-                      <div className="flex items-center gap-2">
+                    <div key={day} className="flex justify-between items-start text-xs py-2">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <div className={`w-2 h-2 rounded-full ${hours === "Выходной" ? "bg-red-400" : "bg-green-400"}`}></div>
                         <span className="text-slate-700 font-medium">{day}:</span>
                       </div>
-                      <span className={`font-semibold ${hours === "Выходной" ? "text-red-600" : "text-green-600"}`}>
+                      <span className={`font-semibold text-right whitespace-pre-line leading-tight ml-2 ${hours === "Выходной" ? "text-red-600" : "text-green-600"}`}>
                         {hours}
                       </span>
                     </div>
