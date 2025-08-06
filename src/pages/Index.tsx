@@ -13,8 +13,7 @@ import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
 import SecuritySettings from "@/components/security/SecuritySettings";
 import DigitalRuble from "@/components/economy/DigitalRuble";
-import ServicesScreen from "@/screens/ServicesScreen";
-import NotificationsScreen from "@/screens/NotificationsScreen";
+
 
 
 
@@ -73,8 +72,11 @@ const Index = () => {
             <Home onOpenPhotoCarousel={openPhotoCarousel} />
           </div>
         )}
-        {activeSection === 'services' && <ServicesScreen />}
-        {activeSection === 'notifications' && <NotificationsScreen />}
+        {activeSection === 'news' && (
+          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+            <News />
+          </div>
+        )}
         {activeSection === 'profile' && (
           <div className="max-w-md mx-auto px-4 py-6">
             <PersonalAccount onSectionChange={handleSectionChange} />
