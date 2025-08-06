@@ -71,33 +71,34 @@ const News = () => {
       </div>
 
       {/* VK Widget Container */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Icon name="MessageSquare" size={16} className="text-blue-600" />
-            Лента ВКонтакте
+      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg border border-gray-100">
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 flex items-center gap-2 flex-1 min-w-0">
+            <Icon name="MessageSquare" size={16} className="text-blue-600 flex-shrink-0" />
+            <span className="truncate">Лента ВКонтакте</span>
           </h3>
           <a 
             href="https://vk.com/club214224996" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1"
+            className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 flex-shrink-0"
           >
-            <Icon name="ExternalLink" size={14} />
-            Открыть в ВК
+            <Icon name="ExternalLink" size={12} sm:size={14} />
+            <span className="hidden sm:inline">Открыть в ВК</span>
+            <span className="sm:hidden">ВК</span>
           </a>
         </div>
         
-        <div className="w-full overflow-hidden rounded-xl bg-gray-50 min-h-[400px] relative">
+        <div className="w-full overflow-hidden rounded-xl bg-gray-50 min-h-[350px] sm:min-h-[400px] relative">
           {isVKLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gorkhon-pink mx-auto mb-2"></div>
-                <p className="text-sm text-gray-600">Загрузка новостей...</p>
+                <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-gorkhon-pink mx-auto mb-2"></div>
+                <p className="text-xs sm:text-sm text-gray-600">Загрузка новостей...</p>
               </div>
             </div>
           )}
-          <div id="vk_groups" className="w-full"></div>
+          <div id="vk_groups" className="w-full h-full"></div>
         </div>
         
         {/* Fallback если VK не загрузился */}

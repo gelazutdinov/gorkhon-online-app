@@ -62,39 +62,34 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gray-50 relative overflow-x-hidden">
       
       <Header />
 
-      <main className="relative z-10">
+      <main className="relative z-10 min-h-screen">
         {activeSection === 'home' && (
-          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
             <Home onOpenPhotoCarousel={openPhotoCarousel} />
           </div>
         )}
         {activeSection === 'news' && (
-          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
             <News />
           </div>
         )}
         {activeSection === 'profile' && (
-          <div className="max-w-md mx-auto px-4 py-6">
+          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24">
             <PersonalAccount onSectionChange={handleSectionChange} />
           </div>
         )}
         {activeSection === 'digital_ruble' && (
-          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
             <DigitalRuble />
           </div>
         )}
         {activeSection === 'security' && (
-          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
+          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
             <SecuritySettings />
-          </div>
-        )}
-        {activeSection === 'news' && (
-          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
-            <News />
           </div>
         )}
         {activeSection === 'support' && (

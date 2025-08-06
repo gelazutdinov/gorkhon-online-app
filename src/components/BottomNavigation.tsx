@@ -30,29 +30,35 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
   return (
     <>
       {/* Фиксированное меню внизу экрана - жидкое стекло капсула */}
-      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
-        <div className="bg-white/20 backdrop-blur-xl rounded-full px-6 py-3 shadow-2xl border border-white/30">
-          <div className="flex items-center gap-4">
+      <div className="fixed bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-50 safe-area-bottom">
+        <div className="bg-white/25 backdrop-blur-xl rounded-full px-4 sm:px-6 py-2.5 sm:py-3 shadow-2xl border border-white/30">
+          <div className="flex items-center gap-2 sm:gap-4">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onSectionChange(item.id)}
                 className={`
-                  relative flex items-center justify-center p-3 rounded-full transition-all duration-300
+                  relative flex flex-col items-center justify-center p-2 sm:p-3 rounded-full transition-all duration-300 min-h-[44px] min-w-[44px]
                   ${activeSection === item.id 
                     ? 'bg-white/40 backdrop-blur-sm scale-110 shadow-lg' 
-                    : 'hover:bg-white/20 hover:scale-105'
+                    : 'hover:bg-white/20 hover:scale-105 active:scale-95'
                   }
                 `}
               >
                 <Icon 
                   name={item.icon as any} 
-                  size={24} 
+                  size={20} 
                   className={`
-                    transition-all duration-300
+                    transition-all duration-300 mb-0.5
                     ${activeSection === item.id ? 'text-gray-800' : 'text-gray-600'}
                   `}
                 />
+                <span className={`
+                  text-xs font-medium transition-all duration-300 hidden sm:block
+                  ${activeSection === item.id ? 'text-gray-800' : 'text-gray-600'}
+                `}>
+                  {item.label}
+                </span>
               </button>
             ))}
           </div>
