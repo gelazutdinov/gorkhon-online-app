@@ -19,11 +19,11 @@ const CreateTicketModal = ({ isOpen, newTicket, onTicketChange, onClose, onCreat
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-lg w-full">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800">Создать тикет</h2>
+    <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+      <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg max-h-[90vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 safe-area-bottom">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-800 truncate">Создать тикет</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -41,7 +41,7 @@ const CreateTicketModal = ({ isOpen, newTicket, onTicketChange, onClose, onCreat
                 type="text"
                 value={newTicket.subject}
                 onChange={(e) => onTicketChange(prev => ({ ...prev, subject: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base"
                 placeholder="Кратко опишите проблему"
               />
             </div>
@@ -54,12 +54,12 @@ const CreateTicketModal = ({ isOpen, newTicket, onTicketChange, onClose, onCreat
                 value={newTicket.description}
                 onChange={(e) => onTicketChange(prev => ({ ...prev, description: e.target.value }))}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base resize-none"
                 placeholder="Подробно опишите проблему или вопрос"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Категория
@@ -67,7 +67,7 @@ const CreateTicketModal = ({ isOpen, newTicket, onTicketChange, onClose, onCreat
                 <select
                   value={newTicket.category}
                   onChange={(e) => onTicketChange(prev => ({ ...prev, category: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base"
                 >
                   <option value="general">Общие вопросы</option>
                   <option value="technical">Технические проблемы</option>
@@ -83,7 +83,7 @@ const CreateTicketModal = ({ isOpen, newTicket, onTicketChange, onClose, onCreat
                 <select
                   value={newTicket.priority}
                   onChange={(e) => onTicketChange(prev => ({ ...prev, priority: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base"
                 >
                   <option value="low">Низкий</option>
                   <option value="medium">Средний</option>

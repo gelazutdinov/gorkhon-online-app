@@ -46,9 +46,9 @@ const TransactionHistory = ({ transactions }: TransactionHistoryProps) => {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+    <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-gray-100">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold text-lg">📊 История операций</h3>
+        <h3 className="font-bold text-base sm:text-lg truncate">📊 История операций</h3>
         <button className="text-sm text-green-600 hover:text-green-700">
           Показать все
         </button>
@@ -56,26 +56,29 @@ const TransactionHistory = ({ transactions }: TransactionHistoryProps) => {
 
       <div className="space-y-3">
         {transactions.map((transaction) => (
-          <div key={transaction.id} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+          <div key={transaction.id} className="flex items-center gap-3 sm:gap-4 p-3 bg-gray-50 rounded-lg">
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
               transaction.type === 'income' ? 'bg-green-100' :
               transaction.type === 'expense' ? 'bg-red-100' : 'bg-blue-100'
             }`}>
               <Icon 
                 name={getTransactionIcon(transaction.type)} 
-                size={18} 
+                size={16} 
                 className={getTransactionColor(transaction.type)}
               />
             </div>
             
             <div className="flex-1 min-w-0">
-              <div className="font-medium text-sm">{transaction.description}</div>
-              <div className="text-xs text-gray-500">
-                {transaction.counterpart} • {formatDate(transaction.date)}
+              <div className="font-medium text-xs sm:text-sm truncate">{transaction.description}</div>
+              <div className="text-xs text-gray-500 truncate">
+                {transaction.counterpart && (
+                  <span className="truncate">{transaction.counterpart} • </span>
+                )}
+                {formatDate(transaction.date)}
               </div>
             </div>
             
-            <div className={`font-bold ${getTransactionColor(transaction.type)}`}>
+            <div className={`font-bold text-xs sm:text-sm flex-shrink-0 ${getTransactionColor(transaction.type)}`}>
               {formatAmount(transaction.amount)}
             </div>
           </div>

@@ -119,12 +119,12 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
       
       {/* Thumbnail strip for multiple photos */}
       {photos.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {photos.map((photo, index) => (
             <button
               key={index}
               onClick={() => goToPhoto(index)}
-              className={`flex-shrink-0 w-16 h-12 overflow-hidden rounded-lg border-2 transition-all duration-300 ${
+              className={`flex-shrink-0 w-14 h-10 sm:w-16 sm:h-12 overflow-hidden rounded-lg border-2 transition-all duration-300 ${
                 index === currentIndex 
                   ? 'border-gorkhon-pink shadow-lg scale-105' 
                   : 'border-slate-200 hover:border-slate-300'
@@ -259,17 +259,17 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                   <h4 className="font-bold text-slate-800 group-hover:text-gorkhon-pink transition-colors">{pvz.name}</h4>
 
                 </div>
-                <div className="flex items-center gap-2">
-                  <Icon name="MapPin" size={14} className="text-slate-500" />
-                  <p className="text-sm text-slate-600">{pvz.address}</p>
+                <div className="flex items-start gap-2">
+                  <Icon name="MapPin" size={14} className="text-slate-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-slate-600 break-words">{pvz.address}</p>
                 </div>
               </div>
             </div>
             
             <div className="space-y-3">
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-green-50 border border-green-200/50">
-                <Icon name="Clock" size={16} className="text-green-600" />
-                <span className="text-sm font-semibold text-green-700">{pvz.schedule}</span>
+              <div className="flex items-start gap-2 p-2 rounded-xl bg-green-50 border border-green-200/50">
+                <Icon name="Clock" size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                <span className="text-sm font-semibold text-green-700 break-words">{pvz.schedule}</span>
               </div>
               
               <div className="space-y-4">

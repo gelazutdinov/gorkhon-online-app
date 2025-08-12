@@ -138,7 +138,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
 
   return (
     <div className="fixed inset-0 pb-32 sm:pb-0 sm:bottom-28 sm:right-4 sm:inset-auto z-[60] flex sm:block">
-      <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-96 h-full sm:h-[32rem] flex flex-col overflow-hidden">
+      <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-96 h-full sm:h-[32rem] flex flex-col overflow-hidden max-w-full">
         {/* Заголовок */}
         <div className="bg-gorkhon-blue text-white p-4 sm:p-5 flex items-center justify-between shadow-lg">
           <div className="flex items-center gap-3 sm:gap-4">
@@ -185,20 +185,20 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
         </div>
 
         {/* Сообщения */}
-        <div className="flex-1 p-4 sm:p-5 overflow-y-auto space-y-4 sm:space-y-5 bg-gradient-to-b from-gray-50/50 to-white">
+        <div className="flex-1 p-3 sm:p-5 overflow-y-auto space-y-3 sm:space-y-5 bg-gradient-to-b from-gray-50/50 to-white">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 rounded-2xl shadow-sm ${
+                className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 rounded-2xl shadow-sm break-words ${
                   message.isUser
                     ? 'bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white shadow-pink-200'
                     : 'bg-white text-gray-800 border border-gray-100'
                 }`}
               >
-                <p className="text-sm sm:text-base leading-relaxed whitespace-pre-line">{message.text}</p>
+                <p className="text-sm sm:text-base leading-relaxed whitespace-pre-line break-words overflow-wrap-anywhere">{message.text}</p>
                 <p className={`text-xs mt-1 ${
                   message.isUser ? 'text-white/70' : 'text-gray-500'
                 }`}>
@@ -223,15 +223,15 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
         </div>
 
         {/* Ввод сообщения */}
-        <div className="p-4 sm:p-5 border-t border-gray-200 bg-white safe-area-bottom">
-          <div className="flex items-center gap-3">
+        <div className="p-3 sm:p-5 border-t border-gray-200 bg-white safe-area-bottom">
+          <div className="flex items-end gap-2 sm:gap-3">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Спросите что-нибудь..."
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base shadow-inner"
+              className="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base shadow-inner min-w-0 break-words"
             />
             <button
               onClick={handleSendMessage}

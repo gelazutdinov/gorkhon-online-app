@@ -31,12 +31,14 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
   const getTimeOfDay = useCallback(() => {
     // Иркутск UTC+8
-    const irkutskTime = new Date(new Date().getTime() + (8 * 60 * 60 * 1000));
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const irkutskTime = new Date(utc + (8 * 3600000));
     const hour = irkutskTime.getHours();
     
-    if (hour >= 6 && hour < 12) return 'утро';
-    if (hour >= 12 && hour < 18) return 'день';
-    if (hour >= 18 && hour < 24) return 'вечер';
+    if (hour >= 6 && hour < 12) return 'утра';
+    if (hour >= 12 && hour < 18) return 'дня';
+    if (hour >= 18 && hour < 24) return 'вечера';
     return 'ночи';
   }, []);
 
@@ -85,12 +87,9 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-8">
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-4">
-                <h1 className="text-3xl font-bold">
-                  Добрый {getTimeOfDay()}, {userName}!
-                </h1>
-                <div className="text-2xl animate-bounce">🚀</div>
-              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-4">
+                Доброе {getTimeOfDay()}, {userName}!
+              </h1>
               <div className="flex items-center gap-3 bg-white/20 backdrop-blur-md rounded-2xl px-6 py-3 w-fit border border-white/30 shadow-lg hover:bg-white/25 transition-all duration-300">
                 <Icon name="Award" size={20} className="text-yellow-300 animate-pulse" />
                 <span className="text-lg font-semibold">{activityLevel}</span>

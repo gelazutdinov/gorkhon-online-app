@@ -62,12 +62,12 @@ const StatisticsModal = ({ user, formattedTimeSpent, activityLevel, onClose }: S
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-lg" onClick={onClose}></div>
       <div className="relative bg-gradient-to-br from-white via-white/98 to-blue-50/80 backdrop-blur-2xl rounded-t-3xl sm:rounded-3xl w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto shadow-2xl border border-white/30">
-        <div className="flex items-center justify-between p-6 border-b border-gradient-to-r from-blue-100/50 to-purple-100/50 sticky top-0 bg-gradient-to-r from-white/95 to-blue-50/95 backdrop-blur-xl">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
-              <Icon name="BarChart3" size={20} className="text-white" />
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gradient-to-r from-blue-100/50 to-purple-100/50 sticky top-0 bg-gradient-to-r from-white/95 to-blue-50/95 backdrop-blur-xl">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg flex-shrink-0">
+              <Icon name="BarChart3" size={18} className="text-white sm:w-5 sm:h-5" />
             </div>
-            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Статистика активности</h2>
+            <h2 className="text-base sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent truncate">Статистика активности</h2>
           </div>
           <button
             onClick={onClose}
@@ -77,34 +77,34 @@ const StatisticsModal = ({ user, formattedTimeSpent, activityLevel, onClose }: S
           </button>
         </div>
         
-        <div className="p-6 space-y-8">
+        <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
           {/* Общая статистика с анимацией */}
-          <div className="grid grid-cols-2 gap-6">
-            <div className="text-center p-6 bg-gradient-to-br from-blue-500/10 to-blue-600/20 rounded-2xl border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-              <div className="flex items-center justify-center mb-3">
-                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
-                  <Icon name="Activity" size={20} className="text-white" />
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-blue-500/10 to-blue-600/20 rounded-2xl border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <div className="flex items-center justify-center mb-2 sm:mb-3">
+                <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
+                  <Icon name="Activity" size={16} className="text-white sm:w-5 sm:h-5" />
                 </div>
               </div>
-              <div className="text-3xl font-bold text-blue-600 mb-1 group-hover:scale-105 transition-transform">{user.stats.totalSessions}</div>
-              <div className="text-sm font-medium text-blue-600/80">всего посещений</div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 group-hover:scale-105 transition-transform">{user.stats.totalSessions}</div>
+              <div className="text-xs sm:text-sm font-medium text-blue-600/80 break-words">всего посещений</div>
             </div>
-            <div className="text-center p-6 bg-gradient-to-br from-green-500/10 to-green-600/20 rounded-2xl border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-              <div className="flex items-center justify-center mb-3">
-                <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
-                  <Icon name="Calendar" size={20} className="text-white" />
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-green-500/10 to-green-600/20 rounded-2xl border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <div className="flex items-center justify-center mb-2 sm:mb-3">
+                <div className="p-2 sm:p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
+                  <Icon name="Calendar" size={16} className="text-white sm:w-5 sm:h-5" />
                 </div>
               </div>
-              <div className="text-3xl font-bold text-green-600 mb-1 group-hover:scale-105 transition-transform">{user.stats.daysActive}</div>
-              <div className="text-sm font-medium text-green-600/80">активных дней</div>
+              <div className="text-2xl sm:text-3xl font-bold text-green-600 mb-1 group-hover:scale-105 transition-transform">{user.stats.daysActive}</div>
+              <div className="text-xs sm:text-sm font-medium text-green-600/80 break-words">активных дней</div>
             </div>
           </div>
 
           {/* Мини-график прогресса */}
-          <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6 shadow-lg">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Icon name="TrendingUp" size={18} className="text-blue-600" />
-              Прогресс активности
+          <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-4 sm:p-6 shadow-lg">
+            <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <Icon name="TrendingUp" size={16} className="text-blue-600 sm:w-[18px] sm:h-[18px]" />
+              <span className="truncate">Прогресс активности</span>
             </h3>
             <div className="space-y-4">
               <div>
@@ -135,18 +135,18 @@ const StatisticsModal = ({ user, formattedTimeSpent, activityLevel, onClose }: S
           </div>
 
           {/* Детальная информация */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
-            <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
-              <Icon name="Info" size={18} className="text-purple-600" />
-              Подробная информация
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg border border-white/50">
+            <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
+              <Icon name="Info" size={16} className="text-purple-600 sm:w-[18px] sm:h-[18px]" />
+              <span className="truncate">Подробная информация</span>
             </h3>
-            <div className="grid gap-4">
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-blue-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <Icon name="Calendar" size={16} className="text-blue-600" />
-                  <span className="text-gray-700 font-medium">Зарегистрированы</span>
+            <div className="grid gap-3 sm:gap-4">
+              <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-gray-50/80 to-blue-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <Icon name="Calendar" size={14} className="text-blue-600 flex-shrink-0 sm:w-4 sm:h-4" />
+                  <span className="text-gray-700 font-medium text-sm sm:text-base truncate">Зарегистрированы</span>
                 </div>
-                <span className="font-bold text-gray-800 text-right">{getRegistrationDate()}</span>
+                <span className="font-bold text-gray-800 text-xs sm:text-sm text-right flex-shrink-0">{getRegistrationDate()}</span>
               </div>
               <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-green-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center gap-3">

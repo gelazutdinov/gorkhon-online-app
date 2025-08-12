@@ -54,13 +54,13 @@ const PhotoCarousel = ({
   
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-full p-0 bg-black/95">
+      <DialogContent className="max-w-4xl w-full p-0 bg-black/95 max-h-screen overflow-hidden">
         {selectedImageIndex !== null && selectedPvzPhotos.length > 0 && selectedPvzPhotos[selectedImageIndex] && (
-          <div className="relative">
+          <div className="relative flex items-center justify-center min-h-0">
             <img
               src={selectedPvzPhotos[selectedImageIndex].url}
               alt={selectedPvzPhotos[selectedImageIndex].caption}
-              className="w-full h-auto max-h-[80vh] object-contain"
+              className="w-full h-auto max-h-[90vh] sm:max-h-[80vh] object-contain touch-pan-x touch-pan-y"
               loading="lazy"
               onError={(e) => {
                 console.error('Failed to load image:', selectedPvzPhotos[selectedImageIndex].url);
@@ -74,18 +74,18 @@ const PhotoCarousel = ({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white"
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white min-touch z-10"
                   onClick={onPrev}
                 >
-                  <Icon name="ChevronLeft" size={24} />
+                  <Icon name="ChevronLeft" size={20} className="sm:w-6 sm:h-6" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white"
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white min-touch z-10"
                   onClick={onNext}
                 >
-                  <Icon name="ChevronRight" size={24} />
+                  <Icon name="ChevronRight" size={20} className="sm:w-6 sm:h-6" />
                 </Button>
               </>
             )}
@@ -94,19 +94,19 @@ const PhotoCarousel = ({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-black/50 hover:bg-black/70 text-white min-touch z-10"
               onClick={onClose}
             >
-              <Icon name="X" size={24} />
+              <Icon name="X" size={20} className="sm:w-6 sm:h-6" />
             </Button>
             
             {/* Photo indicators */}
             {selectedPvzPhotos.length > 1 && (
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-2">
+              <div className="absolute top-2 left-1/2 -translate-x-1/2 flex gap-1 sm:gap-2 z-10">
                 {selectedPvzPhotos.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${
                       index === selectedImageIndex 
                         ? 'bg-white scale-125' 
                         : 'bg-white/50 hover:bg-white/75'
@@ -117,12 +117,12 @@ const PhotoCarousel = ({
             )}
             
             {/* Photo info */}
-            <div className="absolute bottom-4 left-4 right-4 text-center">
-              <p className="text-white text-sm bg-black/70 px-4 py-2 rounded-lg backdrop-blur-sm">
+            <div className="absolute bottom-2 sm:bottom-4 left-2 right-2 sm:left-4 sm:right-4 text-center z-10 safe-area-bottom">
+              <p className="text-white text-xs sm:text-sm bg-black/70 px-3 sm:px-4 py-2 rounded-lg backdrop-blur-sm break-words">
                 {selectedPvzPhotos[selectedImageIndex].caption}
               </p>
               {selectedPvzPhotos.length > 1 && (
-                <p className="text-white/80 text-xs mt-2 bg-black/50 px-3 py-1 rounded-full inline-block">
+                <p className="text-white/80 text-xs mt-2 bg-black/50 px-2 sm:px-3 py-1 rounded-full inline-block">
                   {selectedImageIndex + 1} из {selectedPvzPhotos.length}
                 </p>
               )}
