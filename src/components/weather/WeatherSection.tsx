@@ -26,43 +26,61 @@ interface WeatherData {
 
 const mockWeatherData: WeatherData = {
   current: {
-    temperature: 22,
-    feelsLike: 25,
-    description: 'Малооблачно',
+    temperature: 28,
+    feelsLike: 32,
+    description: 'Солнечно',
     icon: 'Sun',
-    humidity: 68,
-    windSpeed: 1,
-    windDeg: 180,
-    pressure: 752,
-    visibility: 10
+    humidity: 45,
+    windSpeed: 3,
+    windDeg: 225,
+    pressure: 760,
+    visibility: 15
   },
   forecast: [
     {
       day: 'Сегодня',
-      tempMax: 22,
-      tempMin: 9,
-      description: 'Малооблачно',
+      tempMax: 28,
+      tempMin: 18,
+      description: 'Солнечно',
       icon: 'Sun',
-      humidity: 40,
-      windSpeed: 6
+      humidity: 45,
+      windSpeed: 3
     },
     {
       day: 'Завтра',
-      tempMax: 16,
-      tempMin: 10,
-      description: 'Местами легкий дождь',
-      icon: 'CloudRain',
-      humidity: 72,
-      windSpeed: 5
+      tempMax: 30,
+      tempMin: 20,
+      description: 'Ясно',
+      icon: 'Sun',
+      humidity: 38,
+      windSpeed: 2
     },
     {
       day: 'Чт',
-      tempMax: 15,
-      tempMin: 10,
-      description: 'Легкий ливневый дождь',
+      tempMax: 26,
+      tempMin: 16,
+      description: 'Переменная облачность',
+      icon: 'CloudSun',
+      humidity: 55,
+      windSpeed: 4
+    },
+    {
+      day: 'Пт',
+      tempMax: 24,
+      tempMin: 14,
+      description: 'Облачно',
+      icon: 'Cloud',
+      humidity: 62,
+      windSpeed: 5
+    },
+    {
+      day: 'Сб',
+      tempMax: 22,
+      tempMin: 12,
+      description: 'Небольшой дождь',
       icon: 'CloudRain',
-      humidity: 91,
-      windSpeed: 2
+      humidity: 75,
+      windSpeed: 6
     }
   ]
 };
