@@ -4,7 +4,7 @@ import Icon from '@/components/ui/icon';
 import LinaAssistant from '@/components/features/LinaAssistant';
 import DataManager from '@/components/dashboard/DataManager';
 import UserGreeting from '@/components/dashboard/UserGreeting';
-import QuickActions from '@/components/dashboard/QuickActions';
+
 import AdditionalTools from '@/components/dashboard/AdditionalTools';
 import StatisticsModal from '@/components/dashboard/StatisticsModal';
 import BackupModal from '@/components/dashboard/BackupModal';
@@ -167,13 +167,7 @@ const UserDashboard = ({ user, daysWithUs, formattedTimeSpent, onLogout, onUserU
           </div>
         </div>
 
-        {/* Быстрые действия */}
-        <QuickActions 
-          onShowStatistics={() => setShowStatistics(true)}
-          onShowLina={() => setShowLina(true)}
-          onShowBackup={() => setShowBackup(true)}
-          onShowAccessibility={() => setShowAccessibility(true)}
-        />
+
 
         {/* Дополнительные инструменты */}
         <AdditionalTools 
