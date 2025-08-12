@@ -299,10 +299,15 @@ const WeatherSection = () => {
 
       {/* Прогноз на 5 дней */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Прогноз на 5 дней</h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900">Прогноз на 5 дней</h3>
+          <div className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
+            Обновляется каждый час
+          </div>
+        </div>
         <div className="space-y-0">
           {forecast.map((day, index) => (
-            <div key={index} className="flex items-center py-4 border-b border-gray-100 last:border-b-0">
+            <div key={index} className="flex items-start py-4 border-b border-gray-100 last:border-b-0 min-h-[60px]">
               {/* День недели */}
               <div className="w-16 flex-shrink-0">
                 <div className="text-sm font-medium text-gray-700">
@@ -316,8 +321,8 @@ const WeatherSection = () => {
               </div>
               
               {/* Описание и детали */}
-              <div className="flex-1 ml-4 min-w-0">
-                <div className="text-base font-medium text-gray-900 mb-1 truncate">
+              <div className="flex-1 ml-4 min-w-0 max-w-none">
+                <div className="text-base font-medium text-gray-900 mb-1 leading-tight break-words">
                   {day.description}
                 </div>
                 <div className="flex items-center gap-3 text-xs text-gray-500">
