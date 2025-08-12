@@ -88,17 +88,105 @@ const mockWeatherData: WeatherData = {
 const WeatherSection = () => {
   const fetchWeatherFromYandex = async (): Promise<WeatherData> => {
     try {
-      // В реальном приложении здесь будет запрос к API или парсинг страницы
-      // Пока возвращаем актуальные данные с сайта
-      const response = await fetch('https://yandex.ru/pogoda/ru?lat=51.561569&lon=108.786552&from=tableau_yabro');
-      // В производственной версии здесь будет парсинг HTML или использование прокси-сервера
+      // TODO: Добавить ключ API в переменные окружения
+      const YANDEX_WEATHER_API_KEY = process.env.REACT_APP_YANDEX_WEATHER_KEY;
       
-      // Временно возвращаем актуальные данные
-      return mockWeatherData;
+      if (!YANDEX_WEATHER_API_KEY) {
+        console.warn('Yandex Weather API ключ не найден, используем mock данные');
+        return mockWeatherData;
+      }
+
+      const response = await fetch(
+        `https://api.weather.yandex.ru/v2/forecast?lat=51.561569&lon=108.786552&limit=5`,
+        {
+          headers: {
+            'X-Yandex-Weather-Key': YANDEX_WEATHER_API_KEY,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Преобразуем данные API в наш формат
+      const weatherData: WeatherData = {
+        current: {
+          temperature: Math.round(data.fact.temp),
+          feelsLike: Math.round(data.fact.feels_like),
+          description: getWeatherDescription(data.fact.condition),
+          icon: getWeatherIcon(data.fact.condition),
+          humidity: data.fact.humidity,
+          windSpeed: Math.round(data.fact.wind_speed),
+          windDeg: data.fact.wind_dir_deg || 0,
+          pressure: Math.round(data.fact.pressure_mm),
+          visibility: Math.round((data.fact.visibility || 10000) / 1000) // в км
+        },
+        forecast: data.forecasts.slice(0, 5).map((day: any, index: number) => ({
+          day: index === 0 ? 'Сегодня' : index === 1 ? 'Завтра' : 
+               new Date(day.date).toLocaleDateString('ru-RU', { weekday: 'short' }),
+          tempMax: Math.round(day.parts.day.temp_max),
+          tempMin: Math.round(day.parts.night.temp_min),
+          description: getWeatherDescription(day.parts.day.condition),
+          icon: getWeatherIcon(day.parts.day.condition),
+          humidity: day.parts.day.humidity,
+          windSpeed: Math.round(day.parts.day.wind_speed)
+        }))
+      };
+
+      return weatherData;
     } catch (error) {
       console.error('Ошибка получения данных погоды:', error);
       return mockWeatherData;
     }
+  };
+
+  // Функция для преобразования кода погоды в описание
+  const getWeatherDescription = (condition: string): string => {
+    const descriptions: { [key: string]: string } = {
+      'clear': 'Ясно',
+      'partly-cloudy': 'Малооблачно',
+      'cloudy': 'Облачно с прояснениями',
+      'overcast': 'Пасмурно',
+      'light-rain': 'Небольшой дождь',
+      'rain': 'Дождь',
+      'heavy-rain': 'Сильный дождь',
+      'showers': 'Ливень',
+      'wet-snow': 'Дождь со снегом',
+      'light-snow': 'Небольшой снег',
+      'snow': 'Снег',
+      'snow-showers': 'Снегопад',
+      'hail': 'Град',
+      'thunderstorm': 'Гроза',
+      'thunderstorm-with-rain': 'Дождь с грозой',
+      'thunderstorm-with-hail': 'Гроза с градом'
+    };
+    return descriptions[condition] || 'Неизвестно';
+  };
+
+  // Функция для преобразования кода погоды в иконку
+  const getWeatherIcon = (condition: string): string => {
+    const icons: { [key: string]: string } = {
+      'clear': 'Sun',
+      'partly-cloudy': 'CloudSun',
+      'cloudy': 'Cloud',
+      'overcast': 'Cloud',
+      'light-rain': 'CloudDrizzle',
+      'rain': 'CloudRain',
+      'heavy-rain': 'CloudRain',
+      'showers': 'CloudRain',
+      'wet-snow': 'CloudSnow',
+      'light-snow': 'CloudSnow',
+      'snow': 'CloudSnow',
+      'snow-showers': 'CloudSnow',
+      'hail': 'CloudRain',
+      'thunderstorm': 'Zap',
+      'thunderstorm-with-rain': 'Zap',
+      'thunderstorm-with-hail': 'Zap'
+    };
+    return icons[condition] || 'Cloud';
   };
 
   const { data: weather, refetch } = useQuery({
@@ -162,7 +250,7 @@ const WeatherSection = () => {
           
           {/* Индикатор автообновления */}
           <div className="absolute top-4 left-4 text-white/70 text-xs bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
-            Обновляется каждый час
+            {process.env.REACT_APP_YANDEX_WEATHER_KEY ? 'API Яндекс.Погода' : 'Mock данные'} • Каждый час
           </div>
         </div>
       </div>
