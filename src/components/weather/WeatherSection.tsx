@@ -1,16 +1,38 @@
 import { useQuery } from '@apollo/client';
+import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { GET_WEATHER, GORKHON_COORDINATES, WeatherData } from '@/lib/weather-queries';
+import { useYandexWeather } from '@/hooks/useYandexWeather';
 
 const WeatherSection = () => {
-  const { loading, error, data } = useQuery<WeatherData>(GET_WEATHER, {
+  const [apiSource, setApiSource] = useState<'graphql' | 'yandex'>('yandex');
+  const [yandexApiKey, setYandexApiKey] = useState<string>('your_key');
+  
+  // GraphQL API (как fallback)
+  const { loading: graphqlLoading, error: graphqlError, data: graphqlData } = useQuery<WeatherData>(GET_WEATHER, {
     variables: {
       lat: GORKHON_COORDINATES.lat,
       lon: GORKHON_COORDINATES.lon
     },
-    pollInterval: 60000 * 60, // обновляем каждый час
-    errorPolicy: 'all'
+    pollInterval: 60000 * 60,
+    errorPolicy: 'all',
+    skip: apiSource === 'yandex'
   });
+  
+  // Yandex Weather API
+  const {
+    currentWeather: yandexWeather,
+    forecast: yandexForecast,
+    loading: yandexLoading,
+    error: yandexError,
+    refetch: yandexRefetch,
+    setApiKey
+  } = useYandexWeather(yandexApiKey);
+  
+  // Определяем активные данные в зависимости от источника
+  const loading = apiSource === 'yandex' ? yandexLoading : graphqlLoading;
+  const error = apiSource === 'yandex' ? yandexError : graphqlError;
+  const hasRealData = apiSource === 'yandex' ? !!yandexWeather : !!graphqlData;
 
   // Моковые данные как fallback
   const mockWeather = {
@@ -32,30 +54,41 @@ const WeatherSection = () => {
     { day: 'Суббота', temp: { min: -12, max: -6 }, condition: 'Ясно', icon: 'Sun' }
   ];
 
-  // Используем реальные данные если есть, иначе моковые
-  const currentWeather = data?.weatherByPoint.now ? {
-    temperature: Math.round(data.weatherByPoint.now.c),
-    condition: data.weatherByPoint.now.description || 'Неизвестно',
-    feelsLike: Math.round(data.weatherByPoint.now.c - 3), // примерное значение
-    humidity: data.weatherByPoint.now.humidity || 0,
-    windSpeed: data.weatherByPoint.now.windSpeed || 0,
-    windDirection: 'СЗ', // направление ветра из API может отсутствовать
-    pressure: data.weatherByPoint.now.pressure || 0,
-    visibility: data.weatherByPoint.now.visibility || 0
-  } : mockWeather;
-
-  const forecast = data?.weatherByPoint.forecast.days.edges.map((edge, index) => {
-    const days = ['Завтра', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-    return {
-      day: days[index] || 'День',
-      temp: { 
-        min: Math.round(edge.node.temperatureMin), 
-        max: Math.round(edge.node.temperatureMax) 
-      },
-      condition: edge.node.description || 'Неизвестно',
-      icon: getWeatherIcon(edge.node.description || '')
+  // Получаем данные в зависимости от выбранного источника
+  let currentWeather, forecast;
+  
+  if (apiSource === 'yandex' && yandexWeather) {
+    currentWeather = yandexWeather;
+    forecast = yandexForecast;
+  } else if (apiSource === 'graphql' && graphqlData?.weatherByPoint.now) {
+    currentWeather = {
+      temperature: Math.round(graphqlData.weatherByPoint.now.c),
+      condition: graphqlData.weatherByPoint.now.description || 'Неизвестно',
+      feelsLike: Math.round(graphqlData.weatherByPoint.now.c - 3),
+      humidity: graphqlData.weatherByPoint.now.humidity || 0,
+      windSpeed: graphqlData.weatherByPoint.now.windSpeed || 0,
+      windDirection: 'СЗ',
+      pressure: graphqlData.weatherByPoint.now.pressure || 0,
+      visibility: graphqlData.weatherByPoint.now.visibility || 0,
+      icon: getWeatherIcon(graphqlData.weatherByPoint.now.description || '')
     };
-  }) || mockForecast;
+    forecast = graphqlData.weatherByPoint.forecast.days.edges.map((edge, index) => {
+      const days = ['Завтра', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+      return {
+        day: days[index] || 'День',
+        temp: { 
+          min: Math.round(edge.node.temperatureMin), 
+          max: Math.round(edge.node.temperatureMax) 
+        },
+        condition: edge.node.description || 'Неизвестно',
+        icon: getWeatherIcon(edge.node.description || '')
+      };
+    });
+  } else {
+    // Fallback на моковые данные
+    currentWeather = { ...mockWeather, icon: getWeatherIcon(mockWeather.condition) };
+    forecast = mockForecast;
+  }
 
   const getWeatherIcon = (condition: string) => {
     if (condition.includes('снег') || condition.includes('Снег')) return 'CloudSnow';
@@ -107,14 +140,72 @@ const WeatherSection = () => {
 
   return (
     <div className="space-y-6 pb-24">
-      {/* Заголовок */}
+      {/* Заголовок и переключатель API */}
       <div className="text-center mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
           Погода в Горхоне
         </h1>
-        <p className="text-gray-600">
-          {data ? 'Актуальные данные' : 'Приблизительные данные'}
+        <p className="text-gray-600 mb-4">
+          {hasRealData ? 'Актуальные данные' : 'Приблизительные данные'}
         </p>
+        
+        {/* API переключатель */}
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <button
+            onClick={() => setApiSource('yandex')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              apiSource === 'yandex'
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            Яндекс.Погода
+          </button>
+          <button
+            onClick={() => setApiSource('graphql')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              apiSource === 'graphql'
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            GraphQL API
+          </button>
+        </div>
+
+        {/* Настройка API ключа для Яндекса */}
+        {apiSource === 'yandex' && (
+          <div className=\"bg-blue-50 rounded-xl p-4 mb-4\">
+            <div className=\"flex items-center gap-2 mb-2\">
+              <Icon name=\"Key\" size={16} className=\"text-blue-600\" />
+              <span className=\"text-sm font-medium text-blue-800\">API ключ Яндекс.Погода</span>
+            </div>
+            <div className=\"flex gap-2\">
+              <input
+                type=\"text\"
+                value={yandexApiKey}
+                onChange={(e) => setYandexApiKey(e.target.value)}
+                onBlur={() => setApiKey(yandexApiKey)}
+                placeholder=\"Введите ваш API ключ\"
+                className=\"flex-1 px-3 py-2 border border-blue-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent\"
+              />
+              <button
+                onClick={() => yandexRefetch()}
+                className=\"px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors\"
+              >
+                <Icon name=\"RefreshCw\" size={16} />
+              </button>
+            </div>
+            {yandexApiKey === 'your_key' && (
+              <p className=\"text-xs text-blue-600 mt-1\">
+                Получить ключ можно на{' '}
+                <a href=\"https://developer.tech.yandex.ru/services/\" className=\"underline\" target=\"_blank\" rel=\"noopener noreferrer\">
+                  developer.tech.yandex.ru
+                </a>
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Текущая погода */}
@@ -207,21 +298,25 @@ const WeatherSection = () => {
 
       {/* Информация об источнике */}
       <div className={`rounded-2xl p-4 text-center ${
-        data ? 'bg-green-50 border border-green-200' : 'bg-gray-50'
+        hasRealData ? 'bg-green-50 border border-green-200' : 'bg-gray-50'
       }`}>
         <div className="flex items-center justify-center gap-2 text-sm">
           <Icon 
-            name={data ? "Wifi" : error ? "WifiOff" : "Info"} 
+            name={hasRealData ? "Wifi" : error ? "WifiOff" : "Info"} 
             size={16} 
-            className={data ? "text-green-600" : error ? "text-red-500" : "text-gray-600"}
+            className={hasRealData ? "text-green-600" : error ? "text-red-500" : "text-gray-600"}
           />
-          <span className={data ? "text-green-700" : error ? "text-red-600" : "text-gray-600"}>
-            {data ? 'GraphQL API подключен' : error ? 'Offline режим' : 'Данные обновляются каждый час'}
+          <span className={hasRealData ? "text-green-700" : error ? "text-red-600" : "text-gray-600"}>
+            {hasRealData 
+              ? `${apiSource === 'yandex' ? 'Яндекс.Погода' : 'GraphQL API'} подключен` 
+              : error ? 'Offline режим' : 'Данные обновляются каждый час'}
           </span>
         </div>
         <div className="text-xs mt-1">
-          <span className={data ? "text-green-600" : error ? "text-red-500" : "text-gray-500"}>
-            {data ? 'Источник: Weather GraphQL API' : error ? 'Источник: Локальные данные' : 'Источник: Гидрометцентр России'}
+          <span className={hasRealData ? "text-green-600" : error ? "text-red-500" : "text-gray-500"}>
+            {hasRealData 
+              ? `Источник: ${apiSource === 'yandex' ? 'Yandex Weather API' : 'Weather GraphQL API'}`
+              : error ? 'Источник: Локальные данные' : 'Источник: Гидрометцентр России'}
           </span>
         </div>
       </div>
