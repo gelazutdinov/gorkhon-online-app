@@ -15,7 +15,7 @@ const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccess
       icon: 'Activity',
       color: 'bg-blue-50',
       iconColor: 'text-blue-600',
-      change: '+12',
+      change: '',
       changeColor: 'text-green-600'
     },
     {
@@ -56,9 +56,11 @@ const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccess
             <div className={`p-2 lg:p-3 ${stat.color} rounded-xl`}>
               <Icon name={stat.icon as any} size={20} className={stat.iconColor} />
             </div>
-            <span className={`text-xs font-medium ${stat.changeColor} flex items-center gap-1`}>
-              <span>📈</span> {stat.change}
-            </span>
+            {stat.change && (
+              <span className={`text-xs font-medium ${stat.changeColor} flex items-center gap-1`}>
+                <span>📈</span> {stat.change}
+              </span>
+            )}
           </div>
           <div>
             <div className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{stat.title}</div>
