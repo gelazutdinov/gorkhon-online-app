@@ -7,7 +7,7 @@ const Header = () => {
 
       
       <div className="w-full max-w-md mx-auto text-center relative z-10">
-        <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4 group">
+        <div className="flex flex-col items-center gap-3 sm:gap-4 mb-3 sm:mb-4 group">
           <div className="relative">
             <div className="absolute inset-0 bg-white/20 rounded-xl sm:rounded-2xl blur-md group-hover:blur-lg transition-all duration-300"></div>
             <img 
@@ -16,18 +16,18 @@ const Header = () => {
               className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-300"
             />
           </div>
-          <div className="flex flex-col items-start gap-1 flex-1 min-w-0">
-            <div className="flex items-center gap-2 w-full">
-              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent truncate">
+          <div className="flex flex-col items-center gap-1 text-center">
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">
                 Горхон.Online
               </h1>
-              <span className="text-xs bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-white/90 font-medium flex-shrink-0">
+              <span className="text-xs bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-white/90 font-medium">
                 360°
               </span>
             </div>
-            <div className="flex items-center gap-1 text-xs text-white/80 w-full">
-              <Icon name="Users" size={12} className="flex-shrink-0" />
-              <span className="truncate">Платформа для жителей Горхона</span>
+            <div className="flex items-center justify-center gap-1 text-xs text-white/80">
+              <Icon name="Users" size={12} />
+              <span>Платформа для жителей Горхона</span>
             </div>
           </div>
         </div>
