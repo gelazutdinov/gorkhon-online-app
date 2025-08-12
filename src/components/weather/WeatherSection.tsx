@@ -175,31 +175,31 @@ const WeatherSection = () => {
 
         {/* Настройка API ключа для Яндекса */}
         {apiSource === 'yandex' && (
-          <div className=\"bg-blue-50 rounded-xl p-4 mb-4\">
-            <div className=\"flex items-center gap-2 mb-2\">
-              <Icon name=\"Key\" size={16} className=\"text-blue-600\" />
-              <span className=\"text-sm font-medium text-blue-800\">API ключ Яндекс.Погода</span>
+          <div className="bg-blue-50 rounded-xl p-4 mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Icon name="Key" size={16} className="text-blue-600" />
+              <span className="text-sm font-medium text-blue-800">API ключ Яндекс.Погода</span>
             </div>
-            <div className=\"flex gap-2\">
+            <div className="flex gap-2">
               <input
-                type=\"text\"
+                type="text"
                 value={yandexApiKey}
                 onChange={(e) => setYandexApiKey(e.target.value)}
                 onBlur={() => setApiKey(yandexApiKey)}
-                placeholder=\"Введите ваш API ключ\"
-                className=\"flex-1 px-3 py-2 border border-blue-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent\"
+                placeholder="Введите ваш API ключ"
+                className="flex-1 px-3 py-2 border border-blue-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <button
                 onClick={() => yandexRefetch()}
-                className=\"px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors\"
+                className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
-                <Icon name=\"RefreshCw\" size={16} />
+                <Icon name="RefreshCw" size={16} />
               </button>
             </div>
             {yandexApiKey === 'your_key' && (
-              <p className=\"text-xs text-blue-600 mt-1\">
+              <p className="text-xs text-blue-600 mt-1">
                 Получить ключ можно на{' '}
-                <a href=\"https://developer.tech.yandex.ru/services/\" className=\"underline\" target=\"_blank\" rel=\"noopener noreferrer\">
+                <a href="https://developer.tech.yandex.ru/services/" className="underline" target="_blank" rel="noopener noreferrer">
                   developer.tech.yandex.ru
                 </a>
               </p>
