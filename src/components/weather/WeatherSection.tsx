@@ -214,28 +214,29 @@ const WeatherSection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-4 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-3 sm:p-4 pb-20 sm:pb-24">
       {/* Главная карточка погоды */}
-      <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-[32px] p-6 mb-6 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-[24px] sm:rounded-[32px] p-4 sm:p-6 mb-4 sm:mb-6 text-white overflow-hidden">
         {/* Декоративные элементы */}
-        <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+        <div className="absolute top-2 right-2 sm:top-4 sm:right-4 w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-full blur-xl"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 sm:w-32 sm:h-32 bg-white/5 rounded-full blur-2xl"></div>
         
         <div className="relative z-10">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div className="flex-1">
-              <div className="text-6xl font-light mb-2">
+              <div className="text-4xl sm:text-6xl font-light mb-2">
                 {current.temperature > 0 ? '+' : ''}{current.temperature}°
               </div>
-              <div className="text-xl text-white/90 mb-1">
+              <div className="text-lg sm:text-xl text-white/90 mb-1">
                 {current.description}
               </div>
-              <div className="text-white/70">
+              <div className="text-sm sm:text-base text-white/70">
                 Ощущается как {current.feelsLike > 0 ? '+' : ''}{current.feelsLike}°
               </div>
             </div>
             <div className="text-right">
-              <Icon name={current.icon as any} size={80} className="text-white/90 mb-2" />
+              <Icon name={current.icon as any} size={64} className="sm:hidden text-white/90 mb-2" />
+              <Icon name={current.icon as any} size={80} className="hidden sm:block text-white/90 mb-2" />
             </div>
           </div>
           
@@ -244,53 +245,53 @@ const WeatherSection = () => {
       </div>
 
       {/* Детальная информация в 4 карточки */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Icon name="Droplets" size={18} className="text-blue-500" />
-                <span className="text-sm font-medium text-gray-700">Влажность</span>
+                <Icon name="Droplets" size={16} className="sm:size-[18px] text-blue-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Влажность</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">{current.humidity}%</div>
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">{current.humidity}%</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Icon name="Wind" size={18} className="text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">Ветер</span>
+                <Icon name="Wind" size={16} className="sm:size-[18px] text-gray-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Ветер</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">{current.windSpeed}</div>
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">{current.windSpeed}</div>
               <div className="text-xs text-gray-500">м/с {getWindDirection(current.windDeg)}</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Icon name="Gauge" size={18} className="text-purple-600" />
-                <span className="text-sm font-medium text-gray-700">Давление</span>
+                <Icon name="Gauge" size={16} className="sm:size-[18px] text-purple-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Давление</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">{current.pressure}</div>
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">{current.pressure}</div>
               <div className="text-xs text-gray-500">мм рт.ст.</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Icon name="Eye" size={18} className="text-green-600" />
-                <span className="text-sm font-medium text-gray-700">Видимость</span>
+                <Icon name="Eye" size={16} className="sm:size-[18px] text-green-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">Видимость</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">{current.visibility}</div>
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">{current.visibility}</div>
               <div className="text-xs text-gray-500">км</div>
             </div>
           </div>
@@ -298,51 +299,51 @@ const WeatherSection = () => {
       </div>
 
       {/* Прогноз на 5 дней */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Прогноз на 5 дней</h3>
+      <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900">Прогноз на 5 дней</h3>
           <div className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
             Обновляется каждый час
           </div>
         </div>
         <div className="space-y-0">
           {forecast.map((day, index) => (
-            <div key={index} className="flex items-start py-4 border-b border-gray-100 last:border-b-0 min-h-[60px]">
+            <div key={index} className="flex items-start py-3 sm:py-4 border-b border-gray-100 last:border-b-0 min-h-[56px] sm:min-h-[60px]">
               {/* День недели */}
-              <div className="w-16 flex-shrink-0">
+              <div className="w-12 sm:w-16 flex-shrink-0">
                 <div className="text-sm font-medium text-gray-700">
                   {day.day}
                 </div>
               </div>
               
               {/* Иконка погоды */}
-              <div className="w-12 flex justify-center flex-shrink-0 ml-2">
-                <Icon name={day.icon as any} size={24} className="text-gray-600" />
+              <div className="w-10 sm:w-12 flex justify-center flex-shrink-0 ml-1 sm:ml-2">
+                <Icon name={day.icon as any} size={20} className="sm:size-6 text-gray-600" />
               </div>
               
               {/* Описание и детали */}
-              <div className="flex-1 ml-4 min-w-0 max-w-none">
-                <div className="text-base font-medium text-gray-900 mb-1 leading-tight break-words">
+              <div className="flex-1 ml-2 sm:ml-4 min-w-0 max-w-none">
+                <div className="text-sm sm:text-base font-medium text-gray-900 mb-1 leading-tight break-words">
                   {day.description}
                 </div>
-                <div className="flex items-center gap-3 text-xs text-gray-500">
+                <div className="flex items-center gap-2 sm:gap-3 text-xs text-gray-500">
                   <span className="flex items-center gap-1">
-                    <Icon name="Droplets" size={10} className="text-blue-500" />
+                    <Icon name="Droplets" size={9} className="sm:size-[10px] text-blue-500" />
                     {day.humidity}%
                   </span>
                   <span className="flex items-center gap-1">
-                    <Icon name="Wind" size={10} className="text-gray-500" />
+                    <Icon name="Wind" size={9} className="sm:size-[10px] text-gray-500" />
                     {day.windSpeed} м/с
                   </span>
                 </div>
               </div>
               
               {/* Температуры */}
-              <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-                <span className="text-sm text-gray-500 font-medium w-8 text-right">
+              <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2 sm:ml-4">
+                <span className="text-xs sm:text-sm text-gray-500 font-medium w-7 sm:w-8 text-right">
                   {day.tempMin > 0 ? '+' : ''}{day.tempMin}°
                 </span>
-                <span className="text-lg font-bold text-gray-900 w-10 text-right">
+                <span className="text-base sm:text-lg font-bold text-gray-900 w-9 sm:w-10 text-right">
                   {day.tempMax > 0 ? '+' : ''}{day.tempMax}°
                 </span>
               </div>
