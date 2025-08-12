@@ -60,60 +60,146 @@ const StatisticsModal = ({ user, formattedTimeSpent, activityLevel, onClose }: S
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative bg-white/95 backdrop-blur-xl rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md max-h-[90vh] sm:max-h-[75vh] overflow-y-auto shadow-2xl border border-white/20">
-        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Статистика активности</h2>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-lg" onClick={onClose}></div>
+      <div className="relative bg-gradient-to-br from-white via-white/98 to-blue-50/80 backdrop-blur-2xl rounded-t-3xl sm:rounded-3xl w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto shadow-2xl border border-white/30">
+        <div className="flex items-center justify-between p-6 border-b border-gradient-to-r from-blue-100/50 to-purple-100/50 sticky top-0 bg-gradient-to-r from-white/95 to-blue-50/95 backdrop-blur-xl">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
+              <Icon name="BarChart3" size={20} className="text-white" />
+            </div>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Статистика активности</h2>
+          </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-3 hover:bg-gray-100/80 rounded-xl transition-all duration-200 hover:scale-110"
           >
             <Icon name="X" size={20} className="text-gray-500" />
           </button>
         </div>
         
-        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-          {/* Общая статистика */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            <div className="text-center p-3 sm:p-4 bg-blue-50 rounded-xl border border-blue-100">
-              <div className="text-xl sm:text-2xl font-bold text-blue-600">{user.stats.totalSessions}</div>
-              <div className="text-xs sm:text-sm text-blue-600">всего посещений</div>
+        <div className="p-6 space-y-8">
+          {/* Общая статистика с анимацией */}
+          <div className="grid grid-cols-2 gap-6">
+            <div className="text-center p-6 bg-gradient-to-br from-blue-500/10 to-blue-600/20 rounded-2xl border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <div className="flex items-center justify-center mb-3">
+                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
+                  <Icon name="Activity" size={20} className="text-white" />
+                </div>
+              </div>
+              <div className="text-3xl font-bold text-blue-600 mb-1 group-hover:scale-105 transition-transform">{user.stats.totalSessions}</div>
+              <div className="text-sm font-medium text-blue-600/80">всего посещений</div>
             </div>
-            <div className="text-center p-3 sm:p-4 bg-green-50 rounded-xl border border-green-100">
-              <div className="text-xl sm:text-2xl font-bold text-green-600">{user.stats.daysActive}</div>
-              <div className="text-xs sm:text-sm text-green-600">активных дней</div>
+            <div className="text-center p-6 bg-gradient-to-br from-green-500/10 to-green-600/20 rounded-2xl border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
+              <div className="flex items-center justify-center mb-3">
+                <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
+                  <Icon name="Calendar" size={20} className="text-white" />
+                </div>
+              </div>
+              <div className="text-3xl font-bold text-green-600 mb-1 group-hover:scale-105 transition-transform">{user.stats.daysActive}</div>
+              <div className="text-sm font-medium text-green-600/80">активных дней</div>
+            </div>
+          </div>
+
+          {/* Мини-график прогресса */}
+          <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6 shadow-lg">
+            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <Icon name="TrendingUp" size={18} className="text-blue-600" />
+              Прогресс активности
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-600">Посещения</span>
+                  <span className="text-sm font-bold text-blue-600">{user.stats.totalSessions}/300</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-1000 ease-out" 
+                    style={{ width: `${Math.min((user.stats.totalSessions / 300) * 100, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-600">Дни активности</span>
+                  <span className="text-sm font-bold text-green-600">{user.stats.daysActive}/30</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full transition-all duration-1000 ease-out" 
+                    style={{ width: `${Math.min((user.stats.daysActive / 30) * 100, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Детальная информация */}
-          <div className="space-y-3 sm:space-y-4">
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-700 text-sm sm:text-base">Зарегистрированы</span>
-              <span className="font-medium text-sm sm:text-base text-right">{getRegistrationDate()}</span>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-700 text-sm sm:text-base">Часто используете</span>
-              <span className="font-medium text-sm sm:text-base text-right">{getMostUsedFeature()}</span>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-700 text-sm sm:text-base">Любимый раздел</span>
-              <span className="font-medium text-sm sm:text-base text-right">{getMostVisitedSection()}</span>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-700 text-sm sm:text-base">Время в приложении</span>
-              <span className="font-medium text-sm sm:text-base text-right">{formattedTimeSpent}</span>
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
+            <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <Icon name="Info" size={18} className="text-purple-600" />
+              Подробная информация
+            </h3>
+            <div className="grid gap-4">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-blue-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <Icon name="Calendar" size={16} className="text-blue-600" />
+                  <span className="text-gray-700 font-medium">Зарегистрированы</span>
+                </div>
+                <span className="font-bold text-gray-800 text-right">{getRegistrationDate()}</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-green-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <Icon name="Heart" size={16} className="text-green-600" />
+                  <span className="text-gray-700 font-medium">Часто используете</span>
+                </div>
+                <span className="font-bold text-gray-800 text-right">{getMostUsedFeature()}</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-purple-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <Icon name="Star" size={16} className="text-purple-600" />
+                  <span className="text-gray-700 font-medium">Любимый раздел</span>
+                </div>
+                <span className="font-bold text-gray-800 text-right">{getMostVisitedSection()}</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-orange-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <Icon name="Clock" size={16} className="text-orange-600" />
+                  <span className="text-gray-700 font-medium">Время в приложении</span>
+                </div>
+                <span className="font-bold text-gray-800 text-right">{formattedTimeSpent}</span>
+              </div>
             </div>
           </div>
 
-          {/* Статус */}
-          <div className={`p-3 sm:p-4 ${activityLevel.bg} rounded-xl border-2 border-gray-200`}>
-            <div className="flex items-center gap-2 sm:gap-3 mb-2">
-              <Icon name={activityLevel.icon as any} size={20} className={`${activityLevel.color} sm:w-6 sm:h-6`} />
-              <span className={`font-bold text-base sm:text-lg ${activityLevel.color}`}>{activityLevel.level}</span>
+          {/* Статус - обновленный дизайн */}
+          <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 shadow-lg border-2 border-gradient-to-r from-yellow-200 to-orange-200 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-yellow-300/20 to-orange-300/20 rounded-full -translate-y-10 translate-x-10"></div>
+            <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-br from-orange-300/20 to-yellow-300/20 rounded-full translate-y-8 -translate-x-8"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl shadow-lg">
+                  <Icon name="Award" size={24} className="text-white" />
+                </div>
+                <div>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">{activityLevel.level}</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm text-gray-600 font-medium">Активный пользователь</span>
+                  </div>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                🎆 Продолжайте пользоваться платформой, чтобы повысить свой статус до <strong>Мастера платформы</strong>!
+              </p>
+              <div className="mt-4 bg-white/60 rounded-xl p-3">
+                <div className="text-xs text-gray-600 mb-2">До следующего уровня</div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full transition-all duration-1000" style={{ width: '65%' }}></div>
+                </div>
+              </div>
             </div>
-            <p className="text-xs sm:text-sm text-gray-600">
-              Продолжайте пользоваться платформой, чтобы повысить свой статус!
-            </p>
           </div>
         </div>
       </div>

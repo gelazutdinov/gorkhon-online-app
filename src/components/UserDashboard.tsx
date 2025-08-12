@@ -8,6 +8,8 @@ import BackupModal from '@/components/dashboard/BackupModal';
 import AccessibilityModal from '@/components/dashboard/AccessibilityModal';
 import SettingsModal from '@/components/dashboard/SettingsModal';
 import SecuritySettings from '@/components/security/SecuritySettings';
+import StatsOverview from '@/components/analytics/StatsOverview';
+import ActivityChart from '@/components/analytics/ActivityChart';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -69,45 +71,91 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         </div>
       </div>
 
-      {/* Профиль пользователя */}
-      <div className="bg-gradient-to-br from-gorkhon-pink via-purple-500 to-gorkhon-blue rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
-        {/* Декоративные элементы */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
+      {/* Профиль пользователя - Обновленный дизайн */}
+      <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
+        {/* Анимированные декоративные элементы */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-20 translate-x-20 animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-16 -translate-x-16 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-white/5 rounded-full -translate-x-12 -translate-y-12 animate-pulse" style={{animationDelay: '1s'}}></div>
         
         <div className="relative z-10">
-          <div className="flex items-start justify-between mb-6">
+          <div className="flex items-start justify-between mb-8">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold mb-3 animate-fade-in">
-                Добрый {getTimeOfDay()}, {userName}! 👋
-              </h1>
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 w-fit border border-white/30 shadow-lg">
-                <Icon name="Award" size={16} className="animate-pulse" />
-                <span className="text-sm font-medium">{activityLevel}</span>
+              <div className="flex items-center gap-3 mb-4">
+                <h1 className="text-3xl font-bold">
+                  Добрый {getTimeOfDay()}, {userName}!
+                </h1>
+                <div className="text-2xl animate-bounce">🚀</div>
+              </div>
+              <div className="flex items-center gap-3 bg-white/20 backdrop-blur-md rounded-2xl px-6 py-3 w-fit border border-white/30 shadow-lg hover:bg-white/25 transition-all duration-300">
+                <Icon name="Award" size={20} className="text-yellow-300 animate-pulse" />
+                <span className="text-lg font-semibold">{activityLevel}</span>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-ping"></div>
               </div>
             </div>
-            <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center shadow-2xl border border-white/30 hover:scale-105 transition-transform duration-300">
-              <Icon name="User" size={32} className="text-white" />
-            </div>
-          </div>
-          
-          {/* Статистика */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-4">
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 sm:p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group min-w-0">
-              <div className="text-lg sm:text-2xl font-bold mb-1 group-hover:scale-110 transition-transform truncate">263</div>
-              <div className="text-white/90 text-xs sm:text-sm font-medium leading-tight">сессий</div>
-            </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 sm:p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group min-w-0">
-              <div className="text-lg sm:text-2xl font-bold mb-1 group-hover:scale-110 transition-transform truncate">6</div>
-              <div className="text-white/90 text-xs sm:text-sm font-medium leading-tight">дней с нами</div>
-            </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 sm:p-4 text-center border border-white/20 hover:bg-white/20 transition-all duration-300 group min-w-0">
-              <div className="text-lg sm:text-2xl font-bold mb-1 group-hover:scale-110 transition-transform truncate">7</div>
-              <div className="text-white/90 text-xs sm:text-sm font-medium leading-tight">активных дней</div>
+            <div className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-2xl border border-white/30 hover:scale-110 hover:rotate-3 transition-all duration-500">
+              <Icon name="User" size={36} className="text-white" />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Современная статистика */}
+      <StatsOverview 
+        stats={[
+          {
+            label: 'Всего сессий',
+            value: '263',
+            change: '+12%',
+            trend: 'up',
+            icon: 'Activity',
+            color: 'text-blue-600',
+            bgColor: 'bg-blue-100'
+          },
+          {
+            label: 'Дней с нами',
+            value: '6',
+            change: '+1',
+            trend: 'up', 
+            icon: 'Calendar',
+            color: 'text-green-600',
+            bgColor: 'bg-green-100'
+          },
+          {
+            label: 'Активных дней',
+            value: '7',
+            change: '+2',
+            trend: 'up',
+            icon: 'Zap',
+            color: 'text-purple-600',
+            bgColor: 'bg-purple-100'
+          },
+          {
+            label: 'Время онлайн',
+            value: formattedTimeSpent,
+            change: '+5ч',
+            trend: 'up',
+            icon: 'Clock',
+            color: 'text-orange-600',
+            bgColor: 'bg-orange-100'
+          }
+        ]}
+        className="mb-6"
+      />
+
+      {/* График активности */}
+      <ActivityChart 
+        data={[
+          { day: 'Пн', sessions: 15, timeSpent: 2.5 },
+          { day: 'Вт', sessions: 23, timeSpent: 4.2 },
+          { day: 'Ср', sessions: 18, timeSpent: 3.1 },
+          { day: 'Чт', sessions: 31, timeSpent: 5.8 },
+          { day: 'Пт', sessions: 28, timeSpent: 4.9 },
+          { day: 'Сб', sessions: 12, timeSpent: 2.1 },
+          { day: 'Вс', sessions: 8, timeSpent: 1.3 }
+        ]}
+        className="mb-6"
+      />
 
       {/* Основные функции */}
       <div className="grid gap-6">
