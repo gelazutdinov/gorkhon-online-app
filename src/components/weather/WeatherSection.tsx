@@ -8,6 +8,15 @@ const WeatherSection = () => {
   const [apiSource, setApiSource] = useState<'graphql' | 'yandex'>('yandex');
   const [yandexApiKey, setYandexApiKey] = useState<string>('your_key');
   
+  // Функция для определения иконки погоды
+  const getWeatherIcon = (condition: string) => {
+    if (condition.includes('снег') || condition.includes('Снег')) return 'CloudSnow';
+    if (condition.includes('дождь') || condition.includes('Дождь')) return 'CloudRain';
+    if (condition.includes('ясно') || condition.includes('Ясно')) return 'Sun';
+    if (condition.includes('облачно') || condition.includes('Облачно')) return 'Cloud';
+    return 'Cloud';
+  };
+  
   // GraphQL API (как fallback)
   const { loading: graphqlLoading, error: graphqlError, data: graphqlData } = useQuery<WeatherData>(GET_WEATHER, {
     variables: {
@@ -89,14 +98,6 @@ const WeatherSection = () => {
     currentWeather = { ...mockWeather, icon: getWeatherIcon(mockWeather.condition) };
     forecast = mockForecast;
   }
-
-  const getWeatherIcon = (condition: string) => {
-    if (condition.includes('снег') || condition.includes('Снег')) return 'CloudSnow';
-    if (condition.includes('дождь') || condition.includes('Дождь')) return 'CloudRain';
-    if (condition.includes('ясно') || condition.includes('Ясно')) return 'Sun';
-    if (condition.includes('облачно') || condition.includes('Облачно')) return 'Cloud';
-    return 'Cloud';
-  };
 
   // Состояние загрузки
   if (loading) {
