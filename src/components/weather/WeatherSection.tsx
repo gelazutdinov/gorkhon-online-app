@@ -1,7 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { weatherParser } from '@/services/weatherParser';
 
 interface WeatherData {
   current: {
@@ -88,15 +86,6 @@ const mockWeatherData: WeatherData = {
 };
 
 const WeatherSection = () => {
-  // Запуск автоматического парсера при монтировании компонента
-  useEffect(() => {
-    weatherParser.startAutoUpdate();
-    
-    // Очистка при размонтировании
-    return () => {
-      weatherParser.stopAutoUpdate();
-    };
-  }, []);
   const fetchWeatherFromYandex = async (): Promise<WeatherData> => {
     try {
       // TODO: Добавить ключ API в переменные окружения
