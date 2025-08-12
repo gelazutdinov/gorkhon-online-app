@@ -216,7 +216,7 @@ const WeatherSection = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-4 pb-24">
       {/* Главная карточка погоды */}
-      <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-[32px] p-6 mb-6 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-[24px] p-6 mb-6 text-white overflow-hidden">
         {/* Декоративные элементы */}
         <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
