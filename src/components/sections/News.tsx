@@ -62,30 +62,19 @@ const News = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center mb-6">
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <Icon name="Newspaper" size={28} className="text-gorkhon-pink" />
-          <h2 className="text-2xl font-bold text-gray-800">Новости поселка</h2>
-        </div>
-        <p className="text-gray-600">Следите за последними событиями в Горхоне</p>
-      </div>
+
 
       {/* VK Widget Container */}
       <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg border border-gray-100">
-        <div className="flex items-center justify-between mb-4 gap-2">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-800 flex items-center gap-2 flex-1 min-w-0">
-            <Icon name="MessageSquare" size={16} className="text-blue-600 flex-shrink-0" />
-            <span className="truncate">Лента ВКонтакте</span>
-          </h3>
+        <div className="flex items-center justify-end mb-4">
           <a 
             href="https://vk.com/club214224996" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 flex-shrink-0"
+            className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1"
           >
             <Icon name="ExternalLink" size={14} />
-            <span className="hidden sm:inline">Открыть в ВК</span>
-            <span className="sm:hidden">ВК</span>
+            <span>Открыть в ВК</span>
           </a>
         </div>
         
