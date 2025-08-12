@@ -30,10 +30,14 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   const [showAccessibility, setShowAccessibility] = useState(false);
 
   const getTimeOfDay = useCallback(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'утро';
-    if (hour < 17) return 'день';
-    return 'вечер';
+    // Иркутск UTC+8
+    const irkutskTime = new Date(new Date().getTime() + (8 * 60 * 60 * 1000));
+    const hour = irkutskTime.getHours();
+    
+    if (hour >= 6 && hour < 12) return 'утро';
+    if (hour >= 12 && hour < 18) return 'день';
+    if (hour >= 18 && hour < 24) return 'вечер';
+    return 'ночи';
   }, []);
 
   const { activityLevel, userName } = useMemo(() => {
@@ -143,19 +147,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         className="mb-6"
       />
 
-      {/* График активности */}
-      <ActivityChart 
-        data={[
-          { day: 'Пн', sessions: 15, timeSpent: 2.5 },
-          { day: 'Вт', sessions: 23, timeSpent: 4.2 },
-          { day: 'Ср', sessions: 18, timeSpent: 3.1 },
-          { day: 'Чт', sessions: 31, timeSpent: 5.8 },
-          { day: 'Пт', sessions: 28, timeSpent: 4.9 },
-          { day: 'Сб', sessions: 12, timeSpent: 2.1 },
-          { day: 'Вс', sessions: 8, timeSpent: 1.3 }
-        ]}
-        className="mb-6"
-      />
+
 
       {/* Основные функции */}
       <div className="grid gap-6">
