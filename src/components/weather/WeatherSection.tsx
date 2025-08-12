@@ -89,7 +89,7 @@ const WeatherSection = () => {
   const fetchWeatherFromYandex = async (): Promise<WeatherData> => {
     try {
       // TODO: Добавить ключ API в переменные окружения
-      const YANDEX_WEATHER_API_KEY = process.env.REACT_APP_YANDEX_WEATHER_KEY;
+      const YANDEX_WEATHER_API_KEY = import.meta.env.VITE_YANDEX_WEATHER_KEY;
       
       if (!YANDEX_WEATHER_API_KEY) {
         console.warn('Yandex Weather API ключ не найден, используем mock данные');
@@ -250,7 +250,7 @@ const WeatherSection = () => {
           
           {/* Индикатор автообновления */}
           <div className="absolute top-4 left-4 text-white/70 text-xs bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
-            {process.env.REACT_APP_YANDEX_WEATHER_KEY ? 'API Яндекс.Погода' : 'Mock данные'} • Каждый час
+            {import.meta.env.VITE_YANDEX_WEATHER_KEY ? 'API Яндекс.Погода' : 'Mock данные'} • Каждый час
           </div>
         </div>
       </div>
