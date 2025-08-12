@@ -26,61 +26,61 @@ interface WeatherData {
 
 const mockWeatherData: WeatherData = {
   current: {
-    temperature: 28,
-    feelsLike: 32,
-    description: 'Солнечно',
-    icon: 'Sun',
-    humidity: 45,
-    windSpeed: 3,
-    windDeg: 225,
-    pressure: 760,
-    visibility: 15
+    temperature: 17,
+    feelsLike: 13,
+    description: 'Дождь',
+    icon: 'CloudRain',
+    humidity: 65,
+    windSpeed: 6,
+    windDeg: 0,
+    pressure: 704,
+    visibility: 8
   },
   forecast: [
     {
       day: 'Сегодня',
-      tempMax: 28,
-      tempMin: 18,
-      description: 'Солнечно',
-      icon: 'Sun',
+      tempMax: 20,
+      tempMin: 12,
+      description: 'Сильный дождь',
+      icon: 'CloudRain',
+      humidity: 65,
+      windSpeed: 4
+    },
+    {
+      day: 'Завтра',
+      tempMax: 19,
+      tempMin: 14,
+      description: 'Небольшой дождь',
+      icon: 'CloudDrizzle',
+      humidity: 76,
+      windSpeed: 3
+    },
+    {
+      day: 'Вт',
+      tempMax: 17,
+      tempMin: 13,
+      description: 'Пасмурно',
+      icon: 'Cloud',
+      humidity: 50,
+      windSpeed: 5
+    },
+    {
+      day: 'Ср',
+      tempMax: 20,
+      tempMin: 14,
+      description: 'Переменная облачность',
+      icon: 'CloudSun',
       humidity: 45,
       windSpeed: 3
     },
     {
-      day: 'Завтра',
-      tempMax: 30,
-      tempMin: 20,
-      description: 'Ясно',
-      icon: 'Sun',
-      humidity: 38,
-      windSpeed: 2
-    },
-    {
       day: 'Чт',
-      tempMax: 26,
+      tempMax: 22,
       tempMin: 16,
-      description: 'Переменная облачность',
+      description: 'Облачно с прояснениями',
       icon: 'CloudSun',
       humidity: 55,
-      windSpeed: 4
-    },
-    {
-      day: 'Пт',
-      tempMax: 24,
-      tempMin: 14,
-      description: 'Облачно',
-      icon: 'Cloud',
-      humidity: 62,
-      windSpeed: 5
-    },
-    {
-      day: 'Сб',
-      tempMax: 22,
-      tempMin: 12,
-      description: 'Небольшой дождь',
-      icon: 'CloudRain',
-      humidity: 75,
-      windSpeed: 6
+      windSpeed: 2
     }
   ]
 };
