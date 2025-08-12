@@ -62,20 +62,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
   return (
     <div className="space-y-4 pb-24">
-      {/* Заголовок с навигацией */}
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => onSectionChange('home')}
-          className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all duration-200"
-        >
-          <Icon name="ArrowLeft" size={18} />
-          <span className="font-medium">На главную</span>
-        </button>
-        <div className="text-sm text-gray-500 flex items-center gap-2">
-          <Icon name="User" size={16} />
-          <span>Личный кабинет</span>
-        </div>
-      </div>
+
 
       {/* Профиль пользователя - Обновленный дизайн */}
       <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">

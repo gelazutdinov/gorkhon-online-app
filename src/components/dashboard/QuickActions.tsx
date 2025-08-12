@@ -8,45 +8,7 @@ interface QuickActionsProps {
 }
 
 const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccessibility }: QuickActionsProps) => {
-  const stats = [
-    {
-      title: '263',
-      subtitle: 'Всего сессий',
-      icon: 'Activity',
-      color: 'bg-blue-50',
-      iconColor: 'text-blue-600',
-      change: '',
-      changeColor: 'text-green-600'
-    },
-    {
-      title: '6',
-      subtitle: 'Дней с нами',
-      icon: 'Calendar',
-      color: 'bg-green-50', 
-      iconColor: 'text-green-600',
-      change: '+1',
-      changeColor: 'text-green-600'
-    },
-    {
-      title: '7',
-      subtitle: 'Активных дней',
-      icon: 'Zap',
-      color: 'bg-purple-50',
-      iconColor: 'text-purple-600',
-      change: '+2',
-      changeColor: 'text-green-600'
-    },
-    {
-      title: '46 мин',
-      subtitle: 'вечера,',
-      description: 'Время онлайн',
-      icon: 'Clock',
-      color: 'bg-orange-50',
-      iconColor: 'text-orange-600',
-      change: '+5м',
-      changeColor: 'text-green-600'
-    }
-  ];
+  const stats = [];
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

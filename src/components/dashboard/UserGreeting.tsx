@@ -35,7 +35,7 @@ const UserGreeting = ({ user, daysWithUs, formattedTimeSpent, activityLevel }: U
             <div className="flex-1 min-w-0 pr-3">
               <h2 className="text-lg sm:text-2xl font-bold mb-1">{getGreeting()}, {user.name}!</h2>
 
-              <p className="text-white/90 text-sm sm:text-base">Добро пожаловать в личный кабинет</p>
+              <p className="text-white/90 text-sm sm:text-base">Добро пожаловать!</p>
             </div>
             <div className="ml-4 p-2 sm:p-3 bg-white/20 backdrop-blur-sm rounded-full flex-shrink-0">
               <Icon name={activityLevel.icon as any} size={24} className="text-white sm:w-8 sm:h-8" />
