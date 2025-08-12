@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Icon from '@/components/ui/icon';
+import { fetchYandexWeather, RealWeatherData } from '@/api/weatherApi';
 
 interface WeatherData {
   current: {
@@ -88,55 +89,14 @@ const mockWeatherData: WeatherData = {
 const WeatherSection = () => {
   const fetchWeatherFromYandex = async (): Promise<WeatherData> => {
     try {
-      // TODO: Добавить ключ API в переменные окружения
-      const YANDEX_WEATHER_API_KEY = import.meta.env.VITE_YANDEX_WEATHER_KEY;
+      // Используем новую API для загрузки с Яндекс.Погоды
+      const realWeatherData = await fetchYandexWeather();
       
-      if (!YANDEX_WEATHER_API_KEY) {
-        console.warn('Yandex Weather API ключ не найден, используем mock данные');
-        return mockWeatherData;
-      }
-
-      const response = await fetch(
-        `https://api.weather.yandex.ru/v2/forecast?lat=51.561569&lon=108.786552&limit=5`,
-        {
-          headers: {
-            'X-Yandex-Weather-Key': YANDEX_WEATHER_API_KEY,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
-      // Преобразуем данные API в наш формат
-      const weatherData: WeatherData = {
-        current: {
-          temperature: Math.round(data.fact.temp),
-          feelsLike: Math.round(data.fact.feels_like),
-          description: getWeatherDescription(data.fact.condition),
-          icon: getWeatherIcon(data.fact.condition),
-          humidity: data.fact.humidity,
-          windSpeed: Math.round(data.fact.wind_speed),
-          windDeg: data.fact.wind_dir_deg || 0,
-          pressure: Math.round(data.fact.pressure_mm),
-          visibility: Math.round((data.fact.visibility || 10000) / 1000) // в км
-        },
-        forecast: data.forecasts.slice(0, 5).map((day: any, index: number) => ({
-          day: index === 0 ? 'Сегодня' : index === 1 ? 'Завтра' : 
-               new Date(day.date).toLocaleDateString('ru-RU', { weekday: 'short' }),
-          tempMax: Math.round(day.parts.day.temp_max),
-          tempMin: Math.round(day.parts.night.temp_min),
-          description: getWeatherDescription(day.parts.day.condition),
-          icon: getWeatherIcon(day.parts.day.condition),
-          humidity: day.parts.day.humidity,
-          windSpeed: Math.round(day.parts.day.wind_speed)
-        }))
+      // Преобразуем RealWeatherData в WeatherData формат
+      return {
+        current: realWeatherData.current,
+        forecast: realWeatherData.forecast
       };
-
-      return weatherData;
     } catch (error) {
       console.error('Ошибка получения данных погоды:', error);
       return mockWeatherData;
@@ -192,8 +152,8 @@ const WeatherSection = () => {
   const { data: weather, refetch } = useQuery({
     queryKey: ['weather'],
     queryFn: fetchWeatherFromYandex,
-    staleTime: 60 * 60 * 1000, // Кешируем на 1 час
-    refetchInterval: 60 * 60 * 1000, // Автоматически обновляем каждый час
+    staleTime: 60 * 1000, // Кешируем на 1 минуту
+    refetchInterval: 60 * 1000, // Автоматически обновляем каждую минуту
     refetchOnWindowFocus: true, // Обновляем при фокусе окна
     refetchIntervalInBackground: true, // Обновляем даже в фоне
   });
