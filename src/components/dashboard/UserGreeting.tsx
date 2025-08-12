@@ -15,7 +15,9 @@ interface UserGreetingProps {
 
 const UserGreeting = ({ user, daysWithUs, formattedTimeSpent, activityLevel }: UserGreetingProps) => {
   const getGreeting = () => {
-    const hour = new Date().getHours();
+    // Получаем время в Иркутске (UTC+8)
+    const irkutskTime = new Date(new Date().getTime() + (8 * 60 * 60 * 1000));
+    const hour = irkutskTime.getUTCHours();
     if (hour < 6) return 'Доброй ночи';
     if (hour < 12) return 'Доброе утро';
     if (hour < 18) return 'Добрый день';
