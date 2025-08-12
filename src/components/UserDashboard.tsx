@@ -8,7 +8,7 @@ import BackupModal from '@/components/dashboard/BackupModal';
 import AccessibilityModal from '@/components/dashboard/AccessibilityModal';
 import SettingsModal from '@/components/dashboard/SettingsModal';
 import SecuritySettings from '@/components/security/SecuritySettings';
-import StatsOverview from '@/components/analytics/StatsOverview';
+
 import ActivityChart from '@/components/analytics/ActivityChart';
 
 interface UserDashboardProps {
@@ -93,48 +93,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         </div>
       </div>
 
-      {/* Современная статистика */}
-      <StatsOverview 
-        stats={[
-          {
-            label: 'Всего сессий',
-            value: '263',
-            change: '+12%',
-            trend: 'up',
-            icon: 'Activity',
-            color: 'text-blue-600',
-            bgColor: 'bg-blue-100'
-          },
-          {
-            label: 'Дней с нами',
-            value: '6',
-            change: '+1',
-            trend: 'up', 
-            icon: 'Calendar',
-            color: 'text-green-600',
-            bgColor: 'bg-green-100'
-          },
-          {
-            label: 'Активных дней',
-            value: '7',
-            change: '+2',
-            trend: 'up',
-            icon: 'Zap',
-            color: 'text-purple-600',
-            bgColor: 'bg-purple-100'
-          },
-          {
-            label: 'Время онлайн',
-            value: formattedTimeSpent,
-            change: '+5ч',
-            trend: 'up',
-            icon: 'Clock',
-            color: 'text-orange-600',
-            bgColor: 'bg-orange-100'
-          }
-        ]}
-        className="mb-6"
-      />
+
 
 
 
