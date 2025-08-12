@@ -45,70 +45,49 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
           <NotificationBanner />
         
           {/* Правовая информация */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <Icon name="Shield" size={20} className="text-gorkhon-blue" />
-              Правовая информация
-            </h3>
+          <div className="text-center pt-4 border-t border-gray-200">
+            <h4 className="text-sm font-medium text-gray-600 mb-3">Правовая информация</h4>
             
-            <div className="space-y-3">
-              <Link 
-                to="/privacy" 
-                target="_blank"
-                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-gorkhon-pink hover:bg-gorkhon-pink/5 transition-all duration-200"
-              >
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Icon name="Shield" size={16} className="text-blue-600" />
-                </div>
-                <div className="flex-1">
-                  <span className="font-medium text-gray-800">Политика конфиденциальности</span>
-                  <p className="text-sm text-gray-600">Как мы защищаем ваши данные</p>
-                </div>
-                <Icon name="ExternalLink" size={16} className="text-gray-400" />
-              </Link>
+            <div className="space-y-2">
+              <div>
+                <Link 
+                  to="/privacy" 
+                  target="_blank"
+                  className="text-xs text-gray-500 hover:text-gray-700 underline hover:no-underline transition-colors"
+                >
+                  Политика конфиденциальности
+                </Link>
+                <p className="text-xs text-gray-400">Как мы защищаем ваши данные</p>
+              </div>
               
-              <Link 
-                to="/terms" 
-                target="_blank"
-                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-gorkhon-pink hover:bg-gorkhon-pink/5 transition-all duration-200"
-              >
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Icon name="FileText" size={16} className="text-green-600" />
-                </div>
-                <div className="flex-1">
-                  <span className="font-medium text-gray-800">Пользовательское соглашение</span>
-                  <p className="text-sm text-gray-600">Правила использования платформы</p>
-                </div>
-                <Icon name="ExternalLink" size={16} className="text-gray-400" />
-              </Link>
+              <div>
+                <Link 
+                  to="/terms" 
+                  target="_blank"
+                  className="text-xs text-gray-500 hover:text-gray-700 underline hover:no-underline transition-colors"
+                >
+                  Пользовательское соглашение
+                </Link>
+                <p className="text-xs text-gray-400">Правила использования платформы</p>
+              </div>
               
-              <Link 
-                to="/data-protection" 
-                target="_blank"
-                className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-gorkhon-pink hover:bg-gorkhon-pink/5 transition-all duration-200"
-              >
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Icon name="ShieldCheck" size={16} className="text-purple-600" />
-                </div>
-                <div className="flex-1">
-                  <span className="font-medium text-gray-800">Защита данных</span>
-                  <p className="text-sm text-gray-600">Меры безопасности ваших данных</p>
-                </div>
-                <Icon name="ExternalLink" size={16} className="text-gray-400" />
-              </Link>
+              <div>
+                <Link 
+                  to="/data-protection" 
+                  target="_blank"
+                  className="text-xs text-gray-500 hover:text-gray-700 underline hover:no-underline transition-colors"
+                >
+                  Защита данных
+                </Link>
+                <p className="text-xs text-gray-400">Меры безопасности ваших данных</p>
+              </div>
             </div>
             
-            {/* Информация о безопасности */}
-            <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
-              <div className="flex items-start gap-3">
-                <Icon name="Info" size={18} className="text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h5 className="font-medium text-gray-800 mb-1">О безопасности</h5>
-                  <p className="text-sm text-gray-700 leading-relaxed">
-                    Все данные хранятся локально в вашем браузере и передаются только по защищенному соединению.
-                  </p>
-                </div>
-              </div>
+            <div className="mt-4 pt-3 border-t border-gray-100">
+              <h5 className="text-xs font-medium text-gray-600 mb-1">О безопасности</h5>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Все данные хранятся локально в вашем браузере и передаются только по защищенному соединению.
+              </p>
             </div>
           </div>
         </div>
@@ -239,6 +218,53 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
               <Icon name="Shield" size={16} className="text-white/80" />
               <span>Безопасность и конфиденциальность данных</span>
             </div>
+          </div>
+        </div>
+        
+        {/* Правовая информация для неавторизованных */}
+        <div className="text-center pt-6 border-t border-gray-200">
+          <h4 className="text-sm font-medium text-gray-600 mb-3">Правовая информация</h4>
+          
+          <div className="space-y-2">
+            <div>
+              <Link 
+                to="/privacy" 
+                target="_blank"
+                className="text-xs text-gray-500 hover:text-gray-700 underline hover:no-underline transition-colors"
+              >
+                Политика конфиденциальности
+              </Link>
+              <p className="text-xs text-gray-400">Как мы защищаем ваши данные</p>
+            </div>
+            
+            <div>
+              <Link 
+                to="/terms" 
+                target="_blank"
+                className="text-xs text-gray-500 hover:text-gray-700 underline hover:no-underline transition-colors"
+              >
+                Пользовательское соглашение
+              </Link>
+              <p className="text-xs text-gray-400">Правила использования платформы</p>
+            </div>
+            
+            <div>
+              <Link 
+                to="/data-protection" 
+                target="_blank"
+                className="text-xs text-gray-500 hover:text-gray-700 underline hover:no-underline transition-colors"
+              >
+                Защита данных
+              </Link>
+              <p className="text-xs text-gray-400">Меры безопасности ваших данных</p>
+            </div>
+          </div>
+          
+          <div className="mt-4 pt-3 border-t border-gray-100">
+            <h5 className="text-xs font-medium text-gray-600 mb-1">О безопасности</h5>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Все данные хранятся локально в вашем браузере и передаются только по защищенному соединению.
+            </p>
           </div>
         </div>
       </div>
