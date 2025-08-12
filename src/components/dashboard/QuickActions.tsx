@@ -49,7 +49,7 @@ const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccess
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {stats.map((stat, index) => (
         <div key={index} className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-4">
@@ -63,11 +63,21 @@ const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccess
           <div>
             <div className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{stat.title}</div>
             <div className="text-sm text-gray-600 leading-tight">
-              {stat.subtitle}
-              {stat.description && (
+              {index === 3 ? (
                 <>
+                  <span className="font-semibold">{stat.subtitle}</span>
                   <br />
                   <span className="text-xs">{stat.description}</span>
+                </>
+              ) : (
+                <>
+                  {stat.subtitle}
+                  {stat.description && (
+                    <>
+                      <br />
+                      <span className="text-xs">{stat.description}</span>
+                    </>
+                  )}
                 </>
               )}
             </div>
