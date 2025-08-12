@@ -59,7 +59,7 @@ const StatisticsModal = ({ user, formattedTimeSpent, activityLevel, onClose }: S
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-lg" onClick={onClose}></div>
       <div className="relative bg-gradient-to-br from-white via-white/98 to-blue-50/80 backdrop-blur-2xl rounded-t-3xl sm:rounded-3xl w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto shadow-2xl border border-white/30">
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gradient-to-r from-blue-100/50 to-purple-100/50 sticky top-0 bg-gradient-to-r from-white/95 to-blue-50/95 backdrop-blur-xl">
