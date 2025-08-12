@@ -55,6 +55,11 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
                   size={22} 
                   className="text-white transition-all duration-300"
                 />
+                {item.id === 'weather' && (
+                  <div className="absolute -top-1 -right-1 bg-orange-500 text-white text-[8px] px-1 py-0.5 rounded-full font-medium shadow-sm">
+                    beta
+                  </div>
+                )}
               </button>
             ))}
           </div>
