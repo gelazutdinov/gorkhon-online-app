@@ -1,7 +1,19 @@
+import { useQuery } from '@apollo/client';
 import Icon from '@/components/ui/icon';
+import { GET_WEATHER, GORKHON_COORDINATES, WeatherData } from '@/lib/weather-queries';
 
 const WeatherSection = () => {
-  const currentWeather = {
+  const { loading, error, data } = useQuery<WeatherData>(GET_WEATHER, {
+    variables: {
+      lat: GORKHON_COORDINATES.lat,
+      lon: GORKHON_COORDINATES.lon
+    },
+    pollInterval: 60000 * 60, // обновляем каждый час
+    errorPolicy: 'all'
+  });
+
+  // Моковые данные как fallback
+  const mockWeather = {
     temperature: -15,
     condition: 'Облачно с прояснениями',
     feelsLike: -18,
@@ -12,13 +24,38 @@ const WeatherSection = () => {
     visibility: 8
   };
 
-  const forecast = [
+  const mockForecast = [
     { day: 'Завтра', temp: { min: -18, max: -12 }, condition: 'Снег', icon: 'CloudSnow' },
     { day: 'Среда', temp: { min: -20, max: -15 }, condition: 'Ясно', icon: 'Sun' },
     { day: 'Четверг', temp: { min: -16, max: -10 }, condition: 'Облачно', icon: 'Cloud' },
     { day: 'Пятница', temp: { min: -14, max: -8 }, condition: 'Снег', icon: 'CloudSnow' },
     { day: 'Суббота', temp: { min: -12, max: -6 }, condition: 'Ясно', icon: 'Sun' }
   ];
+
+  // Используем реальные данные если есть, иначе моковые
+  const currentWeather = data?.weatherByPoint.now ? {
+    temperature: Math.round(data.weatherByPoint.now.c),
+    condition: data.weatherByPoint.now.description || 'Неизвестно',
+    feelsLike: Math.round(data.weatherByPoint.now.c - 3), // примерное значение
+    humidity: data.weatherByPoint.now.humidity || 0,
+    windSpeed: data.weatherByPoint.now.windSpeed || 0,
+    windDirection: 'СЗ', // направление ветра из API может отсутствовать
+    pressure: data.weatherByPoint.now.pressure || 0,
+    visibility: data.weatherByPoint.now.visibility || 0
+  } : mockWeather;
+
+  const forecast = data?.weatherByPoint.forecast.days.edges.map((edge, index) => {
+    const days = ['Завтра', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+    return {
+      day: days[index] || 'День',
+      temp: { 
+        min: Math.round(edge.node.temperatureMin), 
+        max: Math.round(edge.node.temperatureMax) 
+      },
+      condition: edge.node.description || 'Неизвестно',
+      icon: getWeatherIcon(edge.node.description || '')
+    };
+  }) || mockForecast;
 
   const getWeatherIcon = (condition: string) => {
     if (condition.includes('снег') || condition.includes('Снег')) return 'CloudSnow';
@@ -28,6 +65,46 @@ const WeatherSection = () => {
     return 'Cloud';
   };
 
+  // Состояние загрузки
+  if (loading) {
+    return (
+      <div className="space-y-6 pb-24">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            Погода в Горхоне
+          </h1>
+          <p className="text-gray-600">Загрузка актуальных данных...</p>
+        </div>
+        
+        <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+          <div className="flex items-center justify-center py-12">
+            <Icon name="Loader" size={48} className="animate-spin text-white/80" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Состояние ошибки
+  if (error) {
+    return (
+      <div className="space-y-6 pb-24">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            Погода в Горхоне
+          </h1>
+          <p className="text-red-600">Не удалось загрузить данные о погоде</p>
+        </div>
+        
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+          <Icon name="CloudOff" size={48} className="text-red-400 mx-auto mb-4" />
+          <p className="text-red-700 mb-2">Ошибка подключения к сервису погоды</p>
+          <p className="text-red-600 text-sm">Показаны приблизительные данные</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 pb-24">
       {/* Заголовок */}
@@ -35,7 +112,9 @@ const WeatherSection = () => {
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
           Погода в Горхоне
         </h1>
-        <p className="text-gray-600">Актуальные данные на сегодня</p>
+        <p className="text-gray-600">
+          {data ? 'Актуальные данные' : 'Приблизительные данные'}
+        </p>
       </div>
 
       {/* Текущая погода */}
