@@ -1,96 +1,127 @@
-import { useWeather, getWindDirection } from '@/hooks/useWeather';
+import { useQuery } from '@tanstack/react-query';
 import Icon from '@/components/ui/icon';
 
+interface WeatherData {
+  current: {
+    temperature: number;
+    feelsLike: number;
+    description: string;
+    icon: string;
+    humidity: number;
+    windSpeed: number;
+    windDeg: number;
+    pressure: number;
+    visibility: number;
+  };
+  forecast: Array<{
+    day: string;
+    tempMax: number;
+    tempMin: number;
+    description: string;
+    icon: string;
+    humidity: number;
+    windSpeed: number;
+  }>;
+}
+
+const mockWeatherData: WeatherData = {
+  current: {
+    temperature: 22,
+    feelsLike: 25,
+    description: 'Малооблачно',
+    icon: 'Sun',
+    humidity: 68,
+    windSpeed: 1,
+    windDeg: 180,
+    pressure: 752,
+    visibility: 10
+  },
+  forecast: [
+    {
+      day: 'Сегодня',
+      tempMax: 22,
+      tempMin: 9,
+      description: 'Малооблачно',
+      icon: 'Sun',
+      humidity: 40,
+      windSpeed: 6
+    },
+    {
+      day: 'Завтра',
+      tempMax: 16,
+      tempMin: 10,
+      description: 'Местами легкий дождь',
+      icon: 'CloudRain',
+      humidity: 72,
+      windSpeed: 5
+    },
+    {
+      day: 'Чт',
+      tempMax: 15,
+      tempMin: 10,
+      description: 'Легкий ливневый дождь',
+      icon: 'CloudRain',
+      humidity: 91,
+      windSpeed: 2
+    }
+  ]
+};
+
 const WeatherSection = () => {
-  const { current, forecast, loading, error, lastUpdated, refetch } = useWeather();
+  const { data: weather, refetch } = useQuery({
+    queryKey: ['weather'],
+    queryFn: async (): Promise<WeatherData> => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return mockWeatherData;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
 
-  if (loading) {
+  if (!weather) {
     return (
-      <div className="space-y-6 pb-24">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Погода в Горхоне
-          </h1>
-          <p className="text-gray-600">Загружаем актуальные данные...</p>
-        </div>
-        
-        <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-3xl p-8 text-white shadow-2xl">
-          <div className="flex items-center justify-center py-12">
-            <Icon name="Loader" size={48} className="animate-spin text-white/80" />
-          </div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-4 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
       </div>
     );
   }
 
-  if (!current) {
-    return (
-      <div className="space-y-6 pb-24">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Погода в Горхоне
-          </h1>
-          <p className="text-red-600">Не удалось загрузить данные о погоде</p>
-        </div>
-      </div>
-    );
-  }
+  const { current, forecast } = weather;
+
+  const getWindDirection = (deg: number): string => {
+    const directions = ['С', 'СВ', 'В', 'ЮВ', 'Ю', 'ЮЗ', 'З', 'СЗ'];
+    return directions[Math.round(deg / 45) % 8];
+  };
 
   return (
-    <div className="space-y-6 pb-24">
-      {/* Заголовок */}
-      <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          Погода в Горхоне
-        </h1>
-        <div className="flex items-center justify-center gap-2 text-sm">
-          <Icon 
-            name={error ? "WifiOff" : "Wifi"} 
-            size={16} 
-            className={error ? "text-orange-500" : "text-green-600"}
-          />
-          <p className={error ? "text-orange-600" : "text-green-600"}>
-            {error || 'Актуальные данные'}
-          </p>
-        </div>
-        {lastUpdated && (
-          <p className="text-xs text-gray-500 mt-1">
-            Обновлено: {lastUpdated.toLocaleTimeString('ru-RU', { 
-              hour: '2-digit', 
-              minute: '2-digit' 
-            })}
-          </p>
-        )}
-      </div>
-
-      {/* Текущая погода */}
-      <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-4 pb-24">
+      {/* Главная карточка погоды */}
+      <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 mb-6 text-white overflow-hidden">
         {/* Декоративные элементы */}
-        <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full"></div>
-        <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-white/5 rounded-full"></div>
+        <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
         
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex-1 min-w-0 pr-4">
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-light mb-2 truncate">
+            <div className="flex-1">
+              <div className="text-6xl font-light mb-2">
                 {current.temperature > 0 ? '+' : ''}{current.temperature}°
               </div>
-              <div className="text-base sm:text-lg text-white/90 mb-1 truncate">
+              <div className="text-xl text-white/90 mb-1">
                 {current.description}
               </div>
-              <div className="text-sm text-white/70 truncate">
+              <div className="text-white/70">
                 Ощущается как {current.feelsLike > 0 ? '+' : ''}{current.feelsLike}°
               </div>
             </div>
-            <div className="text-right flex-shrink-0">
-              <Icon name={current.icon as any} size={48} className="text-white/80 mb-2 sm:w-16 sm:h-16" />
+            <div className="text-right">
+              <Icon name={current.icon as any} size={80} className="text-white/90 mb-2" />
             </div>
           </div>
-
+          
           {/* Кнопка обновления */}
           <button
             onClick={refetch}
-            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm"
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm z-20"
             title="Обновить данные"
           >
             <Icon name="RefreshCw" size={20} className="text-white" />
@@ -98,74 +129,89 @@ const WeatherSection = () => {
         </div>
       </div>
 
-      {/* Детальная информация */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 min-h-[100px] flex flex-col">
-          <div className="flex items-start gap-2 mb-3">
-            <Icon name="Droplets" size={18} className="text-blue-600 flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-gray-600 font-medium leading-tight">Влажность</span>
-          </div>
-          <div className="text-2xl font-bold text-gray-900 mt-auto">{current.humidity}%</div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 min-h-[100px] flex flex-col">
-          <div className="flex items-start gap-2 mb-3">
-            <Icon name="Wind" size={18} className="text-gray-600 flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-gray-600 font-medium leading-tight">Ветер</span>
-          </div>
-          <div className="mt-auto">
-            <div className="text-2xl font-bold text-gray-900">{current.windSpeed}</div>
-            <div className="text-xs text-gray-500 leading-tight">м/с {getWindDirection(current.windDeg)}</div>
+      {/* Детальная информация в 4 карточки */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Droplets" size={18} className="text-blue-500" />
+                <span className="text-sm font-medium text-gray-700">Влажность</span>
+              </div>
+              <div className="text-2xl font-bold text-gray-900">{current.humidity}%</div>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 min-h-[100px] flex flex-col">
-          <div className="flex items-start gap-2 mb-3">
-            <Icon name="Gauge" size={18} className="text-purple-600 flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-gray-600 font-medium leading-tight">Давление</span>
-          </div>
-          <div className="mt-auto">
-            <div className="text-2xl font-bold text-gray-900">{current.pressure}</div>
-            <div className="text-xs text-gray-500 leading-tight">мм рт.ст.</div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Wind" size={18} className="text-gray-600" />
+                <span className="text-sm font-medium text-gray-700">Ветер</span>
+              </div>
+              <div className="text-2xl font-bold text-gray-900">{current.windSpeed}</div>
+              <div className="text-xs text-gray-500">м/с {getWindDirection(current.windDeg)}</div>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 min-h-[100px] flex flex-col">
-          <div className="flex items-start gap-2 mb-3">
-            <Icon name="Eye" size={18} className="text-green-600 flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-gray-600 font-medium leading-tight">Видимость</span>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Gauge" size={18} className="text-purple-600" />
+                <span className="text-sm font-medium text-gray-700">Давление</span>
+              </div>
+              <div className="text-2xl font-bold text-gray-900">{current.pressure}</div>
+              <div className="text-xs text-gray-500">мм рт.ст.</div>
+            </div>
           </div>
-          <div className="text-2xl font-bold text-gray-900 mt-auto">{current.visibility} км</div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Eye" size={18} className="text-green-600" />
+                <span className="text-sm font-medium text-gray-700">Видимость</span>
+              </div>
+              <div className="text-2xl font-bold text-gray-900">{current.visibility}</div>
+              <div className="text-xs text-gray-500">км</div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Прогноз на 5 дней */}
-      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
-        <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Прогноз на 5 дней</h3>
-        <div className="space-y-3 sm:space-y-4">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">Прогноз на 5 дней</h3>
+        <div className="space-y-4">
           {forecast.map((day, index) => (
-            <div key={index} className="flex items-center justify-between py-4 border-b border-gray-100 last:border-b-0 gap-4">
-              <div className="flex items-center gap-4 flex-1 min-w-0">
-                <div className="w-16 text-gray-600 font-medium text-sm flex-shrink-0">
+            <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+              <div className="flex items-center gap-4 flex-1">
+                <div className="w-20 text-gray-700 font-medium">
                   {day.day}
                 </div>
-                <Icon name={day.icon as any} size={24} className="text-gray-600 flex-shrink-0" />
-                <div className="flex flex-col min-w-0 flex-1">
-                  <span className="text-base text-gray-700 font-medium mb-1 overflow-hidden whitespace-nowrap text-ellipsis">{day.description}</span>
+                <Icon name={day.icon as any} size={28} className="text-gray-600" />
+                <div className="flex-1">
+                  <div className="text-gray-800 font-medium mb-1">
+                    {day.description}
+                  </div>
                   <div className="flex items-center gap-4 text-xs text-gray-500">
-                    <span className="flex items-center gap-1 flex-shrink-0">
+                    <span className="flex items-center gap-1">
                       <Icon name="Droplets" size={12} />
                       {day.humidity}%
                     </span>
-                    <span className="flex items-center gap-1 flex-shrink-0">
+                    <span className="flex items-center gap-1">
                       <Icon name="Wind" size={12} />
                       {day.windSpeed} м/с
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-right flex-shrink-0">
-                <span className="text-gray-500 text-sm font-medium">
+              <div className="flex items-center gap-3 text-right">
+                <span className="text-gray-500 font-medium">
                   {day.tempMin > 0 ? '+' : ''}{day.tempMin}°
                 </span>
                 <span className="text-gray-900 font-bold text-lg">
@@ -174,32 +220,6 @@ const WeatherSection = () => {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Информация об источнике */}
-      <div className={`rounded-2xl p-4 text-center ${
-        error 
-          ? 'bg-orange-50 border border-orange-200' 
-          : 'bg-green-50 border border-green-200'
-      }`}>
-        <div className="flex items-center justify-center gap-2 text-sm">
-          <Icon 
-            name={error ? "AlertTriangle" : "Globe"} 
-            size={16} 
-            className={error ? "text-orange-600" : "text-green-600"}
-          />
-          <span className={error ? "text-orange-700" : "text-green-700"}>
-            {error ? 'Локальные данные' : 'Данные получены из интернета'}
-          </span>
-        </div>
-        <div className="text-xs mt-1">
-          <span className={error ? "text-orange-600" : "text-green-600"}>
-            Источник: {error ? 'Локальная база данных' : 'wttr.in Weather API'}
-          </span>
-        </div>
-        <div className="text-xs text-gray-500 mt-1">
-          Обновление каждый час автоматически
         </div>
       </div>
     </div>
