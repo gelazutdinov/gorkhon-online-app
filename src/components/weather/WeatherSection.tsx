@@ -206,13 +206,23 @@ const WeatherSection = () => {
       </div>
 
       {/* Информация об источнике */}
-      <div className="bg-gray-50 rounded-2xl p-4 text-center">
-        <div className="flex items-center justify-center gap-2 text-gray-600 text-sm">
-          <Icon name="Info" size={16} />
-          <span>Данные обновляются каждый час</span>
+      <div className={`rounded-2xl p-4 text-center ${
+        data ? 'bg-green-50 border border-green-200' : 'bg-gray-50'
+      }`}>
+        <div className="flex items-center justify-center gap-2 text-sm">
+          <Icon 
+            name={data ? "Wifi" : error ? "WifiOff" : "Info"} 
+            size={16} 
+            className={data ? "text-green-600" : error ? "text-red-500" : "text-gray-600"}
+          />
+          <span className={data ? "text-green-700" : error ? "text-red-600" : "text-gray-600"}>
+            {data ? 'GraphQL API подключен' : error ? 'Offline режим' : 'Данные обновляются каждый час'}
+          </span>
         </div>
-        <div className="text-xs text-gray-500 mt-1">
-          Источник: Гидрометцентр России
+        <div className="text-xs mt-1">
+          <span className={data ? "text-green-600" : error ? "text-red-500" : "text-gray-500"}>
+            {data ? 'Источник: Weather GraphQL API' : error ? 'Источник: Локальные данные' : 'Источник: Гидрометцентр России'}
+          </span>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
 const httpLink = createHttpLink({
-  uri: 'https://api.weather.com/graphql', // Замените на реальный endpoint
+  uri: 'https://graphql-weather-api.herokuapp.com/', // Реальный GraphQL endpoint для погоды
 });
 
 export const apolloClient = new ApolloClient({
