@@ -37,8 +37,8 @@ const QuickActions = ({ onShowStatistics, onShowLina, onShowBackup, onShowAccess
       changeColor: 'text-green-600'
     },
     {
-      title: '46',
-      subtitle: 'мин вечера,',
+      title: '46 мин',
+      subtitle: 'вечера,',
       description: 'Время онлайн',
       icon: 'Clock',
       color: 'bg-orange-50',
