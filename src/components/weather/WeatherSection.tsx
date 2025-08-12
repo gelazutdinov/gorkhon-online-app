@@ -216,7 +216,7 @@ const WeatherSection = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-4 pb-24">
       {/* Главная карточка погоды */}
-      <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 mb-6 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-[32px] p-6 mb-6 text-white overflow-hidden">
         {/* Декоративные элементы */}
         <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
@@ -239,19 +239,7 @@ const WeatherSection = () => {
             </div>
           </div>
           
-          {/* Кнопка обновления */}
-          <button
-            onClick={refetch}
-            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm z-20"
-            title="Обновить данные с Яндекс.Погоды"
-          >
-            <Icon name="RefreshCw" size={20} className="text-white" />
-          </button>
-          
-          {/* Индикатор автообновления */}
-          <div className="absolute top-4 left-4 text-white/70 text-xs bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
-            {import.meta.env.VITE_YANDEX_WEATHER_KEY ? 'API Яндекс.Погода' : 'Mock данные'} • Каждый час
-          </div>
+
         </div>
       </div>
 
@@ -311,36 +299,45 @@ const WeatherSection = () => {
 
       {/* Прогноз на 5 дней */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Прогноз на 5 дней</h3>
-        <div className="space-y-4">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Прогноз на 5 дней</h3>
+        <div className="space-y-0">
           {forecast.map((day, index) => (
-            <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
-              <div className="flex items-center gap-4 flex-1">
-                <div className="w-20 text-gray-700 font-medium">
+            <div key={index} className="flex items-center py-4 border-b border-gray-100 last:border-b-0">
+              {/* День недели */}
+              <div className="w-16 flex-shrink-0">
+                <div className="text-sm font-medium text-gray-700">
                   {day.day}
                 </div>
-                <Icon name={day.icon as any} size={28} className="text-gray-600" />
-                <div className="flex-1">
-                  <div className="text-gray-800 font-medium mb-1">
-                    {day.description}
-                  </div>
-                  <div className="flex items-center gap-4 text-xs text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <Icon name="Droplets" size={12} />
-                      {day.humidity}%
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Icon name="Wind" size={12} />
-                      {day.windSpeed} м/с
-                    </span>
-                  </div>
+              </div>
+              
+              {/* Иконка погоды */}
+              <div className="w-12 flex justify-center flex-shrink-0 ml-2">
+                <Icon name={day.icon as any} size={24} className="text-gray-600" />
+              </div>
+              
+              {/* Описание и детали */}
+              <div className="flex-1 ml-4 min-w-0">
+                <div className="text-base font-medium text-gray-900 mb-1 truncate">
+                  {day.description}
+                </div>
+                <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <Icon name="Droplets" size={10} className="text-blue-500" />
+                    {day.humidity}%
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Icon name="Wind" size={10} className="text-gray-500" />
+                    {day.windSpeed} м/с
+                  </span>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-right">
-                <span className="text-gray-500 font-medium">
+              
+              {/* Температуры */}
+              <div className="flex items-center gap-2 flex-shrink-0 ml-4">
+                <span className="text-sm text-gray-500 font-medium w-8 text-right">
                   {day.tempMin > 0 ? '+' : ''}{day.tempMin}°
                 </span>
-                <span className="text-gray-900 font-bold text-lg">
+                <span className="text-lg font-bold text-gray-900 w-10 text-right">
                   {day.tempMax > 0 ? '+' : ''}{day.tempMax}°
                 </span>
               </div>
