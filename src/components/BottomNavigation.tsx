@@ -14,6 +14,11 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
       icon: 'Home'
     },
     {
+      id: 'weather',
+      label: 'Погода',
+      icon: 'Cloud'
+    },
+    {
       id: 'news',
       label: 'Новости',
       icon: 'Newspaper'

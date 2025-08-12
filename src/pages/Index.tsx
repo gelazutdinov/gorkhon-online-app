@@ -11,6 +11,7 @@ import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
 import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
+import WeatherSection from "@/components/weather/WeatherSection";
 import SecuritySettings from "@/components/security/SecuritySettings";
 import DigitalRuble from "@/components/economy/DigitalRuble";
 
@@ -70,6 +71,11 @@ const Index = () => {
         {activeSection === 'home' && (
           <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
             <Home onOpenPhotoCarousel={openPhotoCarousel} />
+          </div>
+        )}
+        {activeSection === 'weather' && (
+          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
+            <WeatherSection />
           </div>
         )}
         {activeSection === 'news' && (
