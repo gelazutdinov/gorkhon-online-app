@@ -5,6 +5,7 @@ import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import TrackableComponent from "@/components/TrackableComponent";
+import WeatherWidget from "@/components/features/WeatherWidget";
 
 import Icon from "@/components/ui/icon";
 import { useUser } from "@/hooks/useUser";
@@ -47,6 +48,12 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
         </div>
       </TrackableComponent>
       
+      <TrackableComponent feature="weather">
+        <div className="transform hover:scale-[1.02] transition-transform duration-300">
+          <WeatherWidget />
+        </div>
+      </TrackableComponent>
+
       <TrackableComponent feature="pvz">
         <div className="transform hover:scale-[1.02] transition-transform duration-300">
           <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />
