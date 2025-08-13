@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { fetchYandexWeather, type RealWeatherData } from '@/api/weatherApi';
+import { fetchAdvancedWeather, getWeatherSourcesStatus, type RealWeatherData } from '@/api/weatherApi';
 
 interface WeatherData {
   temperature: number;
@@ -39,7 +39,7 @@ const WeatherWidget = () => {
   const loadWeatherData = async () => {
     try {
       setIsLoading(true);
-      const realWeather = await fetchYandexWeather();
+      const realWeather = await fetchAdvancedWeather();
       
       // Преобразуем данные из API в формат компонента
       const convertedWeather: WeatherData = {

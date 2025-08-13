@@ -1,6 +1,8 @@
 // Используем глобальную функцию web_fetch из среды
 declare const web_fetch: (url: string, prompt: string) => Promise<string>;
 
+import { weatherMonitor, type WeatherData } from '@/services/weatherMonitor';
+
 export interface RealWeatherData {
   current: {
     temperature: number;
@@ -227,4 +229,58 @@ export const fetchYandexWeather = async (): Promise<RealWeatherData> => {
       ]
     };
   }
+};
+
+// Новая продвинутая функция с мониторингом множественных источников
+export const fetchAdvancedWeather = async (): Promise<RealWeatherData> => {
+  try {
+    console.log('🌦️ Запуск продвинутого мониторинга погоды...');
+    
+    const aggregatedWeather = await weatherMonitor.getAggregatedWeather();
+    
+    // Конвертируем данные мониторинга в формат приложения
+    const convertedData: RealWeatherData = {
+      current: {
+        temperature: aggregatedWeather.current.temperature,
+        feelsLike: aggregatedWeather.current.feelsLike,
+        description: aggregatedWeather.current.description,
+        icon: getWeatherIcon(aggregatedWeather.current.description),
+        humidity: aggregatedWeather.current.humidity,
+        windSpeed: aggregatedWeather.current.windSpeed,
+        pressure: aggregatedWeather.current.pressure || 750,
+        visibility: aggregatedWeather.current.visibility || 10
+      },
+      forecast: aggregatedWeather.forecast.map(day => ({
+        day: day.day,
+        date: day.date,
+        temperature: day.temperature,
+        maxTemp: day.temperature.max,
+        minTemp: day.temperature.min,
+        description: day.description,
+        icon: getWeatherIcon(day.description),
+        humidity: day.humidity,
+        windSpeed: day.windSpeed
+      }))
+    };
+
+    console.log(`✅ Данные получены из: ${aggregatedWeather.source}`);
+    console.log(`🌡️ Температура: ${convertedData.current.temperature}°C`);
+    console.log(`💧 Надежность: ${aggregatedWeather.reliability}%`);
+    
+    return convertedData;
+    
+  } catch (error) {
+    console.warn('⚠️ Ошибка продвинутого мониторинга, используем резерв:', error);
+    return await fetchYandexWeather(); // Fallback на простой метод
+  }
+};
+
+// Получение статуса всех источников погоды
+export const getWeatherSourcesStatus = () => {
+  return weatherMonitor.getSourcesStatus();
+};
+
+// Управление источниками погоды
+export const toggleWeatherSource = (sourceName: string, active: boolean) => {
+  weatherMonitor.toggleSource(sourceName, active);
 };

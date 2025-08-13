@@ -12,6 +12,7 @@ import News from "@/components/sections/News";
 import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
+import WeatherSourcesPanel from "@/components/features/WeatherSourcesPanel";
 import SecuritySettings from "@/components/security/SecuritySettings";
 import DigitalRuble from "@/components/economy/DigitalRuble";
 
@@ -75,6 +76,7 @@ const Index = () => {
         )}
         {activeSection === 'weather' && (
           <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
+            <WeatherSourcesPanel />
             <WeatherSection />
           </div>
         )}
