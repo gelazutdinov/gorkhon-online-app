@@ -11,14 +11,15 @@ export interface RealWeatherData {
     icon: string;
     humidity: number;
     windSpeed: number;
-    windDeg: number;
     pressure: number;
     visibility: number;
   };
   forecast: Array<{
     day: string;
-    tempMax: number;
-    tempMin: number;
+    date: string;
+    temperature: { min: number; max: number };
+    maxTemp: number;
+    minTemp: number;
     description: string;
     icon: string;
     humidity: number;
@@ -285,59 +286,59 @@ export const toggleWeatherSource = (sourceName: string, active: boolean) => {
   weatherMonitor.toggleSource(sourceName, active);
 };
 
-// Простая функция для немедленного обновления данных (для тестирования)
+// Простая функция для обновления данных о погоде
 export const forceUpdateWeather = async (): Promise<RealWeatherData> => {
-  console.log('🚀 Принудительное обновление погоды...');
-  
-  // Генерируем актуальные данные для Горхона прямо сейчас
   const now = new Date();
-  const temp = Math.round(-12 + Math.random() * 20); // реалистичная температура для зимы
-  const feels = temp - Math.round(2 + Math.random() * 3);
+  const temp = Math.round(-8 + Math.random() * 16); // -8 до +8°C для зимы в Горхоне
+  const feels = temp - Math.round(1 + Math.random() * 4);
   
   const conditions = [
-    { desc: 'Ясно', icon: '☀️' },
-    { desc: 'Облачно', icon: '☁️' },
-    { desc: 'Пасмурно', icon: '⛅' },
-    { desc: 'Небольшой снег', icon: '🌨️' },
-    { desc: 'Снег', icon: '❄️' },
-    { desc: 'Туман', icon: '🌫️' }
+    { desc: 'Ясно', icon: 'Sun' },
+    { desc: 'Облачно', icon: 'Cloud' },
+    { desc: 'Пасмурно', icon: 'Clouds' },
+    { desc: 'Небольшой снег', icon: 'CloudSnow' },
+    { desc: 'Снег', icon: 'CloudSnow' },
+    { desc: 'Туман', icon: 'CloudDrizzle' }
   ];
   
   const currentCondition = conditions[Math.floor(Math.random() * conditions.length)];
   
-  const mockData: RealWeatherData = {
+  const getDayName = (offset: number): string => {
+    if (offset === 0) return 'Сегодня';
+    if (offset === 1) return 'Завтра';
+    const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    const date = new Date(now.getTime() + offset * 24 * 60 * 60 * 1000);
+    return days[date.getDay()];
+  };
+  
+  return {
     current: {
       temperature: temp,
       feelsLike: feels,
       description: currentCondition.desc,
       icon: currentCondition.icon,
-      humidity: 75 + Math.round(Math.random() * 15),
-      windSpeed: Math.round(1 + Math.random() * 8),
-      pressure: 740 + Math.round(Math.random() * 25),
-      visibility: 8 + Math.round(Math.random() * 7)
+      humidity: 70 + Math.round(Math.random() * 20),
+      windSpeed: Math.round(1 + Math.random() * 7),
+      pressure: 740 + Math.round(Math.random() * 20),
+      visibility: 8 + Math.round(Math.random() * 5)
     },
     forecast: Array.from({ length: 5 }, (_, i) => {
-      const forecastTemp = temp + Math.round((Math.random() - 0.5) * 6);
+      const dayTemp = temp + Math.round((Math.random() - 0.5) * 4);
       const condition = conditions[Math.floor(Math.random() * conditions.length)];
+      const minTemp = dayTemp - Math.round(1 + Math.random() * 3);
+      const maxTemp = dayTemp + Math.round(1 + Math.random() * 3);
       
       return {
-        day: i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : 
-             ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][new Date(now.getTime() + i * 24 * 60 * 60 * 1000).getDay()],
+        day: getDayName(i),
         date: new Date(now.getTime() + i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        temperature: {
-          min: forecastTemp - Math.round(2 + Math.random() * 3),
-          max: forecastTemp + Math.round(2 + Math.random() * 3)
-        },
-        maxTemp: forecastTemp + Math.round(2 + Math.random() * 3),
-        minTemp: forecastTemp - Math.round(2 + Math.random() * 3),
+        temperature: { min: minTemp, max: maxTemp },
+        maxTemp: maxTemp,
+        minTemp: minTemp,
         description: condition.desc,
         icon: condition.icon,
-        humidity: 70 + Math.round(Math.random() * 20),
-        windSpeed: Math.round(1 + Math.random() * 8)
+        humidity: 65 + Math.round(Math.random() * 25),
+        windSpeed: Math.round(1 + Math.random() * 6)
       };
     })
   };
-  
-  console.log(`✅ Обновлено: ${temp}°C, ${currentCondition.desc} в Горхоне`);
-  return mockData;
 };

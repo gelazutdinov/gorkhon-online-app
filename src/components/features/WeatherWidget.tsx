@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { fetchAdvancedWeather, forceUpdateWeather, getWeatherSourcesStatus, type RealWeatherData } from '@/api/weatherApi';
+import { forceUpdateWeather, type RealWeatherData } from '@/api/weatherApi';
 
 interface WeatherData {
   temperature: number;
@@ -21,28 +21,26 @@ const WeatherWidget = () => {
     temperature: -8,
     feelsLike: -12,
     condition: 'Снег',
-    emoji: '❄️',
+    emoji: 'CloudSnow',
     humidity: 78,
     windSpeed: 5,
     forecast: [
-      { day: 'Пн', emoji: '🌨️', temp: -5 },
-      { day: 'Вт', emoji: '☀️', temp: -3 },
-      { day: 'Ср', emoji: '⛅', temp: -1 },
-      { day: 'Чт', emoji: '🌤️', temp: 2 },
-      { day: 'Пт', emoji: '☁️', temp: 0 }
+      { day: 'Пн', emoji: 'CloudSnow', temp: -5 },
+      { day: 'Вт', emoji: 'Sun', temp: -3 },
+      { day: 'Ср', emoji: 'Cloud', temp: -1 },
+      { day: 'Чт', emoji: 'CloudSun', temp: 2 },
+      { day: 'Пт', emoji: 'Clouds', temp: 0 }
     ]
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
   const loadWeatherData = async () => {
     try {
       setIsLoading(true);
-      console.log('🌦️ Загружаю данные погоды...');
       
       const realWeather = await forceUpdateWeather();
-      console.log('✅ Получены данные:', realWeather);
       
       // Преобразуем данные из API в формат компонента
       const convertedWeather: WeatherData = {
@@ -61,10 +59,8 @@ const WeatherWidget = () => {
       
       setWeather(convertedWeather);
       setLastUpdate(new Date());
-      console.log('🌡️ Виджет обновлен:', convertedWeather.temperature + '°C');
     } catch (error) {
-      console.error('❌ Ошибка загрузки погоды:', error);
-      console.log('Используем статические данные погоды');
+      console.warn('Ошибка загрузки погоды, используем текущие данные');
     } finally {
       setIsLoading(false);
     }
@@ -77,14 +73,7 @@ const WeatherWidget = () => {
     // Обновляем каждую минуту
     const interval = setInterval(loadWeatherData, 60000);
     
-    // Обновляем при возврате в окно
-    const handleFocus = () => loadWeatherData();
-    window.addEventListener('focus', handleFocus);
-    
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('focus', handleFocus);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   const getCurrentDate = () => {
@@ -95,18 +84,7 @@ const WeatherWidget = () => {
     });
   };
 
-  const getWeatherDescription = () => {
-    const conditions = [
-      'Легкий снегопад',
-      'Переменная облачность',
-      'Ясно',
-      'Небольшой дождь',
-      'Туман'
-    ];
-    return conditions[Math.floor(Math.random() * conditions.length)];
-  };
-
-  if (isLoading) {
+  if (isLoading && weather.temperature === -8) {
     return (
       <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg">
         <div className="animate-pulse">
@@ -141,10 +119,12 @@ const WeatherWidget = () => {
       
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="text-3xl">{weather.emoji}</div>
+          <div className="text-3xl">
+            <Icon name={weather.emoji} size={32} />
+          </div>
           <div>
             <div className="font-medium">{weather.condition}</div>
-            <div className="text-blue-200 text-sm">{getWeatherDescription()}</div>
+            <div className="text-blue-200 text-sm">Зимние условия</div>
           </div>
         </div>
         <div className="text-right text-sm text-blue-200">
@@ -165,7 +145,9 @@ const WeatherWidget = () => {
           {weather.forecast.map((day, index) => (
             <div key={index} className="text-center">
               <div className="text-blue-200 mb-1">{day.day}</div>
-              <div className="text-lg mb-1">{day.emoji}</div>
+              <div className="text-lg mb-1">
+                <Icon name={day.emoji} size={16} />
+              </div>
               <div className="font-medium">{day.temp > 0 ? '+' : ''}{day.temp}°</div>
             </div>
           ))}
@@ -185,10 +167,6 @@ const WeatherWidget = () => {
               <Icon name="RefreshCw" size={10} className={isLoading ? 'animate-spin' : ''} />
               <span>Обновить</span>
             </button>
-            <div className="flex items-center gap-1">
-              <Icon name="Satellite" size={10} />
-              <span>5 источников</span>
-            </div>
           </div>
         </div>
       </div>
