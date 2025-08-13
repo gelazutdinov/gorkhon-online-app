@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
+import { fetchYandexWeather, type RealWeatherData } from '@/api/weatherApi';
 
 interface WeatherData {
   temperature: number;
@@ -33,14 +34,52 @@ const WeatherWidget = () => {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+
+  const loadWeatherData = async () => {
+    try {
+      setIsLoading(true);
+      const realWeather = await fetchYandexWeather();
+      
+      // Преобразуем данные из API в формат компонента
+      const convertedWeather: WeatherData = {
+        temperature: Math.round(realWeather.current.temperature),
+        feelsLike: Math.round(realWeather.current.feelsLike),
+        condition: realWeather.current.description,
+        emoji: realWeather.current.icon,
+        humidity: realWeather.current.humidity,
+        windSpeed: Math.round(realWeather.current.windSpeed),
+        forecast: realWeather.forecast.slice(0, 5).map(day => ({
+          day: day.day,
+          emoji: day.icon,
+          temp: Math.round(day.maxTemp)
+        }))
+      };
+      
+      setWeather(convertedWeather);
+      setLastUpdate(new Date());
+    } catch (error) {
+      console.log('Используем статические данные погоды');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Имитация загрузки погоды
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    // Загружаем данные сразу
+    loadWeatherData();
+    
+    // Обновляем каждую минуту
+    const interval = setInterval(loadWeatherData, 60000);
+    
+    // Обновляем при возврате в окно
+    const handleFocus = () => loadWeatherData();
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const getCurrentDate = () => {
@@ -131,9 +170,9 @@ const WeatherWidget = () => {
       {/* Дополнительная информация */}
       <div className="mt-4 pt-3 border-t border-blue-400/30">
         <div className="flex items-center justify-between text-xs text-blue-200">
-          <span>Обновлено: только что</span>
+          <span>Обновлено: {lastUpdate.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</span>
           <div className="flex items-center gap-1">
-            <Icon name="RefreshCw" size={10} />
+            <Icon name="RefreshCw" size={10} className={isLoading ? 'animate-spin' : ''} />
             <span>Автообновление</span>
           </div>
         </div>
