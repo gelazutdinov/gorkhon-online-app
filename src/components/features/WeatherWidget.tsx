@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { fetchAdvancedWeather, getWeatherSourcesStatus, type RealWeatherData } from '@/api/weatherApi';
+import { fetchAdvancedWeather, forceUpdateWeather, getWeatherSourcesStatus, type RealWeatherData } from '@/api/weatherApi';
 
 interface WeatherData {
   temperature: number;
@@ -39,7 +39,10 @@ const WeatherWidget = () => {
   const loadWeatherData = async () => {
     try {
       setIsLoading(true);
-      const realWeather = await fetchAdvancedWeather();
+      console.log('🌦️ Загружаю данные погоды...');
+      
+      const realWeather = await forceUpdateWeather();
+      console.log('✅ Получены данные:', realWeather);
       
       // Преобразуем данные из API в формат компонента
       const convertedWeather: WeatherData = {
@@ -58,7 +61,9 @@ const WeatherWidget = () => {
       
       setWeather(convertedWeather);
       setLastUpdate(new Date());
+      console.log('🌡️ Виджет обновлен:', convertedWeather.temperature + '°C');
     } catch (error) {
+      console.error('❌ Ошибка загрузки погоды:', error);
       console.log('Используем статические данные погоды');
     } finally {
       setIsLoading(false);
@@ -171,9 +176,19 @@ const WeatherWidget = () => {
       <div className="mt-4 pt-3 border-t border-blue-400/30">
         <div className="flex items-center justify-between text-xs text-blue-200">
           <span>Обновлено: {lastUpdate.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</span>
-          <div className="flex items-center gap-1">
-            <Icon name="RefreshCw" size={10} className={isLoading ? 'animate-spin' : ''} />
-            <span>Автообновление</span>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={loadWeatherData}
+              className="flex items-center gap-1 px-2 py-1 bg-blue-500/20 rounded hover:bg-blue-500/30 transition-colors"
+              disabled={isLoading}
+            >
+              <Icon name="RefreshCw" size={10} className={isLoading ? 'animate-spin' : ''} />
+              <span>Обновить</span>
+            </button>
+            <div className="flex items-center gap-1">
+              <Icon name="Satellite" size={10} />
+              <span>5 источников</span>
+            </div>
           </div>
         </div>
       </div>

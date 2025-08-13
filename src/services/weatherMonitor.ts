@@ -110,6 +110,12 @@ class WeatherMonitor {
     try {
       console.log(`🌦️ Получаю данные из ${source.name}...`);
       
+      // Проверяем доступность web_fetch
+      if (typeof web_fetch !== 'function') {
+        console.warn('⚠️ web_fetch не доступна, используем моковые данные');
+        return this.getMockWeatherData(source);
+      }
+      
       const rawData = await web_fetch(source.url, source.prompt);
       const parsedData = this.parseWeatherData(rawData, source);
       
@@ -367,6 +373,41 @@ class WeatherMonitor {
         reliability: cached?.data.reliability || 0
       };
     });
+  }
+
+  private getMockWeatherData(source: WeatherSource): WeatherData {
+    // Генерируем случайные, но реалистичные данные для Горхона
+    const temp = Math.round(-15 + Math.random() * 30); // от -15 до +15
+    const feels = temp - Math.round(Math.random() * 5); // ощущается холоднее
+    
+    const conditions = ['Ясно', 'Облачно', 'Пасмурно', 'Снег', 'Небольшой снег', 'Туман'];
+    const condition = conditions[Math.floor(Math.random() * conditions.length)];
+    
+    return {
+      source: `${source.name} (моковые данные)`,
+      timestamp: new Date(),
+      current: {
+        temperature: temp,
+        feelsLike: feels,
+        description: condition,
+        humidity: 70 + Math.round(Math.random() * 20), // 70-90%
+        windSpeed: Math.round(Math.random() * 10), // 0-10 м/с
+        pressure: 740 + Math.round(Math.random() * 20), // 740-760
+        visibility: 5 + Math.round(Math.random() * 10) // 5-15 км
+      },
+      forecast: Array.from({ length: 5 }, (_, i) => ({
+        date: new Date(Date.now() + i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        day: this.getDayName(i),
+        temperature: {
+          min: temp - Math.round(Math.random() * 5),
+          max: temp + Math.round(Math.random() * 5)
+        },
+        description: conditions[Math.floor(Math.random() * conditions.length)],
+        humidity: 70 + Math.round(Math.random() * 20),
+        windSpeed: Math.round(Math.random() * 10)
+      })),
+      reliability: 30 + source.priority * 10 // Моковые данные менее надежны
+    };
   }
 
   toggleSource(sourceName: string, active: boolean): void {
