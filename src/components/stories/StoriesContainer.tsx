@@ -143,16 +143,21 @@ const StoriesContainer = () => {
 
       {/* Story Modal - Rendered in portal to ensure it's on top */}
       {isModalOpen && activeStory && createPortal(
-        <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
-          {/* Story Container with aspect ratio 9:16 (1080x1920) */}
+        <div 
+          className="fixed inset-0 z-[9999] bg-black bg-opacity-90 flex items-center justify-center"
+          onClick={closeStory}
+        >
+          {/* Story Container with mobile aspect ratio 9:16 for all devices */}
           <div 
-            className="relative w-full h-full max-w-[540px]"
+            className="relative w-full h-full max-w-[400px] max-h-[711px] sm:w-[400px] sm:h-[711px] rounded-lg overflow-hidden shadow-2xl"
             style={{
               backgroundImage: `url(${activeStory.backgroundImage})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
+              backgroundRepeat: 'no-repeat',
+              aspectRatio: '9/16'
             }}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Progress Bar */}
             <div className="absolute top-4 left-4 right-4 h-1 bg-white bg-opacity-30 rounded-full">
