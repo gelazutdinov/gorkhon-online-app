@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import Icon from '@/components/ui/icon';
-import { fetchGorokhovWeather, WeatherData } from '@/api/gorokhovWeatherApi';
+import { fetchGorkhonWeather, WeatherData } from '@/api/buryatiaWeatherApi';
 
 const WeatherSection = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -12,7 +12,7 @@ const WeatherSection = () => {
   const updateWeather = useCallback(async () => {
     try {
       setError(null);
-      const data = await fetchGorokhovWeather();
+      const data = await fetchGorkhonWeather();
       setWeatherData(data);
       setLastUpdate(new Date());
       setUpdateCount(prev => prev + 1);
@@ -28,8 +28,8 @@ const WeatherSection = () => {
     // Первоначальная загрузка
     updateWeather();
 
-    // Обновление каждую секунду
-    const interval = setInterval(updateWeather, 1000);
+    // Обновление каждые 10 минут (стабильные данные)
+    const interval = setInterval(updateWeather, 10 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [updateWeather]);
@@ -69,9 +69,9 @@ const WeatherSection = () => {
 
   const getSourceName = (source: string) => {
     const sources = {
-      'openweather': 'OpenWeatherMap',
-      'weatherapi': 'WeatherAPI',
-      'yandex': 'Яндекс.Погода'
+      'buryatia-hydromet': 'Гидрометеоцентр Бурятии',
+      'roshydromet': 'Росгидромет',
+      'local-station': 'Местная метеостанция'
     };
     return sources[source as keyof typeof sources] || source;
   };
@@ -86,7 +86,7 @@ const WeatherSection = () => {
           </h2>
           <div className="flex items-center text-sm text-gray-500">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
-            <span>Обновление каждую секунду</span>
+            <span>Обновление каждые 10 минут</span>
           </div>
         </div>
         
@@ -187,7 +187,7 @@ const WeatherSection = () => {
           </div>
           <div>
             <span className="text-gray-600">Координаты:</span>
-            <span className="ml-2 font-medium">50.296°N, 30.085°E</span>
+            <span className="ml-2 font-medium">50.283°N, 106.467°E</span>
           </div>
           <div>
             <span className="text-gray-600">Статус:</span>
@@ -203,11 +203,12 @@ const WeatherSection = () => {
           <span>Система мониторинга погоды</span>
         </div>
         <div className="space-y-1 max-h-32 overflow-y-auto">
-          {lastUpdate && (
+          {lastUpdate && weatherData && (
             <>
-              <div>[{formatTime(lastUpdate)}] ✓ Данные обновлены успешно</div>
+              <div>[{formatTime(lastUpdate)}] ✓ Получены стабильные данные от {getSourceName(weatherData.source)}</div>
               <div>[{formatTime(lastUpdate)}] → T: {weatherData.temperature}°C, H: {weatherData.humidity}%, P: {weatherData.pressure}mmHg</div>
-              <div>[{formatTime(lastUpdate)}] → Источник: {weatherData.source.toUpperCase()}</div>
+              <div>[{formatTime(lastUpdate)}] → Метеостанция: {weatherData.station || 'Не указана'}</div>
+              <div>[{formatTime(lastUpdate)}] ✓ Кэш обновляется каждые 10 минут</div>
             </>
           )}
         </div>
