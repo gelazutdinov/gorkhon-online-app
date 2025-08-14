@@ -196,23 +196,7 @@ const WeatherSection = () => {
         </div>
       </div>
 
-      {/* Лог обновлений */}
-      <div className="bg-gray-900 text-green-400 rounded-lg p-4 font-mono text-xs">
-        <div className="flex items-center mb-2">
-          <Icon name="Terminal" size={14} className="mr-2" />
-          <span>Система мониторинга погоды</span>
-        </div>
-        <div className="space-y-1 max-h-32 overflow-y-auto">
-          {lastUpdate && weatherData && (
-            <>
-              <div>[{formatTime(lastUpdate)}] ✓ Получены стабильные данные от {getSourceName(weatherData.source)}</div>
-              <div>[{formatTime(lastUpdate)}] → T: {weatherData.temperature}°C, H: {weatherData.humidity}%, P: {weatherData.pressure}mmHg</div>
-              <div>[{formatTime(lastUpdate)}] → Метеостанция: {weatherData.station || 'Не указана'}</div>
-              <div>[{formatTime(lastUpdate)}] ✓ Кэш обновляется каждые 10 минут</div>
-            </>
-          )}
-        </div>
-      </div>
+
     </div>
   );
 };
