@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Icon from '@/components/ui/icon';
 
 interface Story {
@@ -136,9 +137,9 @@ const StoriesContainer = () => {
         ))}
       </div>
 
-      {/* Story Modal - Fullscreen with proper mobile aspect ratio */}
-      {isModalOpen && activeStory && (
-        <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
+      {/* Story Modal - Rendered in portal to ensure it's on top */}
+      {isModalOpen && activeStory && createPortal(
+        <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
           {/* Story Container with aspect ratio 9:16 (1080x1920) */}
           <div 
             className="relative w-full h-full max-w-[540px]"
@@ -159,16 +160,16 @@ const StoriesContainer = () => {
               />
             </div>
 
-            {/* Close Button - moved to bottom left */}
+            {/* Close Button - back to top right */}
             <button
               onClick={closeStory}
-              className="absolute bottom-6 left-6 z-10 text-white hover:text-gray-300 bg-black bg-opacity-30 rounded-full p-3 backdrop-blur-sm"
+              className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 bg-black bg-opacity-20 rounded-full p-2"
             >
-              <Icon name="X" size={24} />
+              <Icon name="X" size={20} />
             </button>
 
-            {/* Bottom Action Area - positioned to not overlap with bottom navigation and close button */}
-            <div className="absolute bottom-6 right-6 left-20">
+            {/* Bottom Action Area - positioned to not overlap with bottom navigation */}
+            <div className="absolute bottom-24 left-4 right-4 pb-4">
               <button
                 onClick={() => {
                   closeStory();
@@ -181,10 +182,9 @@ const StoriesContainer = () => {
                 Посмотреть погоду 🌤️
               </button>
             </div>
-
-
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
