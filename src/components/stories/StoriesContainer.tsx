@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Icon from '@/components/ui/icon';
 
 interface Story {
@@ -13,6 +13,7 @@ const StoriesContainer = () => {
   const [stories, setStories] = useState<Story[]>([]);
   const [activeStory, setActiveStory] = useState<Story | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const storyTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Инициализируем stories при загрузке
   useEffect(() => {
@@ -59,11 +60,27 @@ const StoriesContainer = () => {
   const openStory = (story: Story) => {
     setActiveStory(story);
     setIsModalOpen(true);
+    
+    // Очищаем предыдущий таймер если есть
+    if (storyTimerRef.current) {
+      clearTimeout(storyTimerRef.current);
+    }
+    
+    // Автозакрытие через 15 секунд
+    storyTimerRef.current = setTimeout(() => {
+      closeStory();
+    }, 15000);
   };
 
   const closeStory = () => {
     setActiveStory(null);
     setIsModalOpen(false);
+    
+    // Очищаем таймер при закрытии
+    if (storyTimerRef.current) {
+      clearTimeout(storyTimerRef.current);
+      storyTimerRef.current = null;
+    }
   };
 
   const getTimeRemaining = (expiresAt: number) => {
@@ -127,7 +144,7 @@ const StoriesContainer = () => {
 
       {/* Story Modal - Fullscreen with proper mobile aspect ratio */}
       {isModalOpen && activeStory && (
-        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+        <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
           {/* Story Container with aspect ratio 9:16 (1080x1920) */}
           <div 
             className="relative w-full h-full max-w-[540px]"
@@ -171,13 +188,7 @@ const StoriesContainer = () => {
               </button>
             </div>
 
-            {/* Skip button */}
-            <button
-              onClick={closeStory}
-              className="absolute bottom-24 right-6 text-white text-sm opacity-70 hover:opacity-100 transition-opacity bg-black bg-opacity-20 px-3 py-1 rounded-full"
-            >
-              Пропустить
-            </button>
+
           </div>
         </div>
       )}
