@@ -138,7 +138,7 @@ const StoriesContainer = () => {
 
       {/* Story Modal - Fullscreen with proper mobile aspect ratio */}
       {isModalOpen && activeStory && (
-        <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
+        <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
           {/* Story Container with aspect ratio 9:16 (1080x1920) */}
           <div 
             className="relative w-full h-full max-w-[540px]"
@@ -159,16 +159,16 @@ const StoriesContainer = () => {
               />
             </div>
 
-            {/* Close Button */}
+            {/* Close Button - moved to bottom left */}
             <button
               onClick={closeStory}
-              className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 bg-black bg-opacity-20 rounded-full p-2"
+              className="absolute bottom-6 left-6 z-10 text-white hover:text-gray-300 bg-black bg-opacity-30 rounded-full p-3 backdrop-blur-sm"
             >
-              <Icon name="X" size={20} />
+              <Icon name="X" size={24} />
             </button>
 
-            {/* Bottom Action Area - positioned to not overlap with bottom navigation (80px from bottom) */}
-            <div className="absolute bottom-20 left-4 right-4 pb-4">
+            {/* Bottom Action Area - positioned to not overlap with bottom navigation and close button */}
+            <div className="absolute bottom-6 right-6 left-20">
               <button
                 onClick={() => {
                   closeStory();
