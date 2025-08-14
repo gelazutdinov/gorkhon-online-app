@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Header from "@/components/Header";
 import ImportantNumbers from "@/components/ImportantNumbers";
 import Schedule from "@/components/Schedule";
@@ -15,6 +15,8 @@ import WeatherSection from "@/components/weather/WeatherSection";
 import WeatherSourcesPanel from "@/components/features/WeatherSourcesPanel";
 import SecuritySettings from "@/components/security/SecuritySettings";
 import DigitalRuble from "@/components/economy/DigitalRuble";
+import StoriesContainer from "@/components/stories/StoriesContainer";
+import StoriesContainer from "@/components/stories/StoriesContainer";
 
 
 
@@ -63,6 +65,16 @@ const Index = () => {
     trackSectionVisit(section as any);
   };
 
+  // Обработчик перехода к погоде из Stories
+  useEffect(() => {
+    const handleNavigateToWeather = () => {
+      setActiveSection('weather');
+    };
+
+    window.addEventListener('navigate-to-weather', handleNavigateToWeather);
+    return () => window.removeEventListener('navigate-to-weather', handleNavigateToWeather);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 relative overflow-x-hidden">
       
@@ -71,6 +83,7 @@ const Index = () => {
       <main className="relative z-10 min-h-screen">
         {activeSection === 'home' && (
           <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
+            <StoriesContainer />
             <Home onOpenPhotoCarousel={openPhotoCarousel} />
           </div>
         )}
