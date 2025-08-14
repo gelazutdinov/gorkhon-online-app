@@ -90,14 +90,18 @@ const WeatherSection = () => {
           </div>
         </div>
         
-        <div className="flex items-center justify-between text-xs text-gray-400">
-          <span>Обновлений: {updateCount}</span>
-          <span>
-            Последнее: {lastUpdate ? formatTime(lastUpdate) : 'Никогда'}
-          </span>
-          <span className="bg-gray-100 px-2 py-1 rounded">
-            {getSourceName(weatherData.source)}
-          </span>
+        <div className="space-y-2 text-xs text-gray-400">
+          <div className="flex items-center justify-between">
+            <span>Обновлений: {updateCount}</span>
+            <span>
+              Последнее: {lastUpdate ? formatTime(lastUpdate) : 'Никогда'}
+            </span>
+          </div>
+          <div className="flex justify-center">
+            <span className="bg-gray-100 px-2 py-1 rounded">
+              {getSourceName(weatherData.source)}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -176,22 +180,22 @@ const WeatherSection = () => {
           <Icon name="Settings" size={16} className="mr-2" />
           Техническая информация
         </h4>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
+        <div className="space-y-3 text-sm">
+          <div className="flex flex-col">
             <span className="text-gray-600">Источник данных:</span>
-            <span className="ml-2 font-medium">{getSourceName(weatherData.source)}</span>
+            <span className="font-medium">{getSourceName(weatherData.source)}</span>
           </div>
-          <div>
+          <div className="flex flex-col">
             <span className="text-gray-600">Временная метка:</span>
-            <span className="ml-2 font-medium">{new Date(weatherData.timestamp).toLocaleTimeString('ru-RU')}</span>
+            <span className="font-medium">{new Date(weatherData.timestamp).toLocaleTimeString('ru-RU')}</span>
           </div>
-          <div>
+          <div className="flex flex-col">
             <span className="text-gray-600">Координаты:</span>
-            <span className="ml-2 font-medium">50.283°N, 106.467°E</span>
+            <span className="font-medium">50.283°N, 106.467°E</span>
           </div>
-          <div>
+          <div className="flex flex-col">
             <span className="text-gray-600">Статус:</span>
-            <span className="ml-2 font-medium text-green-600">●  Активно</span>
+            <span className="font-medium text-green-600">● Активно</span>
           </div>
         </div>
       </div>
