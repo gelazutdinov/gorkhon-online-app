@@ -31,7 +31,7 @@ const StoriesContainer = () => {
       const weatherStory: Story = {
         id: 'weather-beta-release',
         title: 'Теперь и погода есть',
-        backgroundImage: 'https://cdn.poehali.dev/files/f14e2b0d-f12e-43b9-b192-b99b82b2cba0.png',
+        backgroundImage: 'https://cdn.poehali.dev/files/458c390f-ac64-41e1-bb68-f699667bb38b.png',
         createdAt: now,
         expiresAt: expiryTime
       };
@@ -130,7 +130,7 @@ const StoriesContainer = () => {
         <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
           {/* Story Container with aspect ratio 9:16 (1080x1920) */}
           <div 
-            className="relative w-full h-full max-w-[540px] bg-gradient-to-br from-blue-500 to-blue-700"
+            className="relative w-full h-full max-w-[540px]"
             style={{
               backgroundImage: `url(${activeStory.backgroundImage})`,
               backgroundSize: 'cover',
@@ -138,23 +138,6 @@ const StoriesContainer = () => {
               backgroundRepeat: 'no-repeat'
             }}
           >
-            {/* Fallback content если картинка не загружается */}
-            <div className="absolute inset-0 flex items-center justify-center text-white p-8">
-              <div className="text-center">
-                <div className="text-6xl mb-6">🌤️</div>
-                <h1 className="text-4xl font-bold mb-4">Теперь и</h1>
-                <h1 className="text-4xl font-bold mb-8">погода есть</h1>
-                <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6">
-                  <p className="text-lg opacity-90">
-                    Платформа для жителей Горхона
-                  </p>
-                  <p className="text-sm opacity-75 mt-2">
-                    Вся нужная информация под рукой<br/>
-                    Добро пожаловать в цифровое сердце нашего поселка
-                  </p>
-                </div>
-              </div>
-            </div>
             {/* Progress Bar */}
             <div className="absolute top-4 left-4 right-4 h-1 bg-white bg-opacity-30 rounded-full">
               <div 
