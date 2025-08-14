@@ -168,8 +168,8 @@ const StoriesContainer = () => {
               <Icon name="X" size={20} />
             </button>
 
-            {/* Bottom Action Area - positioned to not overlap with bottom navigation */}
-            <div className="absolute bottom-16 left-4 right-4 pb-4">
+            {/* Bottom Action Area - positioned at the very bottom */}
+            <div className="absolute bottom-6 left-4 right-4">
               <button
                 onClick={() => {
                   closeStory();
