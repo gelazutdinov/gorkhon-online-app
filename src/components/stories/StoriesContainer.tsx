@@ -19,19 +19,46 @@ const StoriesContainer = () => {
   // Инициализируем stories при загрузке
   useEffect(() => {
     const now = Date.now();
-    const expiryTime = now + (24 * 60 * 60 * 1000); // 24 часа
-
-    // Создаем новую story о погоде (ВСЕГДА показываем для тестирования)
-    const weatherStory: Story = {
-      id: 'weather-beta-release-' + Date.now(), // Уникальный ID каждый раз
-      title: 'Теперь и погода есть',
-      backgroundImage: 'https://cdn.poehali.dev/files/458c390f-ac64-41e1-bb68-f699667bb38b.png',
-      createdAt: now,
-      expiresAt: expiryTime
-    };
+    const STORY_ID = 'weather-beta-release-gorhon-online';
     
-    console.log('🚀 Stories инициализированы:', weatherStory);
-    setStories([weatherStory]);
+    // Проверяем localStorage на наличие этой stories
+    const savedStories = localStorage.getItem('platform-stories');
+    let existingStories: Story[] = [];
+    
+    if (savedStories) {
+      try {
+        existingStories = JSON.parse(savedStories);
+        // Фильтруем только не истекшие stories
+        existingStories = existingStories.filter(story => story.expiresAt > now);
+      } catch (e) {
+        console.error('Ошибка парсинга stories из localStorage:', e);
+        existingStories = [];
+      }
+    }
+    
+    // Проверяем, есть ли уже наша story
+    const hasWeatherStory = existingStories.some(story => story.id === STORY_ID);
+    
+    if (!hasWeatherStory) {
+      // Создаем новую story если её еще нет
+      const expiryTime = now + (24 * 60 * 60 * 1000); // 24 часа
+      const weatherStory: Story = {
+        id: STORY_ID,
+        title: 'Теперь и погода есть',
+        backgroundImage: 'https://cdn.poehali.dev/files/458c390f-ac64-41e1-bb68-f699667bb38b.png',
+        createdAt: now,
+        expiresAt: expiryTime
+      };
+      
+      existingStories.push(weatherStory);
+      console.log('🚀 Новая Stories создана для всех пользователей:', weatherStory);
+    } else {
+      console.log('📱 Stories уже существует, показываем существующую');
+    }
+    
+    // Сохраняем и устанавливаем stories
+    localStorage.setItem('platform-stories', JSON.stringify(existingStories));
+    setStories(existingStories);
   }, []);
 
   // Очистка истекших stories каждую минуту
@@ -42,7 +69,13 @@ const StoriesContainer = () => {
       
       if (activeStories.length !== stories.length) {
         setStories(activeStories);
-        localStorage.setItem('app-stories', JSON.stringify(activeStories));
+        localStorage.setItem('platform-stories', JSON.stringify(activeStories));
+        
+        if (activeStories.length === 0) {
+          console.log('🗑️ Все Stories истекли и были удалены');
+        } else {
+          console.log(`📱 Удалено ${stories.length - activeStories.length} истекших Stories`);
+        }
       }
     }, 60000); // Проверяем каждую минуту
 
@@ -81,8 +114,19 @@ const StoriesContainer = () => {
   const getTimeRemaining = (expiresAt: number) => {
     const now = Date.now();
     const remaining = expiresAt - now;
+    
+    if (remaining <= 0) return 'Истекла';
+    
     const hours = Math.floor(remaining / (60 * 60 * 1000));
-    return hours > 0 ? `${hours}ч` : 'Скоро исчезнет';
+    const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+    
+    if (hours > 0) {
+      return `${hours}ч ${minutes}м`;
+    } else if (minutes > 0) {
+      return `${minutes}м`;
+    } else {
+      return 'Меньше минуты';
+    }
   };
 
   const getProgressPercentage = (createdAt: number, expiresAt: number) => {
