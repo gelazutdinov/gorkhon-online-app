@@ -20,26 +20,17 @@ const StoriesContainer = () => {
     const now = Date.now();
     const expiryTime = now + (24 * 60 * 60 * 1000); // 24 часа
 
-    // Проверяем, есть ли уже stories в localStorage
-    const savedStories = localStorage.getItem('app-stories');
-    if (savedStories) {
-      const parsed = JSON.parse(savedStories);
-      // Фильтруем только не истекшие stories
-      const activeStories = parsed.filter((story: Story) => story.expiresAt > now);
-      setStories(activeStories);
-    } else {
-      // Создаем новую story о погоде
-      const weatherStory: Story = {
-        id: 'weather-beta-release',
-        title: 'Теперь и погода есть',
-        backgroundImage: 'https://cdn.poehali.dev/files/458c390f-ac64-41e1-bb68-f699667bb38b.png',
-        createdAt: now,
-        expiresAt: expiryTime
-      };
-      
-      setStories([weatherStory]);
-      localStorage.setItem('app-stories', JSON.stringify([weatherStory]));
-    }
+    // Создаем новую story о погоде (ВСЕГДА показываем для тестирования)
+    const weatherStory: Story = {
+      id: 'weather-beta-release-' + Date.now(), // Уникальный ID каждый раз
+      title: 'Теперь и погода есть',
+      backgroundImage: 'https://cdn.poehali.dev/files/458c390f-ac64-41e1-bb68-f699667bb38b.png',
+      createdAt: now,
+      expiresAt: expiryTime
+    };
+    
+    console.log('🚀 Stories инициализированы:', weatherStory);
+    setStories([weatherStory]);
   }, []);
 
   // Очистка истекших stories каждую минуту
@@ -58,6 +49,7 @@ const StoriesContainer = () => {
   }, [stories]);
 
   const openStory = (story: Story) => {
+    console.log('🎬 Открываем Stories:', story);
     setActiveStory(story);
     setIsModalOpen(true);
     
@@ -68,11 +60,13 @@ const StoriesContainer = () => {
     
     // Автозакрытие через 15 секунд
     storyTimerRef.current = setTimeout(() => {
+      console.log('⏰ Автозакрытие Stories через 15 сек');
       closeStory();
     }, 15000);
   };
 
   const closeStory = () => {
+    console.log('❌ Закрываем Stories');
     setActiveStory(null);
     setIsModalOpen(false);
     
