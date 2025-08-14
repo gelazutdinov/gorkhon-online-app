@@ -169,7 +169,7 @@ const StoriesContainer = () => {
             </button>
 
             {/* Bottom Action Area - positioned to not overlap with bottom navigation */}
-            <div className="absolute bottom-24 left-4 right-4 pb-4">
+            <div className="absolute bottom-16 left-4 right-4 pb-4">
               <button
                 onClick={() => {
                   closeStory();
