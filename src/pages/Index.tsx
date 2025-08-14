@@ -16,7 +16,6 @@ import WeatherSourcesPanel from "@/components/features/WeatherSourcesPanel";
 import SecuritySettings from "@/components/security/SecuritySettings";
 import DigitalRuble from "@/components/economy/DigitalRuble";
 import StoriesContainer from "@/components/stories/StoriesContainer";
-import StoriesContainer from "@/components/stories/StoriesContainer";
 
 
 
