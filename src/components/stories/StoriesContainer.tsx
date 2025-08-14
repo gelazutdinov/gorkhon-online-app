@@ -124,14 +124,18 @@ const StoriesContainer = () => {
               </div>
               
               {/* Platform Logo Badge */}
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center border-2 border-white">
-                <span className="text-white text-xs font-bold">🚀</span>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center border-2 border-white">
+                <img 
+                  src="https://cdn.poehali.dev/files/b249e2e9-d1e0-4ed3-b2a4-7e16c50cade7.png" 
+                  alt="Verified" 
+                  className="w-4 h-4"
+                />
               </div>
             </div>
             
             {/* Story Label */}
             <p className="text-xs text-gray-600 mt-1 text-center w-16 truncate">
-              {getTimeRemaining(story.expiresAt)}
+              Горхон.Online
             </p>
           </div>
         ))}
