@@ -4,10 +4,7 @@ import Icon from '@/components/ui/icon';
 interface Story {
   id: string;
   title: string;
-  content: string;
-  backgroundImage?: string;
-  backgroundColor: string;
-  icon: string;
+  backgroundImage: string;
   createdAt: number;
   expiresAt: number;
 }
@@ -33,10 +30,8 @@ const StoriesContainer = () => {
       // Создаем новую story о погоде
       const weatherStory: Story = {
         id: 'weather-beta-release',
-        title: '🌤️ Новая функция!',
-        content: 'Теперь доступна погода в Горхоне на основе данных Гидрометеоцентра Бурятии. Попробуйте прямо сейчас!',
-        backgroundColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        icon: 'CloudSun',
+        title: 'Теперь и погода есть',
+        backgroundImage: 'https://cdn.poehali.dev/files/f14e2b0d-f12e-43b9-b192-b99b82b2cba0.png',
         createdAt: now,
         expiresAt: expiryTime
       };
@@ -105,10 +100,13 @@ const StoriesContainer = () => {
               <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-pink-500 to-purple-500">
                 <div className="w-full h-full rounded-full bg-white p-0.5">
                   <div 
-                    className="w-full h-full rounded-full flex items-center justify-center text-white text-xl"
-                    style={{ background: story.backgroundColor }}
+                    className="w-full h-full rounded-full bg-cover bg-center overflow-hidden"
+                    style={{ backgroundImage: `url(${story.backgroundImage})` }}
                   >
-                    <Icon name={story.icon} size={24} />
+                    {/* Overlay with icon */}
+                    <div className="w-full h-full bg-black bg-opacity-20 flex items-center justify-center">
+                      <Icon name="CloudSun" size={20} className="text-white opacity-90" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -127,75 +125,58 @@ const StoriesContainer = () => {
         ))}
       </div>
 
-      {/* Story Modal */}
+      {/* Story Modal - Fullscreen with proper mobile aspect ratio */}
       {isModalOpen && activeStory && (
-        <div className="fixed inset-0 z-50 bg-black">
-          {/* Progress Bar */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-white bg-opacity-30">
-            <div 
-              className="h-full bg-white transition-all duration-100"
-              style={{ 
-                width: `${getProgressPercentage(activeStory.createdAt, activeStory.expiresAt)}%` 
-              }}
-            />
-          </div>
-
-          {/* Close Button */}
-          <button
-            onClick={closeStory}
-            className="absolute top-4 right-4 z-10 text-white hover:text-gray-300"
-          >
-            <Icon name="X" size={24} />
-          </button>
-
-          {/* Story Content */}
+        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+          {/* Story Container with aspect ratio 9:16 (1080x1920) */}
           <div 
-            className="h-full flex items-center justify-center text-white p-8"
-            style={{ background: activeStory.backgroundColor }}
+            className="relative w-full h-full max-w-[540px] bg-cover bg-center bg-no-repeat"
+            style={{ 
+              backgroundImage: `url(${activeStory.backgroundImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           >
-            <div className="text-center max-w-sm">
-              {/* Story Icon */}
-              <div className="mb-6">
-                <Icon name={activeStory.icon} size={80} className="mx-auto opacity-90" />
-              </div>
-
-              {/* Story Title */}
-              <h2 className="text-3xl font-bold mb-4">
-                {activeStory.title}
-              </h2>
-
-              {/* Story Content */}
-              <p className="text-lg opacity-90 leading-relaxed mb-8">
-                {activeStory.content}
-              </p>
-
-              {/* Call to Action */}
-              <div className="space-y-3">
-                <button
-                  onClick={() => {
-                    closeStory();
-                    // Переключаемся на вкладку погоды
-                    const event = new CustomEvent('navigate-to-weather');
-                    window.dispatchEvent(event);
-                  }}
-                  className="w-full bg-white text-gray-900 py-3 px-6 rounded-full font-medium hover:bg-gray-100 transition-colors"
-                >
-                  Посмотреть погоду 🌤️
-                </button>
-                
-                <button
-                  onClick={closeStory}
-                  className="w-full border border-white border-opacity-50 text-white py-3 px-6 rounded-full font-medium hover:bg-white hover:bg-opacity-10 transition-colors"
-                >
-                  Позже
-                </button>
-              </div>
-
-              {/* Time Remaining */}
-              <p className="text-sm opacity-60 mt-6">
-                Исчезнет через {getTimeRemaining(activeStory.expiresAt)}
-              </p>
+            {/* Progress Bar */}
+            <div className="absolute top-4 left-4 right-4 h-1 bg-white bg-opacity-30 rounded-full">
+              <div 
+                className="h-full bg-white transition-all duration-100 rounded-full"
+                style={{ 
+                  width: `${getProgressPercentage(activeStory.createdAt, activeStory.expiresAt)}%` 
+                }}
+              />
             </div>
+
+            {/* Close Button */}
+            <button
+              onClick={closeStory}
+              className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 bg-black bg-opacity-20 rounded-full p-2"
+            >
+              <Icon name="X" size={20} />
+            </button>
+
+            {/* Bottom Action Area - positioned to not overlap with bottom navigation (80px from bottom) */}
+            <div className="absolute bottom-20 left-4 right-4 pb-4">
+              <button
+                onClick={() => {
+                  closeStory();
+                  // Переключаемся на вкладку погоды
+                  const event = new CustomEvent('navigate-to-weather');
+                  window.dispatchEvent(event);
+                }}
+                className="w-full bg-white bg-opacity-90 backdrop-blur-sm text-gray-900 py-4 px-6 rounded-2xl font-medium hover:bg-opacity-100 transition-all duration-200 shadow-lg"
+              >
+                Посмотреть погоду 🌤️
+              </button>
+            </div>
+
+            {/* Skip button */}
+            <button
+              onClick={closeStory}
+              className="absolute bottom-24 right-6 text-white text-sm opacity-70 hover:opacity-100 transition-opacity bg-black bg-opacity-20 px-3 py-1 rounded-full"
+            >
+              Пропустить
+            </button>
           </div>
         </div>
       )}
