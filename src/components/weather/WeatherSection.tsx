@@ -40,7 +40,7 @@ const WeatherSection = () => {
         <div className="animate-spin">
           <Icon name="Loader2" size={32} className="text-blue-500" />
         </div>
-        <span className="ml-3 text-lg">Загрузка данных о погоде в Горохоне...</span>
+        <span className="ml-3 text-lg">Загрузка данных о погоде в Горхоне...</span>
       </div>
     );
   }
@@ -82,7 +82,7 @@ const WeatherSection = () => {
       <div className="bg-white rounded-lg border shadow-sm p-4">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-semibold text-gray-900">
-            🌤️ Погода в Горохоне
+            🌤️ Погода в Горхоне
           </h2>
           <div className="flex items-center text-sm text-gray-500">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>

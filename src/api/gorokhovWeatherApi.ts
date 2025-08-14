@@ -50,8 +50,8 @@ interface WeatherAPIResponse {
   };
 }
 
-// Координаты Горохона (примерные)
-const GOROKHOV_COORDS = {
+// Координаты Горхона
+const GORKHON_COORDS = {
   lat: 50.2961,
   lon: 30.0850
 };
@@ -88,7 +88,7 @@ const mapOpenWeatherIcon = (icon: string): string => {
 export async function fetchOpenWeatherData(): Promise<WeatherData | null> {
   try {
     const response = await web_fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${GOROKHOV_COORDS.lat}&lon=${GOROKHOV_COORDS.lon}&units=metric&lang=ru&appid=your_api_key`,
+      `https://api.openweathermap.org/data/2.5/weather?lat=${GORKHON_COORDS.lat}&lon=${GORKHON_COORDS.lon}&units=metric&lang=ru&appid=your_api_key`,
       'Получи данные о погоде из OpenWeatherMap API для указанных координат. Верни только JSON ответ.'
     );
     
@@ -96,7 +96,7 @@ export async function fetchOpenWeatherData(): Promise<WeatherData | null> {
     const data: OpenWeatherResponse = JSON.parse(response);
     
     return {
-      location: 'Горохов',
+      location: 'Горхон',
       temperature: Math.round(data.main.temp),
       feelsLike: Math.round(data.main.feels_like),
       humidity: data.main.humidity,
@@ -118,14 +118,14 @@ export async function fetchOpenWeatherData(): Promise<WeatherData | null> {
 export async function fetchWeatherAPIData(): Promise<WeatherData | null> {
   try {
     const response = await web_fetch(
-      `https://api.weatherapi.com/v1/current.json?key=your_api_key&q=${GOROKHOV_COORDS.lat},${GOROKHOV_COORDS.lon}&lang=ru`,
+      `https://api.weatherapi.com/v1/current.json?key=your_api_key&q=${GORKHON_COORDS.lat},${GORKHON_COORDS.lon}&lang=ru`,
       'Получи текущие данные о погоде из WeatherAPI для указанных координат. Верни только JSON ответ.'
     );
     
     const data: WeatherAPIResponse = JSON.parse(response);
     
     return {
-      location: 'Горохов',
+      location: 'Горхон',
       temperature: Math.round(data.current.temp_c),
       feelsLike: Math.round(data.current.feelslike_c),
       humidity: data.current.humidity,
@@ -159,7 +159,7 @@ export async function fetchYandexWeatherData(): Promise<WeatherData | null> {
     
     if (tempMatch) {
       return {
-        location: 'Горохов',
+        location: 'Горхон',
         temperature: parseInt(tempMatch[1]),
         feelsLike: parseInt(tempMatch[1]) - 2,
         humidity: humidityMatch ? parseInt(humidityMatch[1]) : 50,
@@ -203,7 +203,7 @@ export async function fetchGorokhovWeather(): Promise<WeatherData> {
   const variation = Math.random() * 6 - 3; // ±3 градуса
   
   return {
-    location: 'Горохов',
+    location: 'Горхон',
     temperature: Math.round(baseTemp + variation),
     feelsLike: Math.round(baseTemp + variation - 2),
     humidity: Math.round(40 + Math.random() * 40), // 40-80%
