@@ -35,11 +35,16 @@ const News = () => {
 
   const initVKWidget = () => {
     if (window.VK && window.VK.Widgets) {
+      // Определяем ширину на основе размера экрана
+      const isMobile = window.innerWidth < 768;
+      const width = isMobile ? Math.min(window.innerWidth - 40, 400) : 500;
+      const height = isMobile ? 600 : 800;
+      
       window.VK.Widgets.Group("vk_groups", {
         mode: 4, 
-        wide: 1, 
-        width: 500, 
-        height: 800, 
+        wide: isMobile ? 0 : 1, 
+        width: width, 
+        height: height, 
         color1: "FFFFFF", 
         color2: "000000", 
         color3: "005BFF"
@@ -61,29 +66,28 @@ const News = () => {
   };
 
   return (
-    <div className="space-y-6">
-
-
+    <div className="space-y-4 md:space-y-6">
       {/* VK Widget Container */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-lg border border-gray-100">
-        <div className="flex items-center justify-end mb-4">
+      <div className="bg-white rounded-lg md:rounded-2xl lg:rounded-3xl p-3 md:p-4 lg:p-6 shadow-sm md:shadow-lg border border-gray-200 md:border-gray-100">
+        <div className="flex items-center justify-end mb-3 md:mb-4">
           <a 
             href="https://vk.com/club214224996" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1"
+            className="text-xs md:text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1"
           >
             <Icon name="ExternalLink" size={14} />
-            <span>Открыть в ВК</span>
+            <span className="hidden sm:inline">Открыть в ВК</span>
+            <span className="sm:hidden">ВК</span>
           </a>
         </div>
         
-        <div className="w-full overflow-hidden rounded-xl bg-gray-50 min-h-[350px] sm:min-h-[400px] relative">
+        <div className="w-full overflow-hidden rounded-lg md:rounded-xl bg-gray-50 min-h-[300px] md:min-h-[350px] lg:min-h-[400px] relative">
           {isVKLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-gorkhon-pink mx-auto mb-2"></div>
-                <p className="text-xs sm:text-sm text-gray-600">Загрузка новостей...</p>
+                <div className="animate-spin rounded-full h-6 w-6 md:h-8 md:w-8 border-b-2 border-gorkhon-pink mx-auto mb-2"></div>
+                <p className="text-xs md:text-sm text-gray-600">Загрузка новостей...</p>
               </div>
             </div>
           )}

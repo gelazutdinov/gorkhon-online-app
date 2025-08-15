@@ -31,7 +31,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
     console.log('User data:', user); // Отладочная информация
     try {
       return (
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           <UserDashboard 
             user={user}
             daysWithUs={getDaysWithUs()}
@@ -45,8 +45,8 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
           <NotificationBanner />
         
           {/* Правовая информация */}
-          <div className="text-center pt-4 border-t border-gray-200">
-            <h4 className="text-sm font-medium text-gray-600 mb-3">Правовая информация</h4>
+          <div className="text-center pt-3 md:pt-4 border-t border-gray-200">
+            <h4 className="text-sm font-medium text-gray-600 mb-2 md:mb-3">Правовая информация</h4>
             
             <div className="space-y-2">
               <div>

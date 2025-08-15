@@ -36,23 +36,23 @@ const WeatherSection = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center justify-center p-6 md:p-8">
         <div className="animate-spin">
-          <Icon name="Loader2" size={32} className="text-blue-500" />
+          <Icon name="Loader2" size={28} className="md:w-8 md:h-8 text-blue-500" />
         </div>
-        <span className="ml-3 text-lg">Загрузка данных о погоде в Горхоне...</span>
+        <span className="ml-3 text-sm md:text-lg">Загрузка данных о погоде в Горхоне...</span>
       </div>
     );
   }
 
   if (error || !weatherData) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4 md:p-6">
         <div className="flex items-center">
-          <Icon name="AlertCircle" size={24} className="text-red-500" />
-          <div className="ml-3">
-            <h3 className="text-red-800 font-medium">Ошибка загрузки</h3>
-            <p className="text-red-600 text-sm">{error}</p>
+          <Icon name="AlertCircle" size={20} className="md:w-6 md:h-6 text-red-500 flex-shrink-0" />
+          <div className="ml-3 min-w-0">
+            <h3 className="text-red-800 font-medium text-sm md:text-base">Ошибка загрузки</h3>
+            <p className="text-red-600 text-xs md:text-sm">{error}</p>
           </div>
         </div>
       </div>

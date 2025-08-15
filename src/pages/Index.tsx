@@ -137,7 +137,7 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10">
-          <div className="max-w-2xl mx-auto p-3 md:p-4 space-y-3 md:space-y-4 pb-20 md:pb-4">
+          <div className="max-w-2xl mx-auto px-3 py-2 md:p-4 space-y-3 md:space-y-4 pb-20 md:pb-4">
             {activeSection === 'home' && (
               <>
                 <StoriesContainer />

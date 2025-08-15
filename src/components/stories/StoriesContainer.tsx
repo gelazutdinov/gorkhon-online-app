@@ -143,8 +143,8 @@ const StoriesContainer = () => {
   return (
     <>
       {/* VK-style Stories */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
-        <div className="flex gap-4 overflow-x-auto scrollbar-hide">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 md:p-4 mb-3 md:mb-4">
+        <div className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide">
           {stories.map((story) => (
             <div
               key={story.id}
@@ -153,25 +153,25 @@ const StoriesContainer = () => {
             >
               {/* VK-style Story Avatar */}
               <div className="relative">
-                <div className="w-14 h-14 rounded-full p-0.5" style={{background: `linear-gradient(to bottom right, #F1117E, #E10E73)`}}>
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full p-0.5" style={{background: `linear-gradient(to bottom right, #F1117E, #E10E73)`}}>
                   <div className="w-full h-full rounded-full bg-white p-0.5">
                     <div 
                       className="w-full h-full rounded-full bg-cover bg-center overflow-hidden"
                       style={{ backgroundImage: `url(${story.backgroundImage})` }}
                     >
                       <div className="w-full h-full bg-black bg-opacity-10 flex items-center justify-center">
-                        <Icon name="CloudSun" size={16} className="text-white" />
+                        <Icon name="CloudSun" size={14} className="md:w-4 md:h-4 text-white" />
                       </div>
                     </div>
                   </div>
                 </div>
                 
                 {/* VK-style Online Badge */}
-                <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full border-2 border-white"></div>
               </div>
               
               {/* VK-style Story Label */}
-              <p className="text-xs text-gray-700 mt-2 text-center w-14 truncate font-medium">
+              <p className="text-xs text-gray-700 mt-1 md:mt-2 text-center w-12 md:w-14 truncate font-medium">
                 Горхон
               </p>
             </div>
