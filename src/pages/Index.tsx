@@ -79,29 +79,9 @@ const Index = () => {
       
       {/* VK-style Header - Mobile First */}
       <div className="fixed top-0 left-0 right-0 z-50 shadow-md" style={{backgroundColor: '#F1117E'}}>
-        <div className="px-4 py-3 flex items-center justify-between">
+        <div className="px-4 py-4 flex items-center justify-between">
           {/* Mobile Layout */}
-          <div className="md:hidden flex items-center gap-3 flex-1">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
-              <img 
-                src="/img/88b128b0-40d4-4d3c-b30d-05ff44053cff.jpg" 
-                alt="Горхон.Online" 
-                className="w-6 h-6 object-cover rounded-full"
-              />
-            </div>
-            <h1 className="text-white font-medium text-lg flex-1">Горхон.Online</h1>
-            <div className="flex items-center gap-1">
-              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
-                <Icon name="Search" size={20} />
-              </button>
-              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
-                <Icon name="Bell" size={20} />
-              </button>
-            </div>
-          </div>
-          
-          {/* Desktop Layout */}
-          <div className="hidden md:flex items-center gap-3 max-w-6xl mx-auto w-full justify-between">
+          <div className="md:hidden flex flex-col w-full">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
                 <img 
@@ -112,22 +92,40 @@ const Index = () => {
               </div>
               <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
             </div>
-            <div className="flex items-center gap-3">
-              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
-                <Icon name="Search" size={20} />
-              </button>
-              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
-                <Icon name="Bell" size={20} />
-              </button>
+            <div className="mt-2">
+              <p className="text-white/90 text-sm font-medium">Платформа для жителей Горхона</p>
+              <p className="text-white/70 text-xs">Вся нужная информация под рукой</p>
+            </div>
+          </div>
+          
+          {/* Desktop Layout */}
+          <div className="hidden md:flex flex-col max-w-6xl mx-auto w-full">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/img/88b128b0-40d4-4d3c-b30d-05ff44053cff.jpg" 
+                    alt="Горхон.Online" 
+                    className="w-6 h-6 object-cover rounded-full"
+                  />
+                </div>
+                <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
+              </div>
+              <div className="text-right">
+                <p className="text-white/90 text-sm font-medium">Добро пожаловать в цифровое сердце нашего поселка</p>
+              </div>
+            </div>
+            <div className="mt-1">
+              <p className="text-white/80 text-sm">Платформа для жителей Горхона • Вся нужная информация под рукой</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* VK-style Layout */}
-      <div className="flex pt-16">
+      <div className="flex pt-20 md:pt-24">
         {/* Left Sidebar */}
-        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-16 bottom-0 overflow-y-auto">
+        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-24 bottom-0 overflow-y-auto">
           <div className="p-4 space-y-2">
             {[
               { key: 'profile', label: 'Профиль', icon: 'User' },
