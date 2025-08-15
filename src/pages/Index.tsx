@@ -13,7 +13,7 @@ import Support from "@/components/sections/Support";
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
 import WeatherSourcesPanel from "@/components/features/WeatherSourcesPanel";
-import SecuritySettings from "@/components/security/SecuritySettings";
+
 
 import StoriesContainer from "@/components/stories/StoriesContainer";
 
@@ -103,11 +103,10 @@ const Index = () => {
         <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-16 bottom-0 overflow-y-auto">
           <div className="p-4 space-y-2">
             {[
-              { key: 'home', label: 'Главная', icon: 'Home' },
-              { key: 'weather', label: 'Погода', icon: 'Cloud' },
-              { key: 'news', label: 'Новости', icon: 'Newspaper' },
               { key: 'profile', label: 'Профиль', icon: 'User' },
-              { key: 'security', label: 'Безопасность', icon: 'Shield' },
+              { key: 'home', label: 'Главная', icon: 'Home' },
+              { key: 'news', label: 'Новости', icon: 'Newspaper' },
+              { key: 'weather', label: 'Погода', icon: 'Cloud' },
               { key: 'support', label: 'Поддержка', icon: 'HelpCircle' }
             ].map(item => (
               <button
@@ -141,10 +140,8 @@ const Index = () => {
                 <WeatherSection />
               </>
             )}
-            {activeSection === 'news' && <News />}
             {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
-
-            {activeSection === 'security' && <SecuritySettings />}
+            {activeSection === 'news' && <News />}
             {activeSection === 'support' && <Support />}
           </div>
         </main>
@@ -161,10 +158,10 @@ const Index = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
         <div className="flex">
           {[
+            { key: 'profile', label: 'Профиль', icon: 'User' },
             { key: 'home', label: 'Главная', icon: 'Home' },
-            { key: 'weather', label: 'Погода', icon: 'Cloud' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'profile', label: 'Профиль', icon: 'User' }
+            { key: 'weather', label: 'Погода', icon: 'Cloud' }
           ].map(item => (
             <button
               key={item.key}
