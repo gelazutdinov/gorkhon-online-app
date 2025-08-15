@@ -16,11 +16,11 @@ interface Message {
 
 const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
   const [showFullSupport, setShowFullSupport] = useState(false);
-  const [showLinaChat, setShowLinaChat] = useState(false);
+  const [showLinaChat, setShowLinaChat] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я Лина, ваш AI-помощник. Чем могу помочь? 😊',
+      text: 'Привет! Я Лина, ваш обновленный AI-помощник Горхон.Online! 🚀 Готова помочь с любыми вопросами о жизни в нашем поселке. Что вас интересует? 😊',
       isUser: false,
       timestamp: new Date()
     }
@@ -166,12 +166,12 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
             </div>
           </div>
 
-          {/* Плавающий чат с Линой - поднят выше */}
+          {/* Полноэкранный чат с Линой */}
           {showLinaChat && (
-            <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-end p-4 pb-24">
-              <div className="bg-white rounded-2xl w-80 h-96 flex flex-col shadow-2xl animate-in slide-in-from-right-5">
+            <div className="fixed inset-0 bg-white z-50 flex flex-col">
+              <div className="bg-white h-full flex flex-col shadow-2xl">
                 {/* Заголовок чата */}
-                <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-t-2xl">
+                <div className="flex items-center justify-between p-4 border-b border-gray-200 text-white" style={{backgroundColor: '#F1117E'}}>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                       🤖
