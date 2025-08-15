@@ -14,7 +14,7 @@ import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
 import WeatherSourcesPanel from "@/components/features/WeatherSourcesPanel";
 import SecuritySettings from "@/components/security/SecuritySettings";
-import DigitalRuble from "@/components/economy/DigitalRuble";
+
 import StoriesContainer from "@/components/stories/StoriesContainer";
 
 
@@ -107,7 +107,6 @@ const Index = () => {
               { key: 'weather', label: 'Погода', icon: 'Cloud' },
               { key: 'news', label: 'Новости', icon: 'Newspaper' },
               { key: 'profile', label: 'Профиль', icon: 'User' },
-              { key: 'digital_ruble', label: 'Цифровой рубль', icon: 'Coins' },
               { key: 'security', label: 'Безопасность', icon: 'Shield' },
               { key: 'support', label: 'Поддержка', icon: 'HelpCircle' }
             ].map(item => (
@@ -144,7 +143,7 @@ const Index = () => {
             )}
             {activeSection === 'news' && <News />}
             {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
-            {activeSection === 'digital_ruble' && <DigitalRuble />}
+
             {activeSection === 'security' && <SecuritySettings />}
             {activeSection === 'support' && <Support />}
           </div>
