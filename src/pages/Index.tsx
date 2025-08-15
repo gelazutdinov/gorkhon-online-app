@@ -75,48 +75,80 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 relative overflow-x-hidden">
+    <div className="min-h-screen bg-white relative overflow-x-hidden">
       
-      <Header />
+      {/* VK-style Header */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-blue-600 shadow-md">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <span className="text-blue-600 font-bold text-sm">ГО</span>
+            </div>
+            <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+              <Icon name="Search" size={20} />
+            </button>
+            <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+              <Icon name="Bell" size={20} />
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <main className="relative z-10 min-h-screen">
-        {activeSection === 'home' && (
-          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
-            <StoriesContainer />
-            <Home onOpenPhotoCarousel={openPhotoCarousel} />
+      {/* VK-style Layout */}
+      <div className="flex pt-16">
+        {/* Left Sidebar */}
+        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-16 bottom-0 overflow-y-auto">
+          <div className="p-4 space-y-2">
+            {[
+              { key: 'home', label: 'Главная', icon: 'Home' },
+              { key: 'weather', label: 'Погода', icon: 'Cloud' },
+              { key: 'news', label: 'Новости', icon: 'Newspaper' },
+              { key: 'profile', label: 'Профиль', icon: 'User' },
+              { key: 'digital_ruble', label: 'Цифровой рубль', icon: 'Coins' },
+              { key: 'security', label: 'Безопасность', icon: 'Shield' },
+              { key: 'support', label: 'Поддержка', icon: 'HelpCircle' }
+            ].map(item => (
+              <button
+                key={item.key}
+                onClick={() => handleSectionChange(item.key)}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                  activeSection === item.key 
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <Icon name={item.icon as any} size={20} />
+                <span className="font-medium">{item.label}</span>
+              </button>
+            ))}
           </div>
-        )}
-        {activeSection === 'weather' && (
-          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
-            <WeatherSourcesPanel />
-            <WeatherSection />
+        </div>
+
+        {/* Main Content */}
+        <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10">
+          <div className="max-w-2xl mx-auto p-4 space-y-4">
+            {activeSection === 'home' && (
+              <>
+                <StoriesContainer />
+                <Home onOpenPhotoCarousel={openPhotoCarousel} />
+              </>
+            )}
+            {activeSection === 'weather' && (
+              <>
+                <WeatherSourcesPanel />
+                <WeatherSection />
+              </>
+            )}
+            {activeSection === 'news' && <News />}
+            {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
+            {activeSection === 'digital_ruble' && <DigitalRuble />}
+            {activeSection === 'security' && <SecuritySettings />}
+            {activeSection === 'support' && <Support />}
           </div>
-        )}
-        {activeSection === 'news' && (
-          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
-            <News />
-          </div>
-        )}
-        {activeSection === 'profile' && (
-          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24">
-            <PersonalAccount onSectionChange={handleSectionChange} />
-          </div>
-        )}
-        {activeSection === 'digital_ruble' && (
-          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
-            <DigitalRuble />
-          </div>
-        )}
-        {activeSection === 'security' && (
-          <div className="w-full max-w-md mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-24 space-y-4 sm:space-y-6">
-            <SecuritySettings />
-          </div>
-        )}
-        {activeSection === 'support' && (
-          <div className="max-w-md mx-auto px-4 py-6 pb-24 space-y-6">
-            <Support />
-          </div>
-        )}
+        </div>
       </main>
 
       <PhotoCarousel 
@@ -127,7 +159,30 @@ const Index = () => {
         onPrev={prevPhoto}
       />
 
-      <BottomNavigation activeSection={activeSection} onSectionChange={handleSectionChange} />
+      {/* VK-style Bottom Navigation for mobile */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+        <div className="flex">
+          {[
+            { key: 'home', label: 'Главная', icon: 'Home' },
+            { key: 'weather', label: 'Погода', icon: 'Cloud' },
+            { key: 'news', label: 'Новости', icon: 'Newspaper' },
+            { key: 'profile', label: 'Профиль', icon: 'User' }
+          ].map(item => (
+            <button
+              key={item.key}
+              onClick={() => handleSectionChange(item.key)}
+              className={`flex-1 flex flex-col items-center py-2 px-2 transition-colors ${
+                activeSection === item.key 
+                  ? 'text-blue-600' 
+                  : 'text-gray-400'
+              }`}
+            >
+              <Icon name={item.icon as any} size={20} />
+              <span className="text-xs mt-1 font-medium">{item.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

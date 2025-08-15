@@ -142,47 +142,41 @@ const StoriesContainer = () => {
 
   return (
     <>
-      {/* Stories Ring */}
-      <div className="flex space-x-4 px-4 py-3 overflow-x-auto scrollbar-hide">
-        {stories.map((story) => (
-          <div
-            key={story.id}
-            onClick={() => openStory(story)}
-            className="flex-shrink-0 cursor-pointer"
-          >
-            {/* Story Avatar with Progress Ring */}
-            <div className="relative">
-              {/* Progress Ring */}
-              <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-pink-500 to-purple-500">
-                <div className="w-full h-full rounded-full bg-white p-0.5">
-                  <div 
-                    className="w-full h-full rounded-full bg-cover bg-center overflow-hidden"
-                    style={{ backgroundImage: `url(${story.backgroundImage})` }}
-                  >
-                    {/* Overlay with icon */}
-                    <div className="w-full h-full bg-black bg-opacity-20 flex items-center justify-center">
-                      <Icon name="CloudSun" size={20} className="text-white opacity-90" />
+      {/* VK-style Stories */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide">
+          {stories.map((story) => (
+            <div
+              key={story.id}
+              onClick={() => openStory(story)}
+              className="flex-shrink-0 cursor-pointer flex flex-col items-center"
+            >
+              {/* VK-style Story Avatar */}
+              <div className="relative">
+                <div className="w-14 h-14 rounded-full p-0.5 bg-gradient-to-br from-blue-500 to-blue-600">
+                  <div className="w-full h-full rounded-full bg-white p-0.5">
+                    <div 
+                      className="w-full h-full rounded-full bg-cover bg-center overflow-hidden"
+                      style={{ backgroundImage: `url(${story.backgroundImage})` }}
+                    >
+                      <div className="w-full h-full bg-black bg-opacity-10 flex items-center justify-center">
+                        <Icon name="CloudSun" size={16} className="text-white" />
+                      </div>
                     </div>
                   </div>
                 </div>
+                
+                {/* VK-style Online Badge */}
+                <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
               </div>
               
-              {/* Platform Logo Badge */}
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center border-2 border-white">
-                <img 
-                  src="https://cdn.poehali.dev/files/b249e2e9-d1e0-4ed3-b2a4-7e16c50cade7.png" 
-                  alt="Verified" 
-                  className="w-4 h-4"
-                />
-              </div>
+              {/* VK-style Story Label */}
+              <p className="text-xs text-gray-700 mt-2 text-center w-14 truncate font-medium">
+                Горхон
+              </p>
             </div>
-            
-            {/* Story Label */}
-            <p className="text-xs text-gray-600 mt-1 text-center w-16 truncate">
-              Горхон.Online
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Story Modal - Rendered in portal to ensure it's on top */}
