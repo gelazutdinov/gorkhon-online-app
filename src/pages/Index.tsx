@@ -81,51 +81,37 @@ const Index = () => {
       <div className="fixed top-0 left-0 right-0 z-50 shadow-md" style={{backgroundColor: '#F1117E'}}>
         <div className="px-4 py-4 flex items-center justify-between">
           {/* Mobile Layout */}
-          <div className="md:hidden flex flex-col w-full">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                <img 
-                  src="/img/88b128b0-40d4-4d3c-b30d-05ff44053cff.jpg" 
-                  alt="Горхон.Online" 
-                  className="w-6 h-6 object-cover rounded-full"
-                />
-              </div>
+          <div className="md:hidden flex items-center gap-3 w-full">
+            <img 
+              src="https://cdn.poehali.dev/files/09336db0-43b6-49a2-8f46-7faa33fce4f7.png" 
+              alt="Горхон.Online" 
+              className="w-8 h-8 object-contain"
+            />
+            <div className="flex flex-col">
               <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
-            </div>
-            <div className="mt-2">
               <p className="text-white/90 text-sm font-medium">Платформа для жителей Горхона</p>
               <p className="text-white/70 text-xs">Вся нужная информация под рукой</p>
             </div>
           </div>
           
           {/* Desktop Layout */}
-          <div className="hidden md:flex flex-col max-w-6xl mx-auto w-full">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                  <img 
-                    src="/img/88b128b0-40d4-4d3c-b30d-05ff44053cff.jpg" 
-                    alt="Горхон.Online" 
-                    className="w-6 h-6 object-cover rounded-full"
-                  />
-                </div>
-                <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
-              </div>
-              <div className="text-right">
-                <p className="text-white/90 text-sm font-medium">Добро пожаловать в цифровое сердце нашего поселка</p>
-              </div>
-            </div>
-            <div className="mt-1">
-              <p className="text-white/80 text-sm">Платформа для жителей Горхона • Вся нужная информация под рукой</p>
+          <div className="hidden md:flex items-center gap-3 max-w-6xl mx-auto w-full">
+            <div className="flex items-center gap-3">
+              <img 
+                src="https://cdn.poehali.dev/files/09336db0-43b6-49a2-8f46-7faa33fce4f7.png" 
+                alt="Горхон.Online" 
+                className="w-10 h-10 object-contain"
+              />
+              <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
             </div>
           </div>
         </div>
       </div>
 
       {/* VK-style Layout */}
-      <div className="flex pt-20 md:pt-24">
+      <div className="flex pt-20 md:pt-20">
         {/* Left Sidebar */}
-        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-24 bottom-0 overflow-y-auto">
+        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-20 bottom-0 overflow-y-auto">
           <div className="p-4 space-y-2">
             {[
               { key: 'profile', label: 'Профиль', icon: 'User' },
@@ -187,8 +173,7 @@ const Index = () => {
             { key: 'profile', label: 'Профиль', icon: 'User' },
             { key: 'home', label: 'Главная', icon: 'Home' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'weather', label: 'Погода', icon: 'Cloud' },
-            { key: 'support', label: 'Чат', icon: 'MessageSquare' }
+            { key: 'weather', label: 'Погода', icon: 'Cloud' }
           ].map(item => (
             <button
               key={item.key}
