@@ -77,22 +77,49 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white relative overflow-x-hidden">
       
-      {/* VK-style Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-blue-600 shadow-md">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <span className="text-blue-600 font-bold text-sm">ГО</span>
+      {/* VK-style Header - Mobile First */}
+      <div className="fixed top-0 left-0 right-0 z-50 shadow-md" style={{backgroundColor: '#F1117E'}}>
+        <div className="px-4 py-3 flex items-center justify-between">
+          {/* Mobile Layout */}
+          <div className="md:hidden flex items-center gap-3 flex-1">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
+              <img 
+                src="/img/88b128b0-40d4-4d3c-b30d-05ff44053cff.jpg" 
+                alt="Горхон.Online" 
+                className="w-6 h-6 object-cover rounded-full"
+              />
             </div>
-            <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
+            <h1 className="text-white font-medium text-lg flex-1">Горхон.Online</h1>
+            <div className="flex items-center gap-1">
+              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                <Icon name="Search" size={20} />
+              </button>
+              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                <Icon name="Bell" size={20} />
+              </button>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
-              <Icon name="Search" size={20} />
-            </button>
-            <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
-              <Icon name="Bell" size={20} />
-            </button>
+          
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-center gap-3 max-w-6xl mx-auto w-full justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                <img 
+                  src="/img/88b128b0-40d4-4d3c-b30d-05ff44053cff.jpg" 
+                  alt="Горхон.Online" 
+                  className="w-6 h-6 object-cover rounded-full"
+                />
+              </div>
+              <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                <Icon name="Search" size={20} />
+              </button>
+              <button className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                <Icon name="Bell" size={20} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -114,9 +141,10 @@ const Index = () => {
                 onClick={() => handleSectionChange(item.key)}
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                   activeSection === item.key 
-                    ? 'bg-blue-50 text-blue-600' 
+                    ? 'text-white' 
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
+                style={activeSection === item.key ? {backgroundColor: '#F1117E'} : {}}
               >
                 <Icon name={item.icon as any} size={20} />
                 <span className="font-medium">{item.label}</span>
@@ -127,7 +155,7 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10">
-          <div className="max-w-2xl mx-auto p-4 space-y-4">
+          <div className="max-w-2xl mx-auto p-3 md:p-4 space-y-3 md:space-y-4 pb-20 md:pb-4">
             {activeSection === 'home' && (
               <>
                 <StoriesContainer />
@@ -155,24 +183,30 @@ const Index = () => {
       />
 
       {/* VK-style Bottom Navigation for mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-        <div className="flex">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 safe-area-inset-bottom">
+        <div className="flex items-stretch" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
           {[
             { key: 'profile', label: 'Профиль', icon: 'User' },
             { key: 'home', label: 'Главная', icon: 'Home' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'weather', label: 'Погода', icon: 'Cloud' }
+            { key: 'weather', label: 'Погода', icon: 'Cloud' },
+            { key: 'support', label: 'Чат', icon: 'MessageSquare' }
           ].map(item => (
             <button
               key={item.key}
               onClick={() => handleSectionChange(item.key)}
-              className={`flex-1 flex flex-col items-center py-2 px-2 transition-colors ${
+              className={`flex-1 flex flex-col items-center py-2 px-1 transition-all duration-200 ${
                 activeSection === item.key 
-                  ? 'text-blue-600' 
-                  : 'text-gray-400'
+                  ? 'transform scale-105' 
+                  : 'text-gray-400 hover:text-gray-600'
               }`}
+              style={activeSection === item.key ? {color: '#F1117E'} : {}}
             >
-              <Icon name={item.icon as any} size={20} />
+              <div className={`p-1 rounded-full transition-all ${
+                activeSection === item.key ? 'bg-pink-50' : ''
+              }`}>
+                <Icon name={item.icon as any} size={22} />
+              </div>
               <span className="text-xs mt-1 font-medium">{item.label}</span>
             </button>
           ))}

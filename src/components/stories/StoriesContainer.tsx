@@ -153,7 +153,7 @@ const StoriesContainer = () => {
             >
               {/* VK-style Story Avatar */}
               <div className="relative">
-                <div className="w-14 h-14 rounded-full p-0.5 bg-gradient-to-br from-blue-500 to-blue-600">
+                <div className="w-14 h-14 rounded-full p-0.5" style={{background: `linear-gradient(to bottom right, #F1117E, #E10E73)`}}>
                   <div className="w-full h-full rounded-full bg-white p-0.5">
                     <div 
                       className="w-full h-full rounded-full bg-cover bg-center overflow-hidden"
