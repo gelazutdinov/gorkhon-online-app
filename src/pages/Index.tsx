@@ -148,8 +148,7 @@ const Index = () => {
             {activeSection === 'security' && <SecuritySettings />}
             {activeSection === 'support' && <Support />}
           </div>
-        </div>
-      </main>
+        </main>
 
       <PhotoCarousel 
         selectedImageIndex={selectedImageIndex}
