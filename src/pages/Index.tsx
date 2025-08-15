@@ -152,7 +152,7 @@ const Index = () => {
             )}
             {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
             {activeSection === 'news' && <News />}
-            {activeSection === 'support' && <Support />}
+            {activeSection === 'support' && <Support onSectionChange={handleSectionChange} />}
           </div>
         </main>
 
@@ -171,7 +171,7 @@ const Index = () => {
             { key: 'profile', label: 'Профиль', icon: 'User' },
             { key: 'home', label: 'Главная', icon: 'Home' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'weather', label: 'Погода', icon: 'Cloud' }
+            { key: 'support', label: 'Поддержка', icon: 'HelpCircle' }
           ].map(item => (
             <button
               key={item.key}

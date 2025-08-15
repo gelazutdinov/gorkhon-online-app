@@ -5,6 +5,7 @@ import TicketSystem from '../TicketSystem';
 
 interface MobileSupportSystemProps {
   user: UserProfile;
+  onSectionChange?: (section: string) => void;
 }
 
 interface Message {
@@ -14,7 +15,7 @@ interface Message {
   timestamp: Date;
 }
 
-const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
+const MobileSupportSystem = ({ user, onSectionChange }: MobileSupportSystemProps) => {
   const [showFullSupport, setShowFullSupport] = useState(false);
   const [showLinaChat, setShowLinaChat] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
@@ -182,7 +183,7 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
                     </div>
                   </div>
                   <button
-                    onClick={() => setShowLinaChat(false)}
+                    onClick={() => onSectionChange?.('home')}
                     className="p-1 hover:bg-white/10 rounded"
                   >
                     <Icon name="X" size={16} />
