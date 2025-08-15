@@ -168,7 +168,7 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
 
           {/* Полноэкранный чат с Линой */}
           {showLinaChat && (
-            <div className="fixed inset-0 bg-white z-50 flex flex-col">
+            <div className="fixed inset-0 bg-white z-50 flex flex-col pt-20">
               <div className="bg-white h-full flex flex-col shadow-2xl">
                 {/* Заголовок чата */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 text-white" style={{backgroundColor: '#F1117E'}}>
@@ -218,7 +218,7 @@ const MobileSupportSystem = ({ user }: MobileSupportSystemProps) => {
                 </div>
 
                 {/* Поле ввода */}
-                <div className="p-4 border-t border-gray-200">
+                <div className="p-4 border-t border-gray-200 pb-20 md:pb-4">
                   <form onSubmit={handleSendMessage} className="flex gap-2">
                     <input
                       type="text"
