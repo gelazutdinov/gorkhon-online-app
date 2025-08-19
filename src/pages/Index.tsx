@@ -157,10 +157,10 @@ const Index = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 safe-area-inset-bottom">
         <div className="flex items-stretch" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
           {[
-            { key: 'profile', label: 'Профиль', icon: 'User' },
             { key: 'home', label: 'Главная', icon: 'Home' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'weather', label: 'Погода', icon: 'Cloud' }
+            { key: 'weather', label: 'Погода', icon: 'Cloud' },
+            { key: 'profile', label: 'Профиль', icon: 'User' }
           ].map(item => (
             <button
               key={item.key}
@@ -170,14 +170,14 @@ const Index = () => {
                   ? 'transform scale-105' 
                   : 'text-gray-400 hover:text-gray-600'
               }`}
-              style={activeSection === item.key ? {color: '#F1117E'} : {}}
+              style={activeSection === item.key ? {color: '#005BFF'} : {}}
             >
               <div className={`p-2 rounded-full transition-all ${
-                activeSection === item.key ? 'bg-pink-50' : ''
+                activeSection === item.key ? 'bg-blue-50' : ''
               }`}>
                 <Icon name={item.icon as any} size={22} />
               </div>
-              <span className="text-xs mt-1 font-medium">{item.label}</span>
+
             </button>
           ))}
         </div>
