@@ -45,7 +45,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
                 className={`
                   relative flex items-center justify-center p-3 rounded-full transition-all duration-300 min-h-[48px] min-w-[48px]
                   ${activeSection === item.id 
-                    ? 'bg-[#005BFF] scale-110 shadow-lg' 
+                    ? 'bg-white/20 scale-110 shadow-lg' 
                     : 'hover:bg-white/10 hover:scale-105 active:scale-95'
                   }
                 `}
