@@ -9,7 +9,7 @@ import ActionButtons from "@/components/ActionButtons";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
-import Support from "@/components/sections/Support";
+
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
 import WeatherSourcesPanel from "@/components/features/WeatherSourcesPanel";
@@ -107,8 +107,7 @@ const Index = () => {
               { key: 'profile', label: 'Профиль', icon: 'User' },
               { key: 'home', label: 'Главная', icon: 'Home' },
               { key: 'news', label: 'Новости', icon: 'Newspaper' },
-              { key: 'weather', label: 'Погода', icon: 'Cloud' },
-              { key: 'support', label: 'Поддержка', icon: 'HelpCircle' }
+              { key: 'weather', label: 'Погода', icon: 'Cloud' }
             ].map(item => (
               <button
                 key={item.key}
@@ -143,7 +142,6 @@ const Index = () => {
             )}
             {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
             {activeSection === 'news' && <News />}
-            {activeSection === 'support' && <Support onSectionChange={handleSectionChange} />}
           </div>
         </main>
 
@@ -162,7 +160,7 @@ const Index = () => {
             { key: 'profile', label: 'Профиль', icon: 'User' },
             { key: 'home', label: 'Главная', icon: 'Home' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'support', label: 'Поддержка', icon: 'HelpCircle' }
+            { key: 'weather', label: 'Погода', icon: 'Cloud' }
           ].map(item => (
             <button
               key={item.key}
