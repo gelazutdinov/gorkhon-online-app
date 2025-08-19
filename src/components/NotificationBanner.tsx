@@ -53,26 +53,26 @@ const NotificationBanner: React.FC = () => {
       {unreadNotifications.slice(0, 3).map((notification) => (
         <div
           key={notification.id}
-          className={`border rounded-lg p-4 ${getPriorityColors(notification.priority)}`}
+          className={`border rounded-lg p-3 md:p-4 ${getPriorityColors(notification.priority)}`}
         >
           <div className="flex items-start justify-between">
-            <div className="flex items-start gap-3 flex-1">
+            <div className="flex items-start gap-2 md:gap-3 flex-1 min-w-0">
               <Icon 
                 name={getPriorityIcon(notification.priority) as any} 
-                size={20} 
-                className="mt-0.5 flex-shrink-0" 
+                size={16} 
+                className="md:w-5 md:h-5 mt-0.5 flex-shrink-0" 
               />
               
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-sm">{notification.title}</h3>
-                  <span className="text-xs px-2 py-1 bg-white/50 rounded-full">
+                <div className="flex items-start gap-2 mb-1">
+                  <h3 className="font-semibold text-sm truncate flex-1">{notification.title}</h3>
+                  <span className="text-xs px-2 py-1 bg-white/50 rounded-full whitespace-nowrap flex-shrink-0">
                     {getTypeLabel(notification.type)}
                   </span>
                 </div>
                 
                 <div 
-                  className="text-sm opacity-90 mb-2"
+                  className="text-sm opacity-90 mb-2 break-words"
                   dangerouslySetInnerHTML={{ __html: notification.content }}
                 />
                 
@@ -81,7 +81,7 @@ const NotificationBanner: React.FC = () => {
                     <img 
                       src={notification.imageUrl} 
                       alt="Notification" 
-                      className="w-full max-w-sm h-32 object-cover rounded border"
+                      className="w-full max-w-full sm:max-w-sm h-24 sm:h-32 object-cover rounded border"
                     />
                   </div>
                 )}
@@ -99,7 +99,7 @@ const NotificationBanner: React.FC = () => {
             
             <button
               onClick={() => handleDismiss(notification)}
-              className="ml-2 p-1 hover:bg-white/30 rounded-full transition-colors flex-shrink-0"
+              className="ml-2 p-1.5 md:p-1 hover:bg-white/30 rounded-full transition-colors flex-shrink-0"
               title="Закрыть"
             >
               <Icon name="X" size={16} />

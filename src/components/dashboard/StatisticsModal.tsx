@@ -62,7 +62,7 @@ const StatisticsModal = ({ user, formattedTimeSpent, activityLevel, onClose }: S
   const modalContent = (
     <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-lg" onClick={onClose}></div>
-      <div className="relative bg-gradient-to-br from-white via-white/98 to-blue-50/80 backdrop-blur-2xl rounded-t-3xl sm:rounded-3xl w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto shadow-2xl border border-white/30">
+      <div className="relative bg-gradient-to-br from-white via-white/98 to-blue-50/80 backdrop-blur-2xl rounded-t-3xl sm:rounded-3xl w-full sm:max-w-2xl h-[95vh] sm:max-h-[85vh] overflow-y-auto shadow-2xl border border-white/30 safe-area-inset-bottom">
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gradient-to-r from-blue-100/50 to-purple-100/50 sticky top-0 bg-gradient-to-r from-white/95 to-blue-50/95 backdrop-blur-xl">
           <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg flex-shrink-0">
@@ -149,26 +149,26 @@ const StatisticsModal = ({ user, formattedTimeSpent, activityLevel, onClose }: S
                 </div>
                 <span className="font-bold text-gray-800 text-xs sm:text-sm text-right flex-shrink-0">{getRegistrationDate()}</span>
               </div>
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-green-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <Icon name="Heart" size={16} className="text-green-600" />
-                  <span className="text-gray-700 font-medium">Часто используете</span>
+              <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-gray-50/80 to-green-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <Icon name="Heart" size={14} className="text-green-600 flex-shrink-0 sm:w-4 sm:h-4" />
+                  <span className="text-gray-700 font-medium text-sm sm:text-base truncate">Часто используете</span>
                 </div>
-                <span className="font-bold text-gray-800 text-right">{getMostUsedFeature()}</span>
+                <span className="font-bold text-gray-800 text-xs sm:text-sm text-right flex-shrink-0 max-w-[40%] truncate">{getMostUsedFeature()}</span>
               </div>
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-purple-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <Icon name="Star" size={16} className="text-purple-600" />
-                  <span className="text-gray-700 font-medium">Любимый раздел</span>
+              <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-gray-50/80 to-purple-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <Icon name="Star" size={14} className="text-purple-600 flex-shrink-0 sm:w-4 sm:h-4" />
+                  <span className="text-gray-700 font-medium text-sm sm:text-base truncate">Любимый раздел</span>
                 </div>
-                <span className="font-bold text-gray-800 text-right">{getMostVisitedSection()}</span>
+                <span className="font-bold text-gray-800 text-xs sm:text-sm text-right flex-shrink-0 max-w-[40%] truncate">{getMostVisitedSection()}</span>
               </div>
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-orange-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <Icon name="Clock" size={16} className="text-orange-600" />
-                  <span className="text-gray-700 font-medium">Время в приложении</span>
+              <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-gray-50/80 to-orange-50/60 rounded-xl border border-gray-200/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <Icon name="Clock" size={14} className="text-orange-600 flex-shrink-0 sm:w-4 sm:h-4" />
+                  <span className="text-gray-700 font-medium text-sm sm:text-base truncate">Время в приложении</span>
                 </div>
-                <span className="font-bold text-gray-800 text-right">{formattedTimeSpent}</span>
+                <span className="font-bold text-gray-800 text-xs sm:text-sm text-right flex-shrink-0">{formattedTimeSpent}</span>
               </div>
             </div>
           </div>

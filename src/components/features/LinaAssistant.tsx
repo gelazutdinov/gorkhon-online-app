@@ -188,7 +188,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
   }
 
   return (
-    <div className="fixed inset-0 pb-32 sm:pb-0 sm:bottom-28 sm:right-4 sm:inset-auto z-[60] flex sm:block">
+    <div className="fixed inset-0 pb-16 sm:pb-0 sm:bottom-28 sm:right-4 sm:inset-auto z-[60] flex sm:block safe-area-inset-bottom">
       <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-96 h-full sm:h-[32rem] flex flex-col overflow-hidden max-w-full">
         {/* Заголовок */}
         <div className="bg-gorkhon-blue text-white p-4 sm:p-5 flex items-center justify-between shadow-lg">

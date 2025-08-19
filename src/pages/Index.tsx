@@ -165,14 +165,14 @@ const Index = () => {
             <button
               key={item.key}
               onClick={() => handleSectionChange(item.key)}
-              className={`flex-1 flex flex-col items-center py-2 px-1 transition-all duration-200 ${
+              className={`flex-1 flex flex-col items-center py-3 px-2 min-h-[52px] transition-all duration-200 touch-none ${
                 activeSection === item.key 
                   ? 'transform scale-105' 
                   : 'text-gray-400 hover:text-gray-600'
               }`}
               style={activeSection === item.key ? {color: '#F1117E'} : {}}
             >
-              <div className={`p-1 rounded-full transition-all ${
+              <div className={`p-2 rounded-full transition-all ${
                 activeSection === item.key ? 'bg-pink-50' : ''
               }`}>
                 <Icon name={item.icon as any} size={22} />

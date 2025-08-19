@@ -60,7 +60,7 @@ const ImportantNumbers = () => {
               </div>
               <Button 
                 size="sm" 
-                className="bg-gorkhon-green hover:bg-gorkhon-green/90 text-white px-2 md:px-3 py-1.5 h-8 rounded-lg text-xs flex-shrink-0 min-w-0"
+                className="bg-gorkhon-green hover:bg-gorkhon-green/90 text-white px-3 md:px-3 py-2 md:py-1.5 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 min-w-[44px] touch-none"
                 onClick={() => window.open(`tel:${contact.phone}`, '_self')}
               >
                 <Icon name="Phone" size={14} className="md:mr-1" />
@@ -91,7 +91,7 @@ const ImportantNumbers = () => {
                 </div>
                 <Button 
                   size="sm" 
-                  className="bg-gorkhon-orange hover:bg-gorkhon-orange/90 text-white px-2 md:px-3 py-1.5 h-8 rounded-lg text-xs flex-shrink-0 min-w-0"
+                  className="bg-gorkhon-orange hover:bg-gorkhon-orange/90 text-white px-3 md:px-3 py-2 md:py-1.5 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 min-w-[44px] touch-none"
                   onClick={() => window.open(`tel:${contact.phone}`, '_self')}
                 >
                   <Icon name="Phone" size={14} className="md:mr-1" />
