@@ -8,6 +8,9 @@ interface Story {
   backgroundImage: string;
   createdAt: number;
   expiresAt: number;
+  action?: string;
+  buttonText?: string;
+  icon?: string;
 }
 
 const StoriesContainer = () => {
@@ -19,9 +22,8 @@ const StoriesContainer = () => {
   // Инициализируем stories при загрузке
   useEffect(() => {
     const now = Date.now();
-    const STORY_ID = 'weather-beta-release-gorhon-online';
     
-    // Проверяем localStorage на наличие этой stories
+    // Проверяем localStorage на наличие stories
     const savedStories = localStorage.getItem('platform-stories');
     let existingStories: Story[] = [];
     
@@ -36,25 +38,48 @@ const StoriesContainer = () => {
       }
     }
     
-    // Проверяем, есть ли уже наша story
-    const hasWeatherStory = existingStories.some(story => story.id === STORY_ID);
-    
-    if (!hasWeatherStory) {
-      // Создаем новую story если её еще нет
-      const expiryTime = now + (24 * 60 * 60 * 1000); // 24 часа
-      const weatherStory: Story = {
-        id: STORY_ID,
+    // Список доступных stories
+    const availableStories = [
+      {
+        id: 'weather-beta-release-gorhon-online',
         title: 'Теперь и погода есть',
         backgroundImage: 'https://cdn.poehali.dev/files/458c390f-ac64-41e1-bb68-f699667bb38b.png',
-        createdAt: now,
-        expiresAt: expiryTime
-      };
+        icon: 'CloudSun',
+        buttonText: 'Посмотреть погоду 🌤️',
+        action: 'navigate-to-weather'
+      },
+      {
+        id: 'mobile-optimization-update-v2',
+        title: 'Мобильная версия обновлена',
+        backgroundImage: '/img/20c99e19-6bd9-45e0-84c2-39933305af97.jpg',
+        icon: 'Smartphone',
+        buttonText: 'Попробовать сейчас! 📱',
+        action: 'close-story'
+      }
+    ];
+    
+    // Проверяем, какие stories нужно добавить
+    availableStories.forEach(storyTemplate => {
+      const hasThisStory = existingStories.some(story => story.id === storyTemplate.id);
       
-      existingStories.push(weatherStory);
-      console.log('🚀 Новая Stories создана для всех пользователей:', weatherStory);
-    } else {
-      console.log('📱 Stories уже существует, показываем существующую');
-    }
+      if (!hasThisStory) {
+        // Создаем новую story
+        const expiryTime = now + (24 * 60 * 60 * 1000); // 24 часа
+        const newStory: Story = {
+          id: storyTemplate.id,
+          title: storyTemplate.title,
+          backgroundImage: storyTemplate.backgroundImage,
+          createdAt: now,
+          expiresAt: expiryTime,
+          action: storyTemplate.action,
+          buttonText: storyTemplate.buttonText,
+          icon: storyTemplate.icon
+        };
+        
+        existingStories.push(newStory);
+        console.log('🚀 Новая Stories создана:', newStory);
+      }
+    });
     
     // Сохраняем и устанавливаем stories
     localStorage.setItem('platform-stories', JSON.stringify(existingStories));
@@ -160,7 +185,7 @@ const StoriesContainer = () => {
                       style={{ backgroundImage: `url(${story.backgroundImage})` }}
                     >
                       <div className="w-full h-full bg-black bg-opacity-10 flex items-center justify-center">
-                        <Icon name="CloudSun" size={14} className="md:w-4 md:h-4 text-white" />
+                        <Icon name={story.icon as any || "CloudSun"} size={14} className="md:w-4 md:h-4 text-white" />
                       </div>
                     </div>
                   </div>
@@ -220,13 +245,16 @@ const StoriesContainer = () => {
               <button
                 onClick={() => {
                   closeStory();
-                  // Переключаемся на вкладку погоды
-                  const event = new CustomEvent('navigate-to-weather');
-                  window.dispatchEvent(event);
+                  if (activeStory.action === 'navigate-to-weather') {
+                    // Переключаемся на вкладку погоды
+                    const event = new CustomEvent('navigate-to-weather');
+                    window.dispatchEvent(event);
+                  }
+                  // Если action === 'close-story', то просто закрываем
                 }}
                 className="w-full bg-white bg-opacity-90 backdrop-blur-sm text-gray-900 py-4 px-6 rounded-2xl font-medium hover:bg-opacity-100 transition-all duration-200 shadow-lg"
               >
-                Посмотреть погоду 🌤️
+                {activeStory.buttonText || 'Закрыть'}
               </button>
             </div>
           </div>
