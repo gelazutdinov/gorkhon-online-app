@@ -61,33 +61,31 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   }, []);
 
   return (
-    <div className="space-y-4 pb-24">
-
-
-      {/* Профиль пользователя - Обновленный дизайн */}
-      <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
+    <div className="space-y-3 md:space-y-4 pb-16 md:pb-24">
+      {/* Профиль пользователя - Мобильная адаптация */}
+      <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl md:rounded-3xl p-4 md:p-8 text-white shadow-2xl relative overflow-hidden">
         {/* Анимированные декоративные элементы */}
-        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-20 translate-x-20 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-16 -translate-x-16 animate-pulse" style={{animationDelay: '2s'}}></div>
-        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-white/5 rounded-full -translate-x-12 -translate-y-12 animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-0 right-0 w-24 h-24 md:w-40 md:h-40 bg-white/10 rounded-full -translate-y-12 translate-x-12 md:-translate-y-20 md:translate-x-20 animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-20 h-20 md:w-32 md:h-32 bg-white/5 rounded-full translate-y-10 -translate-x-10 md:translate-y-16 md:-translate-x-16 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 w-16 h-16 md:w-24 md:h-24 bg-white/5 rounded-full -translate-x-8 -translate-y-8 md:-translate-x-12 md:-translate-y-12 animate-pulse" style={{animationDelay: '1s'}}></div>
         
         <div className="relative z-10">
-          <div className="flex items-start justify-between mb-8">
-            <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold mb-4">
+          <div className="flex items-start justify-between mb-4 md:mb-8">
+            <div className="flex-1 pr-3">
+              <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4 leading-tight">
                 {getTimeOfDay() === 'утро' ? 'Доброе утро' : 
                  getTimeOfDay() === 'день' ? 'Добрый день' : 
                  getTimeOfDay() === 'вечер' ? 'Добрый вечер' : 
                  'Доброй ночи'}, {userName}!
               </h1>
-              <div className="flex items-center gap-3 bg-white/20 backdrop-blur-md rounded-2xl px-6 py-3 w-fit border border-white/30 shadow-lg hover:bg-white/25 transition-all duration-300">
-                <Icon name="Award" size={20} className="text-yellow-300 animate-pulse" />
-                <span className="text-lg font-semibold">{activityLevel}</span>
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-ping"></div>
+              <div className="flex items-center gap-2 md:gap-3 bg-white/20 backdrop-blur-md rounded-xl md:rounded-2xl px-3 py-2 md:px-6 md:py-3 w-fit border border-white/30 shadow-lg hover:bg-white/25 transition-all duration-300">
+                <Icon name="Award" size={16} className="md:w-5 md:h-5 text-yellow-300 animate-pulse" />
+                <span className="text-sm md:text-lg font-semibold">{activityLevel}</span>
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full animate-ping"></div>
               </div>
             </div>
-            <div className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-2xl border border-white/30 hover:scale-110 hover:rotate-3 transition-all duration-500">
-              <Icon name="User" size={36} className="text-white" />
+            <div className="w-16 h-16 md:w-24 md:h-24 bg-white/20 backdrop-blur-md rounded-2xl md:rounded-3xl flex items-center justify-center shadow-2xl border border-white/30 hover:scale-110 hover:rotate-3 transition-all duration-500 flex-shrink-0">
+              <Icon name="User" size={24} className="md:w-9 md:h-9 text-white" />
             </div>
           </div>
         </div>
@@ -98,51 +96,51 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
 
       {/* Основные функции */}
-      <div className="grid gap-6">
+      <div className="grid gap-3 md:gap-6">
         {/* Аналитика и статистика */}
-        <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Icon name="BarChart3" size={24} className="text-white" />
+        <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
+          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+            <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Icon name="BarChart3" size={18} className="md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">Аналитика</h2>
-              <p className="text-sm text-gray-600">Статистика использования и активности</p>
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1">Аналитика</h2>
+              <p className="text-xs md:text-sm text-gray-600">Статистика использования и активности</p>
             </div>
           </div>
           
           <button
             onClick={() => setShowStatistics(true)}
-            className="w-full flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 hover:from-blue-100 hover:via-indigo-100 hover:to-purple-100 transition-all duration-300 text-left border border-blue-200 hover:border-indigo-300 hover:shadow-lg group/button"
+            className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 hover:from-blue-100 hover:via-indigo-100 hover:to-purple-100 transition-all duration-300 text-left border border-blue-200 hover:border-indigo-300 hover:shadow-lg group/button"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-              <Icon name="TrendingUp" size={20} className="text-white" />
+            <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-lg md:rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
+              <Icon name="TrendingUp" size={16} className="md:w-5 md:h-5 text-white" />
             </div>
             <div className="flex-1">
-              <div className="font-bold text-gray-900 mb-1">Подробная статистика</div>
-              <div className="text-sm text-blue-700">Анализ активности и использования функций</div>
+              <div className="text-sm md:text-base font-bold text-gray-900 mb-1">Подробная статистика</div>
+              <div className="text-xs md:text-sm text-blue-700">Анализ активности и использования функций</div>
             </div>
-            <Icon name="ChevronRight" size={20} className="text-gray-400 group-hover/button:translate-x-1 transition-transform" />
+            <Icon name="ChevronRight" size={16} className="md:w-5 md:h-5 text-gray-400 group-hover/button:translate-x-1 transition-transform" />
           </button>
         </div>
         
         {/* Поддержка Лина */}
-        <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 bg-gradient-to-br from-gorkhon-blue via-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Icon name="MessageSquare" size={24} className="text-white" />
+        <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
+          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+            <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-gorkhon-blue via-blue-600 to-cyan-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Icon name="MessageSquare" size={18} className="md:w-6 md:h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">Поддержка</h2>
-              <p className="text-sm text-gray-600">Виртуальная помощница службы поддержки</p>
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1">Поддержка</h2>
+              <p className="text-xs md:text-sm text-gray-600">Виртуальная помощница службы поддержки</p>
             </div>
           </div>
           
           <button
             onClick={() => setShowLina(true)}
-            className="w-full flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-r from-gorkhon-blue/10 via-blue-50 to-cyan-50 hover:from-gorkhon-blue/20 hover:via-blue-100 hover:to-cyan-100 transition-all duration-300 text-left border border-gorkhon-blue/30 hover:border-gorkhon-blue/50 hover:shadow-lg group/button"
+            className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-gorkhon-blue/10 via-blue-50 to-cyan-50 hover:from-gorkhon-blue/20 hover:via-blue-100 hover:to-cyan-100 transition-all duration-300 text-left border border-gorkhon-blue/30 hover:border-gorkhon-blue/50 hover:shadow-lg group/button"
           >
-            <div className="w-12 h-12 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 shadow-md group-hover/button:scale-110 transition-transform duration-300">
+            <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 shadow-md group-hover/button:scale-110 transition-transform duration-300">
               <img 
                 src="https://images.unsplash.com/photo-1494790108755-2616b332c792?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
                 alt="Лина" 
@@ -150,22 +148,22 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
-                  target.parentElement!.innerHTML = '<div class="w-full h-full bg-gray-200 rounded-2xl flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+                  target.parentElement!.innerHTML = '<div class="w-full h-full bg-gray-200 rounded-lg md:rounded-2xl flex items-center justify-center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
                 }}
               />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-bold text-gray-900">Лина</span>
+                <span className="text-sm md:text-base font-bold text-gray-900">Лина</span>
                 <img 
                   src="https://cdn.poehali.dev/files/8371ad18-b8e1-4b43-98dc-dd6b47da6cfa.png" 
                   alt="Верифицирован" 
-                  className="w-5 h-5"
+                  className="w-4 h-4 md:w-5 md:h-5"
                 />
               </div>
-              <div className="text-sm text-gorkhon-blue font-medium">Начать диалог с ИИ-помощником</div>
+              <div className="text-xs md:text-sm text-gorkhon-blue font-medium">Начать диалог с ИИ-помощником</div>
             </div>
-            <Icon name="MessageCircle" size={20} className="text-gorkhon-blue group-hover/button:scale-110 transition-transform" />
+            <Icon name="MessageCircle" size={16} className="md:w-5 md:h-5 text-gorkhon-blue group-hover/button:scale-110 transition-transform" />
           </button>
         </div>
         
@@ -173,31 +171,31 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
       </div>
       
       {/* Выход из системы */}
-      <div className="bg-white rounded-3xl p-6 shadow-xl border border-red-100 hover:shadow-2xl transition-all duration-300 group">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-14 h-14 bg-gradient-to-br from-red-500 via-rose-600 to-red-700 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-            <Icon name="LogOut" size={24} className="text-white" />
+      <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl border border-red-100 hover:shadow-2xl transition-all duration-300 group">
+        <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+          <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-red-500 via-rose-600 to-red-700 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <Icon name="LogOut" size={18} className="md:w-6 md:h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-1">Завершение работы</h2>
-            <p className="text-sm text-gray-600">Безопасный выход из системы</p>
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1">Завершение работы</h2>
+            <p className="text-xs md:text-sm text-gray-600">Безопасный выход из системы</p>
           </div>
         </div>
         
         <button
           onClick={onLogout}
-          className="w-full flex items-center justify-between p-5 rounded-2xl bg-gradient-to-r from-red-50 via-rose-50 to-pink-50 hover:from-red-100 hover:via-rose-100 hover:to-pink-100 transition-all duration-300 text-left border-2 border-red-200 hover:border-red-300 hover:shadow-lg group/button"
+          className="w-full flex items-center justify-between p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-red-50 via-rose-50 to-pink-50 hover:from-red-100 hover:via-rose-100 hover:to-pink-100 transition-all duration-300 text-left border-2 border-red-200 hover:border-red-300 hover:shadow-lg group/button"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-              <Icon name="Power" size={20} className="text-white" />
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-lg md:rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
+              <Icon name="Power" size={16} className="md:w-5 md:h-5 text-white" />
             </div>
             <div>
-              <div className="font-bold text-red-700 mb-1">Выйти из аккаунта</div>
-              <div className="text-sm text-red-600">Завершить текущую сессию</div>
+              <div className="text-sm md:text-base font-bold text-red-700 mb-1">Выйти из аккаунта</div>
+              <div className="text-xs md:text-sm text-red-600">Завершить текущую сессию</div>
             </div>
           </div>
-          <Icon name="ArrowRight" size={20} className="text-red-500 group-hover/button:translate-x-1 transition-transform" />
+          <Icon name="ArrowRight" size={16} className="md:w-5 md:h-5 text-red-500 group-hover/button:translate-x-1 transition-transform" />
         </button>
       </div>
 
