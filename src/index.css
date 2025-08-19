@@ -105,6 +105,34 @@
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
+
+  /* Предотвращение горизонтального overflow */
+  body,
+  html {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Принудительное ограничение ширины для всех элементов */
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Исправление для длинного текста */
+  .truncate {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Контейнеры не должны создавать horizontal scroll */
+  .container,
+  .max-w-2xl,
+  .max-w-4xl,
+  .max-w-6xl {
+    max-width: calc(100vw - 1.5rem) !important;
+  }
 }
 
 /* Дополнительные утилиты для мобильной адаптивности */

@@ -67,7 +67,7 @@ const Index = () => {
 
 
   return (
-    <div className="min-h-screen bg-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-white relative overflow-x-hidden w-full max-w-full">
       
       {/* VK-style Header - Mobile First */}
       <div className="fixed top-0 left-0 right-0 z-50 shadow-md" style={{backgroundColor: '#F1117E'}}>
@@ -127,8 +127,8 @@ const Index = () => {
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10">
-          <div className="max-w-2xl mx-auto px-3 py-2 md:p-4 space-y-3 md:space-y-4 pb-20 md:pb-4">
+        <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
+          <div className="max-w-full md:max-w-2xl mx-auto px-3 py-2 md:p-4 space-y-3 md:space-y-4 pb-20 md:pb-4">
             {activeSection === 'home' && (
               <>
                 <Home onOpenPhotoCarousel={openPhotoCarousel} />

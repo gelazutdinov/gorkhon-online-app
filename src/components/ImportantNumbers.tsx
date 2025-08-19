@@ -47,23 +47,23 @@ const ImportantNumbers = () => {
             {/* Анимированный фон только на десктопе */}
             <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent via-gorkhon-blue/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             
-            <div className="flex items-center justify-between gap-3 md:gap-4 relative z-10">
-              <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
+            <div className="flex items-center gap-2 md:gap-4 relative z-10 w-full">
+              <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0 overflow-hidden">
                 <div className="p-2 md:p-3 rounded-lg md:rounded-2xl bg-gorkhon-blue/10 md:bg-gradient-to-br md:from-gorkhon-blue/15 md:via-gorkhon-blue/10 md:to-gorkhon-blue/5 flex-shrink-0">
                   <Icon name={contact.icon} size={16} className="md:w-[18px] md:h-[18px] text-gorkhon-blue" />
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 overflow-hidden">
                   <p className="font-bold text-sm md:text-base text-slate-800 truncate">{contact.name}</p>
                   <p className="text-xs md:text-sm text-slate-600 truncate">{contact.person}</p>
-                  <p className="text-xs text-gorkhon-blue/70 font-mono">{contact.phone}</p>
+                  <p className="text-xs text-gorkhon-blue/70 font-mono truncate">{contact.phone}</p>
                 </div>
               </div>
               <Button 
                 size="sm" 
-                className="bg-gorkhon-green hover:bg-gorkhon-green/90 text-white px-3 md:px-3 py-2 md:py-1.5 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 min-w-[44px] touch-none"
+                className="bg-gorkhon-green hover:bg-gorkhon-green/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none"
                 onClick={() => window.open(`tel:${contact.phone}`, '_self')}
               >
-                <Icon name="Phone" size={14} className="md:mr-1" />
+                <Icon name="Phone" size={14} />
                 <span className="hidden md:inline ml-1">Звонок</span>
               </Button>
             </div>
@@ -78,23 +78,23 @@ const ImportantNumbers = () => {
           </div>
           {transitNumbers.map((contact, index) => (
             <div key={index} className="group p-2 md:p-3 rounded-lg md:rounded-xl bg-orange-50 md:bg-gradient-to-r md:from-orange-50/50 md:to-amber-50/50 hover:bg-orange-100 md:hover:from-gorkhon-orange/5 md:hover:to-gorkhon-orange/10 transition-all duration-300 border border-orange-200 md:border-orange-200/50 md:hover:border-gorkhon-orange/20 mb-2">
-              <div className="flex items-center justify-between gap-2 md:gap-3">
-                <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+              <div className="flex items-center gap-2 md:gap-3 w-full">
+                <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0 overflow-hidden">
                   <div className="p-2 rounded-lg md:rounded-xl bg-gorkhon-orange/10 flex-shrink-0">
                     <Icon name={contact.icon} size={16} className="text-gorkhon-orange" />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 overflow-hidden">
                     <p className="font-semibold text-xs md:text-sm text-slate-800 truncate">{contact.name}</p>
                     <p className="text-xs text-slate-600 truncate">{contact.person}</p>
-                    <p className="text-xs text-gorkhon-orange/70 font-mono">{contact.phone}</p>
+                    <p className="text-xs text-gorkhon-orange/70 font-mono truncate">{contact.phone}</p>
                   </div>
                 </div>
                 <Button 
                   size="sm" 
-                  className="bg-gorkhon-orange hover:bg-gorkhon-orange/90 text-white px-3 md:px-3 py-2 md:py-1.5 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 min-w-[44px] touch-none"
+                  className="bg-gorkhon-orange hover:bg-gorkhon-orange/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none"
                   onClick={() => window.open(`tel:${contact.phone}`, '_self')}
                 >
-                  <Icon name="Phone" size={14} className="md:mr-1" />
+                  <Icon name="Phone" size={14} />
                   <span className="hidden md:inline ml-1">Звонок</span>
                 </Button>
               </div>
