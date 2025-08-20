@@ -35,10 +35,16 @@ const News = () => {
 
   const initVKWidget = () => {
     if (window.VK && window.VK.Widgets) {
+      // Очищаем контейнер перед вставкой нового виджета
+      const container = document.getElementById("vk_groups");
+      if (container) {
+        container.innerHTML = '';
+      }
+      
       // Определяем ширину на основе размера экрана
       const isMobile = window.innerWidth < 768;
-      const width = isMobile ? Math.min(window.innerWidth - 40, 400) : 500;
-      const height = isMobile ? 600 : 800;
+      const width = isMobile ? Math.min(window.innerWidth - 32, 350) : 500;
+      const height = isMobile ? 500 : 800;
       
       window.VK.Widgets.Group("vk_groups", {
         mode: 4, 
@@ -84,14 +90,14 @@ const News = () => {
         
         <div className="w-full overflow-hidden rounded-lg md:rounded-xl bg-gray-50 min-h-[300px] md:min-h-[350px] lg:min-h-[400px] relative">
           {isVKLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-50 z-10">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-6 w-6 md:h-8 md:w-8 border-b-2 border-gorkhon-pink mx-auto mb-2"></div>
                 <p className="text-xs md:text-sm text-gray-600">Загрузка новостей...</p>
               </div>
             </div>
           )}
-          <div id="vk_groups" className="w-full h-full"></div>
+          <div id="vk_groups" className="w-full h-full overflow-auto"></div>
         </div>
         
         {/* Fallback если VK не загрузился */}
