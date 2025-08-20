@@ -57,20 +57,14 @@ const News = () => {
         container.innerHTML = '';
       }
       
-      // Определяем ширину на основе размера экрана
-      const isMobile = window.innerWidth < 768;
-      const width = isMobile ? Math.min(window.innerWidth - 32, 350) : 500;
-      const height = isMobile ? 500 : 800;
-      
+      // Используем новые параметры виджета
       window.VK.Widgets.Group("vk_groups", {
-        mode: 3, 
-        wide: isMobile ? 0 : 1, 
-        width: width, 
-        height: height, 
+        mode: 4, 
+        wide: 1, 
+        height: 400, 
         color1: "FFFFFF", 
         color2: "000000", 
-        color3: "005BFF",
-        no_cover: 1
+        color3: "5181B8"
       }, 214224996);
       setIsVKLoading(false);
     }
@@ -127,7 +121,7 @@ const News = () => {
           </a>
         </div>
         
-        <div className="w-full overflow-hidden rounded-lg md:rounded-xl bg-gray-50 min-h-[300px] md:min-h-[350px] lg:min-h-[400px] relative">
+        <div className="w-full overflow-hidden rounded-lg md:rounded-xl bg-gray-50 min-h-[400px] relative">
           {isVKLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-50 z-10">
               <div className="text-center">
