@@ -12,7 +12,7 @@ import News from "@/components/sections/News";
 
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
-import WeatherSourcesPanel from "@/components/features/WeatherSourcesPanel";
+
 
 
 
@@ -136,7 +136,6 @@ const Index = () => {
             )}
             {activeSection === 'weather' && (
               <>
-                <WeatherSourcesPanel />
                 <WeatherSection />
               </>
             )}
@@ -170,7 +169,6 @@ const Index = () => {
               }`}>
                 <Icon name={item.icon as any} size={20} />
               </div>
-              <span className="text-xs mt-0.5 font-medium leading-tight">{item.label}</span>
             </button>
           ))}
         </div>

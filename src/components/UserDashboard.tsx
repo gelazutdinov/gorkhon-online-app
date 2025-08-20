@@ -1,7 +1,7 @@
 import { useState, memo, useCallback, useMemo } from 'react';
 import { UserProfile } from '@/hooks/useUser';
 import Icon from '@/components/ui/icon';
-import LinaAssistant from '@/components/features/LinaAssistant';
+
 import DataManager from '@/components/dashboard/DataManager';
 import StatisticsModal from '@/components/dashboard/StatisticsModal';
 import BackupModal from '@/components/dashboard/BackupModal';
@@ -22,7 +22,7 @@ interface UserDashboardProps {
 
 const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, onSectionChange }: UserDashboardProps) => {
   const [showStatistics, setShowStatistics] = useState(false);
-  const [showLina, setShowLina] = useState(false);
+
   const [showDataManager, setShowDataManager] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showSecurity, setShowSecurity] = useState(false);
@@ -124,48 +124,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           </button>
         </div>
         
-        {/* Поддержка Лина */}
-        <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
-          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-            <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-gorkhon-blue via-blue-600 to-cyan-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Icon name="MessageSquare" size={18} className="md:w-6 md:h-6 text-white" />
-            </div>
-            <div>
-              <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1">Поддержка</h2>
-              <p className="text-xs md:text-sm text-gray-600">Виртуальная помощница службы поддержки</p>
-            </div>
-          </div>
-          
-          <button
-            onClick={() => setShowLina(true)}
-            className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-gorkhon-blue/10 via-blue-50 to-cyan-50 hover:from-gorkhon-blue/20 hover:via-blue-100 hover:to-cyan-100 transition-all duration-300 text-left border border-gorkhon-blue/30 hover:border-gorkhon-blue/50 hover:shadow-lg group/button"
-          >
-            <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 shadow-md group-hover/button:scale-110 transition-transform duration-300">
-              <img 
-                src="https://images.unsplash.com/photo-1494790108755-2616b332c792?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
-                alt="Лина" 
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  target.parentElement!.innerHTML = '<div class="w-full h-full bg-gray-200 rounded-lg md:rounded-2xl flex items-center justify-center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
-                }}
-              />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-sm md:text-base font-bold text-gray-900">Лина</span>
-                <img 
-                  src="https://cdn.poehali.dev/files/8371ad18-b8e1-4b43-98dc-dd6b47da6cfa.png" 
-                  alt="Верифицирован" 
-                  className="w-4 h-4 md:w-5 md:h-5"
-                />
-              </div>
-              <div className="text-xs md:text-sm text-gorkhon-blue font-medium">Начать диалог с ИИ-помощником</div>
-            </div>
-            <Icon name="MessageCircle" size={16} className="md:w-5 md:h-5 text-gorkhon-blue group-hover/button:scale-110 transition-transform" />
-          </button>
-        </div>
+
         
 
       </div>
@@ -209,9 +168,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         />
       )}
 
-      {showLina && (
-        <LinaAssistant onClose={handleCloseModal(setShowLina)} />
-      )}
+
 
       {showDataManager && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
