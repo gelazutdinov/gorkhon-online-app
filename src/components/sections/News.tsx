@@ -47,13 +47,14 @@ const News = () => {
       const height = isMobile ? 500 : 800;
       
       window.VK.Widgets.Group("vk_groups", {
-        mode: 4, 
+        mode: 3, 
         wide: isMobile ? 0 : 1, 
         width: width, 
         height: height, 
         color1: "FFFFFF", 
         color2: "000000", 
-        color3: "005BFF"
+        color3: "005BFF",
+        no_cover: 1
       }, 214224996);
       setIsVKLoading(false);
     }

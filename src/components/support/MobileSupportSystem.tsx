@@ -17,7 +17,7 @@ interface Message {
 
 const MobileSupportSystem = ({ user, onSectionChange }: MobileSupportSystemProps) => {
   const [showFullSupport, setShowFullSupport] = useState(false);
-  const [showLinaChat, setShowLinaChat] = useState(true);
+  const [showLinaChat, setShowLinaChat] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
