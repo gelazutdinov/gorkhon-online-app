@@ -124,8 +124,50 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           </button>
         </div>
         
-
-        
+        {/* Поддержка */}
+        <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 group">
+          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+            <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-green-500 via-emerald-600 to-green-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Icon name="MessageSquare" size={18} className="md:w-6 md:h-6 text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1">Поддержка</h2>
+              <p className="text-xs md:text-sm text-gray-600">Помощь и обратная связь</p>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            <a
+              href="https://t.me/+QgiLIa1gFRY4Y2Iy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-blue-50 via-blue-50 to-blue-100 hover:from-blue-100 hover:via-blue-100 hover:to-blue-200 transition-all duration-300 text-left border border-blue-200 hover:border-blue-300 hover:shadow-lg group/button"
+            >
+              <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg md:rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
+                <Icon name="MessageCircle" size={16} className="md:w-5 md:h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <div className="text-sm md:text-base font-bold text-gray-900 mb-1">Сообщество в Telegram</div>
+                <div className="text-xs md:text-sm text-blue-700">Задать вопрос или предложить идею</div>
+              </div>
+              <Icon name="ExternalLink" size={16} className="md:w-5 md:h-5 text-gray-400 group-hover/button:translate-x-1 transition-transform" />
+            </a>
+            
+            <a
+              href="mailto:support@poehali.dev"
+              className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-green-50 via-emerald-50 to-green-100 hover:from-green-100 hover:via-emerald-100 hover:to-green-200 transition-all duration-300 text-left border border-green-200 hover:border-green-300 hover:shadow-lg group/button"
+            >
+              <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg md:rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
+                <Icon name="Mail" size={16} className="md:w-5 md:h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <div className="text-sm md:text-base font-bold text-gray-900 mb-1">Написать на email</div>
+                <div className="text-xs md:text-sm text-green-700">support@poehali.dev</div>
+              </div>
+              <Icon name="ExternalLink" size={16} className="md:w-5 md:h-5 text-gray-400 group-hover/button:translate-x-1 transition-transform" />
+            </a>
+          </div>
+        </div>
 
       </div>
       
