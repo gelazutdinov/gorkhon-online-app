@@ -1,6 +1,7 @@
 import { useState, memo, useCallback, useMemo } from 'react';
 import { UserProfile } from '@/hooks/useUser';
 import Icon from '@/components/ui/icon';
+import LinaAssistant from '@/components/LinaAssistant';
 
 import DataManager from '@/components/dashboard/DataManager';
 import StatisticsModal from '@/components/dashboard/StatisticsModal';
@@ -22,6 +23,7 @@ interface UserDashboardProps {
 
 const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, onSectionChange }: UserDashboardProps) => {
   const [showStatistics, setShowStatistics] = useState(false);
+  const [showLina, setShowLina] = useState(false);
 
   const [showDataManager, setShowDataManager] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -137,32 +139,32 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           </div>
           
           <div className="space-y-3">
-            <a
-              href="https://t.me/+QgiLIa1gFRY4Y2Iy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-blue-50 via-blue-50 to-blue-100 hover:from-blue-100 hover:via-blue-100 hover:to-blue-200 transition-all duration-300 text-left border border-blue-200 hover:border-blue-300 hover:shadow-lg group/button"
+            <button
+              onClick={() => setShowLina(true)}
+              className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-purple-50 via-violet-50 to-purple-100 hover:from-purple-100 hover:via-violet-100 hover:to-purple-200 transition-all duration-300 text-left border border-purple-200 hover:border-purple-300 hover:shadow-lg group/button"
             >
-              <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg md:rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-                <Icon name="MessageCircle" size={16} className="md:w-5 md:h-5 text-white" />
+              <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg md:rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
+                <Icon name="Bot" size={16} className="md:w-5 md:h-5 text-white" />
               </div>
               <div className="flex-1">
-                <div className="text-sm md:text-base font-bold text-gray-900 mb-1">Сообщество в Telegram</div>
-                <div className="text-xs md:text-sm text-blue-700">Задать вопрос или предложить идею</div>
+                <div className="text-sm md:text-base font-bold text-gray-900 mb-1">Чат с Линой</div>
+                <div className="text-xs md:text-sm text-purple-700">Задать вопрос ИИ-помощнику</div>
               </div>
-              <Icon name="ExternalLink" size={16} className="md:w-5 md:h-5 text-gray-400 group-hover/button:translate-x-1 transition-transform" />
-            </a>
+              <Icon name="ChevronRight" size={16} className="md:w-5 md:h-5 text-gray-400 group-hover/button:translate-x-1 transition-transform" />
+            </button>
             
             <a
-              href="mailto:support@poehali.dev"
+              href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-r from-green-50 via-emerald-50 to-green-100 hover:from-green-100 hover:via-emerald-100 hover:to-green-200 transition-all duration-300 text-left border border-green-200 hover:border-green-300 hover:shadow-lg group/button"
             >
               <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg md:rounded-2xl flex items-center justify-center shadow-md group-hover/button:scale-110 transition-transform duration-300">
-                <Icon name="Mail" size={16} className="md:w-5 md:h-5 text-white" />
+                <Icon name="FileText" size={16} className="md:w-5 md:h-5 text-white" />
               </div>
               <div className="flex-1">
-                <div className="text-sm md:text-base font-bold text-gray-900 mb-1">Написать на email</div>
-                <div className="text-xs md:text-sm text-green-700">support@poehali.dev</div>
+                <div className="text-sm md:text-base font-bold text-gray-900 mb-1">Форма обратной связи</div>
+                <div className="text-xs md:text-sm text-green-700">Оставить отзыв или предложение</div>
               </div>
               <Icon name="ExternalLink" size={16} className="md:w-5 md:h-5 text-gray-400 group-hover/button:translate-x-1 transition-transform" />
             </a>
@@ -260,6 +262,10 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
       {showSettings && (
         <SettingsModal onClose={handleCloseModal(setShowSettings)} />
+      )}
+
+      {showLina && (
+        <LinaAssistant onClose={() => setShowLina(false)} />
       )}
     </div>
   );
