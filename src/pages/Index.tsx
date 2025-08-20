@@ -146,6 +146,8 @@ const Index = () => {
         </main>
       </div>
 
+      </div>
+
       <PhotoCarousel 
         selectedImageIndex={selectedImageIndex}
         selectedPvzPhotos={selectedPvzPhotos}
