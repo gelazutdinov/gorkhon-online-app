@@ -144,6 +144,7 @@ const Index = () => {
             {activeSection === 'news' && <News />}
           </div>
         </main>
+      </div>
 
       <PhotoCarousel 
         selectedImageIndex={selectedImageIndex}
