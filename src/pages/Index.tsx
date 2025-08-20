@@ -128,7 +128,7 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
-          <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-24 md:pb-4">
+          <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-20 sm:pb-24 md:pb-4">
             {activeSection === 'home' && (
               <>
                 <Home onOpenPhotoCarousel={openPhotoCarousel} />
@@ -146,17 +146,10 @@ const Index = () => {
         </main>
       </div>
 
-      <PhotoCarousel 
-        selectedImageIndex={selectedImageIndex}
-        selectedPvzPhotos={selectedPvzPhotos}
-        onClose={closePhotoCarousel}
-        onNext={nextPhoto}
-        onPrev={prevPhoto}
-      />
-
       {/* VK-style Bottom Navigation for mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 safe-area-inset-bottom">
-        <div className="flex items-stretch" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg" 
+           style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+        <div className="flex items-stretch">
           {[
             { key: 'home', label: 'Главная', icon: 'Home' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
@@ -166,23 +159,30 @@ const Index = () => {
             <button
               key={item.key}
               onClick={() => handleSectionChange(item.key)}
-              className={`flex-1 flex flex-col items-center py-3 px-2 min-h-[52px] transition-all duration-200 touch-none ${
+              className={`flex-1 flex flex-col items-center py-2 px-1 transition-all duration-200 ${
                 activeSection === item.key 
-                  ? '' 
+                  ? 'text-blue-600' 
                   : 'text-gray-400 hover:text-gray-600'
               }`}
-              style={activeSection === item.key ? {color: '#005BFF'} : {}}
             >
-              <div className={`p-2 rounded-full transition-all ${
+              <div className={`p-1.5 rounded-lg transition-all ${
                 activeSection === item.key ? 'bg-blue-50' : ''
               }`}>
-                <Icon name={item.icon as any} size={22} />
+                <Icon name={item.icon as any} size={20} />
               </div>
-              <span className="text-xs mt-1 font-medium">{item.label}</span>
+              <span className="text-xs mt-0.5 font-medium leading-tight">{item.label}</span>
             </button>
           ))}
         </div>
       </div>
+
+      <PhotoCarousel 
+        selectedImageIndex={selectedImageIndex}
+        selectedPvzPhotos={selectedPvzPhotos}
+        onClose={closePhotoCarousel}
+        onNext={nextPhoto}
+        onPrev={prevPhoto}
+      />
     </div>
   );
 };
