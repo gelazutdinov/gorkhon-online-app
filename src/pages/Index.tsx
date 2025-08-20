@@ -99,7 +99,7 @@ const Index = () => {
       </div>
 
       {/* VK-style Layout */}
-      <div className="flex pt-20 md:pt-20">
+      <div className="flex pt-24 md:pt-20">
         {/* Left Sidebar */}
         <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-20 bottom-0 overflow-y-auto">
           <div className="p-4 space-y-2">
@@ -128,7 +128,7 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
-          <div className="max-w-full md:max-w-2xl mx-auto px-3 py-2 md:p-4 space-y-3 md:space-y-4 pb-20 md:pb-4">
+          <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-24 md:pb-4">
             {activeSection === 'home' && (
               <>
                 <Home onOpenPhotoCarousel={openPhotoCarousel} />
@@ -167,7 +167,7 @@ const Index = () => {
               onClick={() => handleSectionChange(item.key)}
               className={`flex-1 flex flex-col items-center py-3 px-2 min-h-[52px] transition-all duration-200 touch-none ${
                 activeSection === item.key 
-                  ? 'transform scale-105' 
+                  ? '' 
                   : 'text-gray-400 hover:text-gray-600'
               }`}
               style={activeSection === item.key ? {color: '#005BFF'} : {}}
@@ -182,7 +182,6 @@ const Index = () => {
           ))}
         </div>
       </div>
-    </div>
     </div>
   );
 };

@@ -1,9 +1,5 @@
 const WeatherSourcesPanel = () => {
-  return (
-    <div className="p-6">
-      {/* Пустая панель источников погоды */}
-    </div>
-  );
+  return null;
 };
 
 export default WeatherSourcesPanel;
