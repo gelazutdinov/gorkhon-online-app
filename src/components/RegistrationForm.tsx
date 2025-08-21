@@ -234,6 +234,7 @@ const RegistrationForm = ({ onRegister, onLogin }: RegistrationFormProps) => {
             <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
           )}
         </div>
+        )}
 
         {/* Пол */}
         {!isLoginMode && (
