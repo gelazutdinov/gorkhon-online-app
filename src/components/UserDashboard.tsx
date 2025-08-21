@@ -9,6 +9,7 @@ import BackupModal from '@/components/dashboard/BackupModal';
 import AccessibilityModal from '@/components/dashboard/AccessibilityModal';
 import SettingsModal from '@/components/dashboard/SettingsModal';
 import SecuritySettings from '@/components/security/SecuritySettings';
+import ProfileEditModal from '@/components/ProfileEditModal';
 
 interface UserDashboardProps {
   user: UserProfile;
@@ -29,6 +30,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   const [showSecurity, setShowSecurity] = useState(false);
   const [showBackup, setShowBackup] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
 
   const getTimeOfDay = useCallback(() => {
     // Иркутск UTC+8
@@ -69,23 +71,13 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           <div className="absolute inset-0 bg-black/20"></div>
         </div>
         
-        {/* VK-style header bar */}
-        <div className="absolute top-0 left-0 right-0 p-4 flex items-center justify-between text-white">
-          <div className="flex items-center gap-2">
-            <Icon name="ArrowLeft" size={24} />
-            <span className="text-lg font-medium">Профиль</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Icon name="QrCode" size={24} />
-            <Icon name="MoreHorizontal" size={24} />
-          </div>
-        </div>
+
 
         {/* Profile info section - moved to white background */}
       </div>
 
       {/* Profile info on white background */}
-      <div className="bg-white px-6 py-4 border-b">
+      <div className="bg-white px-4 sm:px-6 py-4 border-b rounded-t-3xl -mt-6 relative z-10">
         <div className="flex items-center gap-4">
           {/* Avatar with online indicator */}
           <div className="relative">
@@ -114,7 +106,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
 
       {/* Navigation tabs */}
-      <div className="bg-white border-b">
+      <div className="bg-white border-b mx-4 sm:mx-0 rounded-2xl sm:rounded-none">
         <div className="flex">
           <button 
             onClick={() => setActiveTab('profile')}
@@ -147,11 +139,11 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
       </div>
 
       {/* Content area */}
-      <div className="p-4 space-y-4">
+      <div className="p-4 space-y-4 pb-20">
         {activeTab === 'profile' && (
           <>
             {/* Status card */}
-            <div className="bg-white rounded-lg p-4 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
               <div className="text-sm text-gray-600 space-y-1">
                 <p>Статус: <span className="text-blue-600 font-medium">{activityLevel}</span></p>
                 <p>Дней с нами: <span className="font-medium">{daysWithUs}</span></p>
@@ -168,7 +160,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
             {/* Statistics */}
             <button 
               onClick={() => setShowStatistics(true)}
-              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+              className="w-full bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-md transition-shadow active:scale-98"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -184,8 +176,8 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
             {/* Profile Settings */}
             <button 
-              onClick={() => setShowSettings(true)}
-              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+              onClick={() => setShowProfileEdit(true)}
+              className="w-full bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-md transition-shadow active:scale-98"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -202,7 +194,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
             {/* General Settings */}
             <button 
               onClick={() => setShowSettings(true)}
-              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+              className="w-full bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-md transition-shadow active:scale-98"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
@@ -221,12 +213,12 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         {activeTab === 'support' && (
           <div className="space-y-4">
             {/* Support section */}
-            <div className="bg-white rounded-lg p-4 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
               <h3 className="font-medium mb-3">Поддержка и помощь</h3>
               <div className="space-y-2">
                 <button
                   onClick={() => setShowLina(true)}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-purple-50 hover:bg-purple-100 transition-colors"
+                  className="w-full flex items-center gap-3 p-3 rounded-2xl bg-purple-50 hover:bg-purple-100 transition-colors active:scale-98"
                 >
                   <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
                     <Icon name="Bot" size={16} className="text-white" />
@@ -243,7 +235,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
                   href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-green-50 hover:bg-green-100 transition-colors"
+                  className="w-full flex items-center gap-3 p-3 rounded-2xl bg-green-50 hover:bg-green-100 transition-colors active:scale-98"
                 >
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                     <Icon name="FileText" size={16} className="text-white" />
@@ -258,7 +250,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
             </div>
 
             {/* FAQ section */}
-            <div className="bg-white rounded-lg p-4 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
               <h3 className="font-medium mb-3">Часто задаваемые вопросы</h3>
               <div className="space-y-3 text-sm">
                 <div className="pb-3 border-b border-gray-100">
@@ -281,7 +273,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         {/* Logout */}
         <button 
           onClick={onLogout}
-          className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+          className="w-full bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between hover:shadow-md transition-shadow active:scale-98"
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -338,6 +330,16 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
       {showLina && (
         <LinaAssistant onClose={() => setShowLina(false)} />
+      )}
+
+      {showProfileEdit && (
+        <ProfileEditModal 
+          user={user}
+          onClose={() => setShowProfileEdit(false)}
+          onSave={(updatedProfile) => {
+            console.log('Profile updated:', updatedProfile);
+          }}
+        />
       )}
     </div>
   );
