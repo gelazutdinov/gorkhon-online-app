@@ -59,7 +59,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   return (
     <div className="min-h-screen bg-gray-100">
       {/* VK-style Header with cover photo */}
-      <div className="relative h-96 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -81,88 +81,37 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           </div>
         </div>
 
-        {/* Profile info section */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <div className="flex items-end gap-4">
-            {/* Avatar with online indicator */}
-            <div className="relative">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
-                <Icon name="User" size={32} className="text-white" />
-              </div>
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-green-500 border-4 border-white flex items-center justify-center">
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-              </div>
+        {/* Profile info section - moved to white background */}
+      </div>
+
+      {/* Profile info on white background */}
+      <div className="bg-white px-6 py-4 border-b">
+        <div className="flex items-center gap-4">
+          {/* Avatar with online indicator */}
+          <div className="relative">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+              <Icon name="User" size={24} className="text-white" />
             </div>
-            
-            {/* Name and status */}
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                {user.name}
-                <Icon name="Globe" size={16} className="text-blue-200" />
-                <Icon name="Check" size={16} className="text-green-400" />
-              </h1>
-              <p className="text-blue-100 text-lg">Космонавт-разработчик 🚀</p>
-              <p className="text-blue-200 text-sm mt-1">https://poehali.dev/user/{user.id}</p>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
           </div>
-
-          {/* Location and work info */}
-          <div className="flex items-center gap-4 mt-3 text-blue-200 text-sm">
-            <div className="flex items-center gap-1">
-              <Icon name="MapPin" size={16} />
-              <span>Космос</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Icon name="Briefcase" size={16} />
-              <span>Космонавт-разработчик</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Icon name="Calendar" size={16} />
-              <span>{daysWithUs} дней с нами</span>
+          
+          {/* Name and status */}
+          <div className="flex-1">
+            <h1 className="text-xl font-bold flex items-center gap-2 text-gray-900">
+              {user.name}
+              <Icon name="Check" size={16} className="text-blue-500" />
+            </h1>
+            <p className="text-gray-600">Участник Горхон.Online</p>
+            <div className="flex items-center gap-4 mt-1 text-gray-500 text-sm">
+              <span>Последняя активность: сегодня</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Subscribe button */}
-      <div className="bg-white px-6 py-4 border-b">
-        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-          <Icon name="Plus" size={20} />
-          Подписаться
-        </button>
-      </div>
 
-      {/* Stats section */}
-      <div className="bg-white px-6 py-4 border-b">
-        <div className="flex justify-between">
-          <div className="text-center">
-            <div className="text-2xl font-bold">{daysWithUs * 11}</div>
-            <div className="text-gray-500 text-sm">друзей</div>
-            <div className="flex justify-center -space-x-2 mt-2">
-              <div className="w-8 h-8 bg-blue-400 rounded-full border-2 border-white"></div>
-              <div className="w-8 h-8 bg-green-400 rounded-full border-2 border-white"></div>
-              <div className="w-8 h-8 bg-purple-400 rounded-full border-2 border-white"></div>
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold">{Math.floor(daysWithUs / 2) + 57}</div>
-            <div className="text-gray-500 text-sm">подписчиков</div>
-            <div className="flex justify-center -space-x-2 mt-2">
-              <div className="w-8 h-8 bg-red-400 rounded-full border-2 border-white"></div>
-              <div className="w-8 h-8 bg-yellow-400 rounded-full border-2 border-white"></div>
-              <div className="w-8 h-8 bg-pink-400 rounded-full border-2 border-white"></div>
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold">{Math.floor(daysWithUs * 1.5)}</div>
-            <div className="text-gray-500 text-sm">записей</div>
-            <div className="flex justify-center -space-x-2 mt-2">
-              <div className="w-8 h-8 bg-indigo-400 rounded-full border-2 border-white"></div>
-              <div className="w-8 h-8 bg-teal-400 rounded-full border-2 border-white"></div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Navigation tabs */}
       <div className="bg-white border-b">
@@ -246,23 +195,6 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
         {activeTab === 'settings' && (
           <div className="space-y-2">
-            {/* Data Management */}
-            <button 
-              onClick={() => setShowDataManager(true)}
-              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Icon name="Database" size={20} className="text-blue-600" />
-                </div>
-                <div className="text-left">
-                  <div className="font-medium">Управление данными</div>
-                  <div className="text-sm text-gray-500">Импорт, экспорт и резервные копии</div>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={20} className="text-gray-400" />
-            </button>
-
             {/* Statistics */}
             <button 
               onClick={() => setShowStatistics(true)}
@@ -275,57 +207,6 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
                 <div className="text-left">
                   <div className="font-medium">Статистика использования</div>
                   <div className="text-sm text-gray-500">Анализ активности и времени в системе</div>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={20} className="text-gray-400" />
-            </button>
-
-            {/* Backup */}
-            <button 
-              onClick={() => setShowBackup(true)}
-              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                  <Icon name="Download" size={20} className="text-yellow-600" />
-                </div>
-                <div className="text-left">
-                  <div className="font-medium">Резервные копии</div>
-                  <div className="text-sm text-gray-500">Создание и восстановление бэкапов</div>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={20} className="text-gray-400" />
-            </button>
-
-            {/* Accessibility */}
-            <button 
-              onClick={() => setShowAccessibility(true)}
-              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Icon name="Eye" size={20} className="text-purple-600" />
-                </div>
-                <div className="text-left">
-                  <div className="font-medium">Специальные возможности</div>
-                  <div className="text-sm text-gray-500">Настройки доступности интерфейса</div>
-                </div>
-              </div>
-              <Icon name="ChevronRight" size={20} className="text-gray-400" />
-            </button>
-
-            {/* Security Settings */}
-            <button 
-              onClick={() => setShowSecurity(true)}
-              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                  <Icon name="Shield" size={20} className="text-red-600" />
-                </div>
-                <div className="text-left">
-                  <div className="font-medium">Безопасность</div>
-                  <div className="text-sm text-gray-500">Настройки приватности и защиты</div>
                 </div>
               </div>
               <Icon name="ChevronRight" size={20} className="text-gray-400" />
@@ -365,7 +246,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
                   </div>
                   <div className="text-left flex-1">
                     <div className="text-sm font-medium">Лина - ИИ помощник</div>
-                    <div className="text-xs text-purple-700">Решение проблем и техническая поддержка онлайн</div>
+                    <div className="text-xs text-purple-700">Помощь по платформе Горхон.Online</div>
                   </div>
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <Icon name="ChevronRight" size={16} className="text-gray-400" />
@@ -394,16 +275,16 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
               <h3 className="font-medium mb-3">Часто задаваемые вопросы</h3>
               <div className="space-y-3 text-sm">
                 <div className="pb-3 border-b border-gray-100">
-                  <p className="font-medium text-gray-900 mb-1">Как опубликовать сайт?</p>
-                  <p className="text-gray-600">Нажмите "Опубликовать" в редакторе и выберите домен</p>
+                  <p className="font-medium text-gray-900 mb-1">Что такое Горхон.Online?</p>
+                  <p className="text-gray-600">Платформа для социального взаимодействия и обмена контентом</p>
                 </div>
                 <div className="pb-3 border-b border-gray-100">
-                  <p className="font-medium text-gray-900 mb-1">Как подключить GitHub?</p>
-                  <p className="text-gray-600">В меню "Скачать" → "Подключить GitHub"</p>
+                  <p className="font-medium text-gray-900 mb-1">Как изменить настройки профиля?</p>
+                  <p className="text-gray-600">Перейдите в раздел "Настройки" → "Общие настройки"</p>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 mb-1">Где скачать код проекта?</p>
-                  <p className="text-gray-600">В разделе "Скачать" → "Скачать код"</p>
+                  <p className="font-medium text-gray-900 mb-1">Где посмотреть мою активность?</p>
+                  <p className="text-gray-600">В разделе "Профиль" отображается последняя активность</p>
                 </div>
               </div>
             </div>
