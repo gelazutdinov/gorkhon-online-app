@@ -22,6 +22,7 @@ interface UserDashboardProps {
 const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, onSectionChange }: UserDashboardProps) => {
   const [showStatistics, setShowStatistics] = useState(false);
   const [showLina, setShowLina] = useState(false);
+  const [activeTab, setActiveTab] = useState('profile');
 
   const [showDataManager, setShowDataManager] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -56,213 +57,371 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   }, [daysWithUs]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      {/* Welcome Card */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-3xl p-8 text-white shadow-2xl">
-        <div className="flex items-center gap-6">
-          <div className="relative">
-            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-              <Icon name="User" size={32} className="text-white" />
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white"></div>
+    <div className="min-h-screen bg-gray-100">
+      {/* VK-style Header with cover photo */}
+      <div className="relative h-64 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://cdn.poehali.dev/files/2e43dd04-da49-4cb6-94af-b3ea0347467f.jpg)'
+          }}
+        >
+          <div className="absolute inset-0 bg-black/20"></div>
+        </div>
+        
+        {/* VK-style header bar */}
+        <div className="absolute top-0 left-0 right-0 p-4 flex items-center justify-between text-white">
+          <div className="flex items-center gap-2">
+            <Icon name="ArrowLeft" size={24} />
+            <span className="text-lg font-medium">Профиль</span>
           </div>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold mb-2">{timeOfDay}, {user.name}!</h1>
-            <p className="text-blue-100 text-lg">
-              Рады видеть вас в космическом центре разработки
-            </p>
-            <div className="flex items-center gap-4 mt-4 text-sm">
-              <div className="flex items-center gap-1">
-                <Icon name="Calendar" size={16} />
-                <span>С нами {daysWithUs} дней</span>
+          <div className="flex items-center gap-4">
+            <Icon name="QrCode" size={24} />
+            <Icon name="MoreHorizontal" size={24} />
+          </div>
+        </div>
+
+        {/* Profile info section */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <div className="flex items-end gap-4">
+            {/* Avatar with online indicator */}
+            <div className="relative">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
+                <Icon name="User" size={32} className="text-white" />
               </div>
-              <div className="flex items-center gap-1">
-                <Icon name="Clock" size={16} />
-                <span>{formattedTimeSpent} в полете</span>
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-green-500 border-4 border-white flex items-center justify-center">
+                <div className="w-3 h-3 bg-white rounded-full"></div>
               </div>
-              <div className="flex items-center gap-1">
-                <Icon name="Trophy" size={16} />
-                <span>{activityLevel}</span>
-              </div>
+            </div>
+            
+            {/* Name and status */}
+            <div className="flex-1">
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                {user.name}
+                <Icon name="Globe" size={16} className="text-blue-200" />
+                <Icon name="Check" size={16} className="text-green-400" />
+              </h1>
+              <p className="text-blue-100 text-lg">Космонавт-разработчик 🚀</p>
+              <p className="text-blue-200 text-sm mt-1">https://poehali.dev/user/{user.id}</p>
+            </div>
+          </div>
+
+          {/* Location and work info */}
+          <div className="flex items-center gap-4 mt-3 text-blue-200 text-sm">
+            <div className="flex items-center gap-1">
+              <Icon name="MapPin" size={16} />
+              <span>Космос</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Icon name="Briefcase" size={16} />
+              <span>Космонавт-разработчик</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Icon name="Calendar" size={16} />
+              <span>{daysWithUs} дней с нами</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Actions Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Data Management */}
-        <button 
-          onClick={() => setShowDataManager(true)}
-          className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-              <Icon name="Database" size={24} className="text-blue-600" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900">Управление данными</h3>
-              <p className="text-sm text-gray-500">Импорт, экспорт и резервные копии</p>
-            </div>
-          </div>
-          <div className="text-xs text-gray-400 flex items-center gap-1">
-            <Icon name="ArrowRight" size={14} />
-            <span>Открыть панель</span>
-          </div>
-        </button>
-
-        {/* Statistics */}
-        <button 
-          onClick={() => setShowStatistics(true)}
-          className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
-              <Icon name="BarChart3" size={24} className="text-green-600" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900">Статистика использования</h3>
-              <p className="text-sm text-gray-500">Анализ активности и времени в системе</p>
-            </div>
-          </div>
-          <div className="text-xs text-gray-400 flex items-center gap-1">
-            <Icon name="ArrowRight" size={14} />
-            <span>Посмотреть аналитику</span>
-          </div>
-        </button>
-
-        {/* Backup */}
-        <button 
-          onClick={() => setShowBackup(true)}
-          className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
-              <Icon name="Download" size={24} className="text-yellow-600" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900">Резервные копии</h3>
-              <p className="text-sm text-gray-500">Создание и восстановление бэкапов</p>
-            </div>
-          </div>
-          <div className="text-xs text-gray-400 flex items-center gap-1">
-            <Icon name="ArrowRight" size={14} />
-            <span>Управлять копиями</span>
-          </div>
-        </button>
-
-        {/* Accessibility */}
-        <button 
-          onClick={() => setShowAccessibility(true)}
-          className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-              <Icon name="Eye" size={24} className="text-purple-600" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900">Специальные возможности</h3>
-              <p className="text-sm text-gray-500">Настройки доступности интерфейса</p>
-            </div>
-          </div>
-          <div className="text-xs text-gray-400 flex items-center gap-1">
-            <Icon name="ArrowRight" size={14} />
-            <span>Настроить доступность</span>
-          </div>
-        </button>
-
-        {/* Security */}
-        <button 
-          onClick={() => setShowSecurity(true)}
-          className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-200 transition-colors">
-              <Icon name="Shield" size={24} className="text-red-600" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900">Безопасность</h3>
-              <p className="text-sm text-gray-500">Настройки приватности и защиты</p>
-            </div>
-          </div>
-          <div className="text-xs text-gray-400 flex items-center gap-1">
-            <Icon name="ArrowRight" size={14} />
-            <span>Настроить безопасность</span>
-          </div>
-        </button>
-
-        {/* General Settings */}
-        <button 
-          onClick={() => setShowSettings(true)}
-          className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-              <Icon name="Settings" size={24} className="text-gray-600" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900">Общие настройки</h3>
-              <p className="text-sm text-gray-500">Основные параметры приложения</p>
-            </div>
-          </div>
-          <div className="text-xs text-gray-400 flex items-center gap-1">
-            <Icon name="ArrowRight" size={14} />
-            <span>Открыть настройки</span>
-          </div>
+      {/* Subscribe button */}
+      <div className="bg-white px-6 py-4 border-b">
+        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+          <Icon name="Plus" size={20} />
+          Подписаться
         </button>
       </div>
 
-      {/* Support Section */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Поддержка и помощь</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Lina AI Assistant */}
-          <button
-            onClick={() => setShowLina(true)}
-            className="flex items-center gap-4 p-6 rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 text-white hover:from-purple-600 hover:to-violet-700 transition-all duration-300 shadow-lg"
+      {/* Stats section */}
+      <div className="bg-white px-6 py-4 border-b">
+        <div className="flex justify-between">
+          <div className="text-center">
+            <div className="text-2xl font-bold">{daysWithUs * 11}</div>
+            <div className="text-gray-500 text-sm">друзей</div>
+            <div className="flex justify-center -space-x-2 mt-2">
+              <div className="w-8 h-8 bg-blue-400 rounded-full border-2 border-white"></div>
+              <div className="w-8 h-8 bg-green-400 rounded-full border-2 border-white"></div>
+              <div className="w-8 h-8 bg-purple-400 rounded-full border-2 border-white"></div>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold">{Math.floor(daysWithUs / 2) + 57}</div>
+            <div className="text-gray-500 text-sm">подписчиков</div>
+            <div className="flex justify-center -space-x-2 mt-2">
+              <div className="w-8 h-8 bg-red-400 rounded-full border-2 border-white"></div>
+              <div className="w-8 h-8 bg-yellow-400 rounded-full border-2 border-white"></div>
+              <div className="w-8 h-8 bg-pink-400 rounded-full border-2 border-white"></div>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold">{Math.floor(daysWithUs * 1.5)}</div>
+            <div className="text-gray-500 text-sm">записей</div>
+            <div className="flex justify-center -space-x-2 mt-2">
+              <div className="w-8 h-8 bg-indigo-400 rounded-full border-2 border-white"></div>
+              <div className="w-8 h-8 bg-teal-400 rounded-full border-2 border-white"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation tabs */}
+      <div className="bg-white border-b">
+        <div className="flex">
+          <button 
+            onClick={() => setActiveTab('profile')}
+            className={`flex-1 py-3 px-4 font-medium ${activeTab === 'profile' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
           >
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-              <Icon name="Bot" size={24} className="text-white" />
+            <div className="flex items-center justify-center gap-2">
+              <Icon name="User" size={20} />
+              <span>Профиль</span>
             </div>
-            <div className="text-left flex-1">
-              <h3 className="font-semibold text-lg">Лина - ИИ помощник</h3>
-              <p className="text-purple-100 text-sm">Готова помочь и ответить на вопросы</p>
-            </div>
-            <div className="w-3 h-3 bg-green-400 rounded-full"></div>
           </button>
-
-          {/* Feedback Form */}
-          <a
-            href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-4 p-6 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg"
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`flex-1 py-3 px-4 font-medium ${activeTab === 'settings' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
           >
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-              <Icon name="FileText" size={24} className="text-white" />
+            <div className="flex items-center justify-center gap-2">
+              <Icon name="Settings" size={20} />
+              <span>Настройки</span>
             </div>
-            <div className="text-left flex-1">
-              <h3 className="font-semibold text-lg">Горячая линия</h3>
-              <p className="text-green-100 text-sm">Оставить отзыв или сообщить о проблеме</p>
+          </button>
+          <button 
+            onClick={() => setActiveTab('support')}
+            className={`flex-1 py-3 px-4 font-medium ${activeTab === 'support' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <Icon name="Bot" size={20} />
+              <span>Поддержка</span>
             </div>
-            <Icon name="ExternalLink" size={20} className="text-white/80" />
-          </a>
+          </button>
         </div>
       </div>
 
-      {/* Logout Section */}
-      <div className="bg-white rounded-2xl shadow-lg p-6">
+      {/* Content area */}
+      <div className="p-4 space-y-4">
+        {activeTab === 'profile' && (
+          <>
+            {/* Welcome card */}
+            <div className="bg-white rounded-lg p-4 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-semibold">{timeOfDay}, {user.name}!</h3>
+                <Icon name="Star" size={20} className="text-yellow-500" />
+              </div>
+              <div className="text-sm text-gray-600 space-y-1">
+                <p>Статус: <span className="text-blue-600 font-medium">{activityLevel}</span></p>
+                <p>Дней с нами: <span className="font-medium">{daysWithUs}</span></p>
+                <p>Времени в платформе: <span className="font-medium">{formattedTimeSpent}</span></p>
+              </div>
+            </div>
+
+            {/* Activity feed */}
+            <div className="bg-white rounded-lg p-4 shadow-sm">
+              <h3 className="font-medium mb-3">Последняя активность</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <Icon name="Code" size={16} className="text-green-600" />
+                  </div>
+                  <span className="text-gray-600">Создал новый проект</span>
+                  <span className="text-gray-400 text-xs ml-auto">2 часа назад</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Icon name="MessageCircle" size={16} className="text-blue-600" />
+                  </div>
+                  <span className="text-gray-600">Обратился в поддержку</span>
+                  <span className="text-gray-400 text-xs ml-auto">1 день назад</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Icon name="Globe" size={16} className="text-purple-600" />
+                  </div>
+                  <span className="text-gray-600">Опубликовал сайт</span>
+                  <span className="text-gray-400 text-xs ml-auto">3 дня назад</span>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="space-y-2">
+            {/* Data Management */}
+            <button 
+              onClick={() => setShowDataManager(true)}
+              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Icon name="Database" size={20} className="text-blue-600" />
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">Управление данными</div>
+                  <div className="text-sm text-gray-500">Импорт, экспорт и резервные копии</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-gray-400" />
+            </button>
+
+            {/* Statistics */}
+            <button 
+              onClick={() => setShowStatistics(true)}
+              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <Icon name="BarChart3" size={20} className="text-green-600" />
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">Статистика использования</div>
+                  <div className="text-sm text-gray-500">Анализ активности и времени в системе</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-gray-400" />
+            </button>
+
+            {/* Backup */}
+            <button 
+              onClick={() => setShowBackup(true)}
+              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <Icon name="Download" size={20} className="text-yellow-600" />
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">Резервные копии</div>
+                  <div className="text-sm text-gray-500">Создание и восстановление бэкапов</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-gray-400" />
+            </button>
+
+            {/* Accessibility */}
+            <button 
+              onClick={() => setShowAccessibility(true)}
+              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                  <Icon name="Eye" size={20} className="text-purple-600" />
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">Специальные возможности</div>
+                  <div className="text-sm text-gray-500">Настройки доступности интерфейса</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-gray-400" />
+            </button>
+
+            {/* Security Settings */}
+            <button 
+              onClick={() => setShowSecurity(true)}
+              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <Icon name="Shield" size={20} className="text-red-600" />
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">Безопасность</div>
+                  <div className="text-sm text-gray-500">Настройки приватности и защиты</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-gray-400" />
+            </button>
+
+            {/* General Settings */}
+            <button 
+              onClick={() => setShowSettings(true)}
+              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Icon name="Settings" size={20} className="text-gray-600" />
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">Общие настройки</div>
+                  <div className="text-sm text-gray-500">Основные параметры приложения</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-gray-400" />
+            </button>
+          </div>
+        )}
+
+        {activeTab === 'support' && (
+          <div className="space-y-4">
+            {/* Support section */}
+            <div className="bg-white rounded-lg p-4 shadow-sm">
+              <h3 className="font-medium mb-3">Поддержка и помощь</h3>
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowLina(true)}
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-purple-50 hover:bg-purple-100 transition-colors"
+                >
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                    <Icon name="Bot" size={16} className="text-white" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <div className="text-sm font-medium">Лина - ИИ помощник</div>
+                    <div className="text-xs text-purple-700">Решение проблем и техническая поддержка онлайн</div>
+                  </div>
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <Icon name="ChevronRight" size={16} className="text-gray-400" />
+                </button>
+                
+                <a
+                  href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center gap-3 p-3 rounded-lg bg-green-50 hover:bg-green-100 transition-colors"
+                >
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                    <Icon name="FileText" size={16} className="text-white" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <div className="text-sm font-medium">Горячая линия</div>
+                    <div className="text-xs text-green-700">Оставить отзыв или сообщить о проблеме</div>
+                  </div>
+                  <Icon name="ExternalLink" size={16} className="text-gray-400" />
+                </a>
+              </div>
+            </div>
+
+            {/* FAQ section */}
+            <div className="bg-white rounded-lg p-4 shadow-sm">
+              <h3 className="font-medium mb-3">Часто задаваемые вопросы</h3>
+              <div className="space-y-3 text-sm">
+                <div className="pb-3 border-b border-gray-100">
+                  <p className="font-medium text-gray-900 mb-1">Как опубликовать сайт?</p>
+                  <p className="text-gray-600">Нажмите "Опубликовать" в редакторе и выберите домен</p>
+                </div>
+                <div className="pb-3 border-b border-gray-100">
+                  <p className="font-medium text-gray-900 mb-1">Как подключить GitHub?</p>
+                  <p className="text-gray-600">В меню "Скачать" → "Подключить GitHub"</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900 mb-1">Где скачать код проекта?</p>
+                  <p className="text-gray-600">В разделе "Скачать" → "Скачать код"</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Logout */}
         <button 
           onClick={onLogout}
-          className="w-full flex items-center justify-between p-4 rounded-xl border-2 border-red-200 hover:border-red-300 hover:bg-red-50 transition-all duration-300 group"
+          className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-200 transition-colors">
-              <Icon name="LogOut" size={24} className="text-red-600" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+              <Icon name="LogOut" size={20} className="text-red-600" />
             </div>
             <div className="text-left">
-              <h3 className="font-semibold text-red-600">Выйти из аккаунта</h3>
-              <p className="text-sm text-gray-500">Завершить текущую сессию</p>
+              <div className="font-medium text-red-600">Выйти из аккаунта</div>
+              <div className="text-sm text-gray-500">Завершить текущую сессию</div>
             </div>
           </div>
           <Icon name="ArrowRight" size={20} className="text-red-500" />
