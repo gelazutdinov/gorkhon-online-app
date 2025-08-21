@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
 interface SettingsModalProps {
   onClose: () => void;
+  isVerified?: boolean;
+  onVerificationToggle?: (verified: boolean) => void;
 }
 
-const SettingsModal = ({ onClose }: SettingsModalProps) => {
+const SettingsModal = ({ onClose, isVerified = false, onVerificationToggle }: SettingsModalProps) => {
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-md" onClick={onClose}></div>
@@ -44,6 +47,26 @@ const SettingsModal = ({ onClose }: SettingsModalProps) => {
                 </div>
                 <button className="w-12 h-6 bg-gorkhon-pink rounded-full relative flex-shrink-0 min-touch">
                   <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1 transition-transform"></div>
+                </button>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium text-gray-800 text-sm sm:text-base truncate flex items-center gap-2">
+                    <Icon name="BadgeCheck" size={16} className="text-blue-500 flex-shrink-0" />
+                    Верификация
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-600 break-words">Показывать галочку верификации</div>
+                </div>
+                <button 
+                  onClick={() => onVerificationToggle?.(!isVerified)}
+                  className={`w-12 h-6 rounded-full relative flex-shrink-0 min-touch transition-colors ${
+                    isVerified ? 'bg-gorkhon-pink' : 'bg-gray-300'
+                  }`}
+                >
+                  <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform ${
+                    isVerified ? 'right-1' : 'left-1'
+                  }`}></div>
                 </button>
               </div>
             </div>

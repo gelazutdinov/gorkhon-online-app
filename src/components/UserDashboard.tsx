@@ -28,6 +28,9 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   const [showDataManager, setShowDataManager] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showSecurity, setShowSecurity] = useState(false);
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
+  const [userProfile, setUserProfile] = useState(user);
+  const [isVerified, setIsVerified] = useState(false);
   const [showBackup, setShowBackup] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
@@ -81,8 +84,12 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         <div className="flex items-center gap-4">
           {/* Avatar with online indicator */}
           <div className="relative">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
-              <Icon name="User" size={24} className="text-white" />
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+              {userProfile.avatar ? (
+                <img src={userProfile.avatar} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                <Icon name="User" size={24} className="text-white" />
+              )}
             </div>
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
               <div className="w-2 h-2 bg-white rounded-full"></div>
@@ -92,9 +99,12 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           {/* Name and status */}
           <div className="flex-1">
             <h1 className="text-xl font-bold flex items-center gap-2 text-gray-900">
-              {user.name}
+              {userProfile.name}
+              {isVerified && (
+                <Icon name="BadgeCheck" size={20} className="text-blue-500" />
+              )}
             </h1>
-            <p className="text-gray-600">Участник Горхон.Online</p>
+            <p className="text-gray-600">{userProfile.bio || 'Участник Горхон.Online'}</p>
             <div className="flex items-center gap-4 mt-1 text-gray-500 text-sm">
               <span>Последняя активность: сегодня</span>
             </div>
@@ -324,7 +334,11 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
       )}
 
       {showSettings && (
-        <SettingsModal onClose={handleCloseModal(setShowSettings)} />
+        <SettingsModal 
+          onClose={handleCloseModal(setShowSettings)}
+          isVerified={isVerified}
+          onVerificationToggle={setIsVerified}
+        />
       )}
 
       {showLina && (
@@ -333,12 +347,12 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
       {showProfileEdit && (
         <ProfileEditModal 
-          user={user}
+          user={userProfile}
           onClose={() => setShowProfileEdit(false)}
           onSave={(updatedProfile) => {
             console.log('Profile updated:', updatedProfile);
-            // TODO: Здесь должна быть логика обновления профиля
-            // В реальном приложении это был бы API вызов
+            setUserProfile(prev => ({ ...prev, ...updatedProfile }));
+            setShowProfileEdit(false);
             alert('Профиль успешно обновлен!');
           }}
         />
