@@ -61,7 +61,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   return (
     <div className="min-h-screen bg-gray-100">
       {/* VK-style Header with cover photo */}
-      <div className="relative h-48 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden rounded-t-3xl">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -114,7 +114,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           >
             <div className="flex items-center justify-center gap-2">
               <Icon name="User" size={20} />
-              <span>Профиль</span>
+              <span className="hidden sm:inline">Профиль</span>
             </div>
           </button>
           <button 
@@ -123,7 +123,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           >
             <div className="flex items-center justify-center gap-2">
               <Icon name="Settings" size={20} />
-              <span>Настройки</span>
+              <span className="hidden sm:inline">Настройки</span>
             </div>
           </button>
           <button 
@@ -132,7 +132,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           >
             <div className="flex items-center justify-center gap-2">
               <Icon name="Bot" size={20} />
-              <span>Поддержка</span>
+              <span className="hidden sm:inline">Поддержка</span>
             </div>
           </button>
         </div>
