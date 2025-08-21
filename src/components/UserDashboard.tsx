@@ -93,7 +93,6 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           <div className="flex-1">
             <h1 className="text-xl font-bold flex items-center gap-2 text-gray-900">
               {user.name}
-              <Icon name="BadgeCheck" size={16} className="text-blue-500" />
             </h1>
             <p className="text-gray-600">Участник Горхон.Online</p>
             <div className="flex items-center gap-4 mt-1 text-gray-500 text-sm">
@@ -107,7 +106,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
 
       {/* Navigation tabs */}
       <div className="bg-white border-b mx-4 sm:mx-0 rounded-2xl sm:rounded-none">
-        <div className="flex">
+        <div className="flex rounded-2xl sm:rounded-none overflow-hidden">
           <button 
             onClick={() => setActiveTab('profile')}
             className={`flex-1 py-3 px-4 font-medium ${activeTab === 'profile' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
@@ -338,6 +337,9 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           onClose={() => setShowProfileEdit(false)}
           onSave={(updatedProfile) => {
             console.log('Profile updated:', updatedProfile);
+            // TODO: Здесь должна быть логика обновления профиля
+            // В реальном приложении это был бы API вызов
+            alert('Профиль успешно обновлен!');
           }}
         />
       )}

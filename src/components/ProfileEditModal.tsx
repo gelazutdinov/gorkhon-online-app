@@ -11,6 +11,7 @@ interface ProfileEditModalProps {
 export default function ProfileEditModal({ user, onClose, onSave }: ProfileEditModalProps) {
   const [formData, setFormData] = useState({
     name: user.name,
+    middleName: '',
     bio: 'Участник Горхон.Online',
     location: 'Россия',
     website: '',
@@ -19,8 +20,16 @@ export default function ProfileEditModal({ user, onClose, onSave }: ProfileEditM
     email: user.email || ''
   });
 
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
   const handleSave = () => {
-    onSave?.(formData);
+    const updatedProfile = { ...formData };
+    if (avatarFile) {
+      // В реальном приложении здесь была бы загрузка файла на сервер
+      updatedProfile.avatar = avatarPreview;
+    }
+    onSave?.(updatedProfile);
     onClose();
   };
 
@@ -56,6 +65,37 @@ export default function ProfileEditModal({ user, onClose, onSave }: ProfileEditM
 
         {/* Форма */}
         <div className="p-6 space-y-6">
+          {/* Аватар */}
+          <div className="flex flex-col items-center space-y-4">
+            <div className="relative">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  <Icon name="User" size={32} className="text-white" />
+                )}
+              </div>
+              <label className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors shadow-lg">
+                <Icon name="Camera" size={16} className="text-white" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setAvatarFile(file);
+                      const reader = new FileReader();
+                      reader.onload = () => setAvatarPreview(reader.result as string);
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+              </label>
+            </div>
+            <p className="text-sm text-gray-500 text-center">Нажмите на камеру, чтобы изменить фото</p>
+          </div>
+
           {/* Основная информация */}
           <div className="space-y-4">
             <h3 className="font-semibold text-gray-900">Основная информация</h3>
@@ -70,6 +110,19 @@ export default function ProfileEditModal({ user, onClose, onSave }: ProfileEditM
                 onChange={(e) => handleChange('name', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Введите ваше имя"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Отчество
+              </label>
+              <input
+                type="text"
+                value={formData.middleName}
+                onChange={(e) => handleChange('middleName', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Введите отчество (необязательно)"
               />
             </div>
 
