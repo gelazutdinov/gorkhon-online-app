@@ -59,7 +59,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   return (
     <div className="min-h-screen bg-gray-100">
       {/* VK-style Header with cover photo */}
-      <div className="relative h-64 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
+      <div className="relative h-96 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
