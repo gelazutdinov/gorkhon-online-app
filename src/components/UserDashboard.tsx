@@ -33,7 +33,6 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
   const [isVerified, setIsVerified] = useState(false);
   const [showBackup, setShowBackup] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
-  const [showProfileEdit, setShowProfileEdit] = useState(false);
 
   const getTimeOfDay = useCallback(() => {
     // Иркутск UTC+8
