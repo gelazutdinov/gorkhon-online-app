@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
-import { useUser } from '@/hooks/useUser';
+import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
-import RegistrationForm from '@/components/RegistrationForm';
-import UserDashboard from '@/components/UserDashboard';
+import AuthForm from '@/components/AuthForm';
+import UserDashboard_New from '@/components/UserDashboard_New';
 import NotificationBanner from '@/components/NotificationBanner';
 
 
@@ -12,7 +12,7 @@ interface PersonalAccountProps {
 }
 
 const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
-  const { user, isLoading, register, logout, updateUser, getDaysWithUs, getFormattedTimeSpent } = useUser();
+  const { user, isLoading, isLoggedIn } = useAuth();
   const { currentTheme, changeTheme } = useTheme();
 
   // Защита от ошибок загрузки
@@ -27,26 +27,17 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
 
 
   // Если пользователь авторизован, показываем дашборд
-  if (user) {
-    console.log('User data:', user); // Отладочная информация
-    try {
-      return (
-        <div className="space-y-4 md:space-y-6">
-          <UserDashboard 
-            user={user}
-            daysWithUs={getDaysWithUs()}
-            formattedTimeSpent={getFormattedTimeSpent()}
-            onLogout={logout}
-            onUserUpdate={updateUser}
-            onSectionChange={onSectionChange}
-          />
+  if (isLoggedIn && user) {
+    return (
+      <div className="space-y-4 md:space-y-6">
+        <UserDashboard_New />
         
-          {/* Системные уведомления */}
-          <NotificationBanner />
+        {/* Системные уведомления */}
+        <NotificationBanner />
         
-          {/* Правовая информация */}
-          <div className="text-center pt-3 md:pt-4 border-t border-gray-200">
-            <h4 className="text-sm font-medium text-gray-600 mb-2 md:mb-3">Правовая информация</h4>
+        {/* Правовая информация */}
+        <div className="text-center pt-3 md:pt-4 border-t border-gray-200">
+          <h4 className="text-sm font-medium text-gray-600 mb-2 md:mb-3">Правовая информация</h4>
             
             <div className="space-y-2">
               <div>
@@ -115,7 +106,7 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
   // Если пользователь не авторизован, показываем форму регистрации + информацию о проекте
   return (
     <div className="space-y-6 md:space-y-8">
-      <RegistrationForm onRegister={register} />
+      <AuthForm />
       
       {/* Информация о проекте */}
       <div className="space-y-4 md:space-y-6">
