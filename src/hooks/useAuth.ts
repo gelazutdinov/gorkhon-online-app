@@ -1,6 +1,36 @@
 import { useState, useEffect, useCallback } from 'react';
-import { userService } from '@/services/userService';
-import { UserProfile, UserRegistrationData, UserLoginData } from '@/types/user';
+import { apiClient } from '@/services/apiClient';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  middleName?: string;
+  phone?: string;
+  birthDate?: string;
+  avatar?: string;
+  role: 'user' | 'admin';
+  status: 'active' | 'inactive' | 'banned';
+  isVerified: boolean;
+  createdAt: string;
+  updatedAt: string;
+  lastLoginAt?: string;
+  loginCount: number;
+}
+
+export interface UserRegistrationData {
+  email: string;
+  password: string;
+  name: string;
+  middleName?: string;
+  phone?: string;
+  birthDate?: string;
+}
+
+export interface UserLoginData {
+  email: string;
+  password: string;
+}
 
 export const useAuth = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -8,10 +38,17 @@ export const useAuth = () => {
 
   // Загружаем пользователя при инициализации
   useEffect(() => {
-    const loadCurrentUser = () => {
-      const currentUser = userService.getCurrentUser();
-      setUser(currentUser);
-      setIsLoading(false);
+    const loadCurrentUser = async () => {
+      try {
+        const result = await apiClient.getCurrentUser();
+        if (result.success && result.user) {
+          setUser(result.user);
+        }
+      } catch (error) {
+        console.error('Load user error:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     loadCurrentUser();
@@ -20,7 +57,7 @@ export const useAuth = () => {
   // Регистрация
   const register = useCallback(async (data: UserRegistrationData) => {
     try {
-      const result = await userService.register(data);
+      const result = await apiClient.register(data);
       if (result.success && result.user) {
         setUser(result.user);
         return { success: true };
@@ -35,7 +72,7 @@ export const useAuth = () => {
   // Вход в систему
   const login = useCallback(async (data: UserLoginData) => {
     try {
-      const result = await userService.login(data);
+      const result = await apiClient.login(data);
       if (result.success && result.user) {
         setUser(result.user);
         return { success: true };
@@ -50,7 +87,7 @@ export const useAuth = () => {
   // Выход из системы
   const logout = useCallback(async () => {
     try {
-      await userService.logout();
+      await apiClient.logout();
       setUser(null);
       return { success: true };
     } catch (error) {
@@ -64,7 +101,7 @@ export const useAuth = () => {
     if (!user) return { success: false, error: 'Пользователь не авторизован' };
 
     try {
-      const result = await userService.updateProfile(user.id, updates);
+      const result = await apiClient.updateProfile(updates);
       if (result.success && result.user) {
         setUser(result.user);
         return { success: true };
@@ -81,7 +118,7 @@ export const useAuth = () => {
     if (!user) return { success: false, error: 'Пользователь не авторизован' };
 
     try {
-      const result = await userService.changePassword(user.id, currentPassword, newPassword);
+      const result = await apiClient.changePassword(currentPassword, newPassword);
       return result;
     } catch (error) {
       console.error('Password change error:', error);

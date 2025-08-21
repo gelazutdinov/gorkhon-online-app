@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import ServerStatus from '@/components/ServerStatus';
 import Icon from '@/components/ui/icon';
 
 const AuthForm = () => {
@@ -96,6 +97,8 @@ const AuthForm = () => {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 space-y-6">
+      <ServerStatus />
+      
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900">
           {isLoginMode ? 'Вход в профиль' : 'Создание профиля'}
