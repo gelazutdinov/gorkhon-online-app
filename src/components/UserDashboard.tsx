@@ -101,7 +101,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
           <div className="flex-1">
             <h1 className="text-xl font-bold flex items-center gap-2 text-gray-900">
               {user.name}
-              <Icon name="Check" size={16} className="text-blue-500" />
+              <Icon name="BadgeCheck" size={16} className="text-blue-500" />
             </h1>
             <p className="text-gray-600">Участник Горхон.Online</p>
             <div className="flex items-center gap-4 mt-1 text-gray-500 text-sm">
@@ -150,12 +150,8 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
       <div className="p-4 space-y-4">
         {activeTab === 'profile' && (
           <>
-            {/* Welcome card */}
+            {/* Status card */}
             <div className="bg-white rounded-lg p-4 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold">{timeOfDay}, {user.name}!</h3>
-                <Icon name="Star" size={20} className="text-yellow-500" />
-              </div>
               <div className="text-sm text-gray-600 space-y-1">
                 <p>Статус: <span className="text-blue-600 font-medium">{activityLevel}</span></p>
                 <p>Дней с нами: <span className="font-medium">{daysWithUs}</span></p>
@@ -163,33 +159,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
               </div>
             </div>
 
-            {/* Activity feed */}
-            <div className="bg-white rounded-lg p-4 shadow-sm">
-              <h3 className="font-medium mb-3">Последняя активность</h3>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <Icon name="Code" size={16} className="text-green-600" />
-                  </div>
-                  <span className="text-gray-600">Создал новый проект</span>
-                  <span className="text-gray-400 text-xs ml-auto">2 часа назад</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Icon name="MessageCircle" size={16} className="text-blue-600" />
-                  </div>
-                  <span className="text-gray-600">Обратился в поддержку</span>
-                  <span className="text-gray-400 text-xs ml-auto">1 день назад</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Icon name="Globe" size={16} className="text-purple-600" />
-                  </div>
-                  <span className="text-gray-600">Опубликовал сайт</span>
-                  <span className="text-gray-400 text-xs ml-auto">3 дня назад</span>
-                </div>
-              </div>
-            </div>
+
           </>
         )}
 
@@ -207,6 +177,23 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
                 <div className="text-left">
                   <div className="font-medium">Статистика использования</div>
                   <div className="text-sm text-gray-500">Анализ активности и времени в системе</div>
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-gray-400" />
+            </button>
+
+            {/* Profile Settings */}
+            <button 
+              onClick={() => setShowSettings(true)}
+              className="w-full bg-white p-4 rounded-lg shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Icon name="User" size={20} className="text-blue-600" />
+                </div>
+                <div className="text-left">
+                  <div className="font-medium">Редактировать профиль</div>
+                  <div className="text-sm text-gray-500">Изменить информацию о себе</div>
                 </div>
               </div>
               <Icon name="ChevronRight" size={20} className="text-gray-400" />
