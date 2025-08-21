@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
 interface RegistrationFormProps {
-  onRegister: (userData: { name: string; email: string; phone: string; gender: 'male' | 'female'; birthDate: string; avatar: string }) => void;
+  onRegister: (userData: { name: string; email: string; phone: string; gender: 'male' | 'female'; birthDate: string }) => void;
 }
 
 const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
@@ -12,8 +12,7 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
     email: '',
     phone: '',
     gender: 'male' as 'male' | 'female',
-    birthDate: '',
-    avatar: '👤'
+    birthDate: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -207,36 +206,7 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
           )}
         </div>
 
-        {/* Выбор аватара */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
-            Аватар профиля
-          </label>
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-2xl">
-              {formData.avatar}
-            </div>
-            <div className="flex-1">
-              <div className="grid grid-cols-6 gap-2 mb-3">
-                {['👤', '😊', '🙂', '😎', '🤓', '🥳', '😇', '🤠', '👑', '🎯', '🚀', '⭐'].map((emoji) => (
-                  <button
-                    key={emoji}
-                    type="button"
-                    onClick={() => handleChange('avatar', emoji)}
-                    className={`w-8 h-8 rounded-lg text-lg hover:bg-gray-100 transition-colors ${
-                      formData.avatar === emoji ? 'bg-gorkhon-pink/20' : ''
-                    }`}
-                  >
-                    {emoji}
-                  </button>
-                ))}
-              </div>
-              <p className="text-xs text-gray-500">
-                Выберите эмодзи или загрузите фото в личном кабинете
-              </p>
-            </div>
-          </div>
-        </div>
+
 
         {/* Согласие с правовыми документами */}
         <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
