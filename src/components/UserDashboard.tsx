@@ -226,7 +226,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
             </div>
             <div className="text-left flex-1">
               <h3 className="font-semibold text-lg">Лина - ИИ помощник</h3>
-              <p className="text-purple-100 text-sm">Решение проблем и техническая поддержка онлайн</p>
+              <p className="text-purple-100 text-sm">Готова помочь и ответить на вопросы</p>
             </div>
             <div className="w-3 h-3 bg-green-400 rounded-full"></div>
           </button>
@@ -242,8 +242,8 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
               <Icon name="FileText" size={24} className="text-white" />
             </div>
             <div className="text-left flex-1">
-              <h3 className="font-semibold text-lg">Форма обратной связи</h3>
-              <p className="text-green-100 text-sm">Оставить отзыв или предложение по платформе</p>
+              <h3 className="font-semibold text-lg">Горячая линия</h3>
+              <p className="text-green-100 text-sm">Оставить отзыв или сообщить о проблеме</p>
             </div>
             <Icon name="ExternalLink" size={20} className="text-white/80" />
           </a>
