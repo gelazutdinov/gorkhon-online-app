@@ -63,7 +63,7 @@ const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, on
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: 'url(https://cdn.poehali.dev/files/2e43dd04-da49-4cb6-94af-b3ea0347467f.jpg)'
+            backgroundImage: 'url(https://cdn.poehali.dev/files/0e65e83e-1fcf-4edf-88f3-1506ccc9f6f7.jpg)'
           }}
         >
           <div className="absolute inset-0 bg-black/20"></div>
