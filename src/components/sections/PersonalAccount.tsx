@@ -90,106 +90,145 @@ const PersonalAccount = ({ onSectionChange }: PersonalAccountProps) => {
     <div className="space-y-6 md:space-y-8">
       <AuthForm />
       
-      {/* Информация о проекте */}
+      {/* Информация о проекте в стиле ВКонтакте */}
       <div className="space-y-4 md:space-y-6">
-        <div className="text-center">
-          <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">О платформе Горхон.Online</h3>
-          <p className="text-sm md:text-base text-gray-600">Узнайте больше о нашем проекте и миссии</p>
-        </div>
-
-        {/* О проекте */}
-        <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-blue-100">
-          <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-gorkhon-pink to-gorkhon-green rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
-              <Icon name="Info" size={18} className="md:w-5 md:h-5 text-white" />
+        {/* Заголовок в стиле VK */}
+        <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-3 md:gap-4 mb-4">
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Icon name="Info" size={24} className="md:w-8 md:h-8 text-white" />
             </div>
-            <div>
-              <h4 className="text-lg md:text-xl font-bold text-gray-800 mb-1">О проекте</h4>
-              <p className="text-xs md:text-sm text-gray-500">Наша миссия и цели</p>
+            <div className="flex-1">
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">О платформе Горхон.Online</h3>
+              <p className="text-sm md:text-base text-gray-500">Узнайте больше о нашем проекте и миссии</p>
             </div>
           </div>
-          <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-            Горхон.Online — это цифровая платформа, созданная для удобства жителей поселка Горхон. 
-            Мы объединяем всю важную информацию в одном месте, делая жизнь нашего сообщества более 
-            комфортной и связанной.
-          </p>
-        </div>
-
-        {/* Миссия */}
-        <div className="bg-gradient-to-br from-white to-green-50/30 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-green-100">
-          <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-gorkhon-green to-green-600 rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
-              <Icon name="Target" size={18} className="md:w-5 md:h-5 text-white" />
-            </div>
-            <div>
-              <h4 className="text-lg md:text-xl font-bold text-gray-800 mb-1">Наша миссия</h4>
-              <p className="text-xs md:text-sm text-gray-500">К чему мы стремимся</p>
-            </div>
-          </div>
-          <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-            Сделать жизнь в Горхоне максимально удобной через цифровые технологии. 
-            Мы стремимся создать единое информационное пространство, где каждый житель 
-            может быстро найти нужную информацию и получить помощь.
-          </p>
-        </div>
-
-        {/* Преимущества */}
-        <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100">
-          <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
-              <Icon name="CheckCircle" size={18} className="md:w-5 md:h-5 text-white" />
-            </div>
-            <div>
-              <h4 className="text-lg md:text-xl font-bold text-gray-800 mb-1">Преимущества</h4>
-              <p className="text-xs md:text-sm text-gray-500">Почему стоит выбрать нас</p>
-            </div>
-          </div>
-          <div className="grid gap-3 md:gap-4">
-            <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-blue-50 rounded-lg">
-              <div className="w-6 h-6 md:w-8 md:h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Icon name="Clock" size={14} className="md:w-4 md:h-4 text-blue-600" />
-              </div>
-              <span className="text-sm md:text-base text-gray-700 font-medium">Доступ к информации 24/7</span>
-            </div>
-            <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-purple-50 rounded-lg">
-              <div className="w-6 h-6 md:w-8 md:h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Icon name="Smartphone" size={14} className="md:w-4 md:h-4 text-purple-600" />
-              </div>
-              <span className="text-sm md:text-base text-gray-700 font-medium">Удобный мобильный интерфейс</span>
-            </div>
-            <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-green-50 rounded-lg">
-              <div className="w-6 h-6 md:w-8 md:h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Icon name="Users" size={14} className="md:w-4 md:h-4 text-green-600" />
-              </div>
-              <span className="text-sm md:text-base text-gray-700 font-medium">Связь с сообществом</span>
-            </div>
-            <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-orange-50 rounded-lg">
-              <div className="w-6 h-6 md:w-8 md:h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Icon name="Zap" size={14} className="md:w-4 md:h-4 text-orange-600" />
-              </div>
-              <span className="text-sm md:text-base text-gray-700 font-medium">Быстрый доступ к услугам</span>
-            </div>
+          
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-100">
+            <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+              <span className="font-semibold text-blue-600">Горхон.Online</span> — современная цифровая платформа для жителей поселка Горхон. 
+              Мы создаем единое пространство для общения, получения информации и доступа к важным услугам.
+            </p>
           </div>
         </div>
 
-        {/* Уникальные особенности */}
-        <div className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-xl md:rounded-2xl p-4 md:p-6 text-white shadow-lg">
-          <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-            <Icon name="Star" size={20} className="md:w-6 md:h-6 text-white" />
-            <h4 className="text-base md:text-lg font-semibold">Уникальные особенности</h4>
+        {/* Основные разделы в VK стиле */}
+        <div className="space-y-3">
+          {/* Миссия */}
+          <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Icon name="Target" size={18} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-lg font-bold text-gray-800 mb-2">Наша миссия</h4>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                  Объединить жителей Горхона через удобные цифровые сервисы и создать платформу, 
+                  где каждый может получить нужную информацию, помощь и поддержку сообщества.
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="grid gap-2 md:gap-3">
-            <div className="flex items-center gap-2 md:gap-3">
-              <Icon name="MapPin" size={14} className="md:w-4 md:h-4 text-white/80 flex-shrink-0" />
-              <span className="text-sm md:text-base">Локальная информация специально для Горхона</span>
+
+          {/* Что мы предлагаем */}
+          <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Icon name="Gift" size={18} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-lg font-bold text-gray-800 mb-3">Что мы предлагаем</h4>
+                <div className="grid gap-2.5">
+                  <div className="flex items-center gap-2.5 p-2.5 bg-blue-50 rounded-lg border border-blue-100">
+                    <Icon name="Newspaper" size={16} className="text-blue-600 flex-shrink-0" />
+                    <span className="text-sm font-medium text-gray-700">Актуальные новости и объявления</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 p-2.5 bg-green-50 rounded-lg border border-green-100">
+                    <Icon name="Cloud" size={16} className="text-green-600 flex-shrink-0" />
+                    <span className="text-sm font-medium text-gray-700">Прогноз погоды и климат</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 p-2.5 bg-purple-50 rounded-lg border border-purple-100">
+                    <Icon name="Users" size={16} className="text-purple-600 flex-shrink-0" />
+                    <span className="text-sm font-medium text-gray-700">Личный кабинет и профиль</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 p-2.5 bg-orange-50 rounded-lg border border-orange-100">
+                    <Icon name="MessageCircle" size={16} className="text-orange-600 flex-shrink-0" />
+                    <span className="text-sm font-medium text-gray-700">ИИ-помощник Лина для вопросов</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2 md:gap-3">
-              <Icon name="Heart" size={14} className="md:w-4 md:h-4 text-white/80 flex-shrink-0" />
-              <span className="text-sm md:text-base">Создано жителями для жителей</span>
+          </div>
+
+          {/* Преимущества */}
+          <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Icon name="Zap" size={18} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-lg font-bold text-gray-800 mb-3">Почему выбирают нас</h4>
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">Работаем 24/7 без выходных</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">Адаптивный дизайн для всех устройств</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">Безопасность и защита данных</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">Постоянное развитие и улучшение</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2 md:gap-3">
-              <Icon name="Shield" size={14} className="md:w-4 md:h-4 text-white/80 flex-shrink-0" />
-              <span className="text-sm md:text-base">Безопасность и конфиденциальность данных</span>
+          </div>
+        </div>
+
+        {/* Уникальные особенности - главная карточка */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl md:rounded-2xl p-5 md:p-6 text-white shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                <Icon name="Star" size={24} className="text-white" />
+              </div>
+              <div>
+                <h4 className="text-xl md:text-2xl font-bold">Особенности платформы</h4>
+                <p className="text-white/80 text-sm">Что делает нас уникальными</p>
+              </div>
+            </div>
+            
+            <div className="grid gap-3 md:gap-4">
+              <div className="flex items-center gap-3 p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+                <Icon name="MapPin" size={20} className="text-white/90 flex-shrink-0" />
+                <div>
+                  <span className="text-white font-medium text-sm md:text-base">Локальный фокус</span>
+                  <p className="text-white/70 text-xs md:text-sm">Информация специально для жителей Горхона</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+                <Icon name="Heart" size={20} className="text-white/90 flex-shrink-0" />
+                <div>
+                  <span className="text-white font-medium text-sm md:text-base">Сообщество</span>
+                  <p className="text-white/70 text-xs md:text-sm">Создано жителями для жителей</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+                <Icon name="Smartphone" size={20} className="text-white/90 flex-shrink-0" />
+                <div>
+                  <span className="text-white font-medium text-sm md:text-base">Современность</span>
+                  <p className="text-white/70 text-xs md:text-sm">Актуальные технологии и удобный интерфейс</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
