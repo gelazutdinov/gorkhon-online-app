@@ -76,7 +76,12 @@ app.use(morgan('combined'));
 // Функции для работы с базой данных
 const initDatabase = (): Promise<void> => {
   return new Promise((resolve, reject) => {
-    const dbPath = path.join(process.cwd(), 'server', 'database.sqlite');
+    // Правильный путь к базе данных
+    const dbPath = process.cwd().endsWith('server') 
+      ? path.join(process.cwd(), 'database.sqlite')
+      : path.join(process.cwd(), 'server', 'database.sqlite');
+    
+    console.log(`🗄️ Путь к базе данных: ${dbPath}`);
     
     db = new sqlite3.Database(dbPath, (err) => {
       if (err) {
