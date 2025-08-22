@@ -36,14 +36,14 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
     <>
       {/* Мобильное навигационное меню */}
       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 safe-area-bottom md:hidden">
-        <div className="bg-[#005BFF] rounded-3xl px-4 py-3 shadow-2xl">
+        <div className="bg-[#005BFF] rounded-[1.5rem] px-4 py-3 shadow-2xl">
           <div className="flex items-center gap-6">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onSectionChange(item.id)}
                 className={`
-                  relative flex items-center justify-center p-3 rounded-2xl transition-all duration-300 min-h-[48px] min-w-[48px]
+                  relative flex items-center justify-center p-3 rounded-xl transition-all duration-300 min-h-[48px] min-w-[48px]
                   ${activeSection === item.id 
                     ? 'bg-white/20 scale-110 shadow-lg' 
                     : 'hover:bg-white/10 hover:scale-105 active:scale-95'

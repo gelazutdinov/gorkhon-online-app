@@ -3,17 +3,17 @@ import Icon from "@/components/ui/icon";
 
 const Header = () => {
   return (
-    <div data-tutorial="header" className="bg-gorkhon-pink text-white px-3 sm:px-4 py-6 sm:py-8 relative overflow-hidden rounded-b-3xl sm:rounded-b-[2rem]" style={{backgroundColor: '#F1117E'}}>
+    <div data-tutorial="header" className="bg-gorkhon-pink text-white px-3 sm:px-4 py-6 sm:py-8 relative overflow-hidden rounded-b-[2rem] sm:rounded-b-[2rem]" style={{backgroundColor: '#F1117E'}}>
 
       
       <div className="w-full max-w-md mx-auto text-center relative z-10">
         <div className="flex flex-col items-center gap-3 sm:gap-4 mb-3 sm:mb-4 group">
           <div className="relative">
-            <div className="absolute inset-0 bg-white/20 rounded-xl sm:rounded-2xl blur-md group-hover:blur-lg transition-all duration-300"></div>
+            <div className="absolute inset-0 bg-white/20 rounded-2xl sm:rounded-2xl blur-md group-hover:blur-lg transition-all duration-300"></div>
             <img 
               src="https://cdn.poehali.dev/files/0ca339b4-243b-452e-a71d-b8405f228c6e.png" 
               alt="Логотип Горхон Online" 
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-300"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl sm:rounded-2xl shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-300"
             />
           </div>
           <div className="flex flex-col items-center gap-1 text-center">
