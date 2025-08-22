@@ -35,7 +35,7 @@ export class DatabaseService {
 
   initialize(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const dbPath = path.join(process.cwd(), 'server', 'database.sqlite');
+      const dbPath = path.join(process.cwd(), 'database.sqlite');
       
       this.db = new sqlite3.Database(dbPath, (err) => {
         if (err) {

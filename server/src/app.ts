@@ -16,9 +16,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Инициализация базы данных
-DatabaseService.getInstance().initialize();
-
 // Middleware безопасности
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
@@ -82,11 +79,32 @@ app.use('/api/*', (req, res) => {
 // Обработка ошибок
 app.use(errorHandler);
 
-// Запуск сервера
-app.listen(PORT, () => {
-  console.log(`🚀 Сервер запущен на порту ${PORT}`);
-  console.log(`📊 API доступно по адресу: http://localhost:${PORT}/api`);
-  console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
-});
+// Асинхронная инициализация и запуск сервера
+async function startServer() {
+  try {
+    // Инициализация базы данных
+    console.log('🔄 Инициализация базы данных...');
+    await DatabaseService.getInstance().initialize();
+    console.log('✅ База данных инициализирована');
+
+    // Запуск сервера
+    app.listen(PORT, () => {
+      console.log(`🚀 Сервер запущен на порту ${PORT}`);
+      console.log(`📊 API доступно по адресу: http://localhost:${PORT}/api`);
+      console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
+    });
+  } catch (error) {
+    console.error('❌ Ошибка запуска сервера:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
+
+startServer();
+}
+
+// Запускаем сервер
+startServer();
 
 export default app;
