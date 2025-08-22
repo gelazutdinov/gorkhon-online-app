@@ -99,11 +99,6 @@ async function startServer() {
   }
 }
 
-startServer();
-
-startServer();
-}
-
 // Запускаем сервер
 startServer();
 
