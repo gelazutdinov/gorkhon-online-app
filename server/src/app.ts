@@ -1,105 +1,139 @@
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
-
-import authRoutes from './routes/auth';
-import userRoutes from './routes/users';
-import adminRoutes from './routes/admin';
-import { errorHandler } from './middleware/errorHandler';
-import { DatabaseService } from './services/DatabaseService';
-
-dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-
-// Middleware безопасности
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    },
-  },
-}));
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 минут
-  max: 100, // максимум 100 запросов с одного IP
-  message: 'Слишком много запросов с этого IP, попробуйте позже.'
-});
-app.use('/api/', limiter);
+const PORT = 3001;
 
 // CORS
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-domain.com', 'https://poehali.dev'] 
-    : ['http://localhost:5173', 'http://localhost:3000'],
+  origin: ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));
 
-// Парсинг JSON
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+// JSON parsing
+app.use(express.json());
 
-// Логирование
-app.use(morgan('combined'));
+console.log('🔄 Запуск минимального сервера...');
 
-// Маршруты API
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes);
+// Простые данные в памяти
+const users = [
+  {
+    id: 'admin_1',
+    email: 'smm@gelazutdinov.ru',
+    password: 'admin123',
+    name: 'Администратор',
+    role: 'admin'
+  }
+];
 
-// Проверка здоровья сервера
+// Health check
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    memory: process.memoryUsage(),
     version: '1.0.0'
   });
 });
 
-// Обработка 404
-app.use('/api/*', (req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    error: 'API endpoint not found' 
+// Login
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  console.log('Попытка входа:', email);
+  
+  const user = users.find(u => u.email === email && u.password === password);
+  
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      error: 'Неверные данные'
+    });
+  }
+  
+  const { password: _, ...userSafe } = user;
+  
+  res.json({
+    success: true,
+    data: {
+      user: userSafe,
+      token: `token_${Date.now()}`
+    }
   });
 });
 
-// Обработка ошибок
-app.use(errorHandler);
-
-// Асинхронная инициализация и запуск сервера
-async function startServer() {
-  try {
-    // Инициализация базы данных
-    console.log('🔄 Инициализация базы данных...');
-    await DatabaseService.getInstance().initialize();
-    console.log('✅ База данных инициализирована');
-
-    // Запуск сервера
-    app.listen(PORT, () => {
-      console.log(`🚀 Сервер запущен на порту ${PORT}`);
-      console.log(`📊 API доступно по адресу: http://localhost:${PORT}/api`);
-      console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
+// Register
+app.post('/api/auth/register', (req, res) => {
+  const { email, password, name } = req.body;
+  
+  if (users.find(u => u.email === email)) {
+    return res.status(409).json({
+      success: false,
+      error: 'Пользователь уже существует'
     });
-  } catch (error) {
-    console.error('❌ Ошибка запуска сервера:', error);
-    process.exit(1);
   }
-}
+  
+  const newUser = {
+    id: `user_${Date.now()}`,
+    email,
+    password,
+    name,
+    role: 'user'
+  };
+  
+  users.push(newUser);
+  
+  const { password: _, ...userSafe } = newUser;
+  
+  res.json({
+    success: true,
+    data: {
+      user: userSafe,
+      token: `token_${Date.now()}`
+    }
+  });
+});
 
-// Запускаем сервер
-startServer();
+// Current user
+app.get('/api/auth/me', (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  
+  if (!token || !token.startsWith('token_')) {
+    return res.status(401).json({
+      success: false,
+      error: 'Нет токена'
+    });
+  }
+  
+  const { password: _, ...userSafe } = users[0];
+  
+  res.json({
+    success: true,
+    data: { user: userSafe }
+  });
+});
+
+// Logout
+app.post('/api/auth/logout', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Выход выполнен'
+  });
+});
+
+// 404
+app.use('/api/*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    error: 'Endpoint не найден'
+  });
+});
+
+// Запуск
+app.listen(PORT, () => {
+  console.log(`✅ Сервер запущен на http://localhost:${PORT}`);
+  console.log(`🏥 Health: http://localhost:${PORT}/api/health`);
+  console.log(`👤 Админ: smm@gelazutdinov.ru / admin123`);
+});
 
 export default app;
