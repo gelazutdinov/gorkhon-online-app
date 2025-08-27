@@ -9,14 +9,21 @@ const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  // Инициализация состояния на основе localStorage
+  const [rememberMe, setRememberMe] = useState(() => {
+    return localStorage.getItem('rememberMe') === 'true';
+  });
 
-  // Загружаем сохраненные данные при инициализации
   const [formData, setFormData] = useState(() => {
     // Проверяем сохраненные данные входа
     const savedEmail = localStorage.getItem('savedEmail') || '';
     const savedPassword = localStorage.getItem('savedPassword') || '';
-    const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
+    
+    console.log('🔍 Проверка сохраненных данных:', {
+      savedEmail,
+      savedPassword: savedPassword ? '***' : '',
+      rememberMe: localStorage.getItem('rememberMe') === 'true'
+    });
     
     // Также проверяем старую систему аутентификации как резерв
     const gorkhonUsers = localStorage.getItem('gorkhon_users');
@@ -31,21 +38,31 @@ const AuthForm = () => {
           const lastUser = users[users.length - 1];
           fallbackEmail = lastUser.email || '';
           fallbackPassword = lastUser.password || '';
+          console.log('📦 Загружены данные из старой системы:', {
+            email: fallbackEmail,
+            password: fallbackPassword ? '***' : ''
+          });
         }
       } catch (error) {
         console.error('Ошибка чтения старых данных:', error);
       }
     }
     
-    setRememberMe(savedRememberMe);
-    
-    return {
+    const finalData = {
       name: '',
       email: savedEmail || fallbackEmail,
       password: savedPassword || fallbackPassword,
       birthDate: '',
       gender: 'male' as 'male' | 'female'
     };
+    
+    console.log('📋 Финальные данные формы:', {
+      email: finalData.email,
+      password: finalData.password ? '***' : '',
+      rememberMe: localStorage.getItem('rememberMe') === 'true'
+    });
+    
+    return finalData;
   });
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -107,11 +124,17 @@ const AuthForm = () => {
             localStorage.setItem('savedEmail', formData.email);
             localStorage.setItem('savedPassword', formData.password);
             localStorage.setItem('rememberMe', 'true');
+            console.log('✅ Данные входа сохранены:', {
+              email: formData.email,
+              password: '***',
+              rememberMe: true
+            });
           } else {
             // Очищаем сохраненные данные, если не выбрано "Запомнить меня"
             localStorage.removeItem('savedEmail');
             localStorage.removeItem('savedPassword');
             localStorage.removeItem('rememberMe');
+            console.log('🗑️ Сохраненные данные очищены');
           }
           setSuccess('Добро пожаловать!');
         } else {
@@ -146,6 +169,71 @@ const AuthForm = () => {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 space-y-6">
+      {/* Отладочная панель - только для разработки */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs">
+          <strong>🔧 Отладка localStorage:</strong>
+          <div className="mt-1 space-y-1">
+            <div>savedEmail: {localStorage.getItem('savedEmail') || 'не найден'}</div>
+            <div>savedPassword: {localStorage.getItem('savedPassword') ? '***' : 'не найден'}</div>
+            <div>rememberMe: {localStorage.getItem('rememberMe') || 'не найден'}</div>
+            <div>rememberMe state: {rememberMe.toString()}</div>
+          </div>
+          <div className="flex gap-2 mt-2">
+            <button
+              type="button"
+              onClick={() => {
+                console.log('📊 localStorage содержимое:');
+                console.log('savedEmail:', localStorage.getItem('savedEmail'));
+                console.log('savedPassword:', localStorage.getItem('savedPassword'));
+                console.log('rememberMe:', localStorage.getItem('rememberMe'));
+                console.log('formData:', formData);
+                console.log('rememberMe state:', rememberMe);
+              }}
+              className="px-2 py-1 bg-blue-500 text-white text-xs rounded"
+            >
+              Логировать
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.setItem('savedEmail', 'test@example.com');
+                localStorage.setItem('savedPassword', 'test123');
+                localStorage.setItem('rememberMe', 'true');
+                setFormData(prev => ({
+                  ...prev,
+                  email: 'test@example.com',
+                  password: 'test123'
+                }));
+                setRememberMe(true);
+                alert('Тестовые данные сохранены!');
+              }}
+              className="px-2 py-1 bg-green-500 text-white text-xs rounded"
+            >
+              Тест сохранения
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem('savedEmail');
+                localStorage.removeItem('savedPassword');
+                localStorage.removeItem('rememberMe');
+                setFormData(prev => ({
+                  ...prev,
+                  email: '',
+                  password: ''
+                }));
+                setRememberMe(false);
+                alert('Данные очищены!');
+              }}
+              className="px-2 py-1 bg-red-500 text-white text-xs rounded"
+            >
+              Очистить
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900">
           {isLoginMode ? 'Вход в профиль' : 'Создание профиля'}
