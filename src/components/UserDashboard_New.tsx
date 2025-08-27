@@ -21,33 +21,66 @@ const UserDashboard_New = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
-      {/* Заголовок с приветствием */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-2xl">
-              {user.avatar || (user.gender === 'female' ? '👩' : '👨')}
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Добро пожаловать, {user.name}!
-              </h1>
-              <p className="text-gray-600">{user.email}</p>
-              {isAdmin && (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                  <Icon name="Shield" className="w-3 h-3 mr-1" />
-                  Администратор
-                </span>
-              )}
-            </div>
+      {/* VK-стиль профиль с обложкой */}
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Обложка в стиле VK */}
+        <div className="relative h-48 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=400&fit=crop)'
+            }}
+          >
+            <div className="absolute inset-0 bg-black/20"></div>
           </div>
+          
+          {/* Кнопка выхода в правом углу */}
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+            className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-lg transition-colors"
           >
             <Icon name="LogOut" className="w-4 h-4" />
             Выйти
           </button>
+        </div>
+
+        {/* Профиль поверх обложки */}
+        <div className="relative -mt-12 px-6 pb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
+            {/* Аватар */}
+            <div className="w-24 h-24 bg-white rounded-full p-1 shadow-lg flex items-center justify-center text-3xl border-4 border-white">
+              {user.avatar || (user.gender === 'female' ? '👩' : '👨')}
+            </div>
+            
+            {/* Информация о пользователе */}
+            <div className="flex-1 bg-white rounded-lg p-4 shadow-sm">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    {user.name}
+                  </h1>
+                  <p className="text-gray-600">{user.email}</p>
+                </div>
+                {isAdmin && (
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                    <Icon name="Shield" className="w-3 h-3 mr-1" />
+                    Администратор
+                  </span>
+                )}
+              </div>
+              
+              <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                <span className="flex items-center gap-1">
+                  <Icon name="Calendar" className="w-4 h-4" />
+                  Регистрация: {user.createdAt ? new Date(user.createdAt).toLocaleDateString('ru-RU') : 'Недавно'}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Icon name="Clock" className="w-4 h-4" />
+                  Активность: {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString('ru-RU') : 'Сейчас'}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Быстрые действия */}
