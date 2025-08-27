@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./components/legal/PrivacyPolicy";
 import TermsOfService from "./components/legal/TermsOfService";
 import DataProtection from "./components/legal/DataProtection";
-import ProfileForm from "./components/ProfileForm";
+import AuthPage from "./components/auth/AuthPage";
 
 // Оптимизированная конфигурация QueryClient
 const queryClient = new QueryClient({
@@ -37,7 +37,9 @@ const App = () => (
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/data-protection" element={<DataProtection />} />
-          <Route path="/profile" element={<ProfileForm />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/register" element={<AuthPage />} />
+          <Route path="/login" element={<AuthPage />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
