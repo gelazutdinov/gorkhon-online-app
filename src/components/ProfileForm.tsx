@@ -7,9 +7,7 @@ const ProfileForm = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    name: '',
-    lastName: '',
-    phone: ''
+    name: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -84,36 +82,7 @@ const ProfileForm = () => {
             />
           </div>
 
-          {/* Last Name */}
-          <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">
-              Отчество
-            </Label>
-            <Input
-              id="lastName"
-              type="text"
-              placeholder="Отчество (необязательно)"
-              value={formData.lastName}
-              onChange={(e) => handleChange('lastName', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
 
-          {/* Phone */}
-          <div className="space-y-2">
-            <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
-              Телефон <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="phone"
-              type="tel"
-              placeholder="+7 (999) 123-45-67"
-              value={formData.phone}
-              onChange={(e) => handleChange('phone', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
 
           {/* Submit Button */}
           <Button 
