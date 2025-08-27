@@ -11,6 +11,7 @@ import PrivacyPolicy from "./components/legal/PrivacyPolicy";
 import TermsOfService from "./components/legal/TermsOfService";
 import DataProtection from "./components/legal/DataProtection";
 import AuthPage from "./components/auth/AuthPage";
+import TestAuth from "./components/TestAuth";
 
 // Оптимизированная конфигурация QueryClient
 const queryClient = new QueryClient({
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/register" element={<AuthPage />} />
           <Route path="/login" element={<AuthPage />} />
+          <Route path="/test-auth" element={<TestAuth />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
