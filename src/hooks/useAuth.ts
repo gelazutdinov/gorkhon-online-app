@@ -40,9 +40,10 @@ export const useAuth = () => {
   useEffect(() => {
     const loadCurrentUser = async () => {
       try {
-        const result = await apiClient.getCurrentUser();
-        if (result.success && result.user) {
-          setUser(result.user);
+        // Проверяем localStorage вместо сервера
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+          setUser(JSON.parse(savedUser));
         }
       } catch (error) {
         console.error('Load user error:', error);
@@ -57,12 +58,26 @@ export const useAuth = () => {
   // Регистрация
   const register = useCallback(async (data: UserRegistrationData) => {
     try {
-      const result = await apiClient.register(data);
-      if (result.success && result.user) {
-        setUser(result.user);
-        return { success: true };
-      }
-      return { success: false, error: result.error };
+      // Симуляция успешной регистрации без сервера
+      const mockUser: UserProfile = {
+        id: 'mock-user-' + Date.now(),
+        email: data.email,
+        name: data.name,
+        birthDate: data.birthDate,
+        role: 'user',
+        status: 'active',
+        isVerified: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        loginCount: 1
+      };
+
+      // Сохраняем в localStorage
+      localStorage.setItem('currentUser', JSON.stringify(mockUser));
+      localStorage.setItem('registrationData', JSON.stringify(data));
+      
+      setUser(mockUser);
+      return { success: true };
     } catch (error) {
       console.error('Registration error:', error);
       return { success: false, error: 'Произошла ошибка при регистрации' };
@@ -72,12 +87,20 @@ export const useAuth = () => {
   // Вход в систему
   const login = useCallback(async (data: UserLoginData) => {
     try {
-      const result = await apiClient.login(data);
-      if (result.success && result.user) {
-        setUser(result.user);
-        return { success: true };
+      // Проверяем данные в localStorage
+      const savedData = localStorage.getItem('registrationData');
+      if (savedData) {
+        const regData = JSON.parse(savedData);
+        if (regData.email === data.email && regData.password === data.password) {
+          const savedUser = localStorage.getItem('currentUser');
+          if (savedUser) {
+            const user = JSON.parse(savedUser);
+            setUser(user);
+            return { success: true };
+          }
+        }
       }
-      return { success: false, error: result.error };
+      return { success: false, error: 'Неверный email или пароль' };
     } catch (error) {
       console.error('Login error:', error);
       return { success: false, error: 'Произошла ошибка при входе' };
