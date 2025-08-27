@@ -87,10 +87,48 @@ export const useAuth = () => {
   // Вход в систему
   const login = useCallback(async (data: UserLoginData & { rememberMe?: boolean }) => {
     try {
-      // Проверяем данные в localStorage
+      console.log('🔐 Попытка входа с:', { email: data.email, password: '***', rememberMe: data.rememberMe });
+      
+      // Проверяем тестовые данные первыми
+      if (data.email === 'test@example.com' && data.password === 'test123') {
+        console.log('✅ Вход с тестовыми данными');
+        
+        const testUser: UserProfile = {
+          id: 'test-user',
+          email: 'test@example.com',
+          name: 'Тестовый пользователь',
+          role: 'user',
+          status: 'active',
+          isVerified: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          loginCount: 1
+        };
+        
+        localStorage.setItem('currentUser', JSON.stringify(testUser));
+        setUser(testUser);
+        
+        // Сохраняем данные для автозаполнения, если включено "Запомнить меня"
+        if (data.rememberMe) {
+          localStorage.setItem('savedEmail', data.email);
+          localStorage.setItem('savedPassword', data.password);
+          localStorage.setItem('rememberMe', 'true');
+          console.log('✅ Тестовые данные входа сохранены');
+        }
+        
+        return { success: true };
+      }
+      
+      // Проверяем данные регистрации в localStorage
       const savedData = localStorage.getItem('registrationData');
       if (savedData) {
         const regData = JSON.parse(savedData);
+        console.log('📋 Проверяем сохраненные данные регистрации:', { 
+          savedEmail: regData.email, 
+          inputEmail: data.email,
+          match: regData.email === data.email && regData.password === data.password
+        });
+        
         if (regData.email === data.email && regData.password === data.password) {
           const savedUser = localStorage.getItem('currentUser');
           if (savedUser) {
@@ -114,6 +152,8 @@ export const useAuth = () => {
           }
         }
       }
+      
+      console.log('❌ Неверный email или пароль');
       return { success: false, error: 'Неверный email или пароль' };
     } catch (error) {
       console.error('Login error:', error);
