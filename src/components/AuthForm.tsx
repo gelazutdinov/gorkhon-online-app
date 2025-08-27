@@ -10,6 +10,7 @@ const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [forceUpdate, setForceUpdate] = useState(0);
   // Инициализация состояния на основе сохраненных данных
   const [rememberMe, setRememberMe] = useState(() => {
     const credentials = getAutoFillCredentials();
@@ -33,17 +34,38 @@ const AuthForm = () => {
 
   // Автозаполнение при переключении режимов
   useEffect(() => {
-    if (isLoginMode && rememberMe) {
-      const savedEmail = localStorage.getItem('savedEmail') || '';
-      const savedPassword = localStorage.getItem('savedPassword') || '';
+    console.log('🔄 useEffect сработал:', { isLoginMode, rememberMe });
+    
+    if (isLoginMode) {
+      const credentials = getAutoFillCredentials();
+      console.log('📥 Загружены данные в useEffect:', credentials);
       
+      if (credentials.email || credentials.password) {
+        setFormData(prev => ({
+          ...prev,
+          email: credentials.email,
+          password: credentials.password
+        }));
+        setRememberMe(credentials.rememberMe);
+        console.log('✅ Форма обновлена в useEffect');
+      }
+    }
+  }, [isLoginMode]);
+
+  // Принудительная перезагрузка данных при монтировании компонента
+  useEffect(() => {
+    const credentials = getAutoFillCredentials();
+    console.log('🚀 Инициализация компонента:', credentials);
+    
+    if (credentials.email || credentials.password) {
       setFormData(prev => ({
         ...prev,
-        email: savedEmail,
-        password: savedPassword
+        email: credentials.email,
+        password: credentials.password
       }));
+      setRememberMe(credentials.rememberMe);
     }
-  }, [isLoginMode, rememberMe]);
+  }, []);
 
   const validateForm = () => {
     if (!formData.email.trim()) return 'Введите email';
@@ -85,6 +107,19 @@ const AuthForm = () => {
         if (result.success) {
           // Сохраняем данные через новую систему
           saveCredentials(formData.email, formData.password, rememberMe);
+          
+          // ДУБЛИРУЕМ сохранение напрямую в localStorage для надежности
+          if (rememberMe) {
+            localStorage.setItem('savedEmail', formData.email);
+            localStorage.setItem('savedPassword', formData.password);  
+            localStorage.setItem('rememberMe', 'true');
+            console.log('💾 ДУБЛИРОВАННОЕ сохранение:', {
+              email: formData.email,
+              password: '***',
+              success: true
+            });
+          }
+          
           setSuccess('Добро пожаловать!');
         } else {
           setError(result.error || 'Ошибка входа');
@@ -119,7 +154,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 space-y-6">
+    <div key={forceUpdate} className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 space-y-6">
       {/* Отладочная панель - только для разработки */}
       <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs">
         <strong>🔧 Отладка "Запомнить меня":</strong>
@@ -154,18 +189,57 @@ const AuthForm = () => {
           <button
             type="button"
             onClick={() => {
+              console.log('🧪 ТЕСТ: Сохраняем данные...');
               saveCredentials('test@example.com', 'test123', true);
+              
+              console.log('📊 После сохранения localStorage:', {
+                email: localStorage.getItem('savedEmail'),
+                password: localStorage.getItem('savedPassword'),
+                rememberMe: localStorage.getItem('rememberMe')
+              });
+              
               const newCredentials = getAutoFillCredentials();
-              setFormData(prev => ({
-                ...prev,
-                email: newCredentials.email,
-                password: newCredentials.password
-              }));
+              console.log('📥 Загружены данные:', newCredentials);
+              
+              setFormData(prev => {
+                console.log('🔄 Обновляем formData с:', prev, 'на:', {
+                  ...prev,
+                  email: newCredentials.email,
+                  password: newCredentials.password
+                });
+                
+                return {
+                  ...prev,
+                  email: newCredentials.email,
+                  password: newCredentials.password
+                };
+              });
+              
               setRememberMe(newCredentials.rememberMe);
+              setForceUpdate(prev => prev + 1);
+              console.log('✅ Тест завершен');
             }}
             className="px-2 py-1 bg-green-500 text-white text-xs rounded"
           >
             Тест
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const credentials = getAutoFillCredentials();
+              console.log('🔄 Принудительная загрузка:', credentials);
+              
+              setFormData(prev => ({
+                ...prev,
+                email: credentials.email,
+                password: credentials.password
+              }));
+              setRememberMe(credentials.rememberMe);
+              setForceUpdate(prev => prev + 1);
+            }}
+            className="px-2 py-1 bg-orange-500 text-white text-xs rounded"
+          >
+            Загрузить
           </button>
           <button
             type="button"
@@ -182,6 +256,24 @@ const AuthForm = () => {
           >
             Очистить
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              console.log('🔄 Перезагрузка для проверки сохранения...');
+              window.location.reload();
+            }}
+            className="px-2 py-1 bg-purple-500 text-white text-xs rounded"
+          >
+            Перезагрузить
+          </button>
+        </div>
+        
+        {/* Информация о текущем состоянии */}
+        <div className="mt-2 text-xs text-gray-600">
+          <div>🔍 <strong>Ожидаемое поведение:</strong></div>
+          <div>1. Нажми "Тест" → поля заполнятся</div>
+          <div>2. Нажми "Перезагрузить" → поля должны остаться заполненными</div>
+          <div>3. Или войди реально с галочкой "Запомнить меня"</div>
         </div>
       </div>
 
