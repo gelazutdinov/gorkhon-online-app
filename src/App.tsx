@@ -34,7 +34,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<UserDashboard />} />
+          <Route path="/" element={<Index />} />
           <Route path="/admin" element={<AdminSimple />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
