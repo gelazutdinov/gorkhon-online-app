@@ -13,9 +13,7 @@ const AuthForm = () => {
 
   const [formData, setFormData] = useState({
     name: '',
-    middleName: '',
     email: '',
-    phone: '',
     password: '',
     birthDate: '',
     gender: 'male' as 'male' | 'female'
@@ -32,7 +30,6 @@ const AuthForm = () => {
 
     if (!isLoginMode) {
       if (!formData.name.trim()) return 'Введите имя';
-      if (!formData.phone.trim()) return 'Введите телефон';
       if (!formData.birthDate) return 'Выберите дату рождения';
       if (!acceptedTerms) return 'Примите условия использования';
       if (!acceptedPrivacy) return 'Примите политику конфиденциальности';
@@ -69,9 +66,7 @@ const AuthForm = () => {
       } else {
         const result = await register({
           name: formData.name,
-          middleName: formData.middleName,
           email: formData.email,
-          phone: formData.phone,
           password: formData.password,
           birthDate: formData.birthDate,
           gender: formData.gender
@@ -157,34 +152,7 @@ const AuthForm = () => {
               />
             </div>
 
-            {/* Отчество */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Отчество
-              </label>
-              <input
-                type="text"
-                value={formData.middleName}
-                onChange={(e) => handleInputChange('middleName', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Отчество (необязательно)"
-              />
-            </div>
 
-            {/* Телефон */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Телефон <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="+7 (999) 123-45-67"
-                required
-              />
-            </div>
 
             {/* Дата рождения */}
             <div>
