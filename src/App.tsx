@@ -12,6 +12,7 @@ import TermsOfService from "./components/legal/TermsOfService";
 import DataProtection from "./components/legal/DataProtection";
 import AuthPage from "./components/auth/AuthPage";
 import TestAuth from "./components/TestAuth";
+import UserDashboard from "./components/UserDashboard";
 
 // Оптимизированная конфигурация QueryClient
 const queryClient = new QueryClient({
@@ -33,7 +34,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<UserDashboard />} />
           <Route path="/admin" element={<AdminSimple />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
