@@ -85,7 +85,7 @@ export const useAuth = () => {
   }, []);
 
   // Вход в систему
-  const login = useCallback(async (data: UserLoginData) => {
+  const login = useCallback(async (data: UserLoginData & { rememberMe?: boolean }) => {
     try {
       // Проверяем данные в localStorage
       const savedData = localStorage.getItem('registrationData');
@@ -96,6 +96,20 @@ export const useAuth = () => {
           if (savedUser) {
             const user = JSON.parse(savedUser);
             setUser(user);
+            
+            // Сохраняем данные для автозаполнения, если включено "Запомнить меня"
+            if (data.rememberMe) {
+              localStorage.setItem('savedEmail', data.email);
+              localStorage.setItem('savedPassword', data.password);
+              localStorage.setItem('rememberMe', 'true');
+              console.log('✅ Данные входа сохранены в useAuth');
+            } else {
+              localStorage.removeItem('savedEmail');
+              localStorage.removeItem('savedPassword');
+              localStorage.removeItem('rememberMe');
+              console.log('🗑️ Сохраненные данные очищены в useAuth');
+            }
+            
             return { success: true };
           }
         }

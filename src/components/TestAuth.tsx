@@ -18,6 +18,8 @@ const TestAuth = () => {
   const handleLogout = () => {
     logoutUser();
     refreshData();
+    // НЕ очищаем savedEmail, savedPassword, rememberMe при выходе
+    // Пользователь может захотеть войти снова с теми же данными
   };
 
   const clearAllData = () => {

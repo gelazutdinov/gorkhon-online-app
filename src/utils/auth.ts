@@ -69,7 +69,7 @@ export const registerUser = (userData: UserData): { success: boolean; message: s
 };
 
 // Войти в аккаунт
-export const loginUser = (loginData: LoginData): { success: boolean; message: string; user?: UserData } => {
+export const loginUser = (loginData: LoginData & { rememberMe?: boolean }): { success: boolean; message: string; user?: UserData } => {
   try {
     const users = getAllUsers();
     const user = users.find(u => 
@@ -84,6 +84,19 @@ export const loginUser = (loginData: LoginData): { success: boolean; message: st
         firstName: user.firstName, 
         lastName: user.lastName 
       });
+      
+      // Сохраняем данные для автозаполнения, если включено "Запомнить меня"
+      if (loginData.rememberMe) {
+        localStorage.setItem('savedEmail', loginData.email);
+        localStorage.setItem('savedPassword', loginData.password);
+        localStorage.setItem('rememberMe', 'true');
+        console.log('✅ Данные входа сохранены в utils/auth');
+      } else {
+        localStorage.removeItem('savedEmail');
+        localStorage.removeItem('savedPassword');  
+        localStorage.removeItem('rememberMe');
+        console.log('🗑️ Сохраненные данные очищены в utils/auth');
+      }
       
       return { success: true, message: 'Вход выполнен успешно!', user };
     } else {
