@@ -12,15 +12,32 @@ import SecuritySettings from '@/components/security/SecuritySettings';
 import ProfileEditModal from '@/components/ProfileEditModal';
 
 interface UserDashboardProps {
-  user: UserProfile;
-  daysWithUs: number;
-  formattedTimeSpent: string;
-  onLogout: () => void;
+  user?: UserProfile;
+  daysWithUs?: number;
+  formattedTimeSpent?: string;
+  onLogout?: () => void;
   onUserUpdate?: (user: UserProfile) => void;
-  onSectionChange: (section: string) => void;
+  onSectionChange?: (section: string) => void;
 }
 
-const UserDashboard = memo(({ user, daysWithUs, formattedTimeSpent, onLogout, onSectionChange }: UserDashboardProps) => {
+const UserDashboard = memo(({ 
+  user = {
+    id: '1',
+    username: 'user123',
+    email: 'user@example.com',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop&crop=face',
+    name: 'Алексей Иванов',
+    bio: 'Разработчик и любитель космоса',
+    isVerified: true,
+    followers: 1234,
+    following: 567,
+    posts: 89
+  }, 
+  daysWithUs = 45, 
+  formattedTimeSpent = '2ч 30м', 
+  onLogout = () => console.log('logout'), 
+  onSectionChange = () => {} 
+}: UserDashboardProps) => {
   const [showStatistics, setShowStatistics] = useState(false);
   const [showLina, setShowLina] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
