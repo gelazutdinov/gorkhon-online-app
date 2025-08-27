@@ -110,11 +110,14 @@ export const useAuth = () => {
   // Выход из системы
   const logout = useCallback(async () => {
     try {
-      // Очищаем localStorage
+      // Очищаем данные пользователя
       localStorage.removeItem('currentUser');
       localStorage.removeItem('registrationData');
       localStorage.removeItem('gorkhon_current_user');
       localStorage.removeItem('gorkhon_users');
+      
+      // НЕ очищаем сохраненные данные входа (savedEmail, savedPassword, rememberMe)
+      // если пользователь выбрал "Запомнить меня"
       
       // Сбрасываем состояние пользователя
       setUser(null);

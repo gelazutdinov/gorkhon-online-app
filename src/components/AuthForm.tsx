@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import Icon from '@/components/ui/icon';
@@ -9,17 +9,61 @@ const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    birthDate: '',
-    gender: 'male' as 'male' | 'female'
+  // Загружаем сохраненные данные при инициализации
+  const [formData, setFormData] = useState(() => {
+    // Проверяем сохраненные данные входа
+    const savedEmail = localStorage.getItem('savedEmail') || '';
+    const savedPassword = localStorage.getItem('savedPassword') || '';
+    const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
+    
+    // Также проверяем старую систему аутентификации как резерв
+    const gorkhonUsers = localStorage.getItem('gorkhon_users');
+    let fallbackEmail = '';
+    let fallbackPassword = '';
+    
+    if (!savedEmail && gorkhonUsers) {
+      try {
+        const users = JSON.parse(gorkhonUsers);
+        if (users.length > 0) {
+          // Берем последнего зарегистрированного пользователя
+          const lastUser = users[users.length - 1];
+          fallbackEmail = lastUser.email || '';
+          fallbackPassword = lastUser.password || '';
+        }
+      } catch (error) {
+        console.error('Ошибка чтения старых данных:', error);
+      }
+    }
+    
+    setRememberMe(savedRememberMe);
+    
+    return {
+      name: '',
+      email: savedEmail || fallbackEmail,
+      password: savedPassword || fallbackPassword,
+      birthDate: '',
+      gender: 'male' as 'male' | 'female'
+    };
   });
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+
+  // Автозаполнение при переключении режимов
+  useEffect(() => {
+    if (isLoginMode && rememberMe) {
+      const savedEmail = localStorage.getItem('savedEmail') || '';
+      const savedPassword = localStorage.getItem('savedPassword') || '';
+      
+      setFormData(prev => ({
+        ...prev,
+        email: savedEmail,
+        password: savedPassword
+      }));
+    }
+  }, [isLoginMode, rememberMe]);
 
   const validateForm = () => {
     if (!formData.email.trim()) return 'Введите email';
@@ -58,6 +102,17 @@ const AuthForm = () => {
         });
 
         if (result.success) {
+          // Сохраняем данные, если выбрано "Запомнить меня"
+          if (rememberMe) {
+            localStorage.setItem('savedEmail', formData.email);
+            localStorage.setItem('savedPassword', formData.password);
+            localStorage.setItem('rememberMe', 'true');
+          } else {
+            // Очищаем сохраненные данные, если не выбрано "Запомнить меня"
+            localStorage.removeItem('savedEmail');
+            localStorage.removeItem('savedPassword');
+            localStorage.removeItem('rememberMe');
+          }
           setSuccess('Добро пожаловать!');
         } else {
           setError(result.error || 'Ошибка входа');
@@ -105,12 +160,19 @@ const AuthForm = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Email <span className="text-red-500">*</span>
+            {formData.email && (
+              <span className="ml-2 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                ✓ Сохранено
+              </span>
+            )}
           </label>
           <input
             type="email"
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              formData.email ? 'border-green-300 bg-green-50/30' : 'border-gray-300'
+            }`}
             placeholder="your@email.com"
             required
           />
@@ -120,12 +182,19 @@ const AuthForm = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Пароль <span className="text-red-500">*</span>
+            {formData.password && (
+              <span className="ml-2 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                ✓ Сохранено
+              </span>
+            )}
           </label>
           <input
             type="password"
             value={formData.password}
             onChange={(e) => handleInputChange('password', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              formData.password ? 'border-green-300 bg-green-50/30' : 'border-gray-300'
+            }`}
             placeholder="Минимум 6 символов"
             required
           />
@@ -230,6 +299,56 @@ const AuthForm = () => {
                 </span>
               </label>
             </div>
+          </>
+        )}
+
+        {/* Чекбокс "Запомнить меня" только для входа */}
+        {isLoginMode && (
+          <>
+            <div className="flex items-center justify-between">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="mr-2 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-700">Запомнить меня</span>
+              </label>
+              <button
+                type="button"
+                className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+                onClick={() => {
+                  // Очистить сохраненные данные
+                  localStorage.removeItem('savedEmail');
+                  localStorage.removeItem('savedPassword');
+                  localStorage.removeItem('rememberMe');
+                  setFormData(prev => ({
+                    ...prev,
+                    email: '',
+                    password: ''
+                  }));
+                  setRememberMe(false);
+                }}
+              >
+                Очистить данные
+              </button>
+            </div>
+            
+            {/* Информация о функции "Запомнить меня" */}
+            {rememberMe && (
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <Icon name="Info" className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-blue-700">
+                    <strong>Запоминание данных включено.</strong>
+                    <br />
+                    Ваши email и пароль будут автоматически заполняться при следующем входе. 
+                    Данные хранятся только в вашем браузере и не передаются на сервер.
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
