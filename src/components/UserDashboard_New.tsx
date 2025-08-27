@@ -9,6 +9,23 @@ const UserDashboard_New = () => {
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
+  
+  // Настройки состояния
+  const [settings, setSettings] = useState({
+    profilePrivate: true,
+    twoFactorAuth: false,
+    emailNotifications: true,
+    pushNotifications: true,
+    newsUpdates: true,
+    darkTheme: false,
+    compactView: false,
+    language: 'ru'
+  });
+
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [showActivityHistory, setShowActivityHistory] = useState(false);
+  const [showDeleteAccount, setShowDeleteAccount] = useState(false);
+  const [showLanguageSelect, setShowLanguageSelect] = useState(false);
 
   if (!user) return null;
 
@@ -18,6 +35,29 @@ const UserDashboard_New = () => {
 
   const handleProfileUpdate = async (updates: any) => {
     await updateProfile(updates);
+  };
+
+  // Функции для работы с настройками
+  const toggleSetting = (key: keyof typeof settings) => {
+    setSettings(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const handleLanguageChange = (newLang: string) => {
+    setSettings(prev => ({ ...prev, language: newLang }));
+    setShowLanguageSelect(false);
+  };
+
+  const handlePasswordChange = () => {
+    setShowPasswordChange(true);
+  };
+
+  const handleDeleteAccount = () => {
+    if (window.confirm('Вы уверены, что хотите удалить аккаунт? Это действие необратимо.')) {
+      setShowDeleteAccount(true);
+    }
   };
 
   return (
@@ -183,7 +223,12 @@ const UserDashboard_New = () => {
                     <span className="text-gray-900">Приватность профиля</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" defaultChecked />
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={settings.profilePrivate}
+                      onChange={() => toggleSetting('profilePrivate')}
+                    />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -194,7 +239,12 @@ const UserDashboard_New = () => {
                     <span className="text-gray-900">Двухфакторная аутентификация</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" />
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={settings.twoFactorAuth}
+                      onChange={() => toggleSetting('twoFactorAuth')}
+                    />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -214,7 +264,12 @@ const UserDashboard_New = () => {
                     <span className="text-gray-900">Email уведомления</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" defaultChecked />
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={settings.emailNotifications}
+                      onChange={() => toggleSetting('emailNotifications')}
+                    />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -225,7 +280,12 @@ const UserDashboard_New = () => {
                     <span className="text-gray-900">Push уведомления</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" defaultChecked />
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={settings.pushNotifications}
+                      onChange={() => toggleSetting('pushNotifications')}
+                    />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -236,7 +296,12 @@ const UserDashboard_New = () => {
                     <span className="text-gray-900">Новости и обновления</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" defaultChecked />
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={settings.newsUpdates}
+                      onChange={() => toggleSetting('newsUpdates')}
+                    />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -256,7 +321,12 @@ const UserDashboard_New = () => {
                     <span className="text-gray-900">Темная тема</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" />
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={settings.darkTheme}
+                      onChange={() => toggleSetting('darkTheme')}
+                    />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
@@ -267,21 +337,55 @@ const UserDashboard_New = () => {
                     <span className="text-gray-900">Компактный вид</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" />
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={settings.compactView}
+                      onChange={() => toggleSetting('compactView')}
+                    />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
 
-                <button className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <Icon name="Languages" className="w-5 h-5 text-gray-600" />
-                    <span className="text-gray-900">Язык интерфейса</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">Русский</span>
-                    <Icon name="ChevronRight" className="w-4 h-4 text-gray-400" />
-                  </div>
-                </button>
+                <div className="relative">
+                  <button 
+                    onClick={() => setShowLanguageSelect(!showLanguageSelect)}
+                    className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon name="Languages" className="w-5 h-5 text-gray-600" />
+                      <span className="text-gray-900">Язык интерфейса</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600">
+                        {settings.language === 'ru' ? 'Русский' : 
+                         settings.language === 'en' ? 'English' : 'Русский'}
+                      </span>
+                      <Icon name="ChevronRight" className="w-4 h-4 text-gray-400" />
+                    </div>
+                  </button>
+                  
+                  {showLanguageSelect && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border z-10">
+                      <button 
+                        onClick={() => handleLanguageChange('ru')}
+                        className={`w-full p-3 text-left hover:bg-gray-50 first:rounded-t-lg ${
+                          settings.language === 'ru' ? 'bg-blue-50 text-blue-600' : 'text-gray-900'
+                        }`}
+                      >
+                        Русский
+                      </button>
+                      <button 
+                        onClick={() => handleLanguageChange('en')}
+                        className={`w-full p-3 text-left hover:bg-gray-50 last:rounded-b-lg ${
+                          settings.language === 'en' ? 'bg-blue-50 text-blue-600' : 'text-gray-900'
+                        }`}
+                      >
+                        English
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -292,7 +396,10 @@ const UserDashboard_New = () => {
                 Безопасность
               </h3>
               <div className="space-y-3">
-                <button className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <button 
+                  onClick={handlePasswordChange}
+                  className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                >
                   <div className="flex items-center gap-3">
                     <Icon name="Key" className="w-5 h-5 text-gray-600" />
                     <span className="text-gray-900">Сменить пароль</span>
@@ -300,7 +407,10 @@ const UserDashboard_New = () => {
                   <Icon name="ChevronRight" className="w-4 h-4 text-gray-400" />
                 </button>
 
-                <button className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <button 
+                  onClick={() => setShowActivityHistory(true)}
+                  className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                >
                   <div className="flex items-center gap-3">
                     <Icon name="Activity" className="w-5 h-5 text-gray-600" />
                     <span className="text-gray-900">История активности</span>
@@ -308,7 +418,10 @@ const UserDashboard_New = () => {
                   <Icon name="ChevronRight" className="w-4 h-4 text-gray-400" />
                 </button>
 
-                <button className="w-full flex items-center justify-between p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                <button 
+                  onClick={handleDeleteAccount}
+                  className="w-full flex items-center justify-between p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                >
                   <div className="flex items-center gap-3">
                     <Icon name="Trash2" className="w-5 h-5 text-red-600" />
                     <span className="text-red-900">Удалить аккаунт</span>
@@ -336,6 +449,102 @@ const UserDashboard_New = () => {
           onClose={() => setShowProfileEdit(false)}
           onUpdate={handleProfileUpdate}
         />
+      )}
+
+      {/* Модалка смены пароля */}
+      {showPasswordChange && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <Icon name="Key" className="w-5 h-5 text-blue-600" />
+                Сменить пароль
+              </h2>
+              <button
+                onClick={() => setShowPasswordChange(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <Icon name="X" className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Текущий пароль</label>
+                <input 
+                  type="password" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Новый пароль</label>
+                <input 
+                  type="password" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Подтвердите новый пароль</label>
+                <input 
+                  type="password" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button 
+                  onClick={() => setShowPasswordChange(false)}
+                  className="flex-1 px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  Отмена
+                </button>
+                <button 
+                  onClick={() => {
+                    alert('Пароль изменен!');
+                    setShowPasswordChange(false);
+                  }}
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Сменить пароль
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модалка истории активности */}
+      {showActivityHistory && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4 max-h-[80vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <Icon name="Activity" className="w-5 h-5 text-green-600" />
+                История активности
+              </h2>
+              <button
+                onClick={() => setShowActivityHistory(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <Icon name="X" className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4 overflow-y-auto">
+              {[
+                { action: 'Вход в систему', time: 'Сегодня, 14:30', ip: '192.168.1.1' },
+                { action: 'Изменение профиля', time: 'Вчера, 16:20', ip: '192.168.1.1' },
+                { action: 'Смена пароля', time: '3 дня назад', ip: '192.168.1.1' },
+                { action: 'Вход в систему', time: '5 дней назад', ip: '192.168.1.5' }
+              ].map((activity, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-900">{activity.action}</p>
+                    <p className="text-sm text-gray-500">{activity.time} • IP: {activity.ip}</p>
+                  </div>
+                  <Icon name="CheckCircle" className="w-5 h-5 text-green-500" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
