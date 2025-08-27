@@ -2,20 +2,46 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { loginUser } from '@/utils/auth';
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
+  onSuccess?: () => void;
 }
 
-const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
+const LoginForm = ({ onSwitchToRegister, onSuccess }: LoginFormProps) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Вход в аккаунт:', formData);
+    setIsLoading(true);
+    setMessage(null);
+
+    try {
+      const result = loginUser({
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (result.success) {
+        setMessage({ type: 'success', text: result.message });
+        setTimeout(() => {
+          onSuccess?.();
+        }, 1500);
+      } else {
+        setMessage({ type: 'error', text: result.message });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Произошла ошибка при входе' });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -34,6 +60,17 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
           <p className="text-gray-600 text-sm">Введите свои данные для входа в систему</p>
         </div>
 
+        {/* Message */}
+        {message && (
+          <div className={`mb-4 p-3 rounded-lg text-sm ${
+            message.type === 'success' 
+              ? 'bg-green-50 text-green-700 border border-green-200' 
+              : 'bg-red-50 text-red-700 border border-red-200'
+          }`}>
+            {message.text}
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
@@ -49,6 +86,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
               onChange={(e) => handleChange('email', e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -65,6 +103,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
               onChange={(e) => handleChange('password', e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -78,9 +117,10 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
           {/* Submit Button */}
           <Button 
             type="submit" 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors duration-200"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50"
+            disabled={isLoading}
           >
-            Войти в аккаунт
+            {isLoading ? 'Вход...' : 'Войти в аккаунт'}
           </Button>
 
           {/* Switch to Register */}
@@ -91,6 +131,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
                 type="button"
                 onClick={onSwitchToRegister}
                 className="text-blue-600 hover:underline font-medium"
+                disabled={isLoading}
               >
                 Зарегистрироваться
               </button>

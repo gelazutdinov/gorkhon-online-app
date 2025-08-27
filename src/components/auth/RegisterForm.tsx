@@ -4,12 +4,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { registerUser } from '@/utils/auth';
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
+  onSuccess?: () => void;
 }
 
-const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
+const RegisterForm = ({ onSwitchToLogin, onSuccess }: RegisterFormProps) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,13 +23,43 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
     acceptPrivacy: false
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!formData.acceptTerms || !formData.acceptPrivacy) {
-      alert('Необходимо принять условия использования и политику конфиденциальности');
+      setMessage({ type: 'error', text: 'Необходимо принять условия использования и политику конфиденциальности' });
       return;
     }
-    console.log('Регистрация:', formData);
+
+    setIsLoading(true);
+    setMessage(null);
+
+    try {
+      const result = registerUser({
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        birthDate: formData.birthDate,
+        gender: formData.gender
+      });
+
+      if (result.success) {
+        setMessage({ type: 'success', text: result.message });
+        setTimeout(() => {
+          onSuccess?.();
+        }, 1500);
+      } else {
+        setMessage({ type: 'error', text: result.message });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Произошла ошибка при регистрации' });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -46,6 +78,17 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
           <p className="text-gray-600 text-sm">Создайте аккаунт для использования всех возможностей</p>
         </div>
 
+        {/* Message */}
+        {message && (
+          <div className={`mb-4 p-3 rounded-lg text-sm ${
+            message.type === 'success' 
+              ? 'bg-green-50 text-green-700 border border-green-200' 
+              : 'bg-red-50 text-red-700 border border-red-200'
+          }`}>
+            {message.text}
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Email */}
@@ -61,6 +104,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               onChange={(e) => handleChange('email', e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -78,6 +122,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               minLength={6}
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -94,6 +139,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               onChange={(e) => handleChange('firstName', e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -110,6 +156,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               onChange={(e) => handleChange('lastName', e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -125,6 +172,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               onChange={(e) => handleChange('birthDate', e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -153,6 +201,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
                 checked={formData.acceptTerms}
                 onCheckedChange={(checked) => handleChange('acceptTerms', checked as boolean)}
                 className="mt-1"
+                disabled={isLoading}
               />
               <Label htmlFor="acceptTerms" className="text-sm text-gray-700 cursor-pointer">
                 Я принимаю{' '}
@@ -169,6 +218,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
                 checked={formData.acceptPrivacy}
                 onCheckedChange={(checked) => handleChange('acceptPrivacy', checked as boolean)}
                 className="mt-1"
+                disabled={isLoading}
               />
               <Label htmlFor="acceptPrivacy" className="text-sm text-gray-700 cursor-pointer">
                 Я согласен с{' '}
@@ -183,9 +233,10 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
           {/* Submit Button */}
           <Button 
             type="submit" 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors duration-200"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50"
+            disabled={isLoading}
           >
-            Создать аккаунт
+            {isLoading ? 'Регистрация...' : 'Создать аккаунт'}
           </Button>
 
           {/* Switch to Login */}
@@ -196,6 +247,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
                 type="button"
                 onClick={onSwitchToLogin}
                 className="text-blue-600 hover:underline font-medium"
+                disabled={isLoading}
               >
                 Войти
               </button>
