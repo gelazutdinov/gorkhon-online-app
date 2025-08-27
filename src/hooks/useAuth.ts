@@ -110,8 +110,15 @@ export const useAuth = () => {
   // Выход из системы
   const logout = useCallback(async () => {
     try {
-      await apiClient.logout();
+      // Очищаем localStorage
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('registrationData');
+      localStorage.removeItem('gorkhon_current_user');
+      localStorage.removeItem('gorkhon_users');
+      
+      // Сбрасываем состояние пользователя
       setUser(null);
+      
       return { success: true };
     } catch (error) {
       console.error('Logout error:', error);

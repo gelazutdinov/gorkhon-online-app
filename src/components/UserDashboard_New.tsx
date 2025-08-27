@@ -96,6 +96,7 @@ const UserDashboard_New = () => {
             onPasswordChange={handlePasswordChange}
             onShowActivityHistory={() => setShowActivityHistory(true)}
             onDeleteAccount={handleDeleteAccount}
+            onLogout={handleLogout}
           />
         )}
 

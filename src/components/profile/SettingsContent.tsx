@@ -19,6 +19,7 @@ interface SettingsContentProps {
   onPasswordChange: () => void;
   onShowActivityHistory: () => void;
   onDeleteAccount: () => void;
+  onLogout?: () => void;
 }
 
 const SettingsContent = ({ 
@@ -27,7 +28,8 @@ const SettingsContent = ({
   onEditProfile,
   onPasswordChange,
   onShowActivityHistory,
-  onDeleteAccount 
+  onDeleteAccount,
+  onLogout
 }: SettingsContentProps) => {
   const [showLanguageSelect, setShowLanguageSelect] = useState(false);
 
@@ -256,6 +258,23 @@ const SettingsContent = ({
             </div>
             <Icon name="ChevronRight" className="w-4 h-4 text-gray-400" />
           </button>
+
+          {onLogout && (
+            <button 
+              onClick={() => {
+                if (window.confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                  onLogout();
+                }
+              }}
+              className="w-full flex items-center justify-between p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Icon name="LogOut" className="w-5 h-5 text-blue-600" />
+                <span className="text-blue-900 font-medium">Выйти из аккаунта</span>
+              </div>
+              <Icon name="ChevronRight" className="w-4 h-4 text-blue-400" />
+            </button>
+          )}
 
           <button 
             onClick={onDeleteAccount}

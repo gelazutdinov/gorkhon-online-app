@@ -31,8 +31,13 @@ const ProfileHeader = ({ user, isAdmin, onLogout }: ProfileHeaderProps) => {
         
         {/* Кнопка выхода в правом углу - адаптивная */}
         <button
-          onClick={onLogout}
-          className="absolute top-2 right-2 sm:top-4 sm:right-4 flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-3 sm:py-2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-lg transition-colors text-xs sm:text-sm"
+          onClick={() => {
+            if (window.confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+              onLogout();
+            }
+          }}
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-3 sm:py-2 bg-red-500/80 backdrop-blur-sm text-white hover:bg-red-600/90 rounded-lg transition-all duration-200 text-xs sm:text-sm font-medium hover:scale-105 shadow-lg"
+          title="Выйти из аккаунта"
         >
           <Icon name="LogOut" className="w-3 h-3 sm:w-4 sm:h-4" />
           <span className="hidden sm:inline">Выйти</span>
