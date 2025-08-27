@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { UserProfile } from '@/hooks/useUser';
+import { UserProfile } from '@/hooks/useAuth';
 
 interface ProfileSettingsProps {
   user: UserProfile;
@@ -118,62 +118,62 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
 
   return (
     <>
-      <div className="bg-white/95 backdrop-blur-xl rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
-        {/* Заголовок */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl rounded-t-2xl">
-          <div>
-            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <Icon name="Settings" size={20} className="text-gorkhon-pink" />
-              Профиль
+      <div className="bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl w-full max-w-sm sm:max-w-lg max-h-[90vh] sm:max-h-[85vh] overflow-y-auto shadow-2xl border border-white/20">
+        {/* Заголовок - адаптивный */}
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur-xl rounded-t-xl sm:rounded-t-2xl">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-1.5 sm:gap-2 truncate">
+              <Icon name="Settings" size={18} className="text-gorkhon-pink flex-shrink-0 sm:w-5 sm:h-5" />
+              <span className="truncate">Профиль</span>
             </h2>
             {hasChanges() && (
-              <p className="text-sm text-orange-600 mt-1 flex items-center gap-1">
-                <Icon name="AlertCircle" size={14} />
-                У вас есть несохранённые изменения
+              <p className="text-xs sm:text-sm text-orange-600 mt-1 flex items-center gap-1 truncate">
+                <Icon name="AlertCircle" size={12} className="flex-shrink-0 sm:w-3.5 sm:h-3.5" />
+                <span className="truncate">У вас есть несохранённые изменения</span>
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 ml-2"
           >
-            <Icon name="X" size={20} className="text-gray-500" />
+            <Icon name="X" size={18} className="text-gray-500 sm:w-5 sm:h-5" />
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
-          {/* Аватар */}
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+          {/* Аватар - адаптивный */}
           <div className="text-center">
-            <div className="relative w-24 h-24 mx-auto mb-4">
-              <div className="w-full h-full overflow-hidden ring-4 ring-white shadow-lg rounded-full">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 sm:mb-4">
+              <div className="w-full h-full overflow-hidden ring-2 sm:ring-4 ring-white shadow-lg rounded-full">
                 {getAvatarSilhouette()}
               </div>
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full flex items-center justify-center shadow-lg">
-                <Icon name="User" size={14} className="text-white" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green rounded-full flex items-center justify-center shadow-lg">
+                <Icon name="User" size={12} className="text-white sm:w-3.5 sm:h-3.5" />
               </div>
             </div>
-            <p className="text-sm text-gray-500 max-w-xs mx-auto">
+            <p className="text-xs sm:text-sm text-gray-500 max-w-xs mx-auto px-2">
               Силуэт автоматически обновляется при смене пола
             </p>
           </div>
 
-          {/* Основная информация */}
-          <div className="space-y-4">
+          {/* Основная информация - адаптивная */}
+          <div className="space-y-3 sm:space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
                 Имя *
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base ${
                   validationErrors.name ? 'border-red-300' : 'border-gray-300'
                 }`}
                 placeholder="Ваше имя"
               />
               {validationErrors.name && (
-                <p className="text-red-500 text-sm mt-1">{validationErrors.name}</p>
+                <p className="text-red-500 text-xs sm:text-sm mt-1">{validationErrors.name}</p>
               )}
             </div>
 
@@ -218,102 +218,102 @@ const ProfileSettings = ({ user, onUserUpdate, onClose }: ProfileSettingsProps) 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base ${
                   validationErrors.email ? 'border-red-300' : 'border-gray-300'
                 }`}
                 placeholder="email@example.com"
               />
               {validationErrors.email && (
-                <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+                <p className="text-red-500 text-xs sm:text-sm mt-1">{validationErrors.email}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
                 Телефон
               </label>
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent ${
+                className={`w-full px-3 py-2 sm:py-2.5 border rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base ${
                   validationErrors.phone ? 'border-red-300' : 'border-gray-300'
                 }`}
                 placeholder="+7 (999) 123-45-67"
               />
               {validationErrors.phone && (
-                <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
+                <p className="text-red-500 text-xs sm:text-sm mt-1">{validationErrors.phone}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
                 Дата рождения
               </label>
               <input
                 type="date"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent"
+                className="w-full px-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gorkhon-pink focus:border-transparent text-sm sm:text-base"
               />
             </div>
           </div>
 
-          {/* Информация */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-4">
-            <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                <Icon name="Info" size={14} className="text-white" />
+          {/* Информация - адаптивная */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4">
+            <h4 className="font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Icon name="Info" size={12} className="text-white sm:w-3.5 sm:h-3.5" />
               </div>
-              Персонализация аватара
+              <span className="truncate">Персонализация аватара</span>
             </h4>
-            <div className="space-y-2 text-sm text-gray-700">
+            <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-700">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-gorkhon-pink rounded-full"></div>
-                <span>Женский силуэт: розовый градиент</span>
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gorkhon-pink rounded-full flex-shrink-0"></div>
+                <span className="break-words">Женский силуэт: розовый градиент</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span>Мужской силуэт: синий градиент</span>
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-500 rounded-full flex-shrink-0"></div>
+                <span className="break-words">Мужской силуэт: синий градиент</span>
               </div>
               <div className="flex items-center gap-2">
-                <Icon name="Sparkles" size={12} className="text-purple-500" />
-                <span>Аватар обновляется автоматически</span>
+                <Icon name="Sparkles" size={10} className="text-purple-500 flex-shrink-0 sm:w-3 sm:h-3" />
+                <span className="break-words">Аватар обновляется автоматически</span>
               </div>
             </div>
           </div>
 
-          {/* Кнопки */}
-          <div className="flex gap-3 pt-6 sticky bottom-0 bg-white/95 backdrop-blur-xl pb-4">
+          {/* Кнопки - адаптивные */}
+          <div className="flex gap-2 sm:gap-3 pt-4 sm:pt-6 sticky bottom-0 bg-white/95 backdrop-blur-xl pb-3 sm:pb-4">
             <button
               onClick={onClose}
-              className="flex-1 py-3 px-4 border-2 border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-medium"
+              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 border-2 border-gray-200 text-gray-700 rounded-lg sm:rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-medium text-sm sm:text-base"
             >
-              <div className="flex items-center justify-center gap-2">
-                <Icon name="X" size={16} />
+              <div className="flex items-center justify-center gap-1.5 sm:gap-2">
+                <Icon name="X" size={14} className="sm:w-4 sm:h-4" />
                 <span>Отмена</span>
               </div>
             </button>
             <button
               onClick={handleSave}
               disabled={isSaving || !hasChanges()}
-              className="flex-1 py-3 px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white rounded-lg sm:rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base"
             >
               {isSaving ? (
-                <div className="flex items-center gap-2 justify-center">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="flex items-center gap-1.5 sm:gap-2 justify-center">
+                  <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   <span>Сохранение...</span>
                 </div>
               ) : (
-                <div className="flex items-center justify-center gap-2">
-                  <Icon name="Save" size={16} />
+                <div className="flex items-center justify-center gap-1.5 sm:gap-2">
+                  <Icon name="Save" size={14} className="sm:w-4 sm:h-4" />
                   <span>Сохранить</span>
                 </div>
               )}
