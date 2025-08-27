@@ -1,5 +1,4 @@
 import Icon from '@/components/ui/icon';
-import DebugPanel from '@/components/auth/DebugPanel';
 import FormFields from '@/components/auth/FormFields';
 import RememberMeSection from '@/components/auth/RememberMeSection';
 import { useAuthForm } from '@/components/auth/AuthFormLogic';
@@ -29,15 +28,6 @@ const AuthForm = () => {
 
   return (
     <div key={forceUpdate} className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 space-y-6">
-      {/* Отладочная панель - только для разработки */}
-      <DebugPanel
-        formData={formData}
-        rememberMe={rememberMe}
-        setFormData={setFormData}
-        setRememberMe={setRememberMe}
-        setForceUpdate={setForceUpdate}
-      />
-
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900">
           {isLoginMode ? 'Вход в профиль' : 'Создание профиля'}
