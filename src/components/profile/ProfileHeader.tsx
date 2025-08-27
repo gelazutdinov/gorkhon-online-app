@@ -62,9 +62,7 @@ const ProfileHeader = ({ user, isAdmin, onLogout }: ProfileHeaderProps) => {
           <div className="flex-1">
             <h1 className="text-xl font-bold flex items-center gap-2 text-gray-900">
               {user.name}
-              {(user.isVerified || isAdmin) && (
-                <Icon name="BadgeCheck" size={20} className="text-blue-500" />
-              )}
+              <Icon name="BadgeCheck" size={20} className="text-blue-500" />
             </h1>
             <p className="text-gray-600">{user.email}</p>
             <div className="flex items-center gap-4 mt-1 text-gray-500 text-sm">

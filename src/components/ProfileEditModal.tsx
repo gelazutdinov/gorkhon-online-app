@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
-import { UserProfile } from '@/hooks/useUser';
+import { UserProfile } from '@/hooks/useAuth';
 
 interface ProfileEditModalProps {
   user: UserProfile;
   onClose: () => void;
   onSave?: (updatedProfile: Partial<UserProfile>) => void;
+  onUpdate?: (updatedProfile: Partial<UserProfile>) => void;
 }
 
-export default function ProfileEditModal({ user, onClose, onSave }: ProfileEditModalProps) {
+export default function ProfileEditModal({ user, onClose, onSave, onUpdate }: ProfileEditModalProps) {
   const [formData, setFormData] = useState({
     name: user.name,
     middleName: '',
@@ -29,7 +30,12 @@ export default function ProfileEditModal({ user, onClose, onSave }: ProfileEditM
       // В реальном приложении здесь была бы загрузка файла на сервер
       updatedProfile.avatar = avatarPreview;
     }
-    onSave?.(updatedProfile);
+    // Вызываем onSave или onUpdate, что было передано
+    if (onSave) {
+      onSave(updatedProfile);
+    } else if (onUpdate) {
+      onUpdate(updatedProfile);
+    }
     onClose();
   };
 

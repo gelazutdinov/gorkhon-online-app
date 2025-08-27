@@ -17,9 +17,17 @@ const ProfileContent = ({ user, onEditProfile, onOpenSettings }: ProfileContentP
       {/* Status card */}
       <div className="bg-white rounded-2xl p-4 shadow-sm">
         <div className="text-sm text-gray-600 space-y-1">
-          <p>Статус: <span className="text-blue-600 font-medium">Активный пользователь</span></p>
+          <p>Статус: <span className="text-green-600 font-medium">Верифицированный пользователь</span></p>
           <p>Дата регистрации: <span className="font-medium">{user.createdAt ? new Date(user.createdAt).toLocaleDateString('ru-RU') : 'Недавно'}</span></p>
           <p>Роль: <span className="font-medium">{user.role === 'admin' ? 'Администратор' : 'Пользователь'}</span></p>
+        </div>
+        
+        {/* Верификационный бейдж */}
+        <div className="flex items-center justify-center pt-3 mt-3 border-t border-gray-100">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <Icon name="CheckCircle" className="w-3 h-3 mr-1" />
+            Верифицированный аккаунт
+          </span>
         </div>
       </div>
 
