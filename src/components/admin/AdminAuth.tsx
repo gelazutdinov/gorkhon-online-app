@@ -58,14 +58,14 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/80 backdrop-blur-xl">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-            <Icon name="Shield" className="w-6 h-6 text-blue-600" />
+          <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <Icon name="Shield" className="w-8 h-8 text-white" />
           </div>
-          <CardTitle>Админ-панель</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-2xl font-bold text-gray-900">Админ-панель</CardTitle>
+          <CardDescription className="text-gray-600">
             Доступ только для разработчиков
           </CardDescription>
         </CardHeader>

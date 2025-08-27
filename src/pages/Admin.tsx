@@ -11,11 +11,13 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-6">
-        <AdminLogout onLogout={() => setIsAuthenticated(false)} />
-        <UserManagement />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <AdminLogout onLogout={() => setIsAuthenticated(false)} />
+        </div>
       </div>
+      <UserManagement />
     </div>
   );
 };
