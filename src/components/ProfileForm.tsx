@@ -27,12 +27,6 @@ const ProfileForm = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6">
-        {/* Status Alert */}
-        <div className="flex items-center gap-2 mb-6 p-3 bg-red-50 rounded-lg border border-red-200">
-          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-          <span className="text-red-700 text-sm font-medium">Сервер не работает</span>
-        </div>
-
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Создание профиля</h1>
