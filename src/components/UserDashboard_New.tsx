@@ -20,102 +20,131 @@ const UserDashboard_New = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 space-y-6">
-      {/* VK-стиль профиль с обложкой */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Обложка в стиле VK */}
-        <div className="relative h-48 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=400&fit=crop)'
-            }}
-          >
-            <div className="absolute inset-0 bg-black/20"></div>
+    <div className="min-h-screen bg-gray-100">
+      {/* VK-style Header with cover photo */}
+      <div className="relative h-48 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 overflow-hidden rounded-t-3xl">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://cdn.poehali.dev/files/0e65e83e-1fcf-4edf-88f3-1506ccc9f6f7.jpg)'
+          }}
+        >
+          <div className="absolute inset-0 bg-black/20"></div>
+        </div>
+        
+        {/* Кнопка выхода в правом углу */}
+        <button
+          onClick={handleLogout}
+          className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-lg transition-colors"
+        >
+          <Icon name="LogOut" className="w-4 h-4" />
+          Выйти
+        </button>
+      </div>
+
+      {/* Profile info on white background */}
+      <div className="bg-white px-4 sm:px-6 py-4 border-b rounded-t-3xl -mt-6 relative z-10">
+        <div className="flex items-center gap-4">
+          {/* Avatar with online indicator */}
+          <div className="relative">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+              {user.avatar ? (
+                <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                <div className="text-2xl">
+                  {user.gender === 'female' ? '👩' : '👨'}
+                </div>
+              )}
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+            </div>
           </div>
           
-          {/* Кнопка выхода в правом углу */}
-          <button
-            onClick={handleLogout}
-            className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-lg transition-colors"
-          >
-            <Icon name="LogOut" className="w-4 h-4" />
-            Выйти
-          </button>
-        </div>
-
-        {/* Профиль поверх обложки */}
-        <div className="relative -mt-12 px-6 pb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
-            {/* Аватар */}
-            <div className="w-24 h-24 bg-white rounded-full p-1 shadow-lg flex items-center justify-center text-3xl border-4 border-white">
-              {user.avatar || (user.gender === 'female' ? '👩' : '👨')}
-            </div>
-            
-            {/* Информация о пользователе */}
-            <div className="flex-1 bg-white rounded-lg p-4 shadow-sm">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    {user.name}
-                  </h1>
-                  <p className="text-gray-600">{user.email}</p>
-                </div>
-                {isAdmin && (
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                    <Icon name="Shield" className="w-3 h-3 mr-1" />
-                    Администратор
-                  </span>
-                )}
-              </div>
-              
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                <span className="flex items-center gap-1">
-                  <Icon name="Calendar" className="w-4 h-4" />
-                  Регистрация: {user.createdAt ? new Date(user.createdAt).toLocaleDateString('ru-RU') : 'Недавно'}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Icon name="Clock" className="w-4 h-4" />
-                  Активность: {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString('ru-RU') : 'Сейчас'}
-                </span>
-              </div>
+          {/* Name and status */}
+          <div className="flex-1">
+            <h1 className="text-xl font-bold flex items-center gap-2 text-gray-900">
+              {user.name}
+              {(user.isVerified || isAdmin) && (
+                <Icon name="BadgeCheck" size={20} className="text-blue-500" />
+              )}
+            </h1>
+            <p className="text-gray-600">{user.email}</p>
+            <div className="flex items-center gap-4 mt-1 text-gray-500 text-sm">
+              <span>Последняя активность: {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString('ru-RU') : 'сегодня'}</span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Быстрые действия */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Navigation tabs */}
+      <div className="bg-white border-b mx-4 sm:mx-0 rounded-2xl sm:rounded-none">
+        <div className="flex rounded-2xl sm:rounded-none overflow-hidden">
+          <button 
+            className="flex-1 py-3 px-4 font-medium border-b-2 border-blue-500 text-blue-500"
+          >
+            <div className="flex items-center justify-center gap-2">
+              <Icon name="User" size={20} />
+              <span className="hidden sm:inline">Профиль</span>
+            </div>
+          </button>
+          <button 
+            className="flex-1 py-3 px-4 font-medium text-gray-500"
+          >
+            <div className="flex items-center justify-center gap-2">
+              <Icon name="Settings" size={20} />
+              <span className="hidden sm:inline">Настройки</span>
+            </div>
+          </button>
+          {isAdmin && (
+            <button 
+              onClick={() => setShowAdminPanel(true)}
+              className="flex-1 py-3 px-4 font-medium text-gray-500"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Icon name="Shield" size={20} />
+                <span className="hidden sm:inline">Админ</span>
+              </div>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4 space-y-4 pb-20">
+        {/* Status card */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <div className="text-sm text-gray-600 space-y-1">
+            <p>Статус: <span className="text-blue-600 font-medium">Активный пользователь</span></p>
+            <p>Дата регистрации: <span className="font-medium">{user.createdAt ? new Date(user.createdAt).toLocaleDateString('ru-RU') : 'Недавно'}</span></p>
+            <p>Роль: <span className="font-medium">{user.role === 'admin' ? 'Администратор' : 'Пользователь'}</span></p>
+          </div>
+        </div>
+
+        {/* Quick actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
             onClick={() => setShowProfileEdit(true)}
-            className="flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+            className="flex items-center gap-3 p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow"
           >
-            <Icon name="User" className="w-5 h-5 text-blue-600" />
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+              <Icon name="User" className="w-6 h-6 text-blue-600" />
+            </div>
             <div className="text-left">
               <p className="font-medium text-gray-900">Редактировать профиль</p>
               <p className="text-sm text-gray-600">Изменить личные данные</p>
             </div>
           </button>
 
-          <button className="flex items-center gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
-            <Icon name="Settings" className="w-5 h-5 text-green-600" />
+          <button className="flex items-center gap-3 p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <Icon name="Settings" className="w-6 h-6 text-green-600" />
+            </div>
             <div className="text-left">
               <p className="font-medium text-gray-900">Настройки</p>
               <p className="text-sm text-gray-600">Конфиденциальность, уведомления</p>
             </div>
           </button>
-
-          {isAdmin && (
-            <button
-              onClick={() => setShowAdminPanel(true)}
-              className="flex items-center gap-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
-            >
-              <Icon name="Shield" className="w-5 h-5 text-purple-600" />
-              <div className="text-left">
-                <p className="font-medium text-gray-900">Админ-панель</p>
-                <p className="text-sm text-gray-600">Управление пользователями</p>
-              </div>
-            </button>
-          )}
         </div>
       </div>
 
