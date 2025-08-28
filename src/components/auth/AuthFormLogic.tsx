@@ -33,20 +33,39 @@ export const useAuthForm = () => {
 
   // Автозаполнение при переключении режимов
   useEffect(() => {
-    console.log('🔄 useEffect сработал:', { isLoginMode, rememberMe });
+    console.log('🔄 useEffect сработал при переключении режима:', { isLoginMode });
     
     if (isLoginMode) {
-      const credentials = getAutoFillCredentials();
-      console.log('📥 Загружены данные в useEffect:', credentials);
+      // Проверяем localStorage напрямую для отладки
+      const directEmail = localStorage.getItem('savedEmail');
+      const directPassword = localStorage.getItem('savedPassword');
+      const directRemember = localStorage.getItem('rememberMe') === 'true';
       
-      if (credentials.email || credentials.password) {
+      console.log('🔍 Прямая проверка localStorage при переключении:', {
+        directEmail,
+        directPassword: directPassword ? '***' : 'пусто',
+        directRemember
+      });
+      
+      // Используем функцию
+      const credentials = getAutoFillCredentials();
+      console.log('📥 Данные через getAutoFillCredentials:', {
+        email: credentials.email,
+        password: credentials.password ? '***' : 'пусто',
+        rememberMe: credentials.rememberMe
+      });
+      
+      // Заполняем форму если есть данные
+      if (credentials.email && credentials.password) {
         setFormData(prev => ({
           ...prev,
           email: credentials.email,
           password: credentials.password
         }));
         setRememberMe(credentials.rememberMe);
-        console.log('✅ Форма обновлена в useEffect');
+        console.log('✅ Поля автозаполнены при переключении на вход');
+      } else {
+        console.log('❌ Нет данных для автозаполнения');
       }
     }
   }, [isLoginMode]);
@@ -133,20 +152,26 @@ export const useAuthForm = () => {
         });
 
         if (result.success) {
-          // Автоматически сохраняем данные после регистрации для автозаполнения
-          saveCredentials(formData.email, formData.password, true);
+          console.log('🎉 Регистрация прошла успешно! Сохраняю данные для автозаполнения...');
           
-          // ДУБЛИРУЕМ сохранение напрямую в localStorage для надежности
+          // ПРИНУДИТЕЛЬНОЕ сохранение данных для автозаполнения после регистрации
           localStorage.setItem('savedEmail', formData.email);
           localStorage.setItem('savedPassword', formData.password);  
           localStorage.setItem('rememberMe', 'true');
           
-          console.log('✅ Данные регистрации сохранены для автозаполнения:', {
-            email: formData.email,
-            password: '***'
+          // Также через функцию для совместимости
+          saveCredentials(formData.email, formData.password, true);
+          
+          // ПРОВЕРИМ что данные действительно сохранились
+          const checkEmail = localStorage.getItem('savedEmail');
+          const checkPassword = localStorage.getItem('savedPassword');
+          console.log('🔍 Проверка сохранения после регистрации:', {
+            savedEmail: checkEmail,
+            savedPassword: checkPassword ? '***' : 'НЕ СОХРАНЕН',
+            success: !!(checkEmail && checkPassword)
           });
           
-          setSuccess('Регистрация успешна! Добро пожаловать!');
+          setSuccess('Регистрация успешна! Данные сохранены для входа!');
         } else {
           setError(result.error || 'Ошибка регистрации');
         }
