@@ -13,6 +13,7 @@ import DataProtection from "./components/legal/DataProtection";
 import AuthPage from "./components/auth/AuthPage";
 import TestAuth from "./components/TestAuth";
 import UserDashboard from "./components/UserDashboard";
+import AuthTestSuite from "./components/AuthTestSuite";
 
 // Оптимизированная конфигурация QueryClient
 const queryClient = new QueryClient({
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/register" element={<AuthPage />} />
           <Route path="/login" element={<AuthPage />} />
           <Route path="/test-auth" element={<TestAuth />} />
+          <Route path="/auth-test" element={<AuthTestSuite />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -25,6 +25,7 @@ export interface UserRegistrationData {
   middleName?: string;
   phone?: string;
   birthDate?: string;
+  gender?: 'male' | 'female';
 }
 
 export interface UserLoginData {

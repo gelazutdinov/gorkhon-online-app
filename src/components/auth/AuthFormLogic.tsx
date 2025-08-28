@@ -133,8 +133,19 @@ export const useAuthForm = () => {
         });
 
         if (result.success) {
-          // Автоматически сохраняем данные после регистрации
+          // Автоматически сохраняем данные после регистрации для автозаполнения
           saveCredentials(formData.email, formData.password, true);
+          
+          // ДУБЛИРУЕМ сохранение напрямую в localStorage для надежности
+          localStorage.setItem('savedEmail', formData.email);
+          localStorage.setItem('savedPassword', formData.password);  
+          localStorage.setItem('rememberMe', 'true');
+          
+          console.log('✅ Данные регистрации сохранены для автозаполнения:', {
+            email: formData.email,
+            password: '***'
+          });
+          
           setSuccess('Регистрация успешна! Добро пожаловать!');
         } else {
           setError(result.error || 'Ошибка регистрации');
