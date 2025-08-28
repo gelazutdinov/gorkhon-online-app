@@ -141,3 +141,9 @@ export const logoutUser = (): void => {
 export const isUserLoggedIn = (): boolean => {
   return getCurrentUser() !== null;
 };
+
+// Проверить, является ли пользователь администратором
+export const isUserAdmin = (): boolean => {
+  const currentUser = getCurrentUser();
+  return currentUser?.email === 'smm@gelazutdinov.ru';
+};

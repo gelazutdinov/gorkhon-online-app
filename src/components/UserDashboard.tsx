@@ -117,7 +117,11 @@ const UserDashboard = memo(({
             <h1 className="text-xl font-bold flex items-center gap-2 text-gray-900">
               {userProfile.name}
               {isVerified && (
-                <Icon name="BadgeCheck" size={20} className="text-blue-500" />
+                <img 
+                  src="https://cdn.poehali.dev/files/2531de9e-0943-461a-8734-65d54bf1d5f7.png" 
+                  alt="Verified" 
+                  className="w-5 h-5"
+                />
               )}
             </h1>
             <p className="text-gray-600">{userProfile.bio || 'Участник Горхон.Online'}</p>

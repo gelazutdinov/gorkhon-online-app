@@ -41,7 +41,7 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
     }
 
     // Простая проверка пароля (в реальном приложении это должно быть на сервере)
-    if (password !== 'dev2024') {
+    if (password !== 'admin123') {
       setError('Неверный пароль');
       setIsLoading(false);
       return;
@@ -117,7 +117,7 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
           <div className="mt-6 p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
             <div className="font-medium mb-1">Для разработчиков:</div>
             <div>Email: {DEVELOPER_EMAIL}</div>
-            <div>Пароль: dev2024</div>
+            <div>Пароль: admin123</div>
           </div>
         </CardContent>
       </Card>

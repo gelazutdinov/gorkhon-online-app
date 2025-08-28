@@ -53,7 +53,11 @@ const SettingsModal = ({ onClose, isVerified = false, onVerificationToggle }: Se
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-gray-800 text-sm sm:text-base truncate flex items-center gap-2">
-                    <Icon name="BadgeCheck" size={16} className="text-blue-500 flex-shrink-0" />
+                    <img 
+                      src="https://cdn.poehali.dev/files/2531de9e-0943-461a-8734-65d54bf1d5f7.png" 
+                      alt="Verified" 
+                      className="w-4 h-4 flex-shrink-0"
+                    />
                     Верификация
                   </div>
                   <div className="text-xs sm:text-sm text-gray-600 break-words">Показывать галочку верификации</div>

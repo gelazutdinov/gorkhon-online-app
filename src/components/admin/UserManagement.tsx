@@ -140,7 +140,11 @@ const UserManagement = () => {
             <div className="bg-white/70 backdrop-blur-xl rounded-lg sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 shadow-lg">
               <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:gap-3 lg:text-left">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg sm:rounded-2xl flex items-center justify-center mb-2 lg:mb-0 flex-shrink-0">
-                  <Icon name="BadgeCheck" className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  <img 
+                    src="https://cdn.poehali.dev/files/2531de9e-0943-461a-8734-65d54bf1d5f7.png" 
+                    alt="Verified" 
+                    className="w-5 h-5 sm:w-6 sm:h-6"
+                  />
                 </div>
                 <div className="min-w-0">
                   <div className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600">
@@ -241,7 +245,11 @@ const UserManagement = () => {
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{user.name}</h3>
                         {user.isVerified && (
-                          <Icon name="BadgeCheck" size={16} className="text-blue-500 flex-shrink-0 sm:w-5 sm:h-5" />
+                          <img 
+                            src="https://cdn.poehali.dev/files/2531de9e-0943-461a-8734-65d54bf1d5f7.png" 
+                            alt="Verified" 
+                            className="w-4 h-4 flex-shrink-0 sm:w-5 sm:h-5"
+                          />
                         )}
                       </div>
                       <p className="text-sm text-gray-600 truncate mb-1">{user.email}</p>

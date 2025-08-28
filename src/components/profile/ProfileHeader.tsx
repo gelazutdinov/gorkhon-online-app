@@ -67,7 +67,11 @@ const ProfileHeader = ({ user, isAdmin, onLogout }: ProfileHeaderProps) => {
           <div className="flex-1 min-w-0">
             <h1 className="text-lg sm:text-xl font-bold flex items-center gap-1.5 sm:gap-2 text-gray-900">
               <span className="truncate">{user.name}</span>
-              <Icon name="BadgeCheck" size={16} className="text-blue-500 sm:w-5 sm:h-5 flex-shrink-0" />
+              <img 
+                src="https://cdn.poehali.dev/files/2531de9e-0943-461a-8734-65d54bf1d5f7.png" 
+                alt="Verified" 
+                className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+              />
             </h1>
             <p className="text-gray-600 text-sm sm:text-base truncate">{user.email}</p>
             <div className="flex items-center mt-1 text-gray-500 text-xs sm:text-sm">

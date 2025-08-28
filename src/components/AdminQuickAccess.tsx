@@ -6,7 +6,7 @@ const AdminQuickAccess = () => {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
-  // Показываем кнопку только для администраторов
+  // Показываем кнопку только для администраторов (smm@gelazutdinov.ru)
   if (!isAdmin) {
     return null;
   }
