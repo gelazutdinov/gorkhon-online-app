@@ -74,7 +74,7 @@ const Index = () => {
       <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
         <div className="px-4 py-4 flex items-center justify-between">
           {/* Mobile Layout */}
-          <div className="md:hidden flex items-center gap-3 w-full">
+          <div className="md:hidden flex items-center justify-center gap-3 w-full">
             <img 
               src="https://cdn.poehali.dev/files/09336db0-43b6-49a2-8f46-7faa33fce4f7.png" 
               alt="Горхон.Online" 
