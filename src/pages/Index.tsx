@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback } from "react";
 import Header from "@/components/Header";
 import ImportantNumbers from "@/components/ImportantNumbers";
 import Schedule from "@/components/Schedule";
@@ -30,7 +30,7 @@ interface Photo {
   caption: string;
 }
 
-const Index = memo(() => {
+const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
   const [activeSection, setActiveSection] = useState('home');
@@ -187,6 +187,6 @@ const Index = memo(() => {
       <AdminQuickAccess />
     </div>
   );
-});
+};
 
 export default Index;
