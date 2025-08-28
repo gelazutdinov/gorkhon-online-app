@@ -60,10 +60,10 @@ const Index = memo(() => {
   }, [selectedImageIndex, selectedPvzPhotos.length]);
 
   // Отслеживание переходов между разделами
-  const handleSectionChange = (section: string) => {
+  const handleSectionChange = useCallback((section: string) => {
     setActiveSection(section);
     trackSectionVisit(section as any);
-  }, [activeSection, trackSectionVisit, openPhotoCarousel]);
+  }, [trackSectionVisit]);
 
 
 
