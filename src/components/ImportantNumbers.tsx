@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
@@ -10,20 +11,73 @@ interface ImportantNumber {
 }
 
 const ImportantNumbers = () => {
-  const importantNumbers: ImportantNumber[] = [
-    { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
-    { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
-    { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
-    { name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+73012344083", icon: "Zap" },
-    { name: "МФЦ Заиграево", person: "Многофункциональный центр", phone: "+73013641101", icon: "Building" },
-    { name: "Почта Горхон", person: "Юлия Паук", phone: "+89836307423", icon: "Mail" },
-    { name: "ЕДДС района", person: "Служба экстренного реагирования", phone: "83013641414", icon: "AlertTriangle" }
-  ];
+  const [importantNumbers, setImportantNumbers] = useState<ImportantNumber[]>([]);
+  const [transitNumbers, setTransitNumbers] = useState<ImportantNumber[]>([]);
 
-  const transitNumbers: ImportantNumber[] = [
-    { name: "Диспетчер Город", person: "Заиграевский транзит", phone: "8-983-420-04-03", icon: "Bus" },
-    { name: "Диспетчер Заиграево", person: "Заиграевский транзит", phone: "8-983-420-04-90", icon: "Bus" }
-  ];
+  // Загружаем данные из localStorage или используем дефолтные
+  useEffect(() => {
+    try {
+      const savedContent = localStorage.getItem('homePageContent');
+      if (savedContent) {
+        const content = JSON.parse(savedContent);
+        setImportantNumbers(content.importantNumbers || []);
+        setTransitNumbers(content.transitNumbers || []);
+      } else {
+        // Дефолтные данные, если нет сохраненных
+        setImportantNumbers([
+          { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
+          { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
+          { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
+          { name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+73012344083", icon: "Zap" },
+          { name: "МФЦ Заиграево", person: "Многофункциональный центр", phone: "+73013641101", icon: "Building" },
+          { name: "Почта Горхон", person: "Юлия Паук", phone: "+89836307423", icon: "Mail" },
+          { name: "ЕДДС района", person: "Служба экстренного реагирования", phone: "83013641414", icon: "AlertTriangle" }
+        ]);
+        
+        setTransitNumbers([
+          { name: "Диспетчер Город", person: "Заиграевский транзит", phone: "8-983-420-04-03", icon: "Bus" },
+          { name: "Диспетчер Заиграево", person: "Заиграевский транзит", phone: "8-983-420-04-90", icon: "Bus" }
+        ]);
+      }
+    } catch (error) {
+      console.error('Ошибка загрузки важных номеров:', error);
+      // Используем дефолтные данные в случае ошибки
+      setImportantNumbers([
+        { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
+        { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
+        { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
+        { name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+73012344083", icon: "Zap" },
+        { name: "МФЦ Заиграево", person: "Многофункциональный центр", phone: "+73013641101", icon: "Building" },
+        { name: "Почта Горхон", person: "Юлия Паук", phone: "+89836307423", icon: "Mail" },
+        { name: "ЕДДС района", person: "Служба экстренного реагирования", phone: "83013641414", icon: "AlertTriangle" }
+      ]);
+      
+      setTransitNumbers([
+        { name: "Диспетчер Город", person: "Заиграевский транзит", phone: "8-983-420-04-03", icon: "Bus" },
+        { name: "Диспетчер Заиграево", person: "Заиграевский транзит", phone: "8-983-420-04-90", icon: "Bus" }
+      ]);
+    }
+  }, []);
+
+  // Слушаем изменения в localStorage для живого обновления
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'homePageContent') {
+        try {
+          if (e.newValue) {
+            const content = JSON.parse(e.newValue);
+            setImportantNumbers(content.importantNumbers || []);
+            setTransitNumbers(content.transitNumbers || []);
+          }
+        } catch (error) {
+          console.error('Ошибка обновления данных:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   return (
     <Card className="rounded-lg md:rounded-3xl bg-white border border-gray-200 md:border-gorkhon-blue/20 shadow-sm md:shadow-xl transition-all duration-300 overflow-hidden relative">

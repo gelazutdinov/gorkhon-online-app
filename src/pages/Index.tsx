@@ -9,6 +9,7 @@ import ActionButtons from "@/components/ActionButtons";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
+import AdminQuickAccess from "@/components/AdminQuickAccess";
 
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
@@ -181,6 +182,9 @@ const Index = () => {
         onNext={nextPhoto}
         onPrev={prevPhoto}
       />
+      
+      {/* Кнопка быстрого доступа к админ-панели */}
+      <AdminQuickAccess />
     </div>
   );
 };

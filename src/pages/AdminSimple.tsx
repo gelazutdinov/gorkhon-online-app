@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserManagement from '@/components/admin/UserManagement';
 import AdminLogout from '@/components/admin/AdminLogout';
+import ContentEditor from '@/components/admin/ContentEditor';
 import Icon from '@/components/ui/icon';
 
 const AdminSimple = () => {
@@ -10,6 +11,7 @@ const AdminSimple = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'users' | 'content'>('content');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -152,8 +154,45 @@ const AdminSimple = () => {
         </div>
       </div>
 
+      {/* Табы навигации */}
+      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <nav className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('content')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'content'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Icon name="Edit" size={16} />
+                <span>Редактор контента</span>
+              </div>
+            </button>
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'users'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Icon name="Users" size={16} />
+                <span>Пользователи</span>
+              </div>
+            </button>
+          </nav>
+        </div>
+      </div>
+
       {/* Основной контент */}
-      <UserManagement />
+      <div className="flex-1 overflow-y-auto">
+        {activeTab === 'content' && <ContentEditor />}
+        {activeTab === 'users' && <UserManagement />}
+      </div>
     </div>
   );
 };
