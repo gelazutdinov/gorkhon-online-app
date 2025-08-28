@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useThrottledCallback } from './usePerformance';
 
 export interface UserProfile {
   id: string;
@@ -39,6 +40,21 @@ const SESSION_KEY = 'gorkhon_session_start';
 export const useUser = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Мемоизация для предотвращения лишних вычислений
+  const userStats = useMemo(() => {
+    if (!user) return null;
+    return {
+      daysWithUs: Math.floor((Date.now() - user.registeredAt) / (1000 * 60 * 60 * 24)),
+      totalSessions: user.stats.totalSessions,
+      timeSpent: `${Math.floor(user.stats.totalTimeSpent / 60)}ч ${user.stats.totalTimeSpent % 60}м`
+    };
+  }, [user]);
+  
+  // Оптимизированное сохранение в localStorage с throttling
+  const saveUserThrottled = useThrottledCallback((userData: UserProfile) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+  }, 1000);
 
   useEffect(() => {
     // Загрузка профиля пользователя

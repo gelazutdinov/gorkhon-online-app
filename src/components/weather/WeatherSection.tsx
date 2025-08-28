@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import Icon from '@/components/ui/icon';
 import { fetchGorkhonWeather, WeatherData } from '@/api/buryatiaWeatherApi';
 
-const WeatherSection = () => {
+const WeatherSection = memo(() => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
@@ -255,6 +255,6 @@ const WeatherSection = () => {
 
     </div>
   );
-};
+});
 
 export default WeatherSection;
