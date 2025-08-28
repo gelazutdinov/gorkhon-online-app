@@ -25,11 +25,48 @@ export default function ProfileEditModal({ user, onClose, onSave, onUpdate }: Pr
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const handleSave = () => {
+    console.log('💾 Сохраняю профиль...', formData);
+    
     const updatedProfile = { ...formData };
     if (avatarFile) {
       // В реальном приложении здесь была бы загрузка файла на сервер
       updatedProfile.avatar = avatarPreview;
     }
+    
+    // КРИТИЧНО: Обновляем данные пользователя в localStorage
+    try {
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        const userData = JSON.parse(currentUser);
+        const updatedUserData = {
+          ...userData,
+          ...updatedProfile,
+          updatedAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
+        console.log('✅ Профиль сохранен в localStorage:', updatedUserData);
+      }
+      
+      // Также обновляем данные регистрации если они есть
+      const registrationData = localStorage.getItem('registrationData');
+      if (registrationData) {
+        const regData = JSON.parse(registrationData);
+        const updatedRegData = {
+          ...regData,
+          name: updatedProfile.name,
+          email: updatedProfile.email,
+          phone: updatedProfile.phone,
+          birthDate: updatedProfile.birthDate
+        };
+        localStorage.setItem('registrationData', JSON.stringify(updatedRegData));
+        console.log('✅ Данные регистрации обновлены:', updatedRegData);
+      }
+      
+    } catch (error) {
+      console.error('❌ Ошибка сохранения в localStorage:', error);
+    }
+    
     // Вызываем onSave или onUpdate, что было передано
     if (onSave) {
       onSave(updatedProfile);

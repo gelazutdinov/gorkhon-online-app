@@ -189,12 +189,20 @@ export const useAuth = () => {
     if (!user) return { success: false, error: 'Пользователь не авторизован' };
 
     try {
-      const result = await apiClient.updateProfile(updates);
-      if (result.success && result.user) {
-        setUser(result.user);
-        return { success: true };
-      }
-      return { success: false, error: result.error };
+      console.log('🔄 updateProfile в useAuth:', updates);
+      
+      // Обновляем локальное состояние
+      const updatedUser = { ...user, ...updates, updatedAt: new Date().toISOString() };
+      
+      // Сохраняем в localStorage
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+      
+      // Обновляем состояние
+      setUser(updatedUser);
+      
+      console.log('✅ Профиль обновлен в useAuth:', updatedUser);
+      
+      return { success: true };
     } catch (error) {
       console.error('Profile update error:', error);
       return { success: false, error: 'Произошла ошибка при обновлении профиля' };
@@ -215,6 +223,23 @@ export const useAuth = () => {
   }, [user]);
 
   // Проверяем, является ли пользователь администратором
+  // Принудительная перезагрузка данных пользователя
+  const reloadUser = useCallback(() => {
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+        console.log('🔄 Данные пользователя перезагружены:', userData);
+        return { success: true };
+      }
+      return { success: false, error: 'Нет сохраненных данных пользователя' };
+    } catch (error) {
+      console.error('Reload user error:', error);
+      return { success: false, error: 'Ошибка при перезагрузке данных' };
+    }
+  }, []);
+
   const isAdmin = user?.email === 'smm@gelazutdinov.ru' || user?.role === 'admin';
 
   return {
@@ -226,6 +251,7 @@ export const useAuth = () => {
     login,
     logout,
     updateProfile,
-    changePassword
+    changePassword,
+    reloadUser
   };
 };

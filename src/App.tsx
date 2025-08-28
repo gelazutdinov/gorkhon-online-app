@@ -15,6 +15,7 @@ import TestAuth from "./components/TestAuth";
 import UserDashboard from "./components/UserDashboard";
 import AuthTestSuite from "./components/AuthTestSuite";
 import SaveTestForm from "./components/SaveTestForm";
+import ProfileTestButton from "./components/ProfileTestButton";
 
 // Оптимизированная конфигурация QueryClient
 const queryClient = new QueryClient({
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/test-auth" element={<TestAuth />} />
           <Route path="/auth-test" element={<AuthTestSuite />} />
           <Route path="/save-test" element={<SaveTestForm />} />
+          <Route path="/profile-test" element={<ProfileTestButton />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

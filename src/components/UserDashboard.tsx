@@ -366,10 +366,39 @@ const UserDashboard = memo(({
           user={userProfile}
           onClose={() => setShowProfileEdit(false)}
           onSave={(updatedProfile) => {
-            console.log('Profile updated:', updatedProfile);
-            setUserProfile(prev => ({ ...prev, ...updatedProfile }));
+            console.log('📝 Обновляю профиль в UserDashboard:', updatedProfile);
+            
+            // Обновляем локальное состояние профиля
+            setUserProfile(prev => {
+              const updated = { ...prev, ...updatedProfile };
+              console.log('🔄 Новое состояние профиля:', updated);
+              return updated;
+            });
+            
+            // Обновляем глобальное состояние useAuth если нужно
+            try {
+              // Принудительно обновляем данные в localStorage
+              const currentUserData = localStorage.getItem('currentUser');
+              if (currentUserData) {
+                const userData = JSON.parse(currentUserData);
+                const fullyUpdatedProfile = {
+                  ...userData,
+                  ...updatedProfile,
+                  updatedAt: new Date().toISOString()
+                };
+                localStorage.setItem('currentUser', JSON.stringify(fullyUpdatedProfile));
+                console.log('✅ currentUser обновлен в localStorage');
+              }
+            } catch (error) {
+              console.error('❌ Ошибка обновления currentUser:', error);
+            }
+            
             setShowProfileEdit(false);
-            alert('Профиль успешно обновлен!');
+            
+            // Показываем уведомление об успехе
+            setTimeout(() => {
+              alert('✅ Профиль успешно обновлен и сохранен!');
+            }, 100);
           }}
         />
       )}
