@@ -71,7 +71,7 @@ const Index = () => {
     <div className="min-h-screen bg-white relative overflow-x-hidden w-full max-w-full">
       
       {/* VK-style Header - Mobile First */}
-      <div className="fixed top-0 left-0 right-0 z-50 shadow-md" style={{backgroundColor: '#F1117E'}}>
+      <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
         <div className="px-4 py-4 flex items-center justify-between">
           {/* Mobile Layout */}
           <div className="md:hidden flex items-center gap-3 w-full">
@@ -147,7 +147,7 @@ const Index = () => {
       </div>
 
       {/* VK-style Bottom Navigation for mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg" 
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg rounded-t-xl" 
            style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
         <div className="flex items-stretch">
           {[
