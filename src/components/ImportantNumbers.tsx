@@ -16,7 +16,8 @@ const ImportantNumbers = () => {
     { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
     { name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+73012344083", icon: "Zap" },
     { name: "МФЦ Заиграево", person: "Многофункциональный центр", phone: "+73013641101", icon: "Building" },
-    { name: "Почта Горхон", person: "Юлия Паук", phone: "+89836307423", icon: "Mail" }
+    { name: "Почта Горхон", person: "Юлия Паук", phone: "+89836307423", icon: "Mail" },
+    { name: "ЕДДС района", person: "Служба экстренного реагирования", phone: "83013641414", icon: "AlertTriangle" }
   ];
 
   const transitNumbers: ImportantNumber[] = [
