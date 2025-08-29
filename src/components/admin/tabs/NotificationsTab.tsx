@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
+import { telegramServerService } from '@/services/telegramServerService';
 
 interface TelegramNotification {
   id: string;
@@ -55,11 +56,8 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
   const checkBotStatus = async () => {
     setBotStatus('checking');
     try {
-      // Симуляция проверки статуса бота
-      // В реальной реализации здесь будет запрос к API бота
-      setTimeout(() => {
-        setBotStatus('connected');
-      }, 1000);
+      const health = await telegramServerService.checkHealth();
+      setBotStatus(health.isOnline && health.botConfigured ? 'connected' : 'disconnected');
     } catch (error) {
       setBotStatus('disconnected');
     }
@@ -109,13 +107,17 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
         createdAt: new Date().toISOString()
       };
 
-      // Отправляем уведомление через бота
-      const success = await onSendNotification(newNotification);
+      // Отправляем уведомление через сервер
+      const result = await telegramServerService.sendNotification(
+        newNotification.title,
+        newNotification.message, 
+        newNotification.type
+      );
       
-      if (success) {
+      if (result.success) {
         notification.status = 'sent';
         notification.sentAt = new Date().toISOString();
-        notification.recipientsCount = Math.floor(Math.random() * 50) + 10; // Симуляция
+        notification.recipientsCount = result.sent || 0;
       } else {
         notification.status = 'failed';
       }
@@ -137,11 +139,12 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
   const retryNotification = async (notification: TelegramNotification) => {
     setIsSending(true);
     try {
-      const success = await onSendNotification({
-        title: notification.title,
-        message: notification.message,
-        type: notification.type
-      });
+      const result = await telegramServerService.sendNotification(
+        notification.title,
+        notification.message,
+        notification.type
+      );
+      const success = result.success;
 
       if (success) {
         const updatedNotifications = notifications.map(n =>
@@ -168,7 +171,7 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
           </div>
           <div>
             <h2 className="text-xl font-semibold text-gray-900">Telegram уведомления</h2>
-            <p className="text-gray-600">Отправка новостей и обновлений пользователям</p>
+            <p className="text-gray-600">Личные сообщения всем подписчикам бота</p>
           </div>
         </div>
         
@@ -208,22 +211,14 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
             <Icon name="Info" className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h4 className="font-medium text-blue-900 mb-2">Telegram бот: @gorhononline_bot</h4>
+            <h4 className="font-medium text-blue-900 mb-2">Система личных уведомлений</h4>
             <div className="text-blue-800 text-sm space-y-1">
-              <p>• Бот отправляет уведомления всем подписчикам автоматически</p>
-              <p>• Пользователи могут подписаться командой /start в боте</p>
-              <p>• Доступны разные типы уведомлений: новости, обновления, функции</p>
-              <p>• Статистика доставки отображается в истории сообщений</p>
+              <p>• Пользователи пишут боту /start или любое сообщение</p>
+              <p>• Бот автоматически добавляет их в список подписчиков</p>
+              <p>• Все уведомления приходят им ЛИЧНО в чат с ботом</p>
+              <p>• Никаких каналов - только приватная переписка!</p>
+              <p>• Работает через мини-сервер Node.js для обхода CORS</p>
             </div>
-            <a 
-              href="https://t.me/gorhononline_bot" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-3 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-            >
-              <Icon name="ExternalLink" size={14} />
-              Открыть бота
-            </a>
           </div>
         </div>
       </div>

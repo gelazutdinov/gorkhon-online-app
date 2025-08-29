@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
-import { telegramService } from '@/services/telegramService';
+import { telegramServerService } from '@/services/telegramServerService';
 
 interface TelegramBotSetupModalProps {
   isOpen: boolean;
@@ -11,14 +11,14 @@ interface TelegramBotSetupModalProps {
 const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupModalProps) => {
   const [step, setStep] = useState(1);
   const [botToken, setBotToken] = useState('');
-  const [channelId, setChannelId] = useState('');
   const [subscribersCount, setSubscribersCount] = useState(0);
+  const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
   const [isValidating, setIsValidating] = useState(false);
   const [error, setError] = useState('');
 
   const handleValidateAndSave = async () => {
-    if (!botToken.trim() || !channelId.trim()) {
-      setError('Заполните все поля');
+    if (!botToken.trim()) {
+      setError('Введите токен бота');
       return;
     }
 
@@ -26,8 +26,14 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
     setError('');
 
     try {
-      // Сохраняем конфигурацию
-      telegramService.setConfig(botToken.trim(), channelId.trim());
+      // Настраиваем сервер
+      const result = await telegramServerService.configureBotServer(botToken.trim());
+      
+      if (!result.success) {
+        setError(result.error || 'Ошибка настройки сервера');
+        setIsValidating(false);
+        return;
+      }
       
       // Проверяем подключение
       const isValid = await telegramService.checkBotStatus();
@@ -53,8 +59,8 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
   const resetForm = () => {
     setStep(1);
     setBotToken('');
-    setChannelId('');
     setSubscribersCount(0);
+    setServerStatus('checking');
     setError('');
   };
 
@@ -76,8 +82,8 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
                 <Icon name="MessageCircle" className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-xl font-bold">Настройка Telegram бота</h2>
-                <p className="text-blue-100 text-sm">Публикация уведомлений в канал</p>
+                <h2 className="text-xl font-bold">Telegram уведомления</h2>
+                <p className="text-blue-100 text-sm">Личные сообщения подписчикам через бот</p>
               </div>
             </div>
             <button
@@ -120,29 +126,29 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
                   <div className="flex items-start gap-3">
                     <div className="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
                     <div>
-                      <h4 className="font-medium text-green-900 mb-2">Создайте канал для уведомлений</h4>
+                      <h4 className="font-medium text-green-900 mb-2">Как работает система</h4>
                       <ol className="text-green-800 text-sm space-y-1">
-                        <li>• Создайте публичный канал в Telegram</li>
-                        <li>• Добавьте бота как администратора</li>
-                        <li>• Дайте боту права на отправку сообщений</li>
-                        <li>• Получите ID канала (ниже инструкция)</li>
+                        <li>• Пользователи пишут боту любое сообщение</li>
+                        <li>• Бот автоматически добавляет их в подписчики</li>
+                        <li>• Все уведомления приходят им ЛИЧНО в чат</li>
+                        <li>• Никаких каналов - только личная переписка!</li>
                       </ol>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+                    <div className="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
                     <div>
-                      <h4 className="font-medium text-orange-900 mb-2">Получение ID канала</h4>
-                      <div className="text-orange-800 text-sm space-y-2">
-                        <p>Чтобы получить ID канала:</p>
+                      <h4 className="font-medium text-purple-900 mb-2">Для разработчиков</h4>
+                      <div className="text-purple-800 text-sm space-y-2">
+                        <p>После настройки:</p>
                         <ol className="space-y-1">
-                          <li>• Отправьте любое сообщение в канал</li>
-                          <li>• Перейдите: <code className="bg-orange-200 px-1 rounded text-xs break-all">https://api.telegram.org/bot[ТОКЕН]/getUpdates</code></li>
-                          <li>• Найдите <code className="bg-orange-200 px-1 rounded">"chat":&#123;"id":-100...</code></li>
-                          <li>• Скопируйте число после "id":</li>
+                          <li>• Сервер будет автоматически запущен</li>
+                          <li>• Webhook настроится для сбора подписчиков</li>
+                          <li>• API готов для отправки уведомлений</li>
+                          <li>• Все работает через мини-сервер Node.js</li>
                         </ol>
                       </div>
                     </div>
@@ -198,35 +204,37 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
                   </p>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ID канала
-                  </label>
-                  <input
-                    type="text"
-                    value={channelId}
-                    onChange={(e) => setChannelId(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
-                    placeholder="-1001234567890"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    ID канала (обычно начинается с -100)
-                  </p>
-                </div>
-                
                 {subscribersCount > 0 && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                     <div className="flex items-center gap-3">
                       <Icon name="Users" className="w-5 h-5 text-green-600" />
                       <div>
-                        <h4 className="font-medium text-green-900">Подписчики канала</h4>
+                        <h4 className="font-medium text-green-900">Подписчики бота</h4>
                         <div className="text-2xl font-bold text-green-900">
                           {subscribersCount} человек
                         </div>
+                        <p className="text-green-700 text-sm mt-1">
+                          Получают уведомления лично в чат
+                        </p>
                       </div>
                     </div>
                   </div>
                 )}
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Icon name="Info" className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-blue-900 mb-2">Как пользователи подпишутся:</h4>
+                      <ol className="text-blue-800 text-sm space-y-1">
+                        <li>1. Найти вашего бота в Telegram</li>
+                        <li>2. Написать /start или любое сообщение</li>
+                        <li>3. Автоматически стать подписчиком</li>
+                        <li>4. Получать все уведомления лично!</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="flex justify-between">
@@ -239,7 +247,7 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
                 </button>
                 <button
                   onClick={handleValidateAndSave}
-                  disabled={isValidating || !botToken.trim() || !channelId.trim()}
+                  disabled={isValidating || !botToken.trim() || serverStatus === 'offline'}
                   className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {isValidating ? (
