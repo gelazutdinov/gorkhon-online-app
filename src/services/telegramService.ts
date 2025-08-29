@@ -19,7 +19,6 @@ interface BulkSendResult {
 
 class TelegramService {
   private botToken: string | null = null;
-  private chatId: string | null = null;
   private apiUrl = 'https://api.telegram.org/bot';
 
   constructor() {
@@ -32,7 +31,6 @@ class TelegramService {
       if (config) {
         const parsed = JSON.parse(config);
         this.botToken = parsed.botToken;
-        this.chatId = parsed.chatId;
       }
     } catch (error) {
       console.error('Ошибка загрузки конфигурации бота:', error);
@@ -101,54 +99,15 @@ class TelegramService {
     }
   }
 
-  public async sendNotification(notification: TelegramMessage): Promise<boolean> {
-    if (!this.isConfigured()) {
-      console.error('Telegram бот не настроен');
-      alert('Telegram бот не настроен! Перейдите в настройки и добавьте токен бота и Chat ID.');
-      return false;
-    }
 
-    try {
-      const message = this.formatMessage(notification);
-      console.log('Отправляем сообщение:', message);
-      console.log('Токен бота:', this.botToken ? 'есть' : 'отсутствует');
-      console.log('Chat ID:', this.chatId);
-      
-      const response = await fetch(`${this.apiUrl}${this.botToken}/sendMessage`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chat_id: this.chatId,
-          text: message,
-          parse_mode: 'HTML',
-          disable_web_page_preview: false
-        })
-      });
-
-      const data: TelegramResponse = await response.json();
-      
-      if (!data.ok) {
-        console.error('Ошибка API Telegram:', data);
-        const errorMessage = data.description || 'Неизвестная ошибка';
-        alert(`Ошибка отправки: ${errorMessage}`);
-        return false;
-      }
-
-      console.log('Сообщение отправлено успешно');
-      return true;
-    } catch (error) {
-      console.error('Ошибка отправки уведомления:', error);
-      alert(`Ошибка сети: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`);
-      return false;
-    }
-  }
 
   public async sendBulkNotification(notification: TelegramMessage): Promise<BulkSendResult> {
     if (!this.isConfigured()) {
-      return { success: 0, failed: 0, errors: ['Бот не настроен'] };
+      console.error('Telegram бот не настроен - отсутствует токен');
+      return { success: 0, failed: 0, errors: ['Бот не настроен - добавьте токен в настройках'] };
     }
+
+    console.log('Начинаем массовую рассылку:', notification.title);
 
     const { telegramSubscribersService } = await import('./telegramSubscribersService');
     const subscribers = telegramSubscribersService.getSubscribers();
