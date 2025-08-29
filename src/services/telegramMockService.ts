@@ -7,11 +7,11 @@ class TelegramMockService {
 
   // 🔧 ИМИТАЦИЯ НАСТРОЙКИ БОТА
   async configureBotServer(botToken: string): Promise<{success: boolean, botInfo?: any, subscribersCount?: number, error?: string}> {
-    // Простая проверка формата токена
-    if (!botToken || !botToken.includes(':') || botToken.length < 20) {
+    // В демо режиме принимаем любой токен
+    if (!botToken || botToken.trim().length < 5) {
       return {
         success: false,
-        error: 'Неверный формат токена бота'
+        error: 'Введите любой токен для демонстрации (например: 123456:ABC-DEF)'
       };
     }
 

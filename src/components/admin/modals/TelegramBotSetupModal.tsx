@@ -197,10 +197,10 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
                     value={botToken}
                     onChange={(e) => setBotToken(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
-                    placeholder="1234567890:ABCdefGhIjKlMnOpQrStUvWxYz"
+                    placeholder="demo123 (любой текст для демо)"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Токен, полученный от @BotFather
+                    🎭 ДЕМО: Введите любой текст для тестирования (например: demo123)
                   </p>
                 </div>
 
