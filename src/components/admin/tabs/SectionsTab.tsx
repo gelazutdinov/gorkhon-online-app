@@ -32,9 +32,9 @@ const SectionsTab = ({
 }: SectionsTabProps) => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [editingDonation, setEditingDonation] = useState(false);
-  const [donationForm, setDonationForm] = useState(donationSettings);
+  const [donationForm, setDonationForm] = useState(donationSettings || { text: '', goal: 0, current: 0 });
 
-  const sortedSections = [...sections].sort((a, b) => a.order - b.order);
+  const sortedSections = [...(sections || [])].sort((a, b) => a.order - b.order);
 
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
@@ -73,7 +73,7 @@ const SectionsTab = ({
   };
 
   const cancelDonationEdit = () => {
-    setDonationForm(donationSettings);
+    setDonationForm(donationSettings || { text: '', goal: 0, current: 0 });
     setEditingDonation(false);
   };
 
@@ -222,15 +222,15 @@ const SectionsTab = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white/70 rounded-lg p-4">
               <div className="text-sm text-gray-600">Название</div>
-              <div className="font-medium text-gray-900">{donationSettings.text}</div>
+              <div className="font-medium text-gray-900">{donationSettings?.text || ''}</div>
             </div>
             <div className="bg-white/70 rounded-lg p-4">
               <div className="text-sm text-gray-600">Цель</div>
-              <div className="font-medium text-gray-900">{donationSettings.goal.toLocaleString()} ₽</div>
+              <div className="font-medium text-gray-900">{donationSettings?.goal?.toLocaleString() || '0'} ₽</div>
             </div>
             <div className="bg-white/70 rounded-lg p-4">
               <div className="text-sm text-gray-600">Собрано</div>
-              <div className="font-medium text-gray-900">{donationSettings.current.toLocaleString()} ₽</div>
+              <div className="font-medium text-gray-900">{donationSettings?.current?.toLocaleString() || '0'} ₽</div>
             </div>
           </div>
         )}
@@ -239,12 +239,12 @@ const SectionsTab = ({
           <div className="mt-4 bg-white/70 rounded-lg p-3">
             <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
               <span>Прогресс</span>
-              <span>{Math.round((donationSettings.current / donationSettings.goal) * 100)}%</span>
+              <span>{Math.round(((donationSettings?.current || 0) / (donationSettings?.goal || 1)) * 100)}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${Math.min((donationSettings.current / donationSettings.goal) * 100, 100)}%` }}
+                style={{ width: `${Math.min(((donationSettings?.current || 0) / (donationSettings?.goal || 1)) * 100, 100)}%` }}
               ></div>
             </div>
           </div>
