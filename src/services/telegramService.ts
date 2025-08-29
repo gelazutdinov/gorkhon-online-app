@@ -19,7 +19,8 @@ interface BulkSendResult {
 
 class TelegramService {
   private botToken: string | null = null;
-  private apiUrl = 'https://api.telegram.org/bot';
+  private channelId: string | null = null;
+  private proxyUrl = 'https://api.allorigins.win/get?url=';
 
   constructor() {
     this.loadConfig();
@@ -31,37 +32,32 @@ class TelegramService {
       if (config) {
         const parsed = JSON.parse(config);
         this.botToken = parsed.botToken;
+        this.channelId = parsed.channelId;
       }
     } catch (error) {
       console.error('Ошибка загрузки конфигурации бота:', error);
     }
   }
 
-  public setConfig(botToken: string) {
+  public setConfig(botToken: string, channelId: string) {
     this.botToken = botToken;
+    this.channelId = channelId;
     
     try {
       localStorage.setItem('telegramBotConfig', JSON.stringify({
-        botToken
+        botToken,
+        channelId
       }));
-      
-      // Запускаем сбор подписчиков
-      this.startSubscribersCollection();
     } catch (error) {
       console.error('Ошибка сохранения конфигурации бота:', error);
     }
   }
 
   public isConfigured(): boolean {
-    return Boolean(this.botToken);
+    return Boolean(this.botToken && this.channelId);
   }
 
-  private async startSubscribersCollection() {
-    const { telegramSubscribersService } = await import('./telegramSubscribersService');
-    if (this.botToken) {
-      await telegramSubscribersService.startPolling(this.botToken);
-    }
-  }
+
 
   private formatMessage(notification: TelegramMessage): string {
     const typeEmojis = {
@@ -90,8 +86,10 @@ class TelegramService {
     }
 
     try {
-      const response = await fetch(`${this.apiUrl}${this.botToken}/getMe`);
-      const data: TelegramResponse = await response.json();
+      const telegramUrl = `https://api.telegram.org/bot${this.botToken}/getMe`;
+      const response = await fetch(this.proxyUrl + encodeURIComponent(telegramUrl));
+      const proxyData = await response.json();
+      const data = JSON.parse(proxyData.contents);
       return data.ok;
     } catch (error) {
       console.error('Ошибка проверки статуса бота:', error);
@@ -103,42 +101,77 @@ class TelegramService {
 
   public async sendBulkNotification(notification: TelegramMessage): Promise<BulkSendResult> {
     if (!this.isConfigured()) {
-      alert('❌ Telegram бот не настроен! Добавьте токен в настройках.');
-      return { success: 0, failed: 0, errors: ['Бот не настроен - добавьте токен в настройках'] };
+      alert('❌ Telegram бот не настроен! Добавьте токен и ID канала.');
+      return { success: 0, failed: 0, errors: ['Бот не настроен'] };
     }
 
-    // ⚠️ ВНИМАНИЕ: Браузер блокирует прямые запросы к Telegram API из-за CORS
-    // Для РЕАЛЬНОЙ работы нужен один из вариантов:
-    // 1. Серверный backend
-    // 2. Отправка через канал (вместо личных сообщений)
-    // 3. Использование Telegram Web App
+    try {
+      const message = this.formatMessage(notification);
+      console.log('Отправляем в канал:', this.channelId);
+      
+      const telegramUrl = `https://api.telegram.org/bot${this.botToken}/sendMessage`;
+      const proxyUrl = this.proxyUrl + encodeURIComponent(telegramUrl);
+      
+      const response = await fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: this.channelId,
+          text: message,
+          parse_mode: 'HTML',
+          disable_web_page_preview: false
+        })
+      });
 
-    alert(`❌ ОШИБКА: Невозможно отправить личные сообщения из браузера!
-
-🚫 Проблема: CORS политика блокирует запросы к Telegram API
-
-✅ РЕШЕНИЯ:
-1. Создайте канал в Telegram и отправляйте туда
-2. Используйте серверный backend 
-3. Настройте Telegram Web App
-
-Хотите, чтобы я переделал для отправки в канал?`);
-
-    return { 
-      success: 0, 
-      failed: 1, 
-      errors: ['CORS: Браузер блокирует запросы к Telegram API. Нужен backend или канал.'] 
-    };
+      const proxyData = await response.json();
+      
+      if (proxyData.status && proxyData.status.http_code === 200) {
+        const telegramResponse = JSON.parse(proxyData.contents);
+        
+        if (telegramResponse.ok) {
+          console.log('Уведомление отправлено в канал!');
+          // Получаем количество подписчиков канала
+          const subscribersCount = await this.getSubscribersCount();
+          return { 
+            success: subscribersCount, 
+            failed: 0, 
+            errors: [] 
+          };
+        } else {
+          const errorMsg = telegramResponse.description || 'Неизвестная ошибка';
+          console.error('Telegram API ошибка:', errorMsg);
+          alert(`❌ Ошибка Telegram: ${errorMsg}`);
+          return { success: 0, failed: 1, errors: [errorMsg] };
+        }
+      } else {
+        throw new Error('Прокси сервер недоступен');
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Неизвестная ошибка';
+      console.error('Ошибка отправки:', error);
+      alert(`❌ Ошибка отправки: ${errorMsg}`);
+      return { success: 0, failed: 1, errors: [errorMsg] };
+    }
   }
 
   public async getSubscribersCount(): Promise<number> {
-    if (!this.isConfigured()) {
+    if (!this.isConfigured() || !this.channelId) {
       return 0;
     }
 
     try {
-      const { telegramSubscribersService } = await import('./telegramSubscribersService');
-      return telegramSubscribersService.getSubscribersCount();
+      const telegramUrl = `https://api.telegram.org/bot${this.botToken}/getChatMembersCount?chat_id=${this.channelId}`;
+      const response = await fetch(this.proxyUrl + encodeURIComponent(telegramUrl));
+      const proxyData = await response.json();
+      
+      if (proxyData.status && proxyData.status.http_code === 200) {
+        const data = JSON.parse(proxyData.contents);
+        return data.ok ? data.result : 0;
+      }
+      
+      return 0;
     } catch (error) {
       console.error('Ошибка получения количества подписчиков:', error);
       return 0;
