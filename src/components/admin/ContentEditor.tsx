@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import NumbersTab from './tabs/NumbersTab';
+import SectionsTab from './tabs/SectionsTab';
 import SettingsTab from './tabs/SettingsTab';
 import PreviewTab from './tabs/PreviewTab';
 import NumberModal from './modals/NumberModal';
@@ -14,12 +15,24 @@ interface ImportantNumber {
   category: 'important' | 'transit';
 }
 
+interface SectionConfig {
+  id: string;
+  name: string;
+  enabled: boolean;
+  order: number;
+  description: string;
+}
+
 interface HomePageContent {
   importantNumbers: ImportantNumber[];
   transitNumbers: ImportantNumber[];
   siteTitle: string;
   siteDescription: string;
   lastUpdated: string;
+  sections: SectionConfig[];
+  donationText: string;
+  donationGoal: number;
+  donationCurrent: number;
 }
 
 const ContentEditor = () => {
@@ -28,9 +41,21 @@ const ContentEditor = () => {
     transitNumbers: [],
     siteTitle: "Горхон.Online",
     siteDescription: "Цифровая платформа села Горхон",
-    lastUpdated: ""
+    lastUpdated: "",
+    sections: [
+      { id: 'importantNumbers', name: 'Важные номера', enabled: true, order: 1, description: 'Контакты экстренных служб и организаций' },
+      { id: 'schedule', name: 'Расписание транспорта', enabled: true, order: 2, description: 'Автобусы и транспорт' },
+      { id: 'donation', name: 'Сбор средств', enabled: true, order: 3, description: 'Благотворительные сборы' },
+      { id: 'workSchedule', name: 'Режим работы', enabled: true, order: 4, description: 'График работы организаций' },
+      { id: 'weather', name: 'Погода', enabled: true, order: 5, description: 'Прогноз погоды' },
+      { id: 'pvz', name: 'ПВЗ и фото', enabled: true, order: 6, description: 'Пункты выдачи заказов и фотогалерея' },
+      { id: 'actionButtons', name: 'Быстрые действия', enabled: true, order: 7, description: 'Кнопки быстрого доступа' }
+    ],
+    donationText: "Помощь семье",
+    donationGoal: 100000,
+    donationCurrent: 45000
   });
-  const [activeTab, setActiveTab] = useState<'numbers' | 'settings' | 'preview'>('numbers');
+  const [activeTab, setActiveTab] = useState<'numbers' | 'sections' | 'settings' | 'preview'>('numbers');
   const [editingNumber, setEditingNumber] = useState<ImportantNumber | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +89,19 @@ const ContentEditor = () => {
           ],
           siteTitle: "Горхон.Online",
           siteDescription: "Цифровая платформа села Горхон",
-          lastUpdated: new Date().toISOString()
+          lastUpdated: new Date().toISOString(),
+          sections: [
+            { id: 'importantNumbers', name: 'Важные номера', enabled: true, order: 1, description: 'Контакты экстренных служб и организаций' },
+            { id: 'schedule', name: 'Расписание транспорта', enabled: true, order: 2, description: 'Автобусы и транспорт' },
+            { id: 'donation', name: 'Сбор средств', enabled: true, order: 3, description: 'Благотворительные сборы' },
+            { id: 'workSchedule', name: 'Режим работы', enabled: true, order: 4, description: 'График работы организаций' },
+            { id: 'weather', name: 'Погода', enabled: true, order: 5, description: 'Прогноз погоды' },
+            { id: 'pvz', name: 'ПВЗ и фото', enabled: true, order: 6, description: 'Пункты выдачи заказов и фотогалерея' },
+            { id: 'actionButtons', name: 'Быстрые действия', enabled: true, order: 7, description: 'Кнопки быстрого доступа' }
+          ],
+          donationText: "Помощь семье",
+          donationGoal: 100000,
+          donationCurrent: 45000
         });
       }
     } catch (error) {
@@ -148,6 +185,28 @@ const ContentEditor = () => {
     setContent(prev => ({ ...prev, siteDescription: description }));
   };
 
+  const updateSection = (sectionId: string, updates: Partial<SectionConfig>) => {
+    setContent(prev => ({
+      ...prev,
+      sections: prev.sections.map(section =>
+        section.id === sectionId ? { ...section, ...updates } : section
+      )
+    }));
+  };
+
+  const reorderSections = (sections: SectionConfig[]) => {
+    setContent(prev => ({ ...prev, sections }));
+  };
+
+  const updateDonationSettings = (settings: { text: string; goal: number; current: number }) => {
+    setContent(prev => ({
+      ...prev,
+      donationText: settings.text,
+      donationGoal: settings.goal,
+      donationCurrent: settings.current
+    }));
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6">
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -199,6 +258,7 @@ const ContentEditor = () => {
           <nav className="flex">
             {[
               { key: 'numbers', label: 'Важные номера', icon: 'Phone' },
+              { key: 'sections', label: 'Управление лентой', icon: 'Layout' },
               { key: 'settings', label: 'Настройки сайта', icon: 'Settings' },
               { key: 'preview', label: 'Предпросмотр', icon: 'Eye' }
             ].map((tab) => (
@@ -227,6 +287,20 @@ const ContentEditor = () => {
               onAddNumber={() => setShowAddModal(true)}
               onEditNumber={setEditingNumber}
               onDeleteNumber={deleteNumber}
+            />
+          )}
+
+          {activeTab === 'sections' && (
+            <SectionsTab
+              sections={content.sections}
+              donationSettings={{
+                text: content.donationText,
+                goal: content.donationGoal,
+                current: content.donationCurrent
+              }}
+              onUpdateSection={updateSection}
+              onReorderSections={reorderSections}
+              onUpdateDonationSettings={updateDonationSettings}
             />
           )}
 

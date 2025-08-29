@@ -1,7 +1,33 @@
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 
 const DonationSection = () => {
+  const [donationSettings, setDonationSettings] = useState({
+    text: 'Помощь семье',
+    goal: 100000,
+    current: 45000
+  });
+
+  useEffect(() => {
+    // Загружаем настройки пожертвований из localStorage
+    try {
+      const savedContent = localStorage.getItem('homePageContent');
+      if (savedContent) {
+        const content = JSON.parse(savedContent);
+        if (content.donationText && content.donationGoal && content.donationCurrent !== undefined) {
+          setDonationSettings({
+            text: content.donationText,
+            goal: content.donationGoal,
+            current: content.donationCurrent
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Ошибка загрузки настроек пожертвований:', error);
+    }
+  }, []);
+
   const donationData = [
     {
       title: "ФОНД поселка",
@@ -78,7 +104,33 @@ const DonationSection = () => {
           </div>
         ))}
         
-        <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200/50">
+        {/* Прогресс-бар активного сбора */}
+        <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200/50">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2 text-orange-800">
+              <Icon name="Target" size={16} />
+              <p className="text-sm font-semibold">{donationSettings.text}</p>
+            </div>
+            <p className="text-xs text-orange-700 font-medium">
+              {Math.round((donationSettings.current / donationSettings.goal) * 100)}%
+            </p>
+          </div>
+          
+          {/* Прогресс-бар */}
+          <div className="w-full bg-orange-200/50 rounded-full h-2 mb-3">
+            <div
+              className="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${Math.min((donationSettings.current / donationSettings.goal) * 100, 100)}%` }}
+            ></div>
+          </div>
+          
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-orange-700">Собрано: <span className="font-semibold">{donationSettings.current.toLocaleString()} ₽</span></span>
+            <span className="text-orange-700">Цель: <span className="font-semibold">{donationSettings.goal.toLocaleString()} ₽</span></span>
+          </div>
+        </div>
+        
+        <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200/50">
           <div className="flex items-center gap-2 text-emerald-800 mb-2">
             <Icon name="Users" size={16} />
             <p className="text-sm font-semibold">Благодарим за поддержку!</p>
