@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
-import { telegramServerService } from '@/services/telegramServerService';
+import { telegramMockService } from '@/services/telegramMockService';
 
 interface TelegramBotSetupModalProps {
   isOpen: boolean;
@@ -26,8 +26,8 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
     setError('');
 
     try {
-      // Настраиваем сервер
-      const result = await telegramServerService.configureBotServer(botToken.trim());
+      // Настраиваем бота (демо режим)
+      const result = await telegramMockService.configureBotServer(botToken.trim());
       
       if (!result.success) {
         setError(result.error || 'Ошибка настройки сервера');

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { telegramServerService } from '@/services/telegramServerService';
+import { telegramMockService } from '@/services/telegramMockService';
 
 interface TelegramNotification {
   id: string;
@@ -108,7 +108,7 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
       };
 
       // Отправляем уведомление через сервер
-      const result = await telegramServerService.sendNotification(
+      const result = await telegramMockService.sendNotification(
         newNotification.title,
         newNotification.message, 
         newNotification.type
@@ -139,7 +139,7 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
   const retryNotification = async (notification: TelegramNotification) => {
     setIsSending(true);
     try {
-      const result = await telegramServerService.sendNotification(
+      const result = await telegramMockService.sendNotification(
         notification.title,
         notification.message,
         notification.type

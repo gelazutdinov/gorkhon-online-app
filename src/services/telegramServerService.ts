@@ -6,10 +6,8 @@ class TelegramServerService {
   private isConfigured: boolean = false;
 
   constructor() {
-    // В production заменить на реальный URL сервера
-    this.serverUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://your-telegram-server.vercel.app'  // Заменить на реальный URL
-      : 'http://localhost:3001';
+    // Автоматически используем mock режим если сервер недоступен
+    this.serverUrl = 'http://localhost:3001';
   }
 
   // 🔧 НАСТРОЙКА БОТА
