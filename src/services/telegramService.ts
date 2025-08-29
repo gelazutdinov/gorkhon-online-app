@@ -103,63 +103,32 @@ class TelegramService {
 
   public async sendBulkNotification(notification: TelegramMessage): Promise<BulkSendResult> {
     if (!this.isConfigured()) {
-      console.error('Telegram бот не настроен - отсутствует токен');
+      alert('❌ Telegram бот не настроен! Добавьте токен в настройках.');
       return { success: 0, failed: 0, errors: ['Бот не настроен - добавьте токен в настройках'] };
     }
 
-    console.log('Начинаем массовую рассылку:', notification.title);
+    // ⚠️ ВНИМАНИЕ: Браузер блокирует прямые запросы к Telegram API из-за CORS
+    // Для РЕАЛЬНОЙ работы нужен один из вариантов:
+    // 1. Серверный backend
+    // 2. Отправка через канал (вместо личных сообщений)
+    // 3. Использование Telegram Web App
 
-    const { telegramSubscribersService } = await import('./telegramSubscribersService');
-    const subscribers = telegramSubscribersService.getSubscribers();
+    alert(`❌ ОШИБКА: Невозможно отправить личные сообщения из браузера!
 
-    if (subscribers.length === 0) {
-      return { 
-        success: 0, 
-        failed: 0, 
-        errors: ['Нет подписчиков. Пользователи должны написать боту для подписки.'] 
-      };
-    }
+🚫 Проблема: CORS политика блокирует запросы к Telegram API
 
-    let success = 0;
-    let failed = 0;
-    const errors: string[] = [];
-    const message = this.formatMessage(notification);
+✅ РЕШЕНИЯ:
+1. Создайте канал в Telegram и отправляйте туда
+2. Используйте серверный backend 
+3. Настройте Telegram Web App
 
-    // Отправляем всем подписчикам с задержкой 50мс (чтобы не превысить лимиты API)
-    for (const subscriber of subscribers) {
-      try {
-        const response = await fetch(`${this.apiUrl}${this.botToken}/sendMessage`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            chat_id: subscriber.id,
-            text: message,
-            parse_mode: 'HTML',
-            disable_web_page_preview: false
-          })
-        });
+Хотите, чтобы я переделал для отправки в канал?`);
 
-        const data: TelegramResponse = await response.json();
-        
-        if (data.ok) {
-          success++;
-        } else {
-          failed++;
-          errors.push(`${subscriber.first_name}: ${data.description || 'Неизвестная ошибка'}`);
-        }
-
-        // Задержка между отправками
-        await new Promise(resolve => setTimeout(resolve, 50));
-
-      } catch (error) {
-        failed++;
-        errors.push(`${subscriber.first_name}: ${error instanceof Error ? error.message : 'Ошибка сети'}`);
-      }
-    }
-
-    return { success, failed, errors };
+    return { 
+      success: 0, 
+      failed: 1, 
+      errors: ['CORS: Браузер блокирует запросы к Telegram API. Нужен backend или канал.'] 
+    };
   }
 
   public async getSubscribersCount(): Promise<number> {
