@@ -10,6 +10,7 @@ import PhotoCarousel from "@/components/PhotoCarousel";
 import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
 import AdminQuickAccess from "@/components/AdminQuickAccess";
+import NotificationsBanner from "@/components/NotificationsBanner";
 
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
@@ -98,6 +99,9 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Баннер уведомлений */}
+      <NotificationsBanner />
 
       {/* VK-style Layout */}
       <div className="flex pt-24 md:pt-20">

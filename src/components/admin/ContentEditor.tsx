@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import NumbersTab from './tabs/NumbersTab';
 import SectionsTab from './tabs/SectionsTab';
+import NotificationsTab from './tabs/NotificationsTab';
 import SettingsTab from './tabs/SettingsTab';
 import PreviewTab from './tabs/PreviewTab';
 import NumberModal from './modals/NumberModal';
+import TelegramBotSetupModal from './modals/TelegramBotSetupModal';
+import { telegramService } from '@/services/telegramService';
 
 interface ImportantNumber {
   id: string;
@@ -55,16 +58,23 @@ const ContentEditor = () => {
     donationGoal: 100000,
     donationCurrent: 45000
   });
-  const [activeTab, setActiveTab] = useState<'numbers' | 'sections' | 'settings' | 'preview'>('numbers');
+  const [activeTab, setActiveTab] = useState<'numbers' | 'sections' | 'notifications' | 'settings' | 'preview'>('numbers');
   const [editingNumber, setEditingNumber] = useState<ImportantNumber | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
+  const [showBotSetup, setShowBotSetup] = useState(false);
+  const [isBotConfigured, setIsBotConfigured] = useState(false);
 
   // Загрузка контента при инициализации
   useEffect(() => {
     loadContent();
+    checkBotConfiguration();
   }, []);
+
+  const checkBotConfiguration = () => {
+    setIsBotConfigured(telegramService.isConfigured());
+  };
 
   const loadContent = () => {
     try {
@@ -207,6 +217,28 @@ const ContentEditor = () => {
     }));
   };
 
+  const handleSendNotification = async (notification: { title: string; message: string; type: 'update' | 'feature' | 'news' | 'important' }) => {
+    try {
+      const success = await telegramService.sendBulkNotification(notification);
+      if (success.success > 0) {
+        showMessage(`Уведомление отправлено ${success.success} пользователям`, 'success');
+        return true;
+      } else {
+        showMessage('Ошибка отправки уведомления', 'error');
+        return false;
+      }
+    } catch (error) {
+      console.error('Ошибка отправки уведомления:', error);
+      showMessage('Ошибка отправки уведомления', 'error');
+      return false;
+    }
+  };
+
+  const handleBotSetupSuccess = () => {
+    checkBotConfiguration();
+    showMessage('Telegram бот успешно подключен!', 'success');
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6">
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -259,6 +291,7 @@ const ContentEditor = () => {
             {[
               { key: 'numbers', label: 'Важные номера', icon: 'Phone' },
               { key: 'sections', label: 'Управление лентой', icon: 'Layout' },
+              { key: 'notifications', label: 'Telegram уведомления', icon: 'Send' },
               { key: 'settings', label: 'Настройки сайта', icon: 'Settings' },
               { key: 'preview', label: 'Предпросмотр', icon: 'Eye' }
             ].map((tab) => (
@@ -304,6 +337,31 @@ const ContentEditor = () => {
             />
           )}
 
+          {activeTab === 'notifications' && (
+            <div>
+              {!isBotConfigured ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Icon name="MessageCircle" className="w-10 h-10 text-blue-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">Настройте Telegram бота</h3>
+                  <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                    Подключите бота @gorhononline_bot для отправки уведомлений пользователям о новостях и обновлениях платформы
+                  </p>
+                  <button
+                    onClick={() => setShowBotSetup(true)}
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto"
+                  >
+                    <Icon name="Settings" size={20} />
+                    Настроить бота
+                  </button>
+                </div>
+              ) : (
+                <NotificationsTab onSendNotification={handleSendNotification} />
+              )}
+            </div>
+          )}
+
           {activeTab === 'settings' && (
             <SettingsTab
               siteTitle={content.siteTitle}
@@ -344,6 +402,13 @@ const ContentEditor = () => {
           isEdit
         />
       )}
+
+      {/* Модальное окно настройки Telegram бота */}
+      <TelegramBotSetupModal
+        isOpen={showBotSetup}
+        onClose={() => setShowBotSetup(false)}
+        onSuccess={handleBotSetupSuccess}
+      />
     </div>
   );
 };
