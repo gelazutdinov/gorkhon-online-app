@@ -141,7 +141,7 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
                         <ol className="space-y-1">
                           <li>• Отправьте любое сообщение в канал</li>
                           <li>• Перейдите: <code className="bg-orange-200 px-1 rounded text-xs break-all">https://api.telegram.org/bot[ТОКЕН]/getUpdates</code></li>
-                          <li>• Найдите <code className="bg-orange-200 px-1 rounded">"chat":{"id":-100...</code></li>
+                          <li>• Найдите <code className="bg-orange-200 px-1 rounded">"chat":&#123;"id":-100...</code></li>
                           <li>• Скопируйте число после "id":</li>
                         </ol>
                       </div>
