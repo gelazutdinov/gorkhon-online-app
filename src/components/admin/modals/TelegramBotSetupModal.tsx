@@ -139,7 +139,7 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
                               https://api.telegram.org/bot[TOKEN]/getUpdates
                             </code>
                           </li>
-                          <li>• Найдите "chat":{"id": в ответе</li>
+                          <li>• Найдите {"\"chat\":{\"id\":"} в ответе</li>
                         </ol>
                       </div>
                     </div>
