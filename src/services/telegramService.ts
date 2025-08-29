@@ -70,7 +70,7 @@ class TelegramService {
     const emoji = typeEmojis[notification.type];
     const label = typeLabels[notification.type];
     
-    return `${emoji} *${label}: ${notification.title}*\n\n${notification.message}\n\n_Горхон.Online - цифровая платформа села_\n🔗 https://gorkhon.online`;
+    return `${emoji} <b>${label}: ${notification.title}</b>\n\n${notification.message}\n\n<i>Горхон.Online - цифровая платформа села</i>\n🔗 https://gorkhon.online`;
   }
 
   public async checkBotStatus(): Promise<boolean> {
@@ -91,11 +91,15 @@ class TelegramService {
   public async sendNotification(notification: TelegramMessage): Promise<boolean> {
     if (!this.isConfigured()) {
       console.error('Telegram бот не настроен');
+      alert('Telegram бот не настроен! Перейдите в настройки и добавьте токен бота и Chat ID.');
       return false;
     }
 
     try {
       const message = this.formatMessage(notification);
+      console.log('Отправляем сообщение:', message);
+      console.log('Токен бота:', this.botToken ? 'есть' : 'отсутствует');
+      console.log('Chat ID:', this.chatId);
       
       const response = await fetch(`${this.apiUrl}${this.botToken}/sendMessage`, {
         method: 'POST',
@@ -105,7 +109,7 @@ class TelegramService {
         body: JSON.stringify({
           chat_id: this.chatId,
           text: message,
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           disable_web_page_preview: false
         })
       });
@@ -113,13 +117,17 @@ class TelegramService {
       const data: TelegramResponse = await response.json();
       
       if (!data.ok) {
-        console.error('Ошибка отправки сообщения:', data.error);
+        console.error('Ошибка API Telegram:', data);
+        const errorMessage = data.description || 'Неизвестная ошибка';
+        alert(`Ошибка отправки: ${errorMessage}`);
         return false;
       }
 
+      console.log('Сообщение отправлено успешно');
       return true;
     } catch (error) {
       console.error('Ошибка отправки уведомления:', error);
+      alert(`Ошибка сети: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`);
       return false;
     }
   }
