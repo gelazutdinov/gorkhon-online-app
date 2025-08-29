@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { telegramService, type TelegramMessage } from '@/services/telegramService';
 
 interface TelegramNotification {
   id: string;
@@ -68,6 +69,50 @@ export const useTelegramNotifications = () => {
     }
   }, []);
 
+  // Отправить уведомление всем подписчикам
+  const sendNotification = useCallback(async (notificationData: Omit<TelegramMessage, 'id'>): Promise<{success: boolean, recipientsCount?: number, errors?: string[]}> => {
+    const notification: TelegramNotification = {
+      id: Date.now().toString(),
+      ...notificationData,
+      status: 'draft',
+      createdAt: new Date().toISOString()
+    };
+    
+    // Сначала добавляем как черновик
+    const updatedNotifications = [notification, ...notifications];
+    setNotifications(updatedNotifications);
+    
+    try {
+      localStorage.setItem('telegramNotifications', JSON.stringify(updatedNotifications));
+      
+      // Отправляем через массовую рассылку
+      const result = await telegramService.sendBulkNotification(notificationData);
+      
+      if (result.success > 0) {
+        // Обновляем статус на отправленный
+        updateNotificationStatus(notification.id, 'sent', result.success);
+        return { 
+          success: true, 
+          recipientsCount: result.success,
+          errors: result.errors 
+        };
+      } else {
+        // Обновляем статус на ошибку
+        updateNotificationStatus(notification.id, 'failed');
+        return { 
+          success: false, 
+          errors: result.errors 
+        };
+      }
+    } catch (error) {
+      updateNotificationStatus(notification.id, 'failed');
+      return { 
+        success: false, 
+        errors: [error instanceof Error ? error.message : 'Неизвестная ошибка'] 
+      };
+    }
+  }, [notifications, updateNotificationStatus]);
+
   // Добавить новое уведомление (используется в админке)
   const addNotification = useCallback((notification: TelegramNotification) => {
     const updatedNotifications = [notification, ...notifications];
@@ -118,6 +163,7 @@ export const useTelegramNotifications = () => {
     getRecentNotifications,
     getBannerNotifications,
     markAsRead,
+    sendNotification,
     addNotification,
     updateNotificationStatus,
     loadNotifications

@@ -8,6 +8,13 @@ interface TelegramResponse {
   ok: boolean;
   result?: any;
   error?: string;
+  description?: string;
+}
+
+interface BulkSendResult {
+  success: number;
+  failed: number;
+  errors: string[];
 }
 
 class TelegramService {
@@ -16,8 +23,6 @@ class TelegramService {
   private apiUrl = 'https://api.telegram.org/bot';
 
   constructor() {
-    // В реальной реализации токен должен храниться безопасно
-    // Здесь используем localStorage для демо
     this.loadConfig();
   }
 
@@ -34,22 +39,30 @@ class TelegramService {
     }
   }
 
-  public setConfig(botToken: string, chatId: string) {
+  public setConfig(botToken: string) {
     this.botToken = botToken;
-    this.chatId = chatId;
     
     try {
       localStorage.setItem('telegramBotConfig', JSON.stringify({
-        botToken,
-        chatId
+        botToken
       }));
+      
+      // Запускаем сбор подписчиков
+      this.startSubscribersCollection();
     } catch (error) {
       console.error('Ошибка сохранения конфигурации бота:', error);
     }
   }
 
   public isConfigured(): boolean {
-    return Boolean(this.botToken && this.chatId);
+    return Boolean(this.botToken);
+  }
+
+  private async startSubscribersCollection() {
+    const { telegramSubscribersService } = await import('./telegramSubscribersService');
+    if (this.botToken) {
+      await telegramSubscribersService.startPolling(this.botToken);
+    }
   }
 
   private formatMessage(notification: TelegramMessage): string {
@@ -132,19 +145,62 @@ class TelegramService {
     }
   }
 
-  public async sendBulkNotification(notification: TelegramMessage): Promise<{ success: number; failed: number }> {
-    // В реальной реализации здесь будет получение списка всех подписчиков
-    // и отправка каждому персонально
-    
-    // Для демо просто отправляем в канал/группу
-    const success = await this.sendNotification(notification);
-    
-    if (success) {
-      // Симуляция количества получателей
-      return { success: Math.floor(Math.random() * 50) + 10, failed: 0 };
-    } else {
-      return { success: 0, failed: 1 };
+  public async sendBulkNotification(notification: TelegramMessage): Promise<BulkSendResult> {
+    if (!this.isConfigured()) {
+      return { success: 0, failed: 0, errors: ['Бот не настроен'] };
     }
+
+    const { telegramSubscribersService } = await import('./telegramSubscribersService');
+    const subscribers = telegramSubscribersService.getSubscribers();
+
+    if (subscribers.length === 0) {
+      return { 
+        success: 0, 
+        failed: 0, 
+        errors: ['Нет подписчиков. Пользователи должны написать боту для подписки.'] 
+      };
+    }
+
+    let success = 0;
+    let failed = 0;
+    const errors: string[] = [];
+    const message = this.formatMessage(notification);
+
+    // Отправляем всем подписчикам с задержкой 50мс (чтобы не превысить лимиты API)
+    for (const subscriber of subscribers) {
+      try {
+        const response = await fetch(`${this.apiUrl}${this.botToken}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            chat_id: subscriber.id,
+            text: message,
+            parse_mode: 'HTML',
+            disable_web_page_preview: false
+          })
+        });
+
+        const data: TelegramResponse = await response.json();
+        
+        if (data.ok) {
+          success++;
+        } else {
+          failed++;
+          errors.push(`${subscriber.first_name}: ${data.description || 'Неизвестная ошибка'}`);
+        }
+
+        // Задержка между отправками
+        await new Promise(resolve => setTimeout(resolve, 50));
+
+      } catch (error) {
+        failed++;
+        errors.push(`${subscriber.first_name}: ${error instanceof Error ? error.message : 'Ошибка сети'}`);
+      }
+    }
+
+    return { success, failed, errors };
   }
 
   public async getSubscribersCount(): Promise<number> {
@@ -153,17 +209,8 @@ class TelegramService {
     }
 
     try {
-      // В реальной реализации здесь будет запрос к базе данных подписчиков
-      // или к API бота для получения количества участников канала
-      const response = await fetch(`${this.apiUrl}${this.botToken}/getChatMembersCount?chat_id=${this.chatId}`);
-      const data: TelegramResponse = await response.json();
-      
-      if (data.ok) {
-        return data.result || 0;
-      }
-      
-      // Возвращаем симулированное значение для демо
-      return Math.floor(Math.random() * 100) + 50;
+      const { telegramSubscribersService } = await import('./telegramSubscribersService');
+      return telegramSubscribersService.getSubscribersCount();
     } catch (error) {
       console.error('Ошибка получения количества подписчиков:', error);
       return 0;
@@ -175,4 +222,4 @@ class TelegramService {
 export const telegramService = new TelegramService();
 
 // Экспортируем интерфейсы для использования в компонентах
-export type { TelegramMessage, TelegramResponse };
+export type { TelegramMessage, TelegramResponse, BulkSendResult };
