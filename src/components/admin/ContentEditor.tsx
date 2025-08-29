@@ -7,7 +7,7 @@ import SettingsTab from './tabs/SettingsTab';
 import PreviewTab from './tabs/PreviewTab';
 import NumberModal from './modals/NumberModal';
 import TelegramBotSetupModal from './modals/TelegramBotSetupModal';
-import { telegramService } from '@/services/telegramService';
+import { telegramMockService } from '@/services/telegramMockService';
 
 interface ImportantNumber {
   id: string;
@@ -73,7 +73,7 @@ const ContentEditor = () => {
   }, []);
 
   const checkBotConfiguration = () => {
-    setIsBotConfigured(telegramService.isConfigured());
+    setIsBotConfigured(telegramMockService.isServerConfigured());
   };
 
   const loadContent = () => {
@@ -219,9 +219,9 @@ const ContentEditor = () => {
 
   const handleSendNotification = async (notification: { title: string; message: string; type: 'update' | 'feature' | 'news' | 'important' }) => {
     try {
-      const success = await telegramService.sendBulkNotification(notification);
-      if (success.success > 0) {
-        showMessage(`Уведомление отправлено ${success.success} пользователям`, 'success');
+      const result = await telegramMockService.sendNotification(notification.title, notification.message, notification.type);
+      if (result.success) {
+        showMessage(`Уведомление отправлено ${result.sent}/${result.total} пользователям`, 'success');
         return true;
       } else {
         showMessage('Ошибка отправки уведомления', 'error');

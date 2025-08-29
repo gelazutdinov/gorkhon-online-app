@@ -56,7 +56,7 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
   const checkBotStatus = async () => {
     setBotStatus('checking');
     try {
-      const health = await telegramServerService.checkHealth();
+      const health = await telegramMockService.checkHealth();
       setBotStatus(health.isOnline && health.botConfigured ? 'connected' : 'disconnected');
     } catch (error) {
       setBotStatus('disconnected');
