@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { telegramMockService } from '@/services/telegramMockService';
 
@@ -35,22 +35,16 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
         return;
       }
       
-      // Проверяем подключение
-      const isValid = await telegramService.checkBotStatus();
+      // В демо режиме всё успешно настроено
+      setError('');
+      setSubscribersCount(result.subscribersCount || 0);
+      setStep(2);
       
-      if (isValid) {
-        // Получаем количество подписчиков
-        const count = await telegramService.getSubscribersCount();
-        setSubscribersCount(count);
-        
-        onSuccess();
-        onClose();
-        resetForm();
-      } else {
-        setError('Не удалось подключиться к боту. Проверьте токен.');
-      }
+      onSuccess();
     } catch (error) {
-      setError('Ошибка подключения к Telegram API');
+      console.error('Демо режим - ошибка игнорируется:', error);
+      // В демо режиме показываем дружественную ошибку
+      setError('Попробуйте ввести любой текст длиннее 5 символов');
     } finally {
       setIsValidating(false);
     }
@@ -67,6 +61,22 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
   const handleClose = () => {
     resetForm();
     onClose();
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      resetForm();
+      checkServerStatus();
+    }
+  }, [isOpen]);
+
+  const checkServerStatus = async () => {
+    setServerStatus('checking');
+    const health = await telegramMockService.checkHealth();
+    setServerStatus(health.isOnline ? 'online' : 'offline');
+    if (health.subscribers) {
+      setSubscribersCount(health.subscribers);
+    }
   };
 
   if (!isOpen) return null;
