@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { telegramService, type TelegramMessage } from '@/services/telegramService';
+import { telegramMockService as telegramService, type TelegramMessage } from '@/services/telegramMockService';
 
 interface TelegramNotification {
   id: string;
