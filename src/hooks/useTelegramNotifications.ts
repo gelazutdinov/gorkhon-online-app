@@ -69,6 +69,28 @@ export const useTelegramNotifications = () => {
     }
   }, []);
 
+  // Обновить статус уведомления
+  const updateNotificationStatus = useCallback((id: string, status: 'sent' | 'failed', recipientsCount?: number) => {
+    const updatedNotifications = notifications.map(n =>
+      n.id === id 
+        ? { 
+            ...n, 
+            status, 
+            sentAt: status === 'sent' ? new Date().toISOString() : n.sentAt,
+            recipientsCount: recipientsCount || n.recipientsCount
+          }
+        : n
+    );
+    
+    setNotifications(updatedNotifications);
+    
+    try {
+      localStorage.setItem('telegramNotifications', JSON.stringify(updatedNotifications));
+    } catch (error) {
+      console.error('Ошибка обновления уведомления:', error);
+    }
+  }, [notifications]);
+
   // Отправить уведомление всем подписчикам
   const sendNotification = useCallback(async (notificationData: Omit<TelegramMessage, 'id'>): Promise<{success: boolean, recipientsCount?: number, errors?: string[]}> => {
     const notification: TelegramNotification = {
@@ -122,28 +144,6 @@ export const useTelegramNotifications = () => {
       localStorage.setItem('telegramNotifications', JSON.stringify(updatedNotifications));
     } catch (error) {
       console.error('Ошибка сохранения уведомления:', error);
-    }
-  }, [notifications]);
-
-  // Обновить статус уведомления
-  const updateNotificationStatus = useCallback((id: string, status: 'sent' | 'failed', recipientsCount?: number) => {
-    const updatedNotifications = notifications.map(n =>
-      n.id === id 
-        ? { 
-            ...n, 
-            status, 
-            sentAt: status === 'sent' ? new Date().toISOString() : n.sentAt,
-            recipientsCount: recipientsCount || n.recipientsCount
-          }
-        : n
-    );
-    
-    setNotifications(updatedNotifications);
-    
-    try {
-      localStorage.setItem('telegramNotifications', JSON.stringify(updatedNotifications));
-    } catch (error) {
-      console.error('Ошибка обновления уведомления:', error);
     }
   }, [notifications]);
 
