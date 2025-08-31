@@ -11,6 +11,12 @@ class TelegramMockService {
   private isConfigured: boolean = false;
   private subscribersCount: number = 0;
 
+  constructor() {
+    // Синхронизируем состояние с localStorage при создании экземпляра
+    this.isConfigured = localStorage.getItem('telegram_mock_configured') === 'true';
+    this.subscribersCount = parseInt(localStorage.getItem('telegram_subscribers_count') || '0');
+  }
+
   // 🔧 ИМИТАЦИЯ НАСТРОЙКИ БОТА
   async configureBotServer(botToken: string): Promise<{success: boolean, botInfo?: any, subscribersCount?: number, error?: string}> {
     // В демо режиме принимаем любой токен
@@ -44,17 +50,21 @@ class TelegramMockService {
 
   // 📤 ИМИТАЦИЯ МАССОВОЙ ОТПРАВКИ УВЕДОМЛЕНИЙ
   async sendBulkNotification(notificationData: TelegramMessage): Promise<{success: number, errors: string[]}> {
-    if (!this.isConfigured) {
-      return {
-        success: 0,
-        errors: ['Бот не настроен']
-      };
+    if (!this.isServerConfigured()) {
+      // Автоматически настраиваем бота для демо
+      await this.autoConfigureForDemo();
     }
 
     // Имитируем время отправки
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    const total = this.subscribersCount;
+    let total = parseInt(localStorage.getItem('telegram_subscribers_count') || '0');
+    
+    // Если подписчиков нет, создаём демо количество
+    if (total === 0) {
+      total = Math.floor(Math.random() * 25) + 15; // 15-40 подписчиков
+      localStorage.setItem('telegram_subscribers_count', total.toString());
+    }
     const sent = Math.floor(total * (0.85 + Math.random() * 0.15)); // 85-100% доставка
     const failed = total - sent;
 
@@ -83,7 +93,7 @@ class TelegramMockService {
 
   // 📤 ИМИТАЦИЯ ОТПРАВКИ УВЕДОМЛЕНИЙ (устаревший метод)
   async sendNotification(title: string, message: string, type: string = 'info'): Promise<{success: boolean, sent?: number, total?: number, error?: string}> {
-    if (!this.isConfigured) {
+    if (!this.isServerConfigured()) {
       return {
         success: false,
         error: 'Бот не настроен'
@@ -93,7 +103,14 @@ class TelegramMockService {
     // Имитируем время отправки
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    const total = this.subscribersCount;
+    let total = parseInt(localStorage.getItem('telegram_subscribers_count') || '0');
+    
+    // Если подписчиков нет, создаём демо количество
+    if (total === 0) {
+      total = Math.floor(Math.random() * 25) + 15; // 15-40 подписчиков
+      localStorage.setItem('telegram_subscribers_count', total.toString());
+    }
+    
     const sent = Math.floor(total * (0.85 + Math.random() * 0.15)); // 85-100% доставка
 
     // Сохраняем в историю
@@ -183,6 +200,14 @@ class TelegramMockService {
   // 📚 ПОЛУЧЕНИЕ ИСТОРИИ УВЕДОМЛЕНИЙ
   getNotificationsHistory(): any[] {
     return JSON.parse(localStorage.getItem('telegram_notifications_history') || '[]');
+  }
+
+  // 🧪 АВТОМАТИЧЕСКАЯ НАСТРОЙКА ДЛЯ ТЕСТИРОВАНИЯ
+  async autoConfigureForDemo(): Promise<void> {
+    if (!this.isServerConfigured()) {
+      console.log('🤖 Автоматическая настройка бота для демо...');
+      await this.configureBotServer('demo123:ABCDEF-demo-token-for-testing');
+    }
   }
 }
 
