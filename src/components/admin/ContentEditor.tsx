@@ -219,9 +219,9 @@ const ContentEditor = () => {
 
   const handleSendNotification = async (notification: { title: string; message: string; type: 'update' | 'feature' | 'news' | 'important' }) => {
     try {
-      const result = await telegramMockService.sendNotification(notification.title, notification.message, notification.type);
-      if (result.success) {
-        showMessage(`Уведомление отправлено ${result.sent}/${result.total} пользователям`, 'success');
+      const result = await telegramMockService.sendBulkNotification(notification);
+      if (result.success > 0) {
+        showMessage(`Уведомление отправлено ${result.success} пользователям`, 'success');
         return true;
       } else {
         showMessage('Ошибка отправки уведомления', 'error');

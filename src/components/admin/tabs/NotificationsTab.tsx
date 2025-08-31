@@ -108,16 +108,12 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
       };
 
       // Отправляем уведомление через сервер
-      const result = await telegramMockService.sendNotification(
-        newNotification.title,
-        newNotification.message, 
-        newNotification.type
-      );
+      const result = await telegramMockService.sendBulkNotification(newNotification);
       
-      if (result.success) {
+      if (result.success > 0) {
         notification.status = 'sent';
         notification.sentAt = new Date().toISOString();
-        notification.recipientsCount = result.sent || 0;
+        notification.recipientsCount = result.success;
       } else {
         notification.status = 'failed';
       }
@@ -125,7 +121,7 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
       const updatedNotifications = [notification, ...notifications];
       saveNotifications(updatedNotifications);
 
-      if (success) {
+      if (result.success > 0) {
         setNewNotification({ title: '', message: '', type: 'news' });
         setIsCreating(false);
       }
@@ -139,17 +135,16 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
   const retryNotification = async (notification: TelegramNotification) => {
     setIsSending(true);
     try {
-      const result = await telegramMockService.sendNotification(
-        notification.title,
-        notification.message,
-        notification.type
-      );
-      const success = result.success;
+      const result = await telegramMockService.sendBulkNotification({
+        title: notification.title,
+        message: notification.message,
+        type: notification.type
+      });
 
-      if (success) {
+      if (result.success > 0) {
         const updatedNotifications = notifications.map(n =>
           n.id === notification.id
-            ? { ...n, status: 'sent' as const, sentAt: new Date().toISOString() }
+            ? { ...n, status: 'sent' as const, sentAt: new Date().toISOString(), recipientsCount: result.success }
             : n
         );
         saveNotifications(updatedNotifications);
