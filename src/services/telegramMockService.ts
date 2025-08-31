@@ -1,6 +1,12 @@
 // 🎭 MOCK SERVICE для демонстрации Telegram уведомлений
 // Используется когда сервер еще не развернут
 
+export interface TelegramMessage {
+  title: string;
+  message: string;
+  type: 'update' | 'feature' | 'news' | 'important';
+}
+
 class TelegramMockService {
   private isConfigured: boolean = false;
   private subscribersCount: number = 0;
@@ -36,7 +42,46 @@ class TelegramMockService {
     };
   }
 
-  // 📤 ИМИТАЦИЯ ОТПРАВКИ УВЕДОМЛЕНИЙ
+  // 📤 ИМИТАЦИЯ МАССОВОЙ ОТПРАВКИ УВЕДОМЛЕНИЙ
+  async sendBulkNotification(notificationData: TelegramMessage): Promise<{success: number, errors: string[]}> {
+    if (!this.isConfigured) {
+      return {
+        success: 0,
+        errors: ['Бот не настроен']
+      };
+    }
+
+    // Имитируем время отправки
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    const total = this.subscribersCount;
+    const sent = Math.floor(total * (0.85 + Math.random() * 0.15)); // 85-100% доставка
+    const failed = total - sent;
+
+    // Сохраняем в историю
+    const notification = {
+      id: Date.now().toString(),
+      title: notificationData.title,
+      message: notificationData.message,
+      type: notificationData.type,
+      timestamp: new Date().toISOString(),
+      sent,
+      total
+    };
+
+    const history = JSON.parse(localStorage.getItem('telegram_notifications_history') || '[]');
+    history.unshift(notification);
+    localStorage.setItem('telegram_notifications_history', JSON.stringify(history.slice(0, 50))); // Последние 50
+
+    const errors = failed > 0 ? [`${failed} пользователей не получили уведомление`] : [];
+
+    return {
+      success: sent,
+      errors
+    };
+  }
+
+  // 📤 ИМИТАЦИЯ ОТПРАВКИ УВЕДОМЛЕНИЙ (устаревший метод)
   async sendNotification(title: string, message: string, type: string = 'info'): Promise<{success: boolean, sent?: number, total?: number, error?: string}> {
     if (!this.isConfigured) {
       return {
