@@ -84,7 +84,6 @@ const fetchFromWttr = async (): Promise<{ current: CurrentWeather; forecast: For
 
     return { current, forecast };
   } catch (error) {
-    console.error('Error fetching from wttr.in:', error);
     return null;
   }
 };

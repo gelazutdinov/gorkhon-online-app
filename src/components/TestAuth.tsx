@@ -81,7 +81,7 @@ const TestAuth = () => {
                         <strong>Email:</strong> {user.email}
                       </div>
                       <div>
-                        <strong>Пароль:</strong> {user.password}
+                        <strong>Пароль:</strong> ••••••••
                       </div>
                       <div>
                         <strong>Имя:</strong> {user.firstName}

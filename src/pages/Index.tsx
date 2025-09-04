@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react";
-import Header from "@/components/Header";
-import ImportantNumbers from "@/components/ImportantNumbers";
-import Schedule from "@/components/Schedule";
-import DonationSection from "@/components/DonationSection";
-import WorkSchedule from "@/components/WorkSchedule";
-import PvzSection from "@/components/PvzSection";
-import ActionButtons from "@/components/ActionButtons";
+
+
+
+
+
+
+
 import PhotoCarousel from "@/components/PhotoCarousel";
 import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
@@ -22,7 +22,7 @@ import WeatherSection from "@/components/weather/WeatherSection";
 
 
 
-import BottomNavigation from "@/components/BottomNavigation";
+
 import Icon from "@/components/ui/icon";
 import { useUser } from "@/hooks/useUser";
 
@@ -38,7 +38,6 @@ const Index = () => {
   const { trackSectionVisit } = useUser();
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
-    console.log('openPhotoCarousel called:', photos, startIndex);
     setSelectedPvzPhotos(photos);
     setSelectedImageIndex(startIndex);
   }, []);
@@ -50,15 +49,15 @@ const Index = () => {
 
   const nextPhoto = useCallback(() => {
     if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
-      setSelectedImageIndex((selectedImageIndex + 1) % selectedPvzPhotos.length);
+      setSelectedImageIndex((prev) => prev !== null ? (prev + 1) % selectedPvzPhotos.length : 0);
     }
-  }, [selectedImageIndex, selectedPvzPhotos.length]);
+  }, [selectedPvzPhotos.length]);
 
   const prevPhoto = useCallback(() => {
     if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
-      setSelectedImageIndex(selectedImageIndex === 0 ? selectedPvzPhotos.length - 1 : selectedImageIndex - 1);
+      setSelectedImageIndex((prev) => prev !== null ? (prev === 0 ? selectedPvzPhotos.length - 1 : prev - 1) : 0);
     }
-  }, [selectedImageIndex, selectedPvzPhotos.length]);
+  }, [selectedPvzPhotos.length]);
 
   // Отслеживание переходов между разделами
   const handleSectionChange = useCallback((section: string) => {

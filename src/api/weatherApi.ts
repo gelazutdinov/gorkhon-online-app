@@ -166,7 +166,7 @@ export const fetchYandexWeather = async (): Promise<RealWeatherData> => {
 
     return transformedData;
   } catch (error) {
-    console.error('Ошибка загрузки погоды с Яндекса:', error);
+    // Weather API error - return mock data
     
     // Возвращаем моковые данные при ошибке
     return {

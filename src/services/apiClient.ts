@@ -37,7 +37,6 @@ class ApiClient {
 
       return data;
     } catch (error) {
-      console.error('API Error:', error);
       throw error;
     }
   }
@@ -110,7 +109,7 @@ class ApiClient {
         method: 'POST',
       });
     } catch (error) {
-      console.error('Logout error:', error);
+      // Silently handle logout error
     } finally {
       this.removeAuthToken();
       return { success: true };

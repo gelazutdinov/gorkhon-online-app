@@ -8,7 +8,6 @@ const AuthTestSuite = () => {
   const [isRunning, setIsRunning] = useState(false);
 
   const log = (message: string) => {
-    console.log(message);
     setTestResults(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`]);
   };
 

@@ -13,16 +13,12 @@ export const saveCredentials = (email: string, password: string, remember: boole
       localStorage.setItem('savedEmail', email);
       localStorage.setItem('savedPassword', password);
       localStorage.setItem('rememberMe', 'true');
-      console.log('✅ Данные входа сохранены:', {
-        email,
-        password: '***',
-        rememberMe: true
-      });
+      // Данные сохранены успешно
     } else {
       clearCredentials();
     }
   } catch (error) {
-    console.error('Ошибка сохранения данных:', error);
+    // Silently handle localStorage errors
   }
 };
 
@@ -33,11 +29,7 @@ export const loadCredentials = (): SavedCredentials => {
     const savedPassword = localStorage.getItem('savedPassword') || '';
     const rememberMe = localStorage.getItem('rememberMe') === 'true';
 
-    console.log('🔍 Загружены сохраненные данные:', {
-      email: savedEmail,
-      password: savedPassword ? '***' : '',
-      rememberMe
-    });
+    // Данные загружены успешно
 
     return {
       email: savedEmail,
@@ -45,7 +37,7 @@ export const loadCredentials = (): SavedCredentials => {
       rememberMe
     };
   } catch (error) {
-    console.error('Ошибка загрузки данных:', error);
+    // Silently handle localStorage errors
     return {
       email: '',
       password: '',
@@ -60,9 +52,9 @@ export const clearCredentials = () => {
     localStorage.removeItem('savedEmail');
     localStorage.removeItem('savedPassword');
     localStorage.removeItem('rememberMe');
-    console.log('🗑️ Сохраненные данные очищены');
+    // Данные очищены успешно
   } catch (error) {
-    console.error('Ошибка очистки данных:', error);
+    // Silently handle localStorage errors
   }
 };
 
@@ -75,7 +67,7 @@ export const hasCredentials = (): boolean => {
     
     return !!(email && password && remember);
   } catch (error) {
-    console.error('Ошибка проверки данных:', error);
+    // Silently handle localStorage errors
     return false;
   }
 };
@@ -89,10 +81,7 @@ export const loadFallbackCredentials = (): SavedCredentials => {
       if (users.length > 0) {
         // Берем последнего зарегистрированного пользователя
         const lastUser = users[users.length - 1];
-        console.log('📦 Загружены данные из старой системы:', {
-          email: lastUser.email,
-          password: '***'
-        });
+        // Данные из старой системы загружены
         
         return {
           email: lastUser.email || '',
@@ -102,7 +91,7 @@ export const loadFallbackCredentials = (): SavedCredentials => {
       }
     }
   } catch (error) {
-    console.error('Ошибка загрузки данных из старой системы:', error);
+    // Silently handle fallback data loading
   }
   
   return {

@@ -21,7 +21,7 @@ export const getAllUsers = (): UserData[] => {
     const users = localStorage.getItem(USERS_KEY);
     return users ? JSON.parse(users) : [];
   } catch (error) {
-    console.error('Ошибка при получении пользователей:', error);
+    // Silently handle localStorage errors
     return [];
   }
 };
@@ -31,7 +31,7 @@ export const saveUsers = (users: UserData[]): void => {
   try {
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
   } catch (error) {
-    console.error('Ошибка при сохранении пользователей:', error);
+    // Silently handle localStorage errors
   }
 };
 
@@ -63,7 +63,6 @@ export const registerUser = (userData: UserData): { success: boolean; message: s
     
     return { success: true, message: 'Регистрация прошла успешно!' };
   } catch (error) {
-    console.error('Ошибка при регистрации:', error);
     return { success: false, message: 'Произошла ошибка при регистрации' };
   }
 };
@@ -90,12 +89,10 @@ export const loginUser = (loginData: LoginData & { rememberMe?: boolean }): { su
         localStorage.setItem('savedEmail', loginData.email);
         localStorage.setItem('savedPassword', loginData.password);
         localStorage.setItem('rememberMe', 'true');
-        console.log('✅ Данные входа сохранены в utils/auth');
       } else {
         localStorage.removeItem('savedEmail');
         localStorage.removeItem('savedPassword');  
         localStorage.removeItem('rememberMe');
-        console.log('🗑️ Сохраненные данные очищены в utils/auth');
       }
       
       return { success: true, message: 'Вход выполнен успешно!', user };
@@ -103,7 +100,6 @@ export const loginUser = (loginData: LoginData & { rememberMe?: boolean }): { su
       return { success: false, message: 'Неверный email или пароль' };
     }
   } catch (error) {
-    console.error('Ошибка при входе:', error);
     return { success: false, message: 'Произошла ошибка при входе' };
   }
 };
@@ -113,7 +109,7 @@ export const setCurrentUser = (user: { email: string; firstName: string; lastNam
   try {
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
   } catch (error) {
-    console.error('Ошибка при сохранении текущего пользователя:', error);
+    // Silently handle localStorage errors
   }
 };
 
@@ -123,7 +119,7 @@ export const getCurrentUser = (): { email: string; firstName: string; lastName: 
     const user = localStorage.getItem(CURRENT_USER_KEY);
     return user ? JSON.parse(user) : null;
   } catch (error) {
-    console.error('Ошибка при получении текущего пользователя:', error);
+    // Silently handle localStorage errors
     return null;
   }
 };
@@ -133,7 +129,7 @@ export const logoutUser = (): void => {
   try {
     localStorage.removeItem(CURRENT_USER_KEY);
   } catch (error) {
-    console.error('Ошибка при выходе:', error);
+    // Silently handle localStorage errors
   }
 };
 

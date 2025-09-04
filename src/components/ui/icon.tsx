@@ -14,7 +14,6 @@ const Icon: React.FC<IconProps> = ({ name, fallback = 'CircleAlert', ...props })
     const FallbackIcon = LucideIcons[fallback] as React.FC<LucideProps>;
 
     if (!FallbackIcon) {
-      console.warn(`Icon "${name}" and fallback "${fallback}" not found`);
       return <span className="text-xs text-gray-400">[icon]</span>;
     }
 

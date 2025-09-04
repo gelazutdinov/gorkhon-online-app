@@ -24,7 +24,7 @@ const DonationSection = () => {
         }
       }
     } catch (error) {
-      console.error('Ошибка загрузки настроек пожертвований:', error);
+      // Silently handle localStorage error
     }
   }, []);
 

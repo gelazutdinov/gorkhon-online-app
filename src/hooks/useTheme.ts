@@ -63,8 +63,7 @@ export const useTheme = () => {
     const theme = themes[currentTheme];
     document.documentElement.setAttribute('data-theme', currentTheme);
     
-    // Можно добавить дополнительную логику применения темы
-    console.log('Применена тема:', theme.name);
+    // Тема применена успешно
   }, [currentTheme]);
 
   const changeTheme = (theme: ThemeType) => {

@@ -48,7 +48,7 @@ const NotificationsBanner = () => {
         setDismissedIds(JSON.parse(dismissed));
       }
     } catch (error) {
-      console.error('Ошибка загрузки скрытых уведомлений:', error);
+      // Silently handle localStorage errors
     }
   };
 
@@ -59,7 +59,7 @@ const NotificationsBanner = () => {
     try {
       localStorage.setItem('dismissedNotifications', JSON.stringify(updatedDismissed));
     } catch (error) {
-      console.error('Ошибка сохранения скрытых уведомлений:', error);
+      // Silently handle localStorage errors
     }
 
     // Переключаемся на следующее уведомление

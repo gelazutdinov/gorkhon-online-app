@@ -25,7 +25,6 @@ export default function ProfileEditModal({ user, onClose, onSave, onUpdate }: Pr
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const handleSave = () => {
-    console.log('💾 Сохраняю профиль...', formData);
     
     const updatedProfile = { ...formData };
     if (avatarFile) {
@@ -45,7 +44,6 @@ export default function ProfileEditModal({ user, onClose, onSave, onUpdate }: Pr
         };
         
         localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
-        console.log('✅ Профиль сохранен в localStorage:', updatedUserData);
       }
       
       // Также обновляем данные регистрации если они есть

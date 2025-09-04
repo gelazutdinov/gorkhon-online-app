@@ -50,8 +50,6 @@ const PhotoCarousel = ({
     };
   }, [selectedImageIndex, onNext, onPrev, onClose]);
   
-  console.log('PhotoCarousel render:', { selectedImageIndex, selectedPvzPhotos: selectedPvzPhotos.length });
-  
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl w-full p-0 bg-black/95 max-h-screen overflow-hidden">
@@ -63,7 +61,6 @@ const PhotoCarousel = ({
               className="w-full h-auto max-h-[90vh] sm:max-h-[80vh] object-contain touch-pan-x touch-pan-y"
               loading="lazy"
               onError={(e) => {
-                console.error('Failed to load image:', selectedPvzPhotos[selectedImageIndex].url);
                 e.currentTarget.style.display = 'none';
               }}
             />

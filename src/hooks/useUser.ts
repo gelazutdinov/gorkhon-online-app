@@ -11,6 +11,10 @@ export interface UserProfile {
   avatar: string;
   interests?: string[];
   status?: string;
+  city?: string;
+  about?: string;
+  friends?: number;
+  isOnline?: boolean;
   registeredAt: number;
   lastActiveAt: number;
   stats: {
@@ -108,7 +112,7 @@ export const useUser = () => {
         updateLastActive(profile);
         startSession();
       } catch (error) {
-        console.error('Error parsing user profile:', error);
+        // Silently handle JSON parsing errors
       }
     }
     setIsLoading(false);
@@ -294,9 +298,7 @@ export const useUser = () => {
     try {
       setUser(updatedUser);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
-      console.log('User profile updated successfully:', updatedUser);
     } catch (error) {
-      console.error('Error updating user profile:', error);
       throw error;
     }
   };

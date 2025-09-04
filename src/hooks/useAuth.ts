@@ -47,7 +47,7 @@ export const useAuth = () => {
           setUser(JSON.parse(savedUser));
         }
       } catch (error) {
-        console.error('Load user error:', error);
+        // Silently handle localStorage parsing errors
       } finally {
         setIsLoading(false);
       }
@@ -80,7 +80,6 @@ export const useAuth = () => {
       setUser(mockUser);
       return { success: true };
     } catch (error) {
-      console.error('Registration error:', error);
       return { success: false, error: 'Произошла ошибка при регистрации' };
     }
   }, []);
@@ -88,11 +87,9 @@ export const useAuth = () => {
   // Вход в систему
   const login = useCallback(async (data: UserLoginData & { rememberMe?: boolean }) => {
     try {
-      console.log('🔐 Попытка входа с:', { email: data.email, password: '***', rememberMe: data.rememberMe });
       
       // Проверяем тестовые данные первыми
       if (data.email === 'test@example.com' && data.password === 'test123') {
-        console.log('✅ Вход с тестовыми данными');
         
         const testUser: UserProfile = {
           id: 'test-user',
@@ -114,7 +111,6 @@ export const useAuth = () => {
           localStorage.setItem('savedEmail', data.email);
           localStorage.setItem('savedPassword', data.password);
           localStorage.setItem('rememberMe', 'true');
-          console.log('✅ Тестовые данные входа сохранены');
         }
         
         return { success: true };
@@ -124,11 +120,6 @@ export const useAuth = () => {
       const savedData = localStorage.getItem('registrationData');
       if (savedData) {
         const regData = JSON.parse(savedData);
-        console.log('📋 Проверяем сохраненные данные регистрации:', { 
-          savedEmail: regData.email, 
-          inputEmail: data.email,
-          match: regData.email === data.email && regData.password === data.password
-        });
         
         if (regData.email === data.email && regData.password === data.password) {
           const savedUser = localStorage.getItem('currentUser');
@@ -141,12 +132,10 @@ export const useAuth = () => {
               localStorage.setItem('savedEmail', data.email);
               localStorage.setItem('savedPassword', data.password);
               localStorage.setItem('rememberMe', 'true');
-              console.log('✅ Данные входа сохранены в useAuth');
             } else {
               localStorage.removeItem('savedEmail');
               localStorage.removeItem('savedPassword');
               localStorage.removeItem('rememberMe');
-              console.log('🗑️ Сохраненные данные очищены в useAuth');
             }
             
             return { success: true };
@@ -154,10 +143,8 @@ export const useAuth = () => {
         }
       }
       
-      console.log('❌ Неверный email или пароль');
       return { success: false, error: 'Неверный email или пароль' };
     } catch (error) {
-      console.error('Login error:', error);
       return { success: false, error: 'Произошла ошибка при входе' };
     }
   }, []);
@@ -179,7 +166,6 @@ export const useAuth = () => {
       
       return { success: true };
     } catch (error) {
-      console.error('Logout error:', error);
       return { success: false, error: 'Произошла ошибка при выходе' };
     }
   }, []);
@@ -189,7 +175,6 @@ export const useAuth = () => {
     if (!user) return { success: false, error: 'Пользователь не авторизован' };
 
     try {
-      console.log('🔄 updateProfile в useAuth:', updates);
       
       // Обновляем локальное состояние
       const updatedUser = { ...user, ...updates, updatedAt: new Date().toISOString() };
@@ -200,11 +185,8 @@ export const useAuth = () => {
       // Обновляем состояние
       setUser(updatedUser);
       
-      console.log('✅ Профиль обновлен в useAuth:', updatedUser);
-      
       return { success: true };
     } catch (error) {
-      console.error('Profile update error:', error);
       return { success: false, error: 'Произошла ошибка при обновлении профиля' };
     }
   }, [user]);
@@ -217,7 +199,6 @@ export const useAuth = () => {
       const result = await apiClient.changePassword(currentPassword, newPassword);
       return result;
     } catch (error) {
-      console.error('Password change error:', error);
       return { success: false, error: 'Произошла ошибка при смене пароля' };
     }
   }, [user]);
@@ -230,12 +211,10 @@ export const useAuth = () => {
       if (savedUser) {
         const userData = JSON.parse(savedUser);
         setUser(userData);
-        console.log('🔄 Данные пользователя перезагружены:', userData);
         return { success: true };
       }
       return { success: false, error: 'Нет сохраненных данных пользователя' };
     } catch (error) {
-      console.error('Reload user error:', error);
       return { success: false, error: 'Ошибка при перезагрузке данных' };
     }
   }, []);
