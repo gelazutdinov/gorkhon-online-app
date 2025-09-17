@@ -40,7 +40,6 @@ const ImportantNumbers = () => {
         ]);
       }
     } catch (error) {
-      console.error('Ошибка загрузки важных номеров:', error);
       // Используем дефолтные данные в случае ошибки
       setImportantNumbers([
         { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },

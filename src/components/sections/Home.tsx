@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import ImportantNumbers from "@/components/ImportantNumbers";
 import Schedule from "@/components/Schedule";
 import DonationSection from "@/components/DonationSection";
@@ -150,4 +150,4 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   );
 };
 
-export default Home;
+export default memo(Home);

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, memo } from "react";
 
 
 
@@ -192,4 +192,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default memo(Index);

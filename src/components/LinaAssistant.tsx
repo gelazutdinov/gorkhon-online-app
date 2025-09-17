@@ -129,7 +129,7 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
     setIsTyping(true);
 
     // Реалистичная задержка для "размышления"
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       const response = getSmartResponse(userInput);
       
       const aiMessage: Message = {
@@ -142,6 +142,9 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
     }, 1000 + Math.random() * 2000); // 1-3 секунды
+
+    // Cleanup function будет автоматически вызвана при размонтировании
+    return () => clearTimeout(timeoutId);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

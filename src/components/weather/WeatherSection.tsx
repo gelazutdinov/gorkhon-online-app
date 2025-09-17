@@ -18,7 +18,6 @@ const WeatherSection = memo(() => {
       setUpdateCount(prev => prev + 1);
     } catch (err) {
       setError('Ошибка получения данных о погоде');
-      console.error('Weather update error:', err);
     } finally {
       setIsLoading(false);
     }
