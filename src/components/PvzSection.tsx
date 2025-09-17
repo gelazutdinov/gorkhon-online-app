@@ -28,6 +28,11 @@ interface PhotoCarouselProps {
 
 const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  
+  // Минимальная дистанция свайпа для срабатывания
+  const minSwipeDistance = 50;
   
   const nextPhoto = () => {
     setCurrentIndex((prev) => (prev + 1) % photos.length);
@@ -41,23 +46,54 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
     setCurrentIndex(index);
   };
   
+  // Обработчики для свайпов
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      nextPhoto();
+    } else if (isRightSwipe) {
+      prevPhoto();
+    }
+  };
+  
   return (
     <div className="space-y-3">
       {/* Main photo */}
-      <div className="relative overflow-hidden rounded-2xl group">
+      <div 
+        className="relative overflow-hidden rounded-2xl group"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <img 
           src={photos[currentIndex].url}
           alt={photos[currentIndex].caption}
-          className="w-full h-48 object-cover border-2 border-slate-200 shadow-sm cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gorkhon-pink/30"
+          className="w-full h-48 md:h-64 object-cover border-2 border-slate-200 shadow-lg cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-xl hover:border-gorkhon-pink/40 select-none"
           onClick={() => onPhotoClick(photos, currentIndex)}
           loading="lazy"
+          draggable={false}
           style={{ 
             imageRendering: 'crisp-edges',
-            filter: 'contrast(1.05) saturate(1.1)'
+            filter: 'contrast(1.05) saturate(1.1)',
+            userSelect: 'none'
           }}
         />
         
-        {/* Navigation arrows */}
+        {/* Navigation arrows - как в ВК */}
         {photos.length > 1 && (
           <>
             <button
@@ -65,47 +101,53 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
                 e.stopPropagation();
                 prevPhoto();
               }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/95 hover:bg-white backdrop-blur-sm shadow-lg opacity-80 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10 flex items-center justify-center border border-white/20"
             >
-              <Icon name="ChevronLeft" size={20} className="text-gorkhon-pink" />
+              <Icon name="ChevronLeft" size={20} className="text-gray-700" />
             </button>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 nextPhoto();
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/95 hover:bg-white backdrop-blur-sm shadow-lg opacity-80 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10 flex items-center justify-center border border-white/20"
             >
-              <Icon name="ChevronRight" size={20} className="text-gorkhon-pink" />
+              <Icon name="ChevronRight" size={20} className="text-gray-700" />
             </button>
           </>
         )}
         
-        {/* Zoom icon - clickable overlay */}
+        {/* Zoom icon overlay - стиль ВК */}
         <div 
-          className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent hover:from-black/40 transition-all duration-300 rounded-2xl flex items-center justify-center cursor-pointer"
+          className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 hover:from-black/50 hover:to-black/20 transition-all duration-300 rounded-2xl flex items-center justify-center cursor-pointer"
           onClick={() => {
-            console.log('Photo clicked:', photos[currentIndex], currentIndex);
             onPhotoClick(photos, currentIndex);
           }}
         >
-          <div className="p-2 rounded-full bg-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100 pointer-events-none">
-            <Icon name="ZoomIn" size={16} className="text-gorkhon-pink" />
+          <div className="p-3 rounded-full bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100 pointer-events-none shadow-lg">
+            <Icon name="Expand" size={18} className="text-gray-700" />
           </div>
         </div>
+        
+        {/* Счетчик фото как в ВК */}
+        {photos.length > 1 && (
+          <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white text-xs font-medium">
+            {currentIndex + 1} / {photos.length}
+          </div>
+        )}
       </div>
       
-      {/* Photo indicators */}
+      {/* Индикаторы как в ВК */}
       {photos.length > 1 && (
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-center gap-1.5">
           {photos.map((_, index) => (
             <button
               key={index}
               onClick={() => goToPhoto(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`h-1 rounded-full transition-all duration-300 ${
                 index === currentIndex 
-                  ? 'bg-gorkhon-pink scale-125' 
-                  : 'bg-slate-300 hover:bg-slate-400'
+                  ? 'w-6 bg-gorkhon-pink' 
+                  : 'w-1.5 bg-slate-300 hover:bg-slate-400'
               }`}
             />
           ))}
@@ -117,17 +159,17 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
         {photos[currentIndex].caption}
       </p>
       
-      {/* Thumbnail strip for multiple photos */}
-      {photos.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+      {/* Превью фото как в ВК */}
+      {photos.length > 3 && (
+        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
           {photos.map((photo, index) => (
             <button
               key={index}
               onClick={() => goToPhoto(index)}
-              className={`flex-shrink-0 w-14 h-10 sm:w-16 sm:h-12 overflow-hidden rounded-lg border-2 transition-all duration-300 ${
+              className={`flex-shrink-0 w-12 h-8 sm:w-14 sm:h-9 overflow-hidden rounded-md border transition-all duration-300 ${
                 index === currentIndex 
-                  ? 'border-gorkhon-pink shadow-lg scale-105' 
-                  : 'border-slate-200 hover:border-slate-300'
+                  ? 'border-2 border-gorkhon-pink shadow-md scale-105' 
+                  : 'border border-slate-200 hover:border-slate-300 opacity-70 hover:opacity-90'
               }`}
             >
               <img 
@@ -135,6 +177,7 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
                 alt={photo.caption}
                 className="w-full h-full object-cover"
                 loading="lazy"
+                draggable={false}
               />
             </button>
           ))}
