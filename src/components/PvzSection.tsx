@@ -139,15 +139,15 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
       
       {/* Индикаторы как в ВК */}
       {photos.length > 1 && (
-        <div className="flex justify-center gap-1.5">
+        <div className="flex justify-center gap-1">
           {photos.map((_, index) => (
             <button
               key={index}
               onClick={() => goToPhoto(index)}
-              className={`h-1 rounded-full transition-all duration-300 ${
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex 
-                  ? 'w-6 bg-gorkhon-pink' 
-                  : 'w-1.5 bg-slate-300 hover:bg-slate-400'
+                  ? 'bg-gorkhon-pink scale-110' 
+                  : 'bg-slate-300 hover:bg-slate-400'
               }`}
             />
           ))}
