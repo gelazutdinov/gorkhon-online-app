@@ -195,7 +195,7 @@ export const useUser = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
   };
 
-  const trackSectionVisit = (section: keyof UserProfile['stats']['sectionsVisited']) => {
+  const trackSectionVisit = useCallback((section: keyof UserProfile['stats']['sectionsVisited']) => {
     if (!user) return;
 
     const updatedUser = {
@@ -210,10 +210,10 @@ export const useUser = () => {
     };
 
     setUser(updatedUser);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
-  };
+    saveUserThrottled(updatedUser);
+  }, [user, saveUserThrottled]);
 
-  const trackFeatureUse = (feature: keyof UserProfile['stats']['featuresUsed']) => {
+  const trackFeatureUse = useCallback((feature: keyof UserProfile['stats']['featuresUsed']) => {
     if (!user) return;
 
     const updatedUser = {
@@ -228,8 +228,8 @@ export const useUser = () => {
     };
 
     setUser(updatedUser);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
-  };
+    saveUserThrottled(updatedUser);
+  }, [user, saveUserThrottled]);
 
   const startSession = () => {
     localStorage.setItem(SESSION_KEY, Date.now().toString());
@@ -262,7 +262,7 @@ export const useUser = () => {
     const today = new Date().toDateString();
     const lastActiveDay = new Date(profile.lastActiveAt).toDateString();
     
-    let updatedProfile = {
+    const updatedProfile = {
       ...profile,
       lastActiveAt: Date.now(),
       stats: {

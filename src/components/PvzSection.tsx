@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 interface PvzPhoto {
   url: string;
@@ -34,29 +34,29 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
   // Минимальная дистанция свайпа для срабатывания
   const minSwipeDistance = 50;
   
-  const nextPhoto = () => {
+  const nextPhoto = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % photos.length);
-  };
+  }, [photos.length]);
   
-  const prevPhoto = () => {
+  const prevPhoto = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
-  };
+  }, [photos.length]);
   
-  const goToPhoto = (index: number) => {
+  const goToPhoto = useCallback((index: number) => {
     setCurrentIndex(index);
-  };
+  }, []);
   
   // Обработчики для свайпов
-  const onTouchStart = (e: React.TouchEvent) => {
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
-  };
+  }, []);
   
-  const onTouchMove = (e: React.TouchEvent) => {
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
-  };
+  }, []);
   
-  const onTouchEnd = () => {
+  const onTouchEnd = useCallback(() => {
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
@@ -68,7 +68,7 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
     } else if (isRightSwipe) {
       prevPhoto();
     }
-  };
+  }, [touchStart, touchEnd, minSwipeDistance, nextPhoto, prevPhoto]);
   
   return (
     <div className="space-y-3">
@@ -188,7 +188,7 @@ const PhotoCarousel = ({ photos, onPhotoClick }: PhotoCarouselProps) => {
 };
 
 const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
-  const pvzData: PvzItem[] = [
+  const pvzData: PvzItem[] = useMemo(() => [
     {
       name: "Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
@@ -261,7 +261,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
         }
       ]
     }
-  ];
+  ], []);
 
   return (
     <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-pink-50/30 border-2 border-gorkhon-pink/10 shadow-lg hover:shadow-xl transition-all duration-300">

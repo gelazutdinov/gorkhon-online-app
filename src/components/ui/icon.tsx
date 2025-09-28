@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import * as LucideIcons from 'lucide-react';
 import { LucideProps } from 'lucide-react';
 
@@ -7,7 +7,7 @@ interface IconProps extends LucideProps {
   fallback?: keyof typeof LucideIcons;
 }
 
-const Icon: React.FC<IconProps> = ({ name, fallback = 'CircleAlert', ...props }) => {
+const Icon: React.FC<IconProps> = memo(({ name, fallback = 'CircleAlert', ...props }) => {
   const IconComponent = LucideIcons[name] as React.FC<LucideProps>;
 
   if (!IconComponent) {
@@ -21,6 +21,6 @@ const Icon: React.FC<IconProps> = ({ name, fallback = 'CircleAlert', ...props })
   }
 
   return <IconComponent {...props} />;
-};
+});
 
 export default Icon;

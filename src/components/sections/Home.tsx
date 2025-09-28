@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useMemo, useCallback } from 'react';
 import ImportantNumbers from "@/components/ImportantNumbers";
 import Schedule from "@/components/Schedule";
 import DonationSection from "@/components/DonationSection";
@@ -39,18 +39,18 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
       const savedContent = localStorage.getItem('homePageContent');
       if (savedContent) {
         const content = JSON.parse(savedContent);
-        setSections(content.sections || getDefaultSections());
+        setSections(content.sections || getDefaultSections);
       } else {
-        setSections(getDefaultSections());
+        setSections(getDefaultSections);
       }
     } catch (error) {
       console.error('Ошибка загрузки настроек секций:', error);
-      setSections(getDefaultSections());
+      setSections(getDefaultSections);
     }
     setLoading(false);
-  }, []);
+  }, [getDefaultSections]);
 
-  const getDefaultSections = (): SectionConfig[] => [
+  const getDefaultSections = useMemo((): SectionConfig[] => [
     { id: 'importantNumbers', name: 'Важные номера', enabled: true, order: 1, description: 'Контакты экстренных служб и организаций' },
     { id: 'schedule', name: 'Расписание транспорта', enabled: true, order: 2, description: 'Автобусы и транспорт' },
     { id: 'donation', name: 'Сбор средств', enabled: true, order: 3, description: 'Благотворительные сборы' },
@@ -58,9 +58,9 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
     { id: 'weather', name: 'Погода', enabled: true, order: 5, description: 'Прогноз погоды' },
     { id: 'pvz', name: 'ПВЗ и фото', enabled: true, order: 6, description: 'Пункты выдачи заказов и фотогалерея' },
     { id: 'actionButtons', name: 'Быстрые действия', enabled: true, order: 7, description: 'Кнопки быстрого доступа' }
-  ];
+  ], []);
 
-  const renderSection = (sectionId: string) => {
+  const renderSection = useCallback((sectionId: string) => {
     switch (sectionId) {
       case 'importantNumbers':
         return (
@@ -119,7 +119,7 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
       default:
         return null;
     }
-  };
+  }, [onOpenPhotoCarousel]);
 
   if (loading) {
     return (

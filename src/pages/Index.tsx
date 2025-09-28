@@ -51,13 +51,13 @@ const Index = () => {
     if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
       setSelectedImageIndex((prev) => prev !== null ? (prev + 1) % selectedPvzPhotos.length : 0);
     }
-  }, [selectedPvzPhotos.length]);
+  }, [selectedImageIndex, selectedPvzPhotos.length]);
 
   const prevPhoto = useCallback(() => {
     if (selectedImageIndex !== null && selectedPvzPhotos.length > 0) {
       setSelectedImageIndex((prev) => prev !== null ? (prev === 0 ? selectedPvzPhotos.length - 1 : prev - 1) : 0);
     }
-  }, [selectedPvzPhotos.length]);
+  }, [selectedImageIndex, selectedPvzPhotos.length]);
 
   // Отслеживание переходов между разделами
   const handleSectionChange = useCallback((section: string) => {
