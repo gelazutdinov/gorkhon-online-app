@@ -334,13 +334,9 @@
   body {
     @apply text-foreground;
     font-family: "Unbounded", sans-serif;
-    background-color: #f8fafc;
-    /* Убираем фоновый паттерн для мобильного приложения */
-    /* background-image: url("/pattern.svg"); */
-    /* background-size: 500px 500px; */
-    /* background-repeat: repeat; */
+    background: linear-gradient(180deg, #fff9f0 0%, #fff5e6 50%, #ffe8cc 100%);
+    background-attachment: fixed;
 
-    /* Мобильные оптимизации */
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;

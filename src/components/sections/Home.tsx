@@ -135,7 +135,23 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
     );
   }
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 relative">
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-4xl animate-autumn-leaf opacity-70"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${i * 1.2}s`,
+              animationDuration: `${8 + Math.random() * 4}s`
+            }}
+          >
+            {['🍂', '🍁', '🍃'][i % 3]}
+          </div>
+        ))}
+      </div>
+      
       {sections
         .filter(section => section.enabled)
         .sort((a, b) => a.order - b.order)
