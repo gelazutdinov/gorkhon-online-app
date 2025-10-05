@@ -28,37 +28,36 @@ interface HomeProps {
   onOpenPhotoCarousel: (photos: Photo[], startIndex: number) => void;
 }
 
+const getDefaultSections = (): SectionConfig[] => [
+  { id: 'importantNumbers', name: 'Важные номера', enabled: true, order: 1, description: 'Контакты экстренных служб и организаций' },
+  { id: 'schedule', name: 'Расписание транспорта', enabled: true, order: 2, description: 'Автобусы и транспорт' },
+  { id: 'donation', name: 'Сбор средств', enabled: true, order: 3, description: 'Благотворительные сборы' },
+  { id: 'workSchedule', name: 'Режим работы', enabled: true, order: 4, description: 'График работы организаций' },
+  { id: 'weather', name: 'Погода', enabled: true, order: 5, description: 'Прогноз погоды' },
+  { id: 'pvz', name: 'ПВЗ и фото', enabled: true, order: 6, description: 'Пункты выдачи заказов и фотогалерея' },
+  { id: 'actionButtons', name: 'Быстрые действия', enabled: true, order: 7, description: 'Кнопки быстрого доступа' }
+];
+
 const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   const { user } = useUser();
   const [sections, setSections] = useState<SectionConfig[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Загружаем настройки секций из localStorage
     try {
       const savedContent = localStorage.getItem('homePageContent');
       if (savedContent) {
         const content = JSON.parse(savedContent);
-        setSections(content.sections || getDefaultSections);
+        setSections(content.sections || getDefaultSections());
       } else {
-        setSections(getDefaultSections);
+        setSections(getDefaultSections());
       }
     } catch (error) {
       console.error('Ошибка загрузки настроек секций:', error);
-      setSections(getDefaultSections);
+      setSections(getDefaultSections());
     }
     setLoading(false);
-  }, [getDefaultSections]);
-
-  const getDefaultSections = useMemo((): SectionConfig[] => [
-    { id: 'importantNumbers', name: 'Важные номера', enabled: true, order: 1, description: 'Контакты экстренных служб и организаций' },
-    { id: 'schedule', name: 'Расписание транспорта', enabled: true, order: 2, description: 'Автобусы и транспорт' },
-    { id: 'donation', name: 'Сбор средств', enabled: true, order: 3, description: 'Благотворительные сборы' },
-    { id: 'workSchedule', name: 'Режим работы', enabled: true, order: 4, description: 'График работы организаций' },
-    { id: 'weather', name: 'Погода', enabled: true, order: 5, description: 'Прогноз погоды' },
-    { id: 'pvz', name: 'ПВЗ и фото', enabled: true, order: 6, description: 'Пункты выдачи заказов и фотогалерея' },
-    { id: 'actionButtons', name: 'Быстрые действия', enabled: true, order: 7, description: 'Кнопки быстрого доступа' }
-  ], []);
+  }, []);
 
   const renderSection = useCallback((sectionId: string) => {
     switch (sectionId) {
