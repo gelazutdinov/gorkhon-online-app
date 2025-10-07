@@ -1,10 +1,9 @@
-const CACHE_NAME = 'gorkhon-online-v1.1';
+const CACHE_NAME = 'gorkhon-online-v1.2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/app-icon-192.png',
-  '/app-icon-512.png'
+  'https://cdn.poehali.dev/files/20c170e1-2924-429a-af5e-9a37e452088a.png'
 ];
 
 self.addEventListener('install', (event) => {
