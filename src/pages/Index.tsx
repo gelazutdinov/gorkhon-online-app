@@ -11,6 +11,7 @@ import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
 import AdminQuickAccess from "@/components/AdminQuickAccess";
 import NotificationsBanner from "@/components/NotificationsBanner";
+import InstallPrompt from "@/components/InstallPrompt";
 
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
@@ -188,6 +189,9 @@ const Index = () => {
       
       {/* Кнопка быстрого доступа к админ-панели */}
       <AdminQuickAccess />
+      
+      {/* Промпт установки приложения */}
+      <InstallPrompt />
     </div>
   );
 };
