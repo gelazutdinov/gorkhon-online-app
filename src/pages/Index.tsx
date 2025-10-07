@@ -13,6 +13,7 @@ import AdminQuickAccess from "@/components/AdminQuickAccess";
 import NotificationsBanner from "@/components/NotificationsBanner";
 import InstallPrompt from "@/components/InstallPrompt";
 import UpdateNotification from "@/components/UpdateNotification";
+import SplashScreen from "@/components/SplashScreen";
 
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
@@ -70,7 +71,9 @@ const Index = () => {
 
 
   return (
-    <div className="min-h-screen bg-white relative overflow-x-hidden w-full max-w-full">
+    <>
+      <SplashScreen />
+      <div className="min-h-screen bg-white relative overflow-x-hidden w-full max-w-full">
       
       {/* VK-style Header - Mobile First */}
       <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
@@ -197,6 +200,7 @@ const Index = () => {
       {/* Уведомление об обновлениях */}
       <UpdateNotification />
     </div>
+    </>
   );
 };
 
