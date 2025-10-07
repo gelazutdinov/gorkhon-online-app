@@ -12,6 +12,7 @@ import News from "@/components/sections/News";
 import AdminQuickAccess from "@/components/AdminQuickAccess";
 import NotificationsBanner from "@/components/NotificationsBanner";
 import InstallPrompt from "@/components/InstallPrompt";
+import UpdateNotification from "@/components/UpdateNotification";
 
 import Home from "@/components/sections/Home";
 import WeatherSection from "@/components/weather/WeatherSection";
@@ -192,6 +193,9 @@ const Index = () => {
       
       {/* Промпт установки приложения */}
       <InstallPrompt />
+      
+      {/* Уведомление об обновлениях */}
+      <UpdateNotification />
     </div>
   );
 };
