@@ -14,12 +14,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./components/legal/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./components/legal/TermsOfService"));
 const DataProtection = lazy(() => import("./components/legal/DataProtection"));
-const AuthPage = lazy(() => import("./components/auth/AuthPage"));
-const TestAuth = lazy(() => import("./components/TestAuth"));
-const UserDashboard = lazy(() => import("./components/UserDashboard"));
-const AuthTestSuite = lazy(() => import("./components/AuthTestSuite"));
 const SaveTestForm = lazy(() => import("./components/SaveTestForm"));
-const ProfileTestButton = lazy(() => import("./components/ProfileTestButton"));
 
 // Оптимизированная конфигурация QueryClient
 const queryClient = new QueryClient({
@@ -54,13 +49,7 @@ const App = () => (
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/data-protection" element={<DataProtection />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/register" element={<AuthPage />} />
-            <Route path="/login" element={<AuthPage />} />
-            <Route path="/test-auth" element={<TestAuth />} />
-            <Route path="/auth-test" element={<AuthTestSuite />} />
             <Route path="/save-test" element={<SaveTestForm />} />
-            <Route path="/profile-test" element={<ProfileTestButton />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
