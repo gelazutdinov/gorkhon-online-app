@@ -218,6 +218,30 @@ const Index = () => {
                 </button>
               </div>
 
+              {/* Legal & Privacy */}
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Документы</h3>
+                <div className="space-y-2">
+                  <button
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-gray-100 border border-gray-200"
+                  >
+                    <Icon name="Shield" size={18} />
+                    <span className="text-sm font-medium">Политика конфиденциальности</span>
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-gray-100 border border-gray-200"
+                  >
+                    <Icon name="FileText" size={18} />
+                    <span className="text-sm font-medium">Правила пользования</span>
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-gray-100 border border-gray-200"
+                  >
+                    <Icon name="Lock" size={18} />
+                    <span className="text-sm font-medium">Защита информации</span>
+                  </button>
+                </div>
+              </div>
 
             </div>
           </div>
