@@ -41,11 +41,43 @@ const Index = () => {
   });
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<{text: string, sender: 'user' | 'support'}[]>([
+    {text: 'Здравствуйте! Чем могу помочь?', sender: 'support'}
+  ]);
+  const [chatInput, setChatInput] = useState('');
 
   useEffect(() => {
     localStorage.setItem('gorkhon-theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
+    
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    if (theme === 'system') {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
   }, [theme]);
+
+  const sendMessage = () => {
+    if (chatInput.trim()) {
+      setChatMessages([...chatMessages, {text: chatInput, sender: 'user'}]);
+      setChatInput('');
+      
+      setTimeout(() => {
+        setChatMessages(prev => [...prev, {
+          text: 'Спасибо за сообщение! Мы ответим вам в ближайшее время.',
+          sender: 'support'
+        }]);
+      }, 1000);
+    }
+  };
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
     setSelectedPvzPhotos(photos);
@@ -174,8 +206,8 @@ const Index = () => {
                   {[
                     { key: 'system', label: 'Системная', icon: 'Monitor', gradient: 'from-gray-500 to-gray-600' },
                     { key: 'dark', label: 'Тёмная', icon: 'Moon', gradient: 'from-slate-700 to-slate-900' },
-                    { key: 'winter', label: 'Зима ❄️', icon: 'Snowflake', gradient: 'from-blue-400 to-cyan-500' },
-                    { key: 'autumn', label: 'Осень 🍂', icon: 'Leaf', gradient: 'from-orange-500 to-amber-600' }
+                    { key: 'winter', label: 'Зима', icon: 'Snowflake', gradient: 'from-blue-400 to-cyan-500' },
+                    { key: 'autumn', label: 'Осень', icon: 'Leaf', gradient: 'from-orange-500 to-amber-600' }
                   ].map(item => (
                     <button
                       key={item.key}
@@ -217,10 +249,21 @@ const Index = () => {
 
             {/* Chat Content */}
             <div className="flex-1 p-4 overflow-y-auto space-y-3">
-              <div className="bg-gray-100 rounded-lg p-3 max-w-[80%]">
-                <p className="text-sm text-gray-800">Здравствуйте! Чем могу помочь?</p>
-                <span className="text-xs text-gray-500 mt-1 block">Поддержка • сейчас</span>
-              </div>
+              {chatMessages.map((msg, idx) => (
+                <div 
+                  key={idx}
+                  className={`rounded-lg p-3 max-w-[80%] ${
+                    msg.sender === 'user' 
+                      ? 'ml-auto bg-blue-500 text-white' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  <p className="text-sm">{msg.text}</p>
+                  <span className="text-xs mt-1 block opacity-70">
+                    {msg.sender === 'user' ? 'Вы' : 'Поддержка'} • сейчас
+                  </span>
+                </div>
+              ))}
             </div>
 
             {/* Chat Input */}
@@ -228,10 +271,16 @@ const Index = () => {
               <div className="flex gap-2">
                 <input
                   type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                   placeholder="Напишите сообщение..."
                   className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-colors">
+                <button 
+                  onClick={sendMessage}
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-colors"
+                >
                   <Icon name="Send" size={18} />
                 </button>
               </div>
