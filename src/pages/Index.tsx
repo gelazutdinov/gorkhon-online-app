@@ -1,4 +1,5 @@
 import { useState, useCallback, memo, useEffect } from "react";
+import { sanitizeInput, preventXSS } from "@/utils/security";
 
 
 
@@ -81,7 +82,13 @@ const Index = () => {
 
   const sendMessage = () => {
     if (chatInput.trim()) {
-      const userMsg = chatInput;
+      const sanitized = sanitizeInput(chatInput.trim());
+      const userMsg = preventXSS(sanitized);
+      
+      if (userMsg.length > 1000) {
+        return;
+      }
+      
       setChatMessages(prev => [...prev, {text: userMsg, sender: 'user'}]);
       setChatInput('');
       
