@@ -17,8 +17,8 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onDocumentOpen }: SidebarProps) 
         className="w-80 bg-white shadow-2xl overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b flex items-center justify-between" style={{backgroundColor: '#F1117E'}}>
-          <h3 className="font-semibold text-white">Меню</h3>
+        <div className="p-6 pb-4 border-b flex items-center justify-between" style={{backgroundColor: '#F1117E'}}>
+          <h3 className="font-semibold text-white text-lg">Меню</h3>
           <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
             <Icon name="X" size={20} />
           </button>
