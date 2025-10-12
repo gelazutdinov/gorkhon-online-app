@@ -228,7 +228,7 @@ const Index = () => {
       {isChatOpen && (
         <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={() => setIsChatOpen(false)}>
           <div 
-            className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md max-h-[80vh] flex flex-col shadow-2xl"
+            className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[80vh] flex flex-col shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Chat Header */}
