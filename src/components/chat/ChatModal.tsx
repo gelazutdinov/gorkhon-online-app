@@ -165,71 +165,89 @@ const ChatModal = ({ isOpen, onClose }: ChatModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[80vh] flex flex-col shadow-2xl"
+        className="bg-white rounded-t-3xl md:rounded-3xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[85vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 border-b" style={{backgroundColor: '#F1117E'}}>
+        <div className="flex items-center justify-between p-5 border-b border-pink-100 bg-gradient-to-r from-pink-500 to-pink-600 rounded-t-3xl">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <Icon name="Bot" size={20} className="text-white" />
+            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <Icon name="Bot" size={24} className="text-white" />
             </div>
             <div>
-              <h3 className="font-semibold text-white">Лина</h3>
-              <p className="text-xs text-white/80">ИИ-помощник</p>
+              <h3 className="font-bold text-white text-lg">Лина</h3>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                <p className="text-xs text-white/90 font-medium">Онлайн</p>
+              </div>
             </div>
           </div>
-          <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
+          <button 
+            onClick={onClose} 
+            className="text-white hover:bg-white/20 p-2 rounded-xl transition-all active:scale-95"
+            aria-label="Закрыть чат"
+          >
             <Icon name="X" size={20} />
           </button>
         </div>
 
-        <div className="flex-1 p-4 overflow-y-auto space-y-3">
+        <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gradient-to-b from-gray-50 to-white">
           {chatMessages.map((msg, idx) => (
-            <div key={idx}>
-              <div 
-                className={`rounded-lg p-3 max-w-[80%] ${
-                  msg.sender === 'user' 
-                    ? 'ml-auto bg-blue-500 text-white' 
-                    : 'bg-gray-100 text-gray-800'
-                }`}
-              >
-                <p className="text-sm whitespace-pre-line">{msg.text}</p>
-                <span className="text-xs mt-1 block opacity-70">
-                  {msg.sender === 'user' ? 'Вы' : 'Лина (ИИ)'} • сейчас
-                </span>
-              </div>
-              {msg.showAgentButton && (
-                <a
-                  href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-colors shadow-sm"
+            <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className="max-w-[85%]">
+                {msg.sender === 'support' && (
+                  <div className="flex items-center gap-2 mb-1.5 ml-1">
+                    <div className="w-6 h-6 rounded-lg bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center">
+                      <Icon name="Bot" size={12} className="text-white" />
+                    </div>
+                    <span className="text-xs font-medium text-gray-600">Лина</span>
+                  </div>
+                )}
+                <div 
+                  className={`rounded-2xl p-4 shadow-sm ${
+                    msg.sender === 'user' 
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white ml-auto' 
+                      : 'bg-white text-gray-800 border border-gray-100'
+                  }`}
                 >
-                  <Icon name="UserCircle" size={18} />
-                  <span className="text-sm font-medium">Написать агенту</span>
-                </a>
-              )}
+                  <p className="text-sm leading-relaxed whitespace-pre-line">{msg.text}</p>
+                  <span className={`text-xs mt-2 block ${msg.sender === 'user' ? 'text-blue-100' : 'text-gray-400'}`}>
+                    {new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+                {msg.showAgentButton && (
+                  <a
+                    href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 mt-3 px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl hover:from-green-600 hover:to-green-700 transition-all shadow-md hover:shadow-lg active:scale-98"
+                  >
+                    <Icon name="UserCircle" size={18} />
+                    <span className="text-sm font-semibold">Написать агенту</span>
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="p-4 border-t">
+        <div className="p-4 border-t border-gray-100 bg-white rounded-b-3xl">
           <div className="flex gap-2">
             <input
               type="text"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder="Напишите сообщение..."
-              className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Ваше сообщение..."
+              className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-pink-500 transition-colors bg-gray-50 focus:bg-white"
             />
             <button 
               onClick={sendMessage}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-colors"
+              className="bg-gradient-to-r from-pink-500 to-pink-600 text-white px-5 py-3 rounded-2xl hover:from-pink-600 hover:to-pink-700 transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center"
+              aria-label="Отправить"
             >
-              <Icon name="Send" size={18} />
+              <Icon name="Send" size={20} />
             </button>
           </div>
         </div>
