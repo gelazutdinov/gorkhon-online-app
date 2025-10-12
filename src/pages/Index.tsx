@@ -72,8 +72,8 @@ const Index = () => {
       <div className="min-h-screen bg-white relative overflow-x-hidden w-full max-w-full">
       
       {/* VK-style Header - Mobile First */}
-      <div className="fixed top-2 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
-        <div className="px-4 py-4 flex items-center justify-between">
+      <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
+        <div className="px-4 py-3 flex items-center justify-between">
           {/* Mobile Layout */}
           <div className="md:hidden flex items-center justify-center gap-3 w-full">
             <img 
@@ -104,9 +104,9 @@ const Index = () => {
       <NotificationsBanner />
 
       {/* VK-style Layout */}
-      <div className="flex pt-28 md:pt-24">
+      <div className="flex pt-[4.5rem] md:pt-20">
         {/* Left Sidebar */}
-        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-24 bottom-0 overflow-y-auto">
+        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-20 bottom-0 overflow-y-auto">
           <div className="p-4 space-y-2">
             {[
               { key: 'home', label: 'Главная', icon: 'Home' },
@@ -132,7 +132,7 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
-          <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-20 sm:pb-24 md:pb-4">
+          <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-24 md:pb-4">
             {activeSection === 'home' && (
               <>
                 <Home onOpenPhotoCarousel={openPhotoCarousel} />
@@ -149,7 +149,7 @@ const Index = () => {
       </div>
 
       {/* VK-style Bottom Navigation for mobile */}
-      <div className="md:hidden fixed bottom-4 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg rounded-t-xl" 
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg rounded-t-xl" 
            style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
         <div className="flex items-stretch">
           {[

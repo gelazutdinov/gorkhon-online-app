@@ -14,12 +14,12 @@ export default function SplashScreen() {
 
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 500);
+    }, 1500);
 
     const hideTimer = setTimeout(() => {
       setIsVisible(false);
       sessionStorage.setItem('splashShown', 'true');
-    }, 2500);
+    }, 3500);
 
     return () => {
       clearTimeout(timer);
