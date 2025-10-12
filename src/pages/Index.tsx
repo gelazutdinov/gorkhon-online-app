@@ -36,34 +36,12 @@ const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
   const [activeSection, setActiveSection] = useState('home');
-  const [theme, setTheme] = useState<'system' | 'dark' | 'winter' | 'autumn'>(() => {
-    return (localStorage.getItem('gorkhon-theme') as any) || 'system';
-  });
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<{text: string, sender: 'user' | 'support'}[]>([
     {text: 'Здравствуйте! Чем могу помочь?', sender: 'support'}
   ]);
   const [chatInput, setChatInput] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('gorkhon-theme', theme);
-    
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    
-    if (theme === 'system') {
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-  }, [theme]);
 
   const sendMessage = () => {
     if (chatInput.trim()) {
@@ -199,31 +177,7 @@ const Index = () => {
                 </button>
               </div>
 
-              {/* Theme Selector */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Темы оформления</h3>
-                <div className="space-y-2">
-                  {[
-                    { key: 'system', label: 'Системная', icon: 'Monitor', gradient: 'from-gray-500 to-gray-600' },
-                    { key: 'dark', label: 'Тёмная', icon: 'Moon', gradient: 'from-slate-700 to-slate-900' },
-                    { key: 'winter', label: 'Зима', icon: 'Snowflake', gradient: 'from-blue-400 to-cyan-500' },
-                    { key: 'autumn', label: 'Осень', icon: 'Leaf', gradient: 'from-orange-500 to-amber-600' }
-                  ].map(item => (
-                    <button
-                      key={item.key}
-                      onClick={() => setTheme(item.key as any)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all ${
-                        theme === item.key
-                          ? `bg-gradient-to-r ${item.gradient} text-white shadow-md scale-105`
-                          : 'text-gray-700 hover:bg-gray-100 border border-gray-200'
-                      }`}
-                    >
-                      <Icon name={item.icon as any} size={18} />
-                      <span className="font-medium text-sm">{item.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
