@@ -73,7 +73,7 @@ const Index = () => {
       
       {/* VK-style Header - Mobile First */}
       <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
-        <div className="px-4 py-5 flex items-center justify-between">
+        <div className="px-4 py-6 flex items-center justify-between">
           {/* Mobile Layout */}
           <div className="md:hidden flex items-center justify-center gap-3 w-full">
             <img 
@@ -104,7 +104,7 @@ const Index = () => {
       <NotificationsBanner />
 
       {/* VK-style Layout */}
-      <div className="flex pt-20 md:pt-20">
+      <div className="flex pt-24 md:pt-24">
         {/* Left Sidebar */}
         <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-20 bottom-0 overflow-y-auto">
           <div className="p-4 space-y-2">
