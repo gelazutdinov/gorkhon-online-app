@@ -38,6 +38,7 @@ const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeDocument, setActiveDocument] = useState<'privacy' | 'terms' | 'security' | null>(null);
   const [chatMessages, setChatMessages] = useState<{text: string, sender: 'user' | 'support', showAgentButton?: boolean}[]>([
     {text: 'Привет! Я Лина — ИИ-помощник Горхон.Online 👋\n\nПомогу с техническими вопросами:\n• Как найти нужную информацию\n• Как пользоваться платформой\n• Ответы на частые вопросы\n\nЗадайте свой вопрос!', sender: 'support'}
   ]);
@@ -223,18 +224,30 @@ const Index = () => {
                 <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Документы</h3>
                 <div className="space-y-2">
                   <button
+                    onClick={() => {
+                      setActiveDocument('privacy');
+                      setIsSidebarOpen(false);
+                    }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-gray-100 border border-gray-200"
                   >
                     <Icon name="Shield" size={18} />
                     <span className="text-sm font-medium">Политика конфиденциальности</span>
                   </button>
                   <button
+                    onClick={() => {
+                      setActiveDocument('terms');
+                      setIsSidebarOpen(false);
+                    }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-gray-100 border border-gray-200"
                   >
                     <Icon name="FileText" size={18} />
                     <span className="text-sm font-medium">Правила пользования</span>
                   </button>
                   <button
+                    onClick={() => {
+                      setActiveDocument('security');
+                      setIsSidebarOpen(false);
+                    }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-gray-100 border border-gray-200"
                   >
                     <Icon name="Lock" size={18} />
@@ -320,6 +333,199 @@ const Index = () => {
                   <Icon name="Send" size={18} />
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Document Modal */}
+      {activeDocument && (
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={() => setActiveDocument(null)}>
+          <div 
+            className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-[600px] md:max-w-2xl h-[90vh] md:max-h-[85vh] flex flex-col shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Document Header */}
+            <div className="flex items-center justify-between p-4 border-b" style={{backgroundColor: '#F1117E'}}>
+              <div className="flex items-center gap-3">
+                <Icon 
+                  name={activeDocument === 'privacy' ? 'Shield' : activeDocument === 'terms' ? 'FileText' : 'Lock'} 
+                  size={24} 
+                  className="text-white" 
+                />
+                <h3 className="font-semibold text-white">
+                  {activeDocument === 'privacy' && 'Политика конфиденциальности'}
+                  {activeDocument === 'terms' && 'Правила пользования'}
+                  {activeDocument === 'security' && 'Защита информации'}
+                </h3>
+              </div>
+              <button onClick={() => setActiveDocument(null)} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
+                <Icon name="X" size={20} />
+              </button>
+            </div>
+
+            {/* Document Content */}
+            <div className="flex-1 p-6 overflow-y-auto">
+              {activeDocument === 'privacy' && (
+                <div className="prose prose-sm max-w-none">
+                  <p className="text-gray-600 mb-4">Дата последнего обновления: {new Date().toLocaleDateString('ru-RU')}</p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">1. Общие положения</h2>
+                  <p className="text-gray-700 mb-4">
+                    Настоящая Политика конфиденциальности регулирует порядок обработки и защиты персональных данных пользователей информационного портала Горхон.Online.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">2. Сбор персональных данных</h2>
+                  <p className="text-gray-700 mb-4">
+                    Мы собираем только ту информацию, которая необходима для предоставления качественного сервиса:
+                  </p>
+                  <ul className="list-disc pl-6 mb-4 text-gray-700">
+                    <li>Данные, которые вы предоставляете при использовании чата поддержки</li>
+                    <li>Техническую информацию о вашем устройстве и браузере</li>
+                    <li>Информацию о посещаемых разделах портала</li>
+                  </ul>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">3. Использование данных</h2>
+                  <p className="text-gray-700 mb-4">
+                    Собранные данные используются исключительно для:
+                  </p>
+                  <ul className="list-disc pl-6 mb-4 text-gray-700">
+                    <li>Улучшения качества предоставляемых услуг</li>
+                    <li>Оказания технической поддержки</li>
+                    <li>Анализа работы портала</li>
+                    <li>Предотвращения мошенничества и злоупотреблений</li>
+                  </ul>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">4. Защита данных</h2>
+                  <p className="text-gray-700 mb-4">
+                    Мы применяем современные технологии защиты информации и не передаём ваши данные третьим лицам без вашего согласия.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">5. Ваши права</h2>
+                  <p className="text-gray-700 mb-4">
+                    Вы имеете право на доступ, изменение и удаление своих персональных данных. Для этого обратитесь в службу поддержки через чат на портале.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">6. Контакты</h2>
+                  <p className="text-gray-700 mb-4">
+                    По вопросам обработки персональных данных обращайтесь к нашему ИИ-помощнику Лина или через форму обратной связи.
+                  </p>
+                </div>
+              )}
+
+              {activeDocument === 'terms' && (
+                <div className="prose prose-sm max-w-none">
+                  <p className="text-gray-600 mb-4">Дата последнего обновления: {new Date().toLocaleDateString('ru-RU')}</p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">1. Общие условия</h2>
+                  <p className="text-gray-700 mb-4">
+                    Используя информационный портал Горхон.Online, вы соглашаетесь с настоящими правилами пользования.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">2. Назначение портала</h2>
+                  <p className="text-gray-700 mb-4">
+                    Горхон.Online предоставляет информационные услуги жителям поселка:
+                  </p>
+                  <ul className="list-disc pl-6 mb-4 text-gray-700">
+                    <li>Контактная информация организаций и служб</li>
+                    <li>Важные телефоны экстренных служб</li>
+                    <li>Техническая поддержка пользователей</li>
+                  </ul>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">3. Правила использования</h2>
+                  <p className="text-gray-700 mb-4">
+                    При использовании портала запрещается:
+                  </p>
+                  <ul className="list-disc pl-6 mb-4 text-gray-700">
+                    <li>Распространять ложную информацию</li>
+                    <li>Нарушать работу технических систем портала</li>
+                    <li>Использовать портал в незаконных целях</li>
+                    <li>Размещать материалы, нарушающие права третьих лиц</li>
+                  </ul>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">4. Ответственность</h2>
+                  <p className="text-gray-700 mb-4">
+                    Администрация портала не несёт ответственности за:
+                  </p>
+                  <ul className="list-disc pl-6 mb-4 text-gray-700">
+                    <li>Действия организаций, контакты которых размещены на портале</li>
+                    <li>Временные технические сбои и перерывы в работе</li>
+                    <li>Изменения в контактной информации организаций</li>
+                  </ul>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">5. Изменение правил</h2>
+                  <p className="text-gray-700 mb-4">
+                    Администрация оставляет за собой право изменять настоящие правила. Актуальная версия всегда доступна на портале.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">6. Техническая поддержка</h2>
+                  <p className="text-gray-700 mb-4">
+                    Для получения помощи используйте чат с ИИ-помощником Лина или форму обратной связи.
+                  </p>
+                </div>
+              )}
+
+              {activeDocument === 'security' && (
+                <div className="prose prose-sm max-w-none">
+                  <p className="text-gray-600 mb-4">Дата последнего обновления: {new Date().toLocaleDateString('ru-RU')}</p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">1. Принципы защиты</h2>
+                  <p className="text-gray-700 mb-4">
+                    Защита информации пользователей портала Горхон.Online является нашим приоритетом.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">2. Технические меры защиты</h2>
+                  <p className="text-gray-700 mb-4">
+                    Мы применяем следующие меры безопасности:
+                  </p>
+                  <ul className="list-disc pl-6 mb-4 text-gray-700">
+                    <li>Шифрование передаваемых данных (HTTPS)</li>
+                    <li>Регулярное обновление систем безопасности</li>
+                    <li>Мониторинг попыток несанкционированного доступа</li>
+                    <li>Резервное копирование данных</li>
+                  </ul>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">3. Хранение данных</h2>
+                  <p className="text-gray-700 mb-4">
+                    Персональные данные хранятся на защищённых серверах с ограниченным доступом. Доступ к данным имеют только уполномоченные сотрудники.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">4. Рекомендации пользователям</h2>
+                  <p className="text-gray-700 mb-4">
+                    Для обеспечения безопасности рекомендуем:
+                  </p>
+                  <ul className="list-disc pl-6 mb-4 text-gray-700">
+                    <li>Использовать актуальные версии браузеров</li>
+                    <li>Не передавать личные данные третьим лицам</li>
+                    <li>Сообщать о подозрительной активности в службу поддержки</li>
+                  </ul>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">5. Инциденты безопасности</h2>
+                  <p className="text-gray-700 mb-4">
+                    В случае обнаружения инцидентов безопасности мы незамедлительно принимаем меры по их устранению и информируем затронутых пользователей.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">6. Контроль и аудит</h2>
+                  <p className="text-gray-700 mb-4">
+                    Регулярно проводится аудит систем безопасности для выявления и устранения потенциальных уязвимостей.
+                  </p>
+                  
+                  <h2 className="text-xl font-bold text-gray-900 mt-6 mb-3">7. Обратная связь</h2>
+                  <p className="text-gray-700 mb-4">
+                    О любых вопросах, связанных с безопасностью информации, сообщайте через чат поддержки или форму обратной связи.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Document Footer */}
+            <div className="p-4 border-t bg-gray-50">
+              <button 
+                onClick={() => setActiveDocument(null)}
+                className="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors font-medium"
+              >
+                Закрыть
+              </button>
             </div>
           </div>
         </div>
