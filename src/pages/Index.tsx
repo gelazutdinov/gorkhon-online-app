@@ -9,7 +9,6 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import ChatModal from "@/components/chat/ChatModal";
 import DocumentModal from "@/components/documents/DocumentModal";
-import FloatingChatButton from "@/components/ui/FloatingChatButton";
 
 interface Photo {
   url: string;
@@ -48,7 +47,7 @@ const Index = () => {
   return (
     <>
       <SplashScreen />
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white relative overflow-x-hidden w-full max-w-full">
+      <div className="min-h-screen bg-white relative overflow-x-hidden w-full max-w-full">
         
         <Header 
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -57,9 +56,9 @@ const Index = () => {
 
         <NotificationsBanner />
 
-        <div className="flex pt-20 md:pt-24">
-          <main className="flex-1 min-h-screen relative z-10 overflow-x-hidden">
-            <div className="max-w-full md:max-w-3xl lg:max-w-4xl mx-auto px-3 md:px-6 py-4 md:py-6 space-y-4 md:space-y-5 pb-8">
+        <div className="flex pt-28 md:pt-24">
+          <main className="flex-1 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
+            <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-4">
               <Home onOpenPhotoCarousel={openPhotoCarousel} />
             </div>
           </main>
@@ -92,8 +91,6 @@ const Index = () => {
         
         <InstallPrompt />
         <UpdateNotification />
-        
-        <FloatingChatButton onClick={() => setIsChatOpen(true)} />
       </div>
     </>
   );
