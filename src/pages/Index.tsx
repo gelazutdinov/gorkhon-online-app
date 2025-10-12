@@ -7,9 +7,8 @@ import { useState, useCallback, memo } from "react";
 
 
 import PhotoCarousel from "@/components/PhotoCarousel";
-import PersonalAccount from "@/components/sections/PersonalAccount";
 import News from "@/components/sections/News";
-import AdminQuickAccess from "@/components/AdminQuickAccess";
+
 import NotificationsBanner from "@/components/NotificationsBanner";
 import InstallPrompt from "@/components/InstallPrompt";
 import UpdateNotification from "@/components/UpdateNotification";
@@ -27,7 +26,6 @@ import WeatherSection from "@/components/weather/WeatherSection";
 
 
 import Icon from "@/components/ui/icon";
-import { useUser } from "@/hooks/useUser";
 
 interface Photo {
   url: string;
@@ -38,7 +36,6 @@ const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
   const [activeSection, setActiveSection] = useState('home');
-  const { trackSectionVisit } = useUser();
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
     setSelectedPvzPhotos(photos);
@@ -65,8 +62,7 @@ const Index = () => {
   // Отслеживание переходов между разделами
   const handleSectionChange = useCallback((section: string) => {
     setActiveSection(section);
-    trackSectionVisit(section as any);
-  }, [trackSectionVisit]);
+  }, []);
 
 
 
@@ -113,7 +109,6 @@ const Index = () => {
         <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-20 bottom-0 overflow-y-auto">
           <div className="p-4 space-y-2">
             {[
-              { key: 'profile', label: 'Профиль', icon: 'User' },
               { key: 'home', label: 'Главная', icon: 'Home' },
               { key: 'news', label: 'Новости', icon: 'Newspaper' },
               { key: 'weather', label: 'Погода', icon: 'Cloud' }
@@ -148,7 +143,6 @@ const Index = () => {
                 <WeatherSection />
               </>
             )}
-            {activeSection === 'profile' && <PersonalAccount onSectionChange={handleSectionChange} />}
             {activeSection === 'news' && <News />}
           </div>
         </main>
@@ -161,8 +155,7 @@ const Index = () => {
           {[
             { key: 'home', label: 'Главная', icon: 'Home' },
             { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'weather', label: 'Погода', icon: 'Cloud' },
-            { key: 'profile', label: 'Профиль', icon: 'User' }
+            { key: 'weather', label: 'Погода', icon: 'Cloud' }
           ].map(item => (
             <button
               key={item.key}
@@ -190,9 +183,6 @@ const Index = () => {
         onNext={nextPhoto}
         onPrev={prevPhoto}
       />
-      
-      {/* Кнопка быстрого доступа к админ-панели */}
-      <AdminQuickAccess />
       
       {/* Промпт установки приложения */}
       <InstallPrompt />

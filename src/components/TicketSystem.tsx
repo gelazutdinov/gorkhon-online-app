@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { UserProfile } from '@/hooks/useUser';
+import { UserProfile } from '@/types/user';
 import Icon from '@/components/ui/icon';
 import TicketListItem, { Ticket, TicketMessage } from './tickets/TicketListItem';
 import TicketChat from './tickets/TicketChat';

@@ -1,4 +1,4 @@
-import { UserProfile } from '@/hooks/useUser';
+import { UserProfile } from '@/types/user';
 
 interface UserAvatarProps {
   user: UserProfile;

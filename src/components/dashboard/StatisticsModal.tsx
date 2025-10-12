@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import Icon from '@/components/ui/icon';
-import { UserProfile } from '@/hooks/useUser';
+import { UserProfile } from '@/types/user';
 
 interface StatisticsModalProps {
   user: UserProfile;

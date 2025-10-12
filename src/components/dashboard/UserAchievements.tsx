@@ -1,5 +1,5 @@
 import Icon from '@/components/ui/icon';
-import { UserProfile } from '@/hooks/useUser';
+import { UserProfile } from '@/types/user';
 
 interface Achievement {
   id: string;

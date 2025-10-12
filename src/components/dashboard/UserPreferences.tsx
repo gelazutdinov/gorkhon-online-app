@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { UserProfile } from '@/hooks/useUser';
+import { UserProfile } from '@/types/user';
 
 interface UserPreferencesProps {
   user: UserProfile;
