@@ -105,75 +105,12 @@ const Index = () => {
 
       {/* VK-style Layout */}
       <div className="flex pt-28 md:pt-24">
-        {/* Left Sidebar */}
-        <div className="hidden md:block w-64 bg-white border-r border-gray-200 fixed left-0 top-20 bottom-0 overflow-y-auto">
-          <div className="p-4 space-y-2">
-            {[
-              { key: 'home', label: 'Главная', icon: 'Home' },
-              { key: 'news', label: 'Новости', icon: 'Newspaper' },
-              { key: 'weather', label: 'Погода', icon: 'Cloud' }
-            ].map(item => (
-              <button
-                key={item.key}
-                onClick={() => handleSectionChange(item.key)}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                  activeSection === item.key 
-                    ? 'text-white' 
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
-                style={activeSection === item.key ? {backgroundColor: '#F1117E'} : {}}
-              >
-                <Icon name={item.icon as any} size={20} />
-                <span className="font-medium">{item.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Main Content */}
-        <main className="flex-1 md:ml-64 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
-          <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-24 md:pb-4">
-            {activeSection === 'home' && (
-              <>
-                <Home onOpenPhotoCarousel={openPhotoCarousel} />
-              </>
-            )}
-            {activeSection === 'weather' && (
-              <>
-                <WeatherSection />
-              </>
-            )}
-            {activeSection === 'news' && <News />}
+        <main className="flex-1 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
+          <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-4">
+            <Home onOpenPhotoCarousel={openPhotoCarousel} />
           </div>
         </main>
-      </div>
-
-      {/* VK-style Bottom Navigation for mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg rounded-t-xl" 
-           style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
-        <div className="flex items-stretch">
-          {[
-            { key: 'home', label: 'Главная', icon: 'Home' },
-            { key: 'news', label: 'Новости', icon: 'Newspaper' },
-            { key: 'weather', label: 'Погода', icon: 'Cloud' }
-          ].map(item => (
-            <button
-              key={item.key}
-              onClick={() => handleSectionChange(item.key)}
-              className={`flex-1 flex flex-col items-center py-2 px-1 transition-all duration-200 ${
-                activeSection === item.key 
-                  ? 'text-blue-600' 
-                  : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              <div className={`p-1.5 rounded-lg transition-all ${
-                activeSection === item.key ? 'bg-blue-50' : ''
-              }`}>
-                <Icon name={item.icon as any} size={20} />
-              </div>
-            </button>
-          ))}
-        </div>
       </div>
 
       <PhotoCarousel 
