@@ -143,6 +143,15 @@ const RecommendationsBanner = ({ availableSections, sections, onSectionClick }: 
           <Icon name="Info" size={12} className="text-indigo-400" />
           Рекомендации обновляются автоматически на основе того, что вы смотрите чаще всего
         </p>
+        <a 
+          href="/recommendations-policy.html" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-indigo-600 hover:text-indigo-700 mt-1.5 inline-flex items-center gap-1 hover:underline"
+        >
+          Правила применения рекомендательных технологий
+          <Icon name="ExternalLink" size={10} />
+        </a>
       </div>
     </div>
   );
