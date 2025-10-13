@@ -60,6 +60,17 @@ const Index = () => {
           <main className="flex-1 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
             <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-4">
               <Home onOpenPhotoCarousel={openPhotoCarousel} />
+              
+              <div className="text-center pt-4 pb-2">
+                <a 
+                  href="/recommendations-policy.html" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  Применяются рекомендательные технологии
+                </a>
+              </div>
             </div>
           </main>
         </div>
