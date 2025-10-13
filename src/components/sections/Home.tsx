@@ -143,19 +143,6 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
         ))}
       </div>
       
-      <RecommendationsBanner 
-        availableSections={availableSectionIds}
-        sections={sections}
-        onSectionClick={(sectionId) => {
-          const section = sections.find(s => s.id === sectionId);
-          if (section) {
-            handleSectionClick(sectionId, section.name);
-            const element = document.getElementById(`section-${sectionId}`);
-            element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }}
-      />
-      
       {sections
         .filter(section => section.enabled)
         .sort((a, b) => a.order - b.order)
