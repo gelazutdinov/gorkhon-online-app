@@ -81,9 +81,15 @@ const RecommendationsBanner = ({ availableSections, sections, onSectionClick }: 
         <h3 className="font-semibold text-gray-800 text-sm">
           Для вас
         </h3>
-        <span className="text-xs text-gray-500 ml-auto">
-          На основе ваших предпочтений
-        </span>
+        <div className="flex items-center gap-1.5 ml-auto">
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
+            <Icon name="Brain" size={10} />
+            <span>ML</span>
+          </div>
+          <span className="text-xs text-gray-500 hidden sm:inline">
+            Рекомендательные технологии
+          </span>
+        </div>
       </div>
 
       <div className="flex gap-2 overflow-x-auto scrollbar-hide -mx-1 px-1">
