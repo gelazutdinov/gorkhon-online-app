@@ -11,6 +11,7 @@ interface ChatMessage {
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isSystemChat?: boolean;
 }
 
 const getAIResponse = (userMessage: string): {text: string, showAgentButton?: boolean} => {
@@ -133,10 +134,14 @@ const getAIResponse = (userMessage: string): {text: string, showAgentButton?: bo
   };
 };
 
-const ChatModal = ({ isOpen, onClose }: ChatModalProps) => {
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    {text: 'Привет! Я Лина — ИИ-помощник Горхон.Online 👋\n\nПомогу с техническими вопросами:\n• Как найти нужную информацию\n• Как пользоваться платформой\n• Ответы на частые вопросы\n\nЗадайте свой вопрос!', sender: 'support'}
-  ]);
+const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) => {
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(
+    isSystemChat ? [
+      {text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Здесь публикуются:\n• Новости платформы\n• Обновления функционала\n• Важные анонсы\n• Технические работы\n\nОставайтесь на связи!', sender: 'support'}
+    ] : [
+      {text: 'Привет! Я Лина — ИИ-помощник Горхон.Online 👋\n\nПомогу с техническими вопросами:\n• Как найти нужную информацию\n• Как пользоваться платформой\n• Ответы на частые вопросы\n\nЗадайте свой вопрос!', sender: 'support'}
+    ]
+  );
   const [chatInput, setChatInput] = useState('');
 
   const sendMessage = () => {
@@ -172,12 +177,23 @@ const ChatModal = ({ isOpen, onClose }: ChatModalProps) => {
       >
         <div className="flex items-center justify-between p-4 border-b" style={{backgroundColor: '#F1117E'}}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <Icon name="Bot" size={20} className="text-white" />
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center relative">
+              {isSystemChat ? (
+                <>
+                  <Icon name="MessageCircle" size={20} className="text-white" />
+                  <img 
+                    src="https://cdn.poehali.dev/files/dbf46829-41e3-4fcf-956e-f6c84fb50dc3.png" 
+                    alt="Verified"
+                    className="absolute -bottom-1 -right-1 w-5 h-5"
+                  />
+                </>
+              ) : (
+                <Icon name="Bot" size={20} className="text-white" />
+              )}
             </div>
             <div>
-              <h3 className="font-semibold text-white">Лина</h3>
-              <p className="text-xs text-white/80">ИИ-помощник</p>
+              <h3 className="font-semibold text-white">{isSystemChat ? 'Горхон.Online' : 'Лина'}</h3>
+              <p className="text-xs text-white/80">{isSystemChat ? 'Системный чат' : 'ИИ-помощник'}</p>
             </div>
           </div>
           <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
@@ -197,7 +213,7 @@ const ChatModal = ({ isOpen, onClose }: ChatModalProps) => {
               >
                 <p className="text-sm whitespace-pre-line">{msg.text}</p>
                 <span className="text-xs mt-1 block opacity-70">
-                  {msg.sender === 'user' ? 'Вы' : 'Лина (ИИ)'} • сейчас
+                  {msg.sender === 'user' ? 'Вы' : (isSystemChat ? 'Горхон.Online' : 'Лина (ИИ)')} • сейчас
                 </span>
               </div>
               {msg.showAgentButton && (
@@ -215,24 +231,26 @@ const ChatModal = ({ isOpen, onClose }: ChatModalProps) => {
           ))}
         </div>
 
-        <div className="p-4 border-t">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder="Напишите сообщение..."
-              className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button 
-              onClick={sendMessage}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-colors"
-            >
-              <Icon name="Send" size={18} />
-            </button>
+        {!isSystemChat && (
+          <div className="p-4 border-t">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                placeholder="Напишите сообщение..."
+                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button 
+                onClick={sendMessage}
+                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-colors"
+              >
+                <Icon name="Send" size={18} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

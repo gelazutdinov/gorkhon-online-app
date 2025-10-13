@@ -4,10 +4,11 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onChatOpen: () => void;
+  onSystemChatOpen: () => void;
   onDocumentOpen: (doc: 'privacy' | 'terms' | 'security') => void;
 }
 
-const Sidebar = ({ isOpen, onClose, onChatOpen, onDocumentOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen }: SidebarProps) => {
   if (!isOpen) return null;
 
   return (
@@ -27,6 +28,26 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onDocumentOpen }: SidebarProps) 
         <div className="p-4 space-y-4">
           <div className="space-y-2">
             <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Поддержка</h3>
+            <button
+              onClick={() => {
+                onClose();
+                onSystemChatOpen();
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white shadow-sm"
+            >
+              <div className="relative flex-shrink-0">
+                <Icon name="MessageCircle" size={20} />
+                <img 
+                  src="https://cdn.poehali.dev/files/dbf46829-41e3-4fcf-956e-f6c84fb50dc3.png" 
+                  alt="Verified"
+                  className="absolute -bottom-1 -right-1 w-4 h-4"
+                />
+              </div>
+              <div className="flex-1">
+                <div className="font-medium">Горхон.Online</div>
+                <div className="text-xs opacity-90">Новости и обновления</div>
+              </div>
+            </button>
             <button
               onClick={() => {
                 onClose();

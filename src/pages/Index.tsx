@@ -19,6 +19,7 @@ const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isSystemChatOpen, setIsSystemChatOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeDocument, setActiveDocument] = useState<'privacy' | 'terms' | 'security' | null>(null);
 
@@ -79,12 +80,19 @@ const Index = () => {
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           onChatOpen={() => setIsChatOpen(true)}
+          onSystemChatOpen={() => setIsSystemChatOpen(true)}
           onDocumentOpen={(doc) => setActiveDocument(doc)}
         />
 
         <ChatModal 
           isOpen={isChatOpen}
           onClose={() => setIsChatOpen(false)}
+        />
+
+        <ChatModal 
+          isOpen={isSystemChatOpen}
+          onClose={() => setIsSystemChatOpen(false)}
+          isSystemChat={true}
         />
 
         <DocumentModal 
