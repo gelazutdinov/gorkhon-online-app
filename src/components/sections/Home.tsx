@@ -60,6 +60,13 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
     cleanOldInteractions();
   }, []);
 
+  const availableSectionIds = useMemo(() => 
+    sections
+      .filter(s => s.enabled)
+      .map(s => s.id),
+    [sections]
+  );
+
   const handleSectionView = useCallback((sectionId: string, sectionName: string) => {
     saveInteraction(sectionId, sectionName, 'view');
   }, []);
@@ -117,12 +124,6 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
       </div>
     );
   }
-  const availableSectionIds = useMemo(() => 
-    sections
-      .filter(s => s.enabled)
-      .map(s => s.id),
-    [sections]
-  );
 
   return (
     <div className="space-y-4 relative">
