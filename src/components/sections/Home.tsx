@@ -6,8 +6,10 @@ import WorkSchedule from "@/components/WorkSchedule";
 import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import WeatherWidget from "@/components/features/WeatherWidget";
+import RecommendationsBanner from "@/components/RecommendationsBanner";
 
 import Icon from "@/components/ui/icon";
+import { saveInteraction, cleanOldInteractions } from "@/utils/recommendations";
 
 interface Photo {
   url: string;
@@ -54,56 +56,52 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
       setSections(getDefaultSections());
     }
     setLoading(false);
+    
+    cleanOldInteractions();
   }, []);
 
-  const renderSection = useCallback((sectionId: string) => {
-    switch (sectionId) {
-      case 'importantNumbers':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <ImportantNumbers data-tutorial="search-input" />
-          </div>
-        );
-      case 'schedule':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <Schedule data-tutorial="categories" />
-          </div>
-        );
-      case 'donation':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <DonationSection />
-          </div>
-        );
-      case 'workSchedule':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <WorkSchedule />
-          </div>
-        );
-      case 'weather':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <WeatherWidget />
-          </div>
-        );
-      case 'pvz':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />
-          </div>
-        );
-      case 'actionButtons':
-        return (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <ActionButtons />
-          </div>
-        );
-      default:
-        return null;
-    }
-  }, [onOpenPhotoCarousel]);
+  const handleSectionView = useCallback((sectionId: string, sectionName: string) => {
+    saveInteraction(sectionId, sectionName, 'view');
+  }, []);
+
+  const handleSectionClick = useCallback((sectionId: string, sectionName: string) => {
+    saveInteraction(sectionId, sectionName, 'click');
+  }, []);
+
+  const renderSection = useCallback((sectionId: string, sectionName: string) => {
+    const sectionContent = (() => {
+      switch (sectionId) {
+        case 'importantNumbers':
+          return <ImportantNumbers data-tutorial="search-input" />;
+        case 'schedule':
+          return <Schedule data-tutorial="categories" />;
+        case 'donation':
+          return <DonationSection />;
+        case 'workSchedule':
+          return <WorkSchedule />;
+        case 'weather':
+          return <WeatherWidget />;
+        case 'pvz':
+          return <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />;
+        case 'actionButtons':
+          return <ActionButtons />;
+        default:
+          return null;
+      }
+    })();
+
+    if (!sectionContent) return null;
+
+    return (
+      <div 
+        className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+        onClick={() => handleSectionClick(sectionId, sectionName)}
+        onMouseEnter={() => handleSectionView(sectionId, sectionName)}
+      >
+        {sectionContent}
+      </div>
+    );
+  }, [onOpenPhotoCarousel, handleSectionClick, handleSectionView]);
 
   if (loading) {
     return (
@@ -119,6 +117,13 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
       </div>
     );
   }
+  const availableSectionIds = useMemo(() => 
+    sections
+      .filter(s => s.enabled)
+      .map(s => s.id),
+    [sections]
+  );
+
   return (
     <div className="space-y-4 relative">
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
@@ -137,12 +142,25 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
         ))}
       </div>
       
+      <RecommendationsBanner 
+        availableSections={availableSectionIds}
+        sections={sections}
+        onSectionClick={(sectionId) => {
+          const section = sections.find(s => s.id === sectionId);
+          if (section) {
+            handleSectionClick(sectionId, section.name);
+            const element = document.getElementById(`section-${sectionId}`);
+            element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }}
+      />
+      
       {sections
         .filter(section => section.enabled)
         .sort((a, b) => a.order - b.order)
         .map(section => (
-          <div key={section.id}>
-            {renderSection(section.id)}
+          <div key={section.id} id={`section-${section.id}`}>
+            {renderSection(section.id, section.name)}
           </div>
         ))
       }
