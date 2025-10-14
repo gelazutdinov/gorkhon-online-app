@@ -64,6 +64,20 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen
           </div>
 
           <div className="space-y-2">
+            <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Управление</h3>
+            <a
+              href="/admin-gorkhon"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-sm"
+            >
+              <Icon name="Settings" size={20} />
+              <div className="flex-1">
+                <div className="font-medium">Админ-панель</div>
+                <div className="text-xs opacity-90">Управление порталом</div>
+              </div>
+            </a>
+          </div>
+
+          <div className="space-y-2">
             <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Документы</h3>
             <div className="space-y-2">
               <button
