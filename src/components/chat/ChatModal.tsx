@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { sanitizeInput, preventXSS } from "@/utils/security";
 import Icon from "@/components/ui/icon";
 
@@ -135,14 +135,38 @@ const getAIResponse = (userMessage: string): {text: string, showAgentButton?: bo
 };
 
 const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) => {
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(
-    isSystemChat ? [
-      {text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Здесь публикуются:\n• Новости платформы\n• Обновления функционала\n• Важные анонсы\n• Технические работы\n\nОставайтесь на связи!', sender: 'support'}
-    ] : [
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => {
+    if (isSystemChat) {
+      const stored = localStorage.getItem('systemMessages');
+      if (stored) {
+        const messages = JSON.parse(stored);
+        return messages.map((msg: any) => ({
+          text: msg.text,
+          sender: 'support' as const
+        }));
+      }
+      return [
+        {text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Здесь публикуются:\n• Новости платформы\n• Обновления функционала\n• Важные анонсы\n• Технические работы\n\nОставайтесь на связи!', sender: 'support'}
+      ];
+    }
+    return [
       {text: 'Привет! Я Лина — ИИ-помощник Горхон.Online 👋\n\nПомогу с техническими вопросами:\n• Как найти нужную информацию\n• Как пользоваться платформой\n• Ответы на частые вопросы\n\nЗадайте свой вопрос!', sender: 'support'}
-    ]
-  );
+    ];
+  });
   const [chatInput, setChatInput] = useState('');
+
+  useEffect(() => {
+    if (isSystemChat && isOpen) {
+      const stored = localStorage.getItem('systemMessages');
+      if (stored) {
+        const messages = JSON.parse(stored);
+        setChatMessages(messages.map((msg: any) => ({
+          text: msg.text,
+          sender: 'support' as const
+        })));
+      }
+    }
+  }, [isOpen, isSystemChat]);
 
   const sendMessage = () => {
     if (chatInput.trim()) {

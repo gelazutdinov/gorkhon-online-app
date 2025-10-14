@@ -10,6 +10,7 @@ import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
 // Lazy загрузка остальных компонентов для code splitting
 const AdminSimple = lazy(() => import("./pages/AdminSimple"));
+const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./components/legal/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./components/legal/TermsOfService"));
@@ -46,6 +47,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/admin" element={<AdminSimple />} />
+            <Route path="/admin-gorkhon" element={<Admin />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/data-protection" element={<DataProtection />} />
