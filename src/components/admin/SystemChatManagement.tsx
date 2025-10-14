@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 
+const SYSTEM_MESSAGES_URL = 'https://functions.poehali.dev/a7b8d7b8-eb5d-4ecc-ac30-8672db766806';
+
 interface SystemMessage {
   id: string;
   text: string;
@@ -10,44 +12,58 @@ interface SystemMessage {
 const SystemChatManagement = () => {
   const [systemMessages, setSystemMessages] = useState<SystemMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('systemMessages');
-    if (stored) {
-      setSystemMessages(JSON.parse(stored));
-    } else {
-      const defaultMsg: SystemMessage = {
-        id: '1',
-        text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Здесь публикуются:\n• Новости платформы\n• Обновления функционала\n• Важные анонсы\n• Технические работы\n\nОставайтесь на связи!',
-        timestamp: new Date().toISOString()
-      };
-      setSystemMessages([defaultMsg]);
-      localStorage.setItem('systemMessages', JSON.stringify([defaultMsg]));
-    }
+    loadMessages();
   }, []);
 
-  const handleSendSystemMessage = () => {
-    if (newMessage.trim()) {
-      const message: SystemMessage = {
-        id: Date.now().toString(),
-        text: newMessage,
-        timestamp: new Date().toISOString()
-      };
+  const loadMessages = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(SYSTEM_MESSAGES_URL);
+      const data = await response.json();
       
-      const updated = [...systemMessages, message];
-      setSystemMessages(updated);
-      localStorage.setItem('systemMessages', JSON.stringify(updated));
-      
-      setNewMessage('');
-      alert('✅ Новость отправлена в системный чат! Все жители увидят её при открытии чата.');
+      if (data.messages) {
+        setSystemMessages(data.messages);
+      }
+    } catch (error) {
+      console.error('Failed to load messages:', error);
+      alert('⚠️ Не удалось загрузить сообщения. Проверьте подключение к интернету.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleDeleteMessage = (id: string) => {
-    if (confirm('Удалить сообщение из системного чата?')) {
-      const updated = systemMessages.filter(m => m.id !== id);
-      setSystemMessages(updated);
-      localStorage.setItem('systemMessages', JSON.stringify(updated));
+  const handleSendSystemMessage = async () => {
+    if (!newMessage.trim()) return;
+    
+    setIsSending(true);
+    try {
+      const response = await fetch(SYSTEM_MESSAGES_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Token': 'admin2024'
+        },
+        body: JSON.stringify({ text: newMessage.trim() })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        
+        setSystemMessages(prev => [data.message, ...prev]);
+        setNewMessage('');
+        alert('✅ Новость отправлена в системный чат! Все жители увидят её при открытии чата.');
+      } else {
+        alert('❌ Не удалось отправить сообщение. Проверьте права доступа.');
+      }
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      alert('❌ Ошибка при отправке сообщения. Проверьте подключение к интернету.');
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -75,25 +91,41 @@ const SystemChatManagement = () => {
           placeholder="Например: 🎉 Добавлен новый раздел с документами! Теперь все важные бумаги в одном месте."
           rows={4}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 mb-4"
+          disabled={isSending}
         />
         
         <button
           onClick={handleSendSystemMessage}
-          disabled={!newMessage.trim()}
+          disabled={!newMessage.trim() || isSending}
           className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Icon name="Send" size={18} />
-          Отправить новость
+          <Icon name={isSending ? "Loader2" : "Send"} size={18} className={isSending ? "animate-spin" : ""} />
+          {isSending ? 'Отправка...' : 'Отправить новость'}
         </button>
       </div>
 
       <div>
-        <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <Icon name="MessageSquare" size={20} />
-          История сообщений ({systemMessages.length})
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+            <Icon name="MessageSquare" size={20} />
+            История сообщений ({systemMessages.length})
+          </h3>
+          <button
+            onClick={loadMessages}
+            disabled={isLoading}
+            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            <Icon name={isLoading ? "Loader2" : "RefreshCw"} size={16} className={isLoading ? "animate-spin" : ""} />
+            Обновить
+          </button>
+        </div>
         
-        {systemMessages.length === 0 ? (
+        {isLoading ? (
+          <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <Icon name="Loader2" size={48} className="mx-auto text-gray-300 mb-3 animate-spin" />
+            <p className="text-gray-600">Загрузка сообщений...</p>
+          </div>
+        ) : systemMessages.length === 0 ? (
           <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
             <Icon name="MessageCircle" size={48} className="mx-auto text-gray-300 mb-3" />
             <p className="text-gray-600">Нет отправленных сообщений</p>
@@ -101,7 +133,7 @@ const SystemChatManagement = () => {
           </div>
         ) : (
           <div className="space-y-3">
-            {systemMessages.slice().reverse().map(msg => (
+            {systemMessages.map(msg => (
               <div key={msg.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-white">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1">
@@ -131,13 +163,6 @@ const SystemChatManagement = () => {
                       </span>
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleDeleteMessage(msg.id)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Удалить сообщение"
-                  >
-                    <Icon name="Trash2" size={18} />
-                  </button>
                 </div>
               </div>
             ))}

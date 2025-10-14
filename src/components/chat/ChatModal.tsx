@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { sanitizeInput, preventXSS } from "@/utils/security";
 import Icon from "@/components/ui/icon";
 
+const SYSTEM_MESSAGES_URL = 'https://functions.poehali.dev/a7b8d7b8-eb5d-4ecc-ac30-8672db766806';
+
 interface ChatMessage {
   text: string;
   sender: 'user' | 'support';
@@ -136,35 +138,48 @@ const getAIResponse = (userMessage: string): {text: string, showAgentButton?: bo
 
 const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => {
-    if (isSystemChat) {
-      const stored = localStorage.getItem('systemMessages');
-      if (stored) {
-        const messages = JSON.parse(stored);
-        return messages.map((msg: any) => ({
-          text: msg.text,
-          sender: 'support' as const
-        }));
-      }
+    if (!isSystemChat) {
       return [
-        {text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Здесь публикуются:\n• Новости платформы\n• Обновления функционала\n• Важные анонсы\n• Технические работы\n\nОставайтесь на связи!', sender: 'support'}
+        {text: 'Привет! Я Лина — ИИ-помощник Горхон.Online 👋\n\nПомогу с техническими вопросами:\n• Как найти нужную информацию\n• Как пользоваться платформой\n• Ответы на частые вопросы\n\nЗадайте свой вопрос!', sender: 'support'}
       ];
     }
-    return [
-      {text: 'Привет! Я Лина — ИИ-помощник Горхон.Online 👋\n\nПомогу с техническими вопросами:\n• Как найти нужную информацию\n• Как пользоваться платформой\n• Ответы на частые вопросы\n\nЗадайте свой вопрос!', sender: 'support'}
-    ];
+    return [];
   });
   const [chatInput, setChatInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Загрузка системных сообщений из backend
   useEffect(() => {
     if (isSystemChat && isOpen) {
-      const stored = localStorage.getItem('systemMessages');
-      if (stored) {
-        const messages = JSON.parse(stored);
-        setChatMessages(messages.map((msg: any) => ({
-          text: msg.text,
-          sender: 'support' as const
-        })));
-      }
+      const loadMessages = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetch(SYSTEM_MESSAGES_URL);
+          const data = await response.json();
+          
+          if (data.messages && data.messages.length > 0) {
+            setChatMessages(data.messages.map((msg: any) => ({
+              text: msg.text,
+              sender: 'support' as const
+            })));
+          } else {
+            setChatMessages([{
+              text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
+              sender: 'support'
+            }]);
+          }
+        } catch (error) {
+          console.error('Failed to load system messages:', error);
+          setChatMessages([{
+            text: '⚠️ Не удалось загрузить сообщения. Попробуйте позже.',
+            sender: 'support'
+          }]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
+      loadMessages();
     }
   }, [isOpen, isSystemChat]);
 

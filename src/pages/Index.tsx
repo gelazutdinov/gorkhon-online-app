@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, memo, useEffect } from "react";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import NotificationsBanner from "@/components/NotificationsBanner";
 import InstallPrompt from "@/components/InstallPrompt";
@@ -9,6 +9,7 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import ChatModal from "@/components/chat/ChatModal";
 import DocumentModal from "@/components/documents/DocumentModal";
+import { registerPushSubscription, isPushSubscribed, showWelcomeNotification } from "@/utils/pushNotifications";
 
 interface Photo {
   url: string;
@@ -22,6 +23,21 @@ const Index = () => {
   const [isSystemChatOpen, setIsSystemChatOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeDocument, setActiveDocument] = useState<'privacy' | 'terms' | 'security' | null>(null);
+
+  useEffect(() => {
+    const initPushNotifications = async () => {
+      if (!isPushSubscribed()) {
+        setTimeout(async () => {
+          const subscribed = await registerPushSubscription();
+          if (subscribed) {
+            showWelcomeNotification();
+          }
+        }, 3000);
+      }
+    };
+    
+    initPushNotifications();
+  }, []);
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
     setSelectedPvzPhotos(photos);
