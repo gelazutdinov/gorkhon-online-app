@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 // Обычный импорт для главной страницы (часто используется)
+import Landing from "./pages/Landing";
 import Index from "./pages/Index";
 // Lazy загрузка остальных компонентов для code splitting
 const AdminSimple = lazy(() => import("./pages/AdminSimple"));
@@ -45,7 +46,8 @@ const App = () => (
           </div>
         }>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/app" element={<Index />} />
             <Route path="/admin" element={<AdminSimple />} />
             <Route path="/admin-gorkhon" element={<Admin />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
