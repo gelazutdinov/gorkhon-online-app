@@ -87,25 +87,21 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         setIsLoading(true);
         
         try {
-          const searchResponse = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(aiResponse.searchQuery)}&format=json&no_html=1&skip_disambig=1`);
+          const searchResponse = await fetch(`https://functions.poehali.dev/c89d95b2-cb8a-45ef-8243-8b96639b705d?q=${encodeURIComponent(aiResponse.searchQuery)}`);
           const searchData = await searchResponse.json();
           
-          let resultText = '✅ Вот что мне удалось найти:\n\n';
+          let resultText = '';
           
-          if (searchData.AbstractText) {
-            resultText += searchData.AbstractText + '\n\n';
-          }
-          
-          if (searchData.RelatedTopics && searchData.RelatedTopics.length > 0) {
-            resultText += '📌 Дополнительно:\n';
-            searchData.RelatedTopics.slice(0, 3).forEach((topic: any) => {
-              if (topic.Text) {
-                resultText += `• ${topic.Text}\n`;
+          if (searchData.hasResults && searchData.results && searchData.results.length > 0) {
+            resultText = '✅ Вот что мне удалось найти:\n\n';
+            searchData.results.forEach((result: string, index: number) => {
+              if (index === 0) {
+                resultText += result + '\n\n';
+              } else {
+                resultText += `📌 ${result}\n`;
               }
             });
-          }
-          
-          if (!searchData.AbstractText && (!searchData.RelatedTopics || searchData.RelatedTopics.length === 0)) {
+          } else {
             resultText = '🔍 К сожалению, не нашла актуальной информации в интернете.\n\n💡 Рекомендую:\n• Проверить официальные источники\n• Спросить в местных группах\n• Написать агенту для уточнения';
           }
           
