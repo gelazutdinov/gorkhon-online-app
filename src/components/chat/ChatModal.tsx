@@ -64,7 +64,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
     }
   }, [isOpen, isSystemChat]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (chatInput.trim()) {
       const sanitized = sanitizeInput(chatInput.trim());
       const userMsg = preventXSS(sanitized);
@@ -76,14 +76,61 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
       setChatMessages(prev => [...prev, {text: userMsg, sender: 'user'}]);
       setChatInput('');
       
-      setTimeout(() => {
-        const aiResponse = getLinaResponse(userMsg);
+      const aiResponse = getLinaResponse(userMsg);
+      
+      if (aiResponse.needsWebSearch && aiResponse.searchQuery) {
         setChatMessages(prev => [...prev, {
           text: aiResponse.text,
-          sender: 'support',
-          showAgentButton: aiResponse.showAgentButton
+          sender: 'support'
         }]);
-      }, 800);
+        
+        setIsLoading(true);
+        
+        try {
+          const searchResponse = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(aiResponse.searchQuery)}&format=json&no_html=1&skip_disambig=1`);
+          const searchData = await searchResponse.json();
+          
+          let resultText = '✅ Вот что мне удалось найти:\n\n';
+          
+          if (searchData.AbstractText) {
+            resultText += searchData.AbstractText + '\n\n';
+          }
+          
+          if (searchData.RelatedTopics && searchData.RelatedTopics.length > 0) {
+            resultText += '📌 Дополнительно:\n';
+            searchData.RelatedTopics.slice(0, 3).forEach((topic: any) => {
+              if (topic.Text) {
+                resultText += `• ${topic.Text}\n`;
+              }
+            });
+          }
+          
+          if (!searchData.AbstractText && (!searchData.RelatedTopics || searchData.RelatedTopics.length === 0)) {
+            resultText = '🔍 К сожалению, не нашла актуальной информации в интернете.\n\n💡 Рекомендую:\n• Проверить официальные источники\n• Спросить в местных группах\n• Написать агенту для уточнения';
+          }
+          
+          setChatMessages(prev => [...prev, {
+            text: resultText,
+            sender: 'support'
+          }]);
+        } catch (error) {
+          setChatMessages(prev => [...prev, {
+            text: '⚠️ Не удалось выполнить поиск в интернете.\n\n💡 Попробуйте:\n• Переформулировать запрос\n• Спросить по-другому\n• Написать агенту для помощи',
+            sender: 'support',
+            showAgentButton: true
+          }]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setTimeout(() => {
+          setChatMessages(prev => [...prev, {
+            text: aiResponse.text,
+            sender: 'support',
+            showAgentButton: aiResponse.showAgentButton
+          }]);
+        }, 800);
+      }
     }
   };
 
