@@ -87,7 +87,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         setIsLoading(true);
         
         try {
-          const searchResponse = await fetch(`https://functions.poehali.dev/c89d95b2-cb8a-45ef-8243-8b96639b705d?q=${encodeURIComponent(aiResponse.searchQuery)}`);
+          const searchResponse = await fetch(`https://functions.poehali.dev/45af682d-92cb-4090-82b9-6ae2eb896eed?q=${encodeURIComponent(aiResponse.searchQuery)}`);
           const searchData = await searchResponse.json();
           
           let resultText = '';

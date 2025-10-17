@@ -20,6 +20,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400'
             },
+            'isBase64Encoded': False,
             'body': ''
         }
     
@@ -30,6 +31,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
+            'isBase64Encoded': False,
             'body': json.dumps({'error': 'Method not allowed'})
         }
     
@@ -43,6 +45,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
+            'isBase64Encoded': False,
             'body': json.dumps({'error': 'Query parameter "q" is required'})
         }
     
@@ -87,5 +90,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
+            'isBase64Encoded': False,
             'body': json.dumps({'error': f'Search failed: {str(e)}'})
         }

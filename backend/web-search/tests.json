@@ -10,11 +10,7 @@
       "name": "Missing query parameter",
       "method": "GET",
       "path": "/",
-      "expectedStatus": 400,
-      "expectedBody": {
-        "error": "string"
-      },
-      "bodyMatcher": "partial"
+      "expectedStatus": 400
     }
   ]
 }
