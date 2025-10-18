@@ -137,29 +137,31 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[80vh] flex flex-col shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 border-b" style={{backgroundColor: '#F1117E'}}>
+        <div className="flex items-center justify-between p-3 border-b" style={{backgroundColor: isSystemChat ? '#0088CC' : '#F1117E'}}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center relative">
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center relative">
               {isSystemChat ? (
-                <>
-                  <Icon name="MessageCircle" size={20} className="text-white" />
-                  <img 
-                    src="https://cdn.poehali.dev/files/dbf46829-41e3-4fcf-956e-f6c84fb50dc3.png" 
-                    alt="Verified"
-                    className="absolute -bottom-1 -right-1 w-5 h-5"
-                  />
-                </>
+                <img 
+                  src="https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png" 
+                  alt="Горхон.Online"
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <Icon name="Bot" size={20} className="text-white" />
+                <Icon name="Bot" size={20} className="text-[#F1117E]" />
               )}
             </div>
-            <div>
-              <h3 className="font-semibold text-white">{isSystemChat ? 'Горхон.Online' : 'Лина'}</h3>
-              <p className="text-xs text-white/80">{isSystemChat ? 'Системный чат' : 'ИИ-помощник'}</p>
+            <div className="flex items-center gap-1.5">
+              <h3 className="font-semibold text-white text-base">{isSystemChat ? 'Горхон.Online' : 'Лина'}</h3>
+              {isSystemChat && (
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="10" fill="white"/>
+                  <path d="M14.5 7L8.5 13L5.5 10" stroke="#0088CC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
             </div>
           </div>
           <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
-            <Icon name="X" size={20} />
+            <Icon name="X" size={18} />
           </button>
         </div>
 
