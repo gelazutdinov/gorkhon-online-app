@@ -32,43 +32,77 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   const [isLoading, setIsLoading] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
-  // Загрузка системных сообщений из backend
+  // Загрузка системных сообщений из localStorage (офлайн-режим)
   useEffect(() => {
     if (isSystemChat && isOpen && !showProfile) {
-      const loadMessages = async () => {
+      const loadMessages = () => {
         setIsLoading(true);
         try {
-          const response = await fetch(SYSTEM_MESSAGES_URL);
+          // Сначала пытаемся загрузить из localStorage
+          const savedMessages = localStorage.getItem('systemMessages');
           
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+          if (savedMessages) {
+            const messages = JSON.parse(savedMessages);
+            if (messages && messages.length > 0) {
+              setChatMessages(messages.map((msg: any) => ({
+                text: msg.text,
+                sender: 'support' as const
+              })));
+              setIsLoading(false);
+              return;
+            }
           }
           
-          const data = await response.json();
-          
-          if (data.messages && data.messages.length > 0) {
-            setChatMessages(data.messages.map((msg: any) => ({
-              text: msg.text,
-              sender: 'support' as const
-            })));
-          } else {
-            setChatMessages([{
-              text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
-              sender: 'support'
-            }]);
-          }
+          // Если нет локальных сообщений, пытаемся загрузить с сервера
+          fetch(SYSTEM_MESSAGES_URL)
+            .then(response => {
+              if (!response.ok) throw new Error('Network error');
+              return response.json();
+            })
+            .then(data => {
+              if (data.messages && data.messages.length > 0) {
+                setChatMessages(data.messages.map((msg: any) => ({
+                  text: msg.text,
+                  sender: 'support' as const
+                })));
+              } else {
+                setChatMessages([{
+                  text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
+                  sender: 'support'
+                }]);
+              }
+            })
+            .catch(() => {
+              // При ошибке показываем приветственное сообщение
+              setChatMessages([{
+                text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
+                sender: 'support'
+              }]);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
         } catch (error) {
           console.error('Failed to load system messages:', error);
           setChatMessages([{
             text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
             sender: 'support'
           }]);
-        } finally {
           setIsLoading(false);
         }
       };
       
       loadMessages();
+      
+      // Слушаем изменения в localStorage для живого обновления
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'systemMessages') {
+          loadMessages();
+        }
+      };
+      
+      window.addEventListener('storage', handleStorageChange);
+      return () => window.removeEventListener('storage', handleStorageChange);
     }
   }, [isOpen, isSystemChat, showProfile]);
 

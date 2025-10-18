@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 
 interface PvzPhoto {
   url: string;
@@ -12,8 +12,9 @@ interface PvzItem {
   name: string;
   address: string;
   schedule: string;
-  note: string;
-  icon: string;
+  phone: string;
+  hasFitting?: boolean;
+  icon?: string;
   photos?: PvzPhoto[];
 }
 

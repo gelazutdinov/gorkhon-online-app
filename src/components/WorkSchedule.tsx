@@ -1,37 +1,54 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 
 interface WorkScheduleItem {
-  service: string;
+  name: string;
   schedule: string;
   icon: string;
-  detailed?: Record<string, string>;
 }
 
 const WorkSchedule = () => {
-  const workSchedule: WorkScheduleItem[] = [
-    { 
-      service: "Администрация МО СП \"Горхонское\"", 
-      schedule: "ПН-ПТ: 8:00-16:00. Обед: 12:00-13:00. Справки: ПН-СР, ПТ до 12:00. ЧТ - не приёмный день", 
-      icon: "Building2"
-    },
-    { service: "Почта", schedule: "ПН, СР, ЧТ, ПТ: 9-17ч, СБ: 9-16ч. Обед: 13-14ч. ВТ, ВС - выходные", icon: "Mail" },
-    { 
-      service: "Сбербанк", 
-      schedule: "ВТ, ПТ: 9-17ч. Обед: 12:30-13:30. ПН, СР, ЧТ, СБ, ВС - выходные", 
-      icon: "CreditCard",
-      detailed: {
-        "Понедельник": "Выходной",
-        "Вторник": "09:00 - 17:00\n(Обед: 12:30 - 13:30)",
-        "Среда": "Выходной", 
-        "Четверг": "Выходной",
-        "Пятница": "09:00 - 17:00\n(Обед: 12:30 - 13:30)",
-        "Суббота": "Выходной",
-        "Воскресенье": "Выходной"
-      }
-    },
-    { service: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" }
+  const [workSchedule, setWorkSchedule] = useState<WorkScheduleItem[]>([]);
+
+  const defaultSchedule: WorkScheduleItem[] = [
+    { name: "Почта", schedule: "ПН, СР, ЧТ, ПТ: 9-17ч, СБ: 9-16ч. Обед: 13-14ч. ВТ, ВС - выходные", icon: "Mail" },
+    { name: "Сбербанк", schedule: "ВТ, ПТ: 9-17ч. Обед: 12:30-13:30. ПН, СР, ЧТ, СБ, ВС - выходные", icon: "CreditCard" },
+    { name: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" }
   ];
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'homePageContent') {
+        loadData();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const loadData = () => {
+    try {
+      const savedContent = localStorage.getItem('homePageContent');
+      if (savedContent) {
+        const content = JSON.parse(savedContent);
+        if (content.workSchedule && content.workSchedule.length > 0) {
+          setWorkSchedule(content.workSchedule);
+        } else {
+          setWorkSchedule(defaultSchedule);
+        }
+      } else {
+        setWorkSchedule(defaultSchedule);
+      }
+    } catch (error) {
+      setWorkSchedule(defaultSchedule);
+    }
+  };
 
   return (
     <Card className="animate-fade-in rounded-2xl bg-gradient-to-br from-white to-purple-50/30 border-2 border-gorkhon-blue/10 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -56,9 +73,8 @@ const WorkSchedule = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <p className="font-bold text-slate-800 group-hover:text-gorkhon-blue transition-colors">
-                    {item.service}
+                    {item.name}
                   </p>
-
                 </div>
                 <div className="flex items-start gap-2">
                   <Icon name="Calendar" size={12} className="text-slate-500 mt-0.5" />
@@ -66,28 +82,6 @@ const WorkSchedule = () => {
                 </div>
               </div>
             </div>
-
-            {item.detailed && (
-              <div className="mt-4 pt-4 border-t border-slate-200/50">
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon name="CalendarDays" size={14} className="text-gorkhon-blue" />
-                  <p className="text-sm font-semibold text-gorkhon-blue">Подробный график недели:</p>
-                </div>
-                <div className="grid gap-2 bg-white/50 p-3 rounded-xl border border-slate-200/30">
-                  {Object.entries(item.detailed).map(([day, hours]) => (
-                    <div key={day} className="flex justify-between items-start text-xs py-2">
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <div className={`w-2 h-2 rounded-full ${hours === "Выходной" ? "bg-red-400" : "bg-green-400"}`}></div>
-                        <span className="text-slate-700 font-medium">{day}:</span>
-                      </div>
-                      <span className={`font-semibold text-right whitespace-pre-line leading-tight ml-2 ${hours === "Выходной" ? "text-red-600" : "text-green-600"}`}>
-                        {hours}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         ))}
         
