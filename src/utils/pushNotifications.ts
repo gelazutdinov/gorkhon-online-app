@@ -70,12 +70,14 @@ export async function subscribeToPush(userId: string): Promise<PushSubscriptionD
   try {
     const registration = await registerServiceWorker();
     if (!registration) {
-      throw new Error('Service Worker не зарегистрирован');
+      console.error('Service Worker не зарегистрирован');
+      return null;
     }
 
     const permission = await requestNotificationPermission();
     if (!permission) {
-      throw new Error('Разрешение на уведомления не получено');
+      console.log('Пользователь отклонил разрешение на уведомления');
+      return null;
     }
 
     const subscription = await registration.pushManager.subscribe({
@@ -99,6 +101,9 @@ export async function subscribeToPush(userId: string): Promise<PushSubscriptionD
     return subscriptionData;
   } catch (error) {
     console.error('Ошибка подписки на push:', error);
+    if (error instanceof Error) {
+      console.error('Детали ошибки:', error.message);
+    }
     return null;
   }
 }
