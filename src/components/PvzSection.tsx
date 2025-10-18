@@ -252,7 +252,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       name: "Wildberries",
       address: "п. Горхон, ул. Железнодорожная, д. 15",
       schedule: "Пн, Ср-Пт: 09:00-17:00 (перерыв 13:00-14:00), Сб: 09:00-16:00 (перерыв 13:00-14:00), Вт, Вс: выходной",
-      note: "",
+      note: "ПВЗ находится в отделении почты 671333",
       icon: "Package",
       photos: [
         {
