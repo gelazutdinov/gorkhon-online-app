@@ -4,10 +4,20 @@ interface KnowledgeResponse {
   category?: 'platform' | 'life' | 'technical';
   needsWebSearch?: boolean;
   searchQuery?: string;
+  showAdminLink?: boolean;
 }
 
 export const getLinaResponse = (userMessage: string): KnowledgeResponse => {
   const msg = userMessage.toLowerCase();
+  
+  // === АДМИН-ПАНЕЛЬ ===
+  if (msg.includes('нужна админ-панель') || msg.includes('админ панель') || msg.includes('админка')) {
+    return {
+      text: '🔐 ДОСТУП К АДМИН-ПАНЕЛИ\n\nОткрываю админ-панель для управления платформой!\n\n⚙️ Доступные функции:\n• Редактирование важных номеров\n• Управление расписанием транспорта\n• Помощь посёлку\n\nНажмите кнопку ниже для перехода к админ-панели! 👇',
+      category: 'platform',
+      showAdminLink: true
+    };
+  }
   
   // === ПРИВЕТСТВИЯ ===
   if (msg.includes('привет') || msg.includes('здравствуй') || msg.includes('добрый') || msg.includes('хай') || msg.includes('hi')) {

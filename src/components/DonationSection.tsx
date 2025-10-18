@@ -1,36 +1,75 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 
+interface HelpItem {
+  title: string;
+  description: string;
+  contact: string;
+  icon: string;
+}
+
 const DonationSection = () => {
+  const [helpItems, setHelpItems] = useState<HelpItem[]>([]);
 
-
-  const donationData = [
+  const defaultData = [
     {
       title: "ФОНД поселка",
-      recipient: "Ирина Н.П",
-      account: "408 178 109 091 606 626 11",
-      note: "Обязательно пишем 'ФОНД поселка'",
-      icon: "Home",
-      gradient: "bg-gradient-blue"
+      description: "Ирина Н.П - Обязательно пишем 'ФОНД поселка'",
+      contact: "408 178 109 091 606 626 11",
+      icon: "Home"
     },
     {
       title: "Помощь церкви ⛪️",
-      recipient: "Голофаева В.",
-      account: "89024562839",
-      note: "Поддержка храма",
-      icon: "Heart",
-      gradient: "bg-gradient-warm"
+      description: "Голофаева В. - Поддержка храма",
+      contact: "89024562839",
+      icon: "Heart"
     },
     {
       title: "Помощь бойцам 🪖",
-      recipient: "Олеся Николаевна Н.",
-      account: "89246210100",
-      note: "В теме: 'Помощь Бойцам'",
-      icon: "Shield",
-      gradient: "bg-gradient-brand"
+      description: "Олеся Николаевна Н. - В теме: 'Помощь Бойцам'",
+      contact: "89246210100",
+      icon: "Shield"
     }
   ];
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'homePageContent') {
+        loadData();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const loadData = () => {
+    try {
+      const savedContent = localStorage.getItem('homePageContent');
+      if (savedContent) {
+        const content = JSON.parse(savedContent);
+        if (content.helpItems && content.helpItems.length > 0) {
+          setHelpItems(content.helpItems);
+        } else {
+          setHelpItems(defaultData);
+        }
+      } else {
+        setHelpItems(defaultData);
+      }
+    } catch (error) {
+      setHelpItems(defaultData);
+    }
+  };
+
+  const getGradient = (index: number) => {
+    const gradients = ['bg-gradient-blue', 'bg-gradient-warm', 'bg-gradient-brand'];
+    return gradients[index % gradients.length];
+  };
 
   return (
     <Card className="rounded-lg md:rounded-2xl bg-white md:bg-gradient-to-br md:from-white md:to-green-50/30 border border-gray-200 md:border-2 md:border-gorkhon-green/10 shadow-sm md:shadow-lg transition-all duration-300">
@@ -46,8 +85,8 @@ const DonationSection = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-3 md:p-6 space-y-3 md:space-y-4">
-        {donationData.map((donation, index) => (
-          <div key={index} className={`group p-4 md:p-5 rounded-lg md:rounded-2xl ${donation.gradient} text-white relative overflow-hidden transition-all duration-300`}>
+        {helpItems.map((item, index) => (
+          <div key={index} className={`group p-4 md:p-5 rounded-lg md:rounded-2xl ${getGradient(index)} text-white relative overflow-hidden transition-all duration-300`}>
             {/* Floating decorative elements только на десктопе */}
             <div className="hidden md:block absolute top-2 right-4 w-12 h-12 bg-white/10 rounded-full opacity-50 group-hover:opacity-70 transition-opacity"></div>
             <div className="hidden md:block absolute bottom-2 left-4 w-8 h-8 bg-white/5 rounded-full opacity-30 group-hover:opacity-50 transition-opacity"></div>
@@ -55,26 +94,21 @@ const DonationSection = () => {
             <div className="relative z-10">
               <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
                 <div className="p-2 rounded-full bg-white/20 flex-shrink-0">
-                  <Icon name={donation.icon as any} size={18} className="md:w-5 md:h-5" />
+                  <Icon name={item.icon as any} size={18} className="md:w-5 md:h-5" />
                 </div>
-                <h4 className="font-bold text-sm md:text-lg truncate">{donation.title.replace(/⛪️|🪖/g, '').trim()}</h4>
+                <h4 className="font-bold text-sm md:text-lg truncate">{item.title}</h4>
               </div>
               
               <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Icon name="User" size={14} className="opacity-80 flex-shrink-0" />
-                  <p className="text-xs md:text-sm opacity-90 truncate">{donation.recipient}</p>
+                <div className="flex items-start gap-2">
+                  <Icon name="Info" size={14} className="opacity-80 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs md:text-sm opacity-90">{item.description}</p>
                 </div>
                 
                 <div className="bg-white/20 backdrop-blur-sm p-2 md:p-3 rounded-lg md:rounded-xl border border-white/30">
                   <p className="text-xs md:text-sm font-mono text-center tracking-wide md:tracking-wider font-semibold break-all">
-                    {donation.account}
+                    {item.contact}
                   </p>
-                </div>
-                
-                <div className="flex items-start gap-2 mt-2 md:mt-3">
-                  <Icon name="Info" size={12} className="opacity-70 mt-0.5 flex-shrink-0" />
-                  <p className="text-xs opacity-80 leading-relaxed">{donation.note}</p>
                 </div>
               </div>
             </div>

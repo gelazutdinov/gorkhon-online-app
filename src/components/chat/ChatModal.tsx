@@ -10,6 +10,7 @@ interface ChatMessage {
   text: string;
   sender: 'user' | 'support';
   showAgentButton?: boolean;
+  showAdminLink?: boolean;
 }
 
 interface ChatModalProps {
@@ -129,7 +130,8 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
           setChatMessages(prev => [...prev, {
             text: aiResponse.text,
             sender: 'support',
-            showAgentButton: aiResponse.showAgentButton
+            showAgentButton: aiResponse.showAgentButton,
+            showAdminLink: aiResponse.showAdminLink
           }]);
         }, 800);
       }
@@ -218,6 +220,15 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                 >
                   <Icon name="UserCircle" size={18} />
                   <span className="text-sm font-medium">Написать агенту</span>
+                </a>
+              )}
+              {msg.showAdminLink && (
+                <a
+                  href="/admin-panel"
+                  className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors shadow-sm"
+                >
+                  <Icon name="Settings" size={18} />
+                  <span className="text-sm font-medium">Открыть админ-панель</span>
                 </a>
               )}
             </div>
