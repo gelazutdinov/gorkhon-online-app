@@ -4,6 +4,7 @@ import NotificationsBanner from "@/components/NotificationsBanner";
 import InstallPrompt from "@/components/InstallPrompt";
 import UpdateNotification from "@/components/UpdateNotification";
 import SplashScreen from "@/components/SplashScreen";
+import RecommendationNotice from "@/components/RecommendationNotice";
 import Home from "@/components/sections/Home";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
@@ -126,6 +127,7 @@ const Index = () => {
         
         <InstallPrompt />
         <UpdateNotification />
+        <RecommendationNotice />
       </div>
     </>
   );
