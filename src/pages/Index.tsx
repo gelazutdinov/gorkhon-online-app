@@ -10,7 +10,7 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import ChatModal from "@/components/chat/ChatModal";
 import DocumentModal from "@/components/documents/DocumentModal";
-import { registerPushSubscription, isPushSubscribed, showWelcomeNotification } from "@/utils/pushNotifications";
+import { subscribeToPush, isPushSubscribed, showWelcomeNotification } from "@/utils/pushNotifications";
 
 interface Photo {
   url: string;
@@ -29,8 +29,13 @@ const Index = () => {
     const initPushNotifications = async () => {
       if (!isPushSubscribed()) {
         setTimeout(async () => {
-          const subscribed = await registerPushSubscription();
-          if (subscribed) {
+          let userId = localStorage.getItem('userId');
+          if (!userId) {
+            userId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            localStorage.setItem('userId', userId);
+          }
+          const subscription = await subscribeToPush(userId);
+          if (subscription) {
             showWelcomeNotification();
           }
         }, 3000);
