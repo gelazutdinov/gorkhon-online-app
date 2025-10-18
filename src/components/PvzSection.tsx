@@ -328,16 +328,14 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                       </div>
                     )}
                     
-                    {(pvz.note.includes("Пункт выдачи заказов находится в центре") || pvz.note.includes("напротив школы")) && !pvz.note.includes("почты") && (
+                    {(pvz.note.includes("Пункт выдачи заказов находится") || pvz.note.includes("напротив школы") || pvz.note.includes("Пос. Горхон") || pvz.note.includes("продуктовый магазин")) && !pvz.note.includes("почты") && (
                       <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-200/50">
                         <div className="flex items-center gap-2 mb-2">
                           <Icon name="MapPin" size={14} className="text-blue-600" />
                           <p className="text-sm font-bold text-blue-900">Как добраться</p>
                         </div>
                         <p className="text-sm text-blue-700 leading-relaxed">
-                          {pvz.note.includes("Пункт выдачи заказов находится в центре")
-                            ? "Пункт выдачи заказов находится в центре посёлка Лесозаводской, напротив школы. Удобная парковка. Будем рады видеть Вас в нашем ПВЗ!"
-                            : pvz.note}
+                          {pvz.note.replace(/^Примерочные: 2 шт\.\s*/, '')}
                         </p>
                       </div>
                     )}
