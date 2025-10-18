@@ -142,14 +142,18 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
 
   if (!isOpen) return null;
 
-  return (
-    <>
+  if (showProfile) {
+    return (
       <ChannelProfile 
         isOpen={showProfile} 
         onClose={() => setShowProfile(false)}
         onEnableNotifications={handleEnableNotifications}
       />
-      <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
+    );
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
       <div 
         className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[80vh] flex flex-col shadow-2xl"
         onClick={(e) => e.stopPropagation()}
@@ -237,7 +241,6 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         )}
       </div>
     </div>
-    </>
   );
 };
 
