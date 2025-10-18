@@ -25,6 +25,7 @@ const ImportantNumbers = () => {
       } else {
         // Дефолтные данные, если нет сохраненных
         setImportantNumbers([
+          { name: "Администрация МО СП \"Горхонское\"", person: "Пн-Пт: 8:00-16:00, обед 12:00-13:00", phone: "", icon: "Building2" },
           { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
           { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
           { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
@@ -42,6 +43,7 @@ const ImportantNumbers = () => {
     } catch (error) {
       // Используем дефолтные данные в случае ошибки
       setImportantNumbers([
+        { name: "Администрация МО СП \"Горхонское\"", person: "Пн-Пт: 8:00-16:00, обед 12:00-13:00", phone: "", icon: "Building2" },
         { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
         { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
         { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
@@ -108,17 +110,25 @@ const ImportantNumbers = () => {
                 <div className="flex-1 min-w-0 overflow-hidden">
                   <p className="font-bold text-sm md:text-base text-autumn-burgundy truncate">{contact.name}</p>
                   <p className="text-xs md:text-sm text-autumn-olive truncate">{contact.person}</p>
-                  <p className="text-xs text-autumn-terracotta font-mono truncate">{contact.phone}</p>
+                  {contact.phone && <p className="text-xs text-autumn-terracotta font-mono truncate">{contact.phone}</p>}
+                  {contact.name.includes("Администрация") && (
+                    <p className="text-xs text-autumn-olive mt-1">
+                      📋 Справки: Пн-Ср, Пт до 12:00<br/>
+                      🚫 Четверг — не приёмный день
+                    </p>
+                  )}
                 </div>
               </div>
-              <Button 
-                size="sm" 
-                className="bg-gradient-to-r from-autumn-burgundy to-autumn-terracotta hover:from-autumn-burgundy/90 hover:to-autumn-terracotta/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none shadow-md"
-                onClick={() => window.open(`tel:${contact.phone}`, '_self')}
-              >
-                <Icon name="Phone" size={14} />
-                <span className="hidden md:inline ml-1">Звонок</span>
-              </Button>
+              {contact.phone && (
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-autumn-burgundy to-autumn-terracotta hover:from-autumn-burgundy/90 hover:to-autumn-terracotta/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none shadow-md"
+                  onClick={() => window.open(`tel:${contact.phone}`, '_self')}
+                >
+                  <Icon name="Phone" size={14} />
+                  <span className="hidden md:inline ml-1">Звонок</span>
+                </Button>
+              )}
             </div>
           </div>
         ))}
