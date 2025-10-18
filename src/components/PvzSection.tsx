@@ -328,27 +328,25 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                       </div>
                     )}
                     
-                    {pvz.note.includes("добраться") && (
+                    {pvz.note.includes("Пункт выдачи заказов находится в центре") && (
                       <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-200/50">
                         <div className="flex items-center gap-2 mb-2">
                           <Icon name="MapPin" size={14} className="text-blue-600" />
                           <p className="text-sm font-bold text-blue-900">Как добраться</p>
                         </div>
-                        <p className="text-sm text-blue-700 ml-6 leading-relaxed">
-                          {pvz.note.includes("центре посёлка Лесозаводской") 
-                            ? "Пункт выдачи заказов находится в центре посёлка Лесозаводской, напротив школы. Удобная парковка. Будем рады видеть Вас в нашем ПВЗ!"
-                            : pvz.note.replace(/.*добраться\s*/, "")}
+                        <p className="text-sm text-blue-700 leading-relaxed">
+                          Пункт выдачи заказов находится в центре посёлка Лесозаводской, напротив школы. Удобная парковка. Будем рады видеть Вас в нашем ПВЗ!
                         </p>
                       </div>
                     )}
                     
-                    {!pvz.note.includes("Примерочные") && !pvz.note.includes("добраться") && pvz.note.includes("почты") && (
+                    {pvz.note.includes("почты") && (
                       <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-200/50">
                         <div className="flex items-center gap-2 mb-1">
                           <Icon name="MapPin" size={14} className="text-blue-600" />
                           <p className="text-sm font-bold text-blue-900">Как добраться</p>
                         </div>
-                        <p className="text-sm text-blue-700 ml-6">{pvz.note}</p>
+                        <p className="text-sm text-blue-700">{pvz.note}</p>
                       </div>
                     )}
                   </div>
