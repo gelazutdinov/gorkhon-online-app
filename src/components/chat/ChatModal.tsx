@@ -33,11 +33,16 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
 
   // Загрузка системных сообщений из backend
   useEffect(() => {
-    if (isSystemChat && isOpen) {
+    if (isSystemChat && isOpen && !showProfile) {
       const loadMessages = async () => {
         setIsLoading(true);
         try {
           const response = await fetch(SYSTEM_MESSAGES_URL);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
           const data = await response.json();
           
           if (data.messages && data.messages.length > 0) {
@@ -54,7 +59,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         } catch (error) {
           console.error('Failed to load system messages:', error);
           setChatMessages([{
-            text: '⚠️ Не удалось загрузить сообщения. Попробуйте позже.',
+            text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
             sender: 'support'
           }]);
         } finally {
@@ -64,7 +69,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
       
       loadMessages();
     }
-  }, [isOpen, isSystemChat]);
+  }, [isOpen, isSystemChat, showProfile]);
 
   const sendMessage = async () => {
     if (chatInput.trim()) {
