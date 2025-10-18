@@ -22,7 +22,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => {
     if (!isSystemChat) {
       return [
-        {text: 'Привет! Я Лина — ваш умный помощник! 👋\n\n✨ Могу рассказать о платформе Горхон.Online\n🔧 Решить технические проблемы\n💡 Ответить на жизненные вопросы\n💬 Поддержать беседу\n\nЯ как Алиса или Маруся, только знаю всё про Горхон! 😊\n\nО чём хотите поговорить?', sender: 'support'}
+        {text: 'Привет! Я Лина ✨ — ваш верифицированный ИИ-помощник! 👋\n\nМои возможности:\n🌐 Поиск актуальной информации в интернете\n🏘️ Всё о жизни в Горхоне и платформе\n🔧 Решение технических проблем\n💡 Ответы на любые вопросы\n📚 Справочная информация 24/7\n\nПросто спросите — я найду ответ! 😊', sender: 'support'}
       ];
     }
     return [];
@@ -173,7 +173,9 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <Icon name="Bot" size={20} className="text-[#F1117E]" />
+                <div className="relative">
+                  <Icon name="Sparkles" size={24} className="text-[#F1117E]" />
+                </div>
               )}
             </div>
             <button 
@@ -181,12 +183,10 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
               className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
             >
               <h3 className="font-semibold text-white text-base">{isSystemChat ? 'Горхон.Online' : 'Лина'}</h3>
-              {isSystemChat && (
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <circle cx="10" cy="10" r="10" fill="white"/>
-                  <path d="M14.5 7L8.5 13L5.5 10" stroke="#0088CC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              )}
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="10" fill="white"/>
+                <path d="M14.5 7L8.5 13L5.5 10" stroke={isSystemChat ? "#0088CC" : "#F1117E"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
           </div>
           <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
@@ -206,7 +206,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
               >
                 <p className="text-sm whitespace-pre-line">{msg.text}</p>
                 <span className="text-xs mt-1 block opacity-70">
-                  {msg.sender === 'user' ? 'Вы' : (isSystemChat ? 'Горхон.Online' : 'Лина (ИИ)')} • сейчас
+                  {msg.sender === 'user' ? 'Вы' : (isSystemChat ? 'Горхон.Online' : 'Лина ✨ (ИИ)')} • сейчас
                 </span>
               </div>
               {msg.showAgentButton && (
