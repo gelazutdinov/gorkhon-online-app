@@ -91,7 +91,6 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
           const searchData = await searchResponse.json();
           
           let resultText = '';
-          
           if (searchData.hasResults && searchData.results && searchData.results.length > 0) {
             resultText = '✅ Вот что мне удалось найти:\n\n';
             searchData.results.forEach((result: string, index: number) => {
