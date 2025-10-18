@@ -1,40 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
-
-interface ImportantNumber {
-  name: string;
-  person: string;
-  phone: string;
-  icon: string;
-}
-
-interface WorkScheduleItem {
-  name: string;
-  schedule: string;
-  icon: string;
-}
-
-interface PvzItem {
-  name: string;
-  address: string;
-  schedule: string;
-  phone: string;
-  hasFitting: boolean;
-  photos: { url: string; caption: string; }[];
-}
-
-interface SystemMessage {
-  id: string;
-  text: string;
-  timestamp: string;
-  isFromAdmin?: boolean;
-}
+import { ImportantNumber, WorkScheduleItem, PvzItem, SystemMessage, HelpItem } from '@/components/admin/types';
+import { getDefaultNumbers, getDefaultTransit, getDefaultHelp, getDefaultSchedule, getDefaultPvz } from '@/components/admin/defaultData';
+import SystemMessagesTab from '@/components/admin/SystemMessagesTab';
+import ImportantNumbersTab from '@/components/admin/ImportantNumbersTab';
+import TransitTab from '@/components/admin/TransitTab';
+import HelpTab from '@/components/admin/HelpTab';
+import ScheduleTab from '@/components/admin/ScheduleTab';
+import PvzTab from '@/components/admin/PvzTab';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -43,7 +19,7 @@ const AdminPanel = () => {
   
   const [importantNumbers, setImportantNumbers] = useState<ImportantNumber[]>([]);
   const [transitNumbers, setTransitNumbers] = useState<ImportantNumber[]>([]);
-  const [helpItems, setHelpItems] = useState<any[]>([]);
+  const [helpItems, setHelpItems] = useState<HelpItem[]>([]);
   const [workSchedule, setWorkSchedule] = useState<WorkScheduleItem[]>([]);
   const [pvzItems, setPvzItems] = useState<PvzItem[]>([]);
   const [systemMessages, setSystemMessages] = useState<SystemMessage[]>([]);
@@ -97,65 +73,6 @@ const AdminPanel = () => {
       toast.error('Ошибка при загрузке данных');
     }
   };
-
-  const getDefaultNumbers = (): ImportantNumber[] => [
-    { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
-    { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
-    { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
-    { name: "Скорая помощь (новый)", person: "Дополнительный номер", phone: "73013645103", icon: "Ambulance" },
-    { name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+73012344083", icon: "Zap" },
-    { name: "МФЦ Заиграево", person: "Многофункциональный центр", phone: "+73013641101", icon: "Building" },
-    { name: "Соц.защита Заиграево", person: "Социальная защита населения", phone: "+73013641220", icon: "Heart" },
-    { name: "Регистратура поликлиники", person: "Заиграево", phone: "+79245559003", icon: "Stethoscope" },
-    { name: "Нотариус Заиграево", person: "Нотариальные услуги", phone: "+73013641614", icon: "FileText" },
-    { name: "Судебные приставы", person: "Заиграевский район", phone: "83013641010", icon: "Scale" },
-    { name: "Вакуумная машина", person: "Кондаков К.Ю., Горхон", phone: "+79834539902", icon: "Truck" },
-    { name: "Почта Горхон", person: "Елена", phone: "8-914-843-45-93", icon: "Mail" },
-    { name: "Миграционная служба ГАИ", person: "Пн 9:00-12:30, Вт-Чт 9:00-15:00, Пт выходной", phone: "8-3013-64-15-70", icon: "Car" }
-  ];
-
-  const getDefaultTransit = (): ImportantNumber[] => [
-    { name: "Диспетчер Город", person: "Заиграевский транзит", phone: "8-983-420-04-03", icon: "Bus" },
-    { name: "Диспетчер Заиграево", person: "Заиграевский транзит", phone: "8-983-420-04-90", icon: "Bus" }
-  ];
-
-  const getDefaultHelp = () => [
-    {
-      title: "ФОНД поселка",
-      description: "Ирина Н.П - Обязательно пишем 'ФОНД поселка'",
-      contact: "408 178 109 091 606 626 11",
-      icon: "Home"
-    },
-    {
-      title: "Помощь церкви ⛪️",
-      description: "Голофаева В. - Поддержка храма",
-      contact: "89024562839",
-      icon: "Heart"
-    },
-    {
-      title: "Помощь бойцам 🪖",
-      description: "Олеся Николаевна Н. - В теме: 'Помощь Бойцам'",
-      contact: "89246210100",
-      icon: "Shield"
-    }
-  ];
-
-  const getDefaultSchedule = (): WorkScheduleItem[] => [
-    { name: "Почта", schedule: "ПН, СР, ЧТ, ПТ: 9-17ч, СБ: 9-16ч. Обед: 13-14ч. ВТ, ВС - выходные", icon: "Mail" },
-    { name: "Сбербанк", schedule: "ВТ, ПТ: 9-17ч. Обед: 12:30-13:30. ПН, СР, ЧТ, СБ, ВС - выходные", icon: "CreditCard" },
-    { name: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" }
-  ];
-
-  const getDefaultPvz = (): PvzItem[] => [
-    {
-      name: "Wildberries ПВЗ",
-      address: "ул. Центральная, 1",
-      schedule: "Пн-Вс: 10:00-20:00",
-      phone: "89012345678",
-      hasFitting: true,
-      photos: []
-    }
-  ];
 
   const saveAllData = () => {
     try {
@@ -246,7 +163,6 @@ const AdminPanel = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         
-        {/* Современный хедер */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -282,7 +198,6 @@ const AdminPanel = () => {
           </div>
         </div>
 
-        {/* Современные табы */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
           {tabs.map(tab => (
             <button
@@ -305,422 +220,63 @@ const AdminPanel = () => {
           ))}
         </div>
 
-        {/* Контент табов */}
         <div className="space-y-6">
           
-          {/* Системный чат */}
           {activeTab === 'messages' && (
-            <Card className="border-2 border-blue-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
-                <CardTitle className="flex items-center gap-3 text-blue-700">
-                  <Icon name="MessageSquare" size={24} />
-                  <div>
-                    <div>Системный чат (Офлайн)</div>
-                    <p className="text-sm font-normal text-gray-600 mt-1">
-                      Сообщения отображаются у пользователей в чате с Линой
-                    </p>
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 p-6">
-                
-                {/* Форма нового сообщения */}
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    📢 Новое сообщение для пользователей
-                  </label>
-                  <Textarea
-                    value={newMessageText}
-                    onChange={(e) => setNewMessageText(e.target.value)}
-                    placeholder="Введите текст объявления..."
-                    className="mb-4 min-h-[100px] border-blue-300 focus:border-blue-500"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && e.ctrlKey) {
-                        addSystemMessage();
-                      }
-                    }}
-                  />
-                  <Button 
-                    onClick={addSystemMessage}
-                    className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg"
-                  >
-                    <Icon name="Send" size={18} className="mr-2" />
-                    Опубликовать (Ctrl+Enter)
-                  </Button>
-                </div>
-
-                {/* Список сообщений */}
-                <div className="space-y-3">
-                  <h3 className="font-semibold text-gray-700 flex items-center gap-2">
-                    <Icon name="List" size={18} />
-                    Опубликованные сообщения ({systemMessages.length})
-                  </h3>
-                  {systemMessages.length === 0 ? (
-                    <div className="text-center py-12 text-gray-400">
-                      <Icon name="MessageSquare" size={48} className="mx-auto mb-3 opacity-30" />
-                      <p>Нет опубликованных сообщений</p>
-                    </div>
-                  ) : (
-                    systemMessages.map(msg => (
-                      <div key={msg.id} className="group bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-blue-300 transition-all shadow-sm hover:shadow-md">
-                        <div className="flex justify-between items-start gap-3">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">
-                                Системное
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                {new Date(msg.timestamp).toLocaleString('ru-RU')}
-                              </span>
-                            </div>
-                            <p className="text-gray-800 leading-relaxed">{msg.text}</p>
-                          </div>
-                          <Button
-                            onClick={() => deleteSystemMessage(msg.id)}
-                            variant="ghost"
-                            size="sm"
-                            className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <Icon name="Trash2" size={16} />
-                          </Button>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <SystemMessagesTab
+              systemMessages={systemMessages}
+              newMessageText={newMessageText}
+              setNewMessageText={setNewMessageText}
+              addSystemMessage={addSystemMessage}
+              deleteSystemMessage={deleteSystemMessage}
+            />
           )}
 
-          {/* Важные номера */}
           {activeTab === 'numbers' && (
-            <Card className="border-2 border-purple-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
-                <CardTitle className="flex items-center gap-3 text-purple-700">
-                  <Icon name="Phone" size={24} />
-                  Важные номера телефонов
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 p-6">
-                {importantNumbers.map((item, idx) => (
-                  <div key={idx} className="bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-purple-300 transition-all space-y-3">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      <Input
-                        placeholder="Название"
-                        value={item.name}
-                        onChange={(e) => {
-                          const updated = [...importantNumbers];
-                          updated[idx].name = e.target.value;
-                          setImportantNumbers(updated);
-                        }}
-                      />
-                      <Input
-                        placeholder="Контактное лицо"
-                        value={item.person}
-                        onChange={(e) => {
-                          const updated = [...importantNumbers];
-                          updated[idx].person = e.target.value;
-                          setImportantNumbers(updated);
-                        }}
-                      />
-                      <Input
-                        placeholder="Телефон"
-                        value={item.phone}
-                        onChange={(e) => {
-                          const updated = [...importantNumbers];
-                          updated[idx].phone = e.target.value;
-                          setImportantNumbers(updated);
-                        }}
-                      />
-                    </div>
-                    <div className="flex justify-end">
-                      <Button
-                        onClick={() => removeItem('numbers', idx)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Icon name="Trash2" size={16} className="mr-1" />
-                        Удалить
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                <Button
-                  onClick={() => addItem('numbers')}
-                  variant="outline"
-                  className="w-full border-2 border-dashed border-purple-300 hover:border-purple-500 hover:bg-purple-50"
-                >
-                  <Icon name="Plus" size={18} className="mr-2" />
-                  Добавить номер
-                </Button>
-              </CardContent>
-            </Card>
+            <ImportantNumbersTab
+              importantNumbers={importantNumbers}
+              setImportantNumbers={setImportantNumbers}
+              addItem={addItem}
+              removeItem={removeItem}
+            />
           )}
 
-          {/* Транспорт */}
           {activeTab === 'transit' && (
-            <Card className="border-2 border-green-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
-                <CardTitle className="flex items-center gap-3 text-green-700">
-                  <Icon name="Bus" size={24} />
-                  Расписание транспорта
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 p-6">
-                {transitNumbers.map((item, idx) => (
-                  <div key={idx} className="bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-green-300 transition-all space-y-3">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      <Input
-                        placeholder="Название"
-                        value={item.name}
-                        onChange={(e) => {
-                          const updated = [...transitNumbers];
-                          updated[idx].name = e.target.value;
-                          setTransitNumbers(updated);
-                        }}
-                      />
-                      <Input
-                        placeholder="Описание"
-                        value={item.person}
-                        onChange={(e) => {
-                          const updated = [...transitNumbers];
-                          updated[idx].person = e.target.value;
-                          setTransitNumbers(updated);
-                        }}
-                      />
-                      <Input
-                        placeholder="Телефон"
-                        value={item.phone}
-                        onChange={(e) => {
-                          const updated = [...transitNumbers];
-                          updated[idx].phone = e.target.value;
-                          setTransitNumbers(updated);
-                        }}
-                      />
-                    </div>
-                    <div className="flex justify-end">
-                      <Button
-                        onClick={() => removeItem('transit', idx)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Icon name="Trash2" size={16} className="mr-1" />
-                        Удалить
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                <Button
-                  onClick={() => addItem('transit')}
-                  variant="outline"
-                  className="w-full border-2 border-dashed border-green-300 hover:border-green-500 hover:bg-green-50"
-                >
-                  <Icon name="Plus" size={18} className="mr-2" />
-                  Добавить маршрут
-                </Button>
-              </CardContent>
-            </Card>
+            <TransitTab
+              transitNumbers={transitNumbers}
+              setTransitNumbers={setTransitNumbers}
+              addItem={addItem}
+              removeItem={removeItem}
+            />
           )}
 
-          {/* Помощь посёлку */}
           {activeTab === 'help' && (
-            <Card className="border-2 border-red-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-red-50 to-rose-50">
-                <CardTitle className="flex items-center gap-3 text-red-700">
-                  <Icon name="Heart" size={24} />
-                  Помощь посёлку
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 p-6">
-                {helpItems.map((item, idx) => (
-                  <div key={idx} className="bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-red-300 transition-all space-y-3">
-                    <Input
-                      placeholder="Название"
-                      value={item.title}
-                      onChange={(e) => {
-                        const updated = [...helpItems];
-                        updated[idx].title = e.target.value;
-                        setHelpItems(updated);
-                      }}
-                    />
-                    <Textarea
-                      placeholder="Описание"
-                      value={item.description}
-                      onChange={(e) => {
-                        const updated = [...helpItems];
-                        updated[idx].description = e.target.value;
-                        setHelpItems(updated);
-                      }}
-                    />
-                    <Input
-                      placeholder="Контакт"
-                      value={item.contact}
-                      onChange={(e) => {
-                        const updated = [...helpItems];
-                        updated[idx].contact = e.target.value;
-                        setHelpItems(updated);
-                      }}
-                    />
-                    <div className="flex justify-end">
-                      <Button
-                        onClick={() => removeItem('help', idx)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Icon name="Trash2" size={16} className="mr-1" />
-                        Удалить
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                <Button
-                  onClick={() => addItem('help')}
-                  variant="outline"
-                  className="w-full border-2 border-dashed border-red-300 hover:border-red-500 hover:bg-red-50"
-                >
-                  <Icon name="Plus" size={18} className="mr-2" />
-                  Добавить
-                </Button>
-              </CardContent>
-            </Card>
+            <HelpTab
+              helpItems={helpItems}
+              setHelpItems={setHelpItems}
+              addItem={addItem}
+              removeItem={removeItem}
+            />
           )}
 
-          {/* Режим работы */}
           {activeTab === 'schedule' && (
-            <Card className="border-2 border-orange-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50">
-                <CardTitle className="flex items-center gap-3 text-orange-700">
-                  <Icon name="Clock" size={24} />
-                  Режим работы организаций
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 p-6">
-                {workSchedule.map((item, idx) => (
-                  <div key={idx} className="bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-orange-300 transition-all space-y-3">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <Input
-                        placeholder="Название организации"
-                        value={item.name}
-                        onChange={(e) => {
-                          const updated = [...workSchedule];
-                          updated[idx].name = e.target.value;
-                          setWorkSchedule(updated);
-                        }}
-                      />
-                      <Input
-                        placeholder="Расписание"
-                        value={item.schedule}
-                        onChange={(e) => {
-                          const updated = [...workSchedule];
-                          updated[idx].schedule = e.target.value;
-                          setWorkSchedule(updated);
-                        }}
-                      />
-                    </div>
-                    <div className="flex justify-end">
-                      <Button
-                        onClick={() => removeItem('schedule', idx)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Icon name="Trash2" size={16} className="mr-1" />
-                        Удалить
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                <Button
-                  onClick={() => addItem('schedule')}
-                  variant="outline"
-                  className="w-full border-2 border-dashed border-orange-300 hover:border-orange-500 hover:bg-orange-50"
-                >
-                  <Icon name="Plus" size={18} className="mr-2" />
-                  Добавить расписание
-                </Button>
-              </CardContent>
-            </Card>
+            <ScheduleTab
+              workSchedule={workSchedule}
+              setWorkSchedule={setWorkSchedule}
+              addItem={addItem}
+              removeItem={removeItem}
+            />
           )}
 
-          {/* ПВЗ */}
           {activeTab === 'pvz' && (
-            <Card className="border-2 border-indigo-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                <CardTitle className="flex items-center gap-3 text-indigo-700">
-                  <Icon name="Package" size={24} />
-                  Пункты выдачи заказов
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 p-6">
-                {pvzItems.map((item, idx) => (
-                  <div key={idx} className="bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-indigo-300 transition-all space-y-3">
-                    <Input
-                      placeholder="Название ПВЗ"
-                      value={item.name}
-                      onChange={(e) => {
-                        const updated = [...pvzItems];
-                        updated[idx].name = e.target.value;
-                        setPvzItems(updated);
-                      }}
-                    />
-                    <Input
-                      placeholder="Адрес"
-                      value={item.address}
-                      onChange={(e) => {
-                        const updated = [...pvzItems];
-                        updated[idx].address = e.target.value;
-                        setPvzItems(updated);
-                      }}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <Input
-                        placeholder="Режим работы"
-                        value={item.schedule}
-                        onChange={(e) => {
-                          const updated = [...pvzItems];
-                          updated[idx].schedule = e.target.value;
-                          setPvzItems(updated);
-                        }}
-                      />
-                      <Input
-                        placeholder="Телефон"
-                        value={item.phone}
-                        onChange={(e) => {
-                          const updated = [...pvzItems];
-                          updated[idx].phone = e.target.value;
-                          setPvzItems(updated);
-                        }}
-                      />
-                    </div>
-                    <div className="flex justify-end">
-                      <Button
-                        onClick={() => removeItem('pvz', idx)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Icon name="Trash2" size={16} className="mr-1" />
-                        Удалить
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                <Button
-                  onClick={() => addItem('pvz')}
-                  variant="outline"
-                  className="w-full border-2 border-dashed border-indigo-300 hover:border-indigo-500 hover:bg-indigo-50"
-                >
-                  <Icon name="Plus" size={18} className="mr-2" />
-                  Добавить ПВЗ
-                </Button>
-              </CardContent>
-            </Card>
+            <PvzTab
+              pvzItems={pvzItems}
+              setPvzItems={setPvzItems}
+              addItem={addItem}
+              removeItem={removeItem}
+            />
           )}
 
-          {/* Кнопка сохранения */}
           {activeTab !== 'messages' && (
             <div className="sticky bottom-4 z-10">
               <Button
