@@ -239,7 +239,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       name: "OZON",
       address: "посёлок Горхон, ул. Железнодорожная, 31/2",
       schedule: "Ежедневно: 10:00 – 19:00",
-      note: "",
+      note: "Пос. Горхон, ул. Железнодорожная, 31/2, продуктовый магазин «Татьяна», ориентир — вывеска Ozon. До встречи на Ozon!",
       icon: "Package",
       photos: [
         {
