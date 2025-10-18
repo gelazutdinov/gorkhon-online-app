@@ -7,13 +7,88 @@ Returns: HTTP response dict с сообщениями или статусом о
 
 import json
 import os
-from typing import Dict, Any
+from typing import Dict, Any, List
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from pywebpush import webpush, WebPushException
 
 def get_db_connection():
     dsn = os.environ.get('DATABASE_URL')
     return psycopg2.connect(dsn, cursor_factory=RealDictCursor)
+
+def send_push_notification(title: str, body: str, url: str = '/') -> Dict[str, Any]:
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    cur.execute("""
+        SELECT id, endpoint, p256dh_key, auth_key
+        FROM push_subscriptions
+        WHERE is_active = TRUE
+    """)
+    
+    subscriptions = cur.fetchall()
+    
+    vapid_private_key = os.environ.get('VAPID_PRIVATE_KEY', '')
+    vapid_public_key = os.environ.get('VAPID_PUBLIC_KEY', 'BFGk7fINvW4s0HJwYIU9Z8Y8vBcBqVqG5X7-8RY3fvNz9XH8LkWj3YQ7_K5vH8fN9jK7vL8wM9xN6vK5jH8gF4s')
+    
+    notification_data = {
+        'title': title,
+        'body': body,
+        'icon': 'https://cdn.poehali.dev/files/dbf46829-41e3-4fcf-956e-f6c84fb50dc3.png',
+        'url': url,
+        'tag': 'system-notification'
+    }
+    
+    sent_count = 0
+    failed_count = 0
+    
+    for sub in subscriptions:
+        try:
+            subscription_info = {
+                'endpoint': sub['endpoint'],
+                'keys': {
+                    'p256dh': sub['p256dh_key'],
+                    'auth': sub['auth_key']
+                }
+            }
+            
+            webpush(
+                subscription_info=subscription_info,
+                data=json.dumps(notification_data),
+                vapid_private_key=vapid_private_key,
+                vapid_claims={
+                    'sub': 'mailto:support@gorkhon.online',
+                    'aud': sub['endpoint'].split('/')[2]
+                }
+            )
+            
+            cur.execute("""
+                UPDATE push_subscriptions 
+                SET last_notification_at = CURRENT_TIMESTAMP 
+                WHERE id = %s
+            """, (sub['id'],))
+            
+            sent_count += 1
+            
+        except WebPushException as e:
+            failed_count += 1
+            
+            if e.response and e.response.status_code in [404, 410]:
+                cur.execute("""
+                    UPDATE push_subscriptions 
+                    SET is_active = FALSE 
+                    WHERE id = %s
+                """, (sub['id'],))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+    
+    return {
+        'sentCount': sent_count,
+        'failedCount': failed_count,
+        'totalSubscriptions': len(subscriptions)
+    }
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     method: str = event.get('httpMethod', 'GET')
@@ -116,13 +191,22 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         cur.close()
         conn.close()
         
+        push_result = send_push_notification(
+            title='Системное сообщение',
+            body=message_text,
+            url='/'
+        )
+        
         return {
             'statusCode': 201,
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
-            'body': json.dumps({'message': new_message}),
+            'body': json.dumps({
+                'message': new_message,
+                'pushNotification': push_result
+            }),
             'isBase64Encoded': False
         }
     
