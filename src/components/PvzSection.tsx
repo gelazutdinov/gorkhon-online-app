@@ -193,7 +193,7 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
       name: "Wildberries",
       address: "пос. Лесозаводской, ул. Трудовая, 12",
       schedule: "Ежедневно: 10:00-20:00",
-      note: "",
+      note: "Примерочные: 2 шт. Пункт выдачи заказов находится в центре посёлка Лесозаводской, напротив школы. Удобная парковка. Будем рады видеть Вас в нашем ПВЗ!",
       icon: "Package",
       photos: [
         {
