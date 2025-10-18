@@ -40,12 +40,23 @@ document.addEventListener('keydown', (e) => {
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        console.log('SW registered: ', registration);
+        console.log('✅ Service Worker зарегистрирован:', registration.scope);
+        
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('🔄 Доступно обновление приложения');
+              }
+            });
+          }
+        });
       })
       .catch((error) => {
-        console.log('SW registration failed: ', error);
+        console.log('❌ Service Worker не зарегистрирован:', error);
       });
   });
 }

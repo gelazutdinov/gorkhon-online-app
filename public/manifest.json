@@ -1,7 +1,7 @@
 {
   "name": "Горхон.Online",
   "short_name": "Горхон",
-  "description": "Информационный портал поселка Горхон",
+  "description": "Информационный портал поселка Горхон — работает офлайн",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -25,5 +25,6 @@
   "lang": "ru",
   "dir": "ltr",
   "scope": "/",
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "offline_enabled": true
 }
