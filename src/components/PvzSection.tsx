@@ -320,11 +320,11 @@ const PvzSection = ({ onOpenPhotoCarousel }: PvzSectionProps) => {
                   <div className="space-y-3">
                     {pvz.note.includes("Примерочные") && (
                       <div className="p-3 rounded-xl bg-purple-50/80 border border-purple-200/50">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2">
                           <Icon name="ShoppingBag" size={14} className="text-purple-600" />
                           <p className="text-sm font-bold text-purple-900">Примерочные</p>
+                          <p className="text-sm text-purple-700">2 шт.</p>
                         </div>
-                        <p className="text-sm text-purple-700 ml-6">2 шт.</p>
                       </div>
                     )}
                     
