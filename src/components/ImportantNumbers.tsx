@@ -72,17 +72,16 @@ const ImportantNumbers = () => {
 
   // Слушаем изменения в localStorage для живого обновления
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'homePageContent') {
-        try {
-          if (e.newValue) {
-            const content = JSON.parse(e.newValue);
-            setImportantNumbers(content.importantNumbers || []);
-            setTransitNumbers(content.transitNumbers || []);
-          }
-        } catch (error) {
-          console.error('Ошибка обновления данных:', error);
+    const handleStorageChange = () => {
+      try {
+        const savedContent = localStorage.getItem('homePageContent');
+        if (savedContent) {
+          const content = JSON.parse(savedContent);
+          setImportantNumbers(content.importantNumbers || []);
+          setTransitNumbers(content.transitNumbers || []);
         }
+      } catch (error) {
+        console.error('Ошибка обновления данных:', error);
       }
     };
 

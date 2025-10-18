@@ -38,10 +38,8 @@ const DonationSection = () => {
   }, []);
 
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'homePageContent') {
-        loadData();
-      }
+    const handleStorageChange = () => {
+      loadData();
     };
 
     window.addEventListener('storage', handleStorageChange);

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
 interface Message {
@@ -14,6 +15,7 @@ interface LinaAssistantProps {
 }
 
 const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -38,14 +40,44 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
   };
 
   useEffect(() => {
-    // Приветственное сообщение
-    const welcomeMessage: Message = {
-      id: '1',
-      text: '👋 Привет! Я Лина — ваш цифровой помощник!\n\n🌟 Готова помочь с любыми вопросами о жизни в Горхоне. Что вас интересует?',
-      isUser: false,
-      timestamp: new Date()
+    const loadMessages = () => {
+      const systemMessages: Message[] = [];
+      
+      try {
+        const saved = localStorage.getItem('systemMessages');
+        if (saved) {
+          const parsedMessages = JSON.parse(saved);
+          parsedMessages.forEach((msg: any) => {
+            systemMessages.push({
+              id: msg.id,
+              text: `📢 Системное сообщение:\n\n${msg.text}`,
+              isUser: false,
+              timestamp: new Date(msg.timestamp)
+            });
+          });
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки системных сообщений:', error);
+      }
+      
+      const welcomeMessage: Message = {
+        id: '1',
+        text: '👋 Привет! Я Лина — ваш цифровой помощник!\n\n🌟 Готова помочь с любыми вопросами о жизни в Горхоне. Что вас интересует?',
+        isUser: false,
+        timestamp: new Date()
+      };
+      
+      setMessages([welcomeMessage, ...systemMessages]);
     };
-    setMessages([welcomeMessage]);
+
+    loadMessages();
+
+    const handleStorageChange = () => {
+      loadMessages();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   useEffect(() => {
@@ -58,6 +90,12 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
 
   const findResponse = (question: string): string => {
     const lowerQuestion = question.toLowerCase();
+    
+    // Админ-панель
+    if (lowerQuestion.includes('админ') || lowerQuestion.includes('админка') || lowerQuestion.includes('панель управления') ||
+        lowerQuestion.includes('редактировать') || lowerQuestion.includes('изменить контент')) {
+      return '🔐 Доступ к админ-панели:\n\n👉 Перейдите по ссылке: /admin-panel\n\nВ админ-панели вы можете:\n• 📞 Редактировать важные номера\n• 🚌 Управлять расписанием транспорта\n• ❤️ Изменять информацию о помощи посёлку\n• ⏰ Обновлять режим работы организаций\n• 📦 Настраивать ПВЗ\n• 💬 Публиковать системные сообщения\n\nВсе изменения сохраняются локально и отображаются мгновенно!';
+    }
     
     // Приветствие
     if (lowerQuestion.includes('привет') || lowerQuestion.includes('здравств') || lowerQuestion.includes('добр') ||
@@ -218,6 +256,16 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => {
+                navigate('/admin-panel');
+                onClose();
+              }}
+              className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+              title="Админ-панель"
+            >
+              <Icon name="Settings" size={18} />
+            </button>
             <button
               onClick={() => setIsMinimized(true)}
               className="p-2 hover:bg-white/20 rounded-lg transition-colors hidden sm:block"
