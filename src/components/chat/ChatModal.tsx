@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { sanitizeInput, preventXSS } from "@/utils/security";
 import Icon from "@/components/ui/icon";
 import { getLinaResponse } from "@/utils/linaKnowledge";
+import ChannelProfile from "./ChannelProfile";
 
 const SYSTEM_MESSAGES_URL = 'https://functions.poehali.dev/a7b8d7b8-eb5d-4ecc-ac30-8672db766806';
 
@@ -28,6 +29,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   });
   const [chatInput, setChatInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   // Загрузка системных сообщений из backend
   useEffect(() => {
@@ -129,10 +131,25 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
     }
   };
 
+  const handleEnableNotifications = async () => {
+    if ('Notification' in window && 'serviceWorker' in navigator) {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        setShowProfile(false);
+      }
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
+    <>
+      <ChannelProfile 
+        isOpen={showProfile} 
+        onClose={() => setShowProfile(false)}
+        onEnableNotifications={handleEnableNotifications}
+      />
+      <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
       <div 
         className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[80vh] flex flex-col shadow-2xl"
         onClick={(e) => e.stopPropagation()}
@@ -150,7 +167,10 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                 <Icon name="Bot" size={20} className="text-[#F1117E]" />
               )}
             </div>
-            <div className="flex items-center gap-1.5">
+            <button 
+              onClick={() => isSystemChat && setShowProfile(true)}
+              className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+            >
               <h3 className="font-semibold text-white text-base">{isSystemChat ? 'Горхон.Online' : 'Лина'}</h3>
               {isSystemChat && (
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -158,7 +178,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                   <path d="M14.5 7L8.5 13L5.5 10" stroke="#0088CC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )}
-            </div>
+            </button>
           </div>
           <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
             <Icon name="X" size={18} />
@@ -217,6 +237,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         )}
       </div>
     </div>
+    </>
   );
 };
 
