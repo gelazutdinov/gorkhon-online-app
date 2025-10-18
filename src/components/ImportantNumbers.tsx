@@ -25,7 +25,6 @@ const ImportantNumbers = () => {
       } else {
         // Дефолтные данные, если нет сохраненных
         setImportantNumbers([
-          { name: "Администрация МО СП \"Горхонское\"", person: "Приём граждан", phone: "", icon: "Building2" },
           { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
           { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
           { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
@@ -49,7 +48,6 @@ const ImportantNumbers = () => {
     } catch (error) {
       // Используем дефолтные данные в случае ошибки
       setImportantNumbers([
-        { name: "Администрация МО СП \"Горхонское\"", person: "Приём граждан", phone: "", icon: "Building2" },
         { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
         { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
         { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
