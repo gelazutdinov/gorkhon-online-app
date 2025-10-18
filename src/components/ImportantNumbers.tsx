@@ -123,18 +123,8 @@ const ImportantNumbers = () => {
                   <p className="font-bold text-sm md:text-base text-autumn-burgundy truncate">{contact.name}</p>
                   <p className="text-xs md:text-sm text-autumn-olive truncate">{contact.person}</p>
                   {contact.phone && <p className="text-xs text-autumn-terracotta font-mono truncate">{contact.phone}</p>}
-                  {contact.name.includes("Администрация") && (
-                    <p className="text-xs text-autumn-olive mt-1">
-                      ⏰ Пн-Пт: 8:00-16:00, обед 12:00-13:00<br/>
-                      📋 Справки: Пн-Ср, Пт до 12:00<br/>
-                      🚫 Чт — не приёмный день
-                    </p>
-                  )}
-                  {contact.name.includes("Миграционная") && (
-                    <p className="text-xs text-autumn-olive mt-1">
-                      ⏰ График работы указан выше
-                    </p>
-                  )}
+
+
                 </div>
               </div>
               {contact.phone && (

@@ -10,6 +10,11 @@ interface WorkScheduleItem {
 
 const WorkSchedule = () => {
   const workSchedule: WorkScheduleItem[] = [
+    { 
+      service: "Администрация МО СП \"Горхонское\"", 
+      schedule: "ПН-ПТ: 8:00-16:00. Обед: 12:00-13:00. Справки: ПН-СР, ПТ до 12:00. ЧТ - не приёмный день", 
+      icon: "Building2"
+    },
     { service: "Почта", schedule: "ПН, СР, ЧТ, ПТ: 9-17ч, СБ: 9-16ч. Обед: 13-14ч. ВТ, ВС - выходные", icon: "Mail" },
     { 
       service: "Сбербанк", 
