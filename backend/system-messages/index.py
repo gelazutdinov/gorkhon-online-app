@@ -39,7 +39,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         cur.execute("""
             SELECT id, text, created_at 
-            FROM system_messages 
+            FROM t_p59180819_gorkhon_online_app.system_messages 
             ORDER BY created_at DESC
         """)
         
@@ -99,7 +99,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         cur = conn.cursor()
         
         cur.execute("""
-            INSERT INTO system_messages (text) 
+            INSERT INTO t_p59180819_gorkhon_online_app.system_messages (text) 
             VALUES (%s) 
             RETURNING id, text, created_at
         """, (message_text,))
