@@ -36,7 +36,7 @@ const ChannelProfile = ({ isOpen, onClose, onEnableNotifications }: ChannelProfi
             </svg>
           </div>
           
-          <p className="text-sm text-gray-500">поддержка</p>
+          <p className="text-sm text-gray-500">@gorhon_online</p>
         </div>
 
         <div className="px-4 grid grid-cols-2 gap-3 mb-6">
@@ -60,8 +60,9 @@ const ChannelProfile = ({ isOpen, onClose, onEnableNotifications }: ChannelProfi
               <Icon name="Info" size={20} className="text-gray-500 mt-0.5" />
               <div className="flex-1">
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Официальный канал поддержки платформы Горхон.Online. Здесь вы получите помощь по всем вопросам работы сервиса.
+                  Официальный канал платформы Горхон.Online. Здесь публикуются новости, обновления и важная информация о сервисе.
                 </p>
+                <a href="https://t.me/gorhon_online" target="_blank" rel="noopener noreferrer" className="text-sm text-[#0088CC] font-medium mt-2 inline-block">https://t.me/gorhon_online</a>
               </div>
             </div>
           </div>
