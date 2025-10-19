@@ -62,6 +62,15 @@ const Index = () => {
         content.importantNumbers = updatedNumbers.importantNumbers;
         content.transitNumbers = updatedNumbers.transitNumbers;
         
+        // Сохраняем режим работы, если его нет
+        if (!content.workSchedule || content.workSchedule.length === 0) {
+          content.workSchedule = [
+            { name: "Почта", schedule: "ПН, СР, ЧТ, ПТ: 9-17ч, СБ: 9-16ч. Обед: 13-14ч. ВТ, ВС - выходные", icon: "Mail" },
+            { name: "Сбербанк", schedule: "ВТ, ПТ: 9-17ч. Обед: 12:30-13:30. ПН, СР, ЧТ, СБ, ВС - выходные", icon: "CreditCard" },
+            { name: "МУП ЖКХ", schedule: "ПН-ПТ: 8-16ч. Обед: 12-13ч", icon: "Wrench" }
+          ];
+        }
+        
         localStorage.setItem('homePageContent', JSON.stringify(content));
         localStorage.setItem('phoneNumbersVersion', currentVersion);
         
