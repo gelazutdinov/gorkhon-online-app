@@ -213,10 +213,10 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
 
   if (isMinimized) {
     return (
-      <div className="fixed bottom-32 sm:bottom-28 right-4 z-[60]">
+      <div className="fixed bottom-32 sm:bottom-28 right-4 z-[60] animate-slideUp">
         <button
           onClick={() => setIsMinimized(false)}
-          className="bg-gorkhon-blue text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          className="bg-gorkhon-blue text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95"
         >
           <Icon name="MessageCircle" size={20} className="sm:w-6 sm:h-6" />
           <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
@@ -226,8 +226,8 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
   }
 
   return (
-    <div className="fixed inset-0 pb-16 sm:pb-0 sm:bottom-28 sm:right-4 sm:inset-auto z-[60] flex sm:block safe-area-inset-bottom">
-      <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-96 h-full sm:h-[32rem] flex flex-col overflow-hidden max-w-full">
+    <div className="fixed inset-0 pb-16 sm:pb-0 sm:bottom-28 sm:right-4 sm:inset-auto z-[60] flex sm:block safe-area-inset-bottom animate-fadeIn">
+      <div className="bg-white sm:rounded-2xl shadow-2xl border border-gray-200 w-full sm:w-96 h-full sm:h-[32rem] flex flex-col overflow-hidden max-w-full animate-slideUp">
         {/* Заголовок */}
         <div className="bg-gorkhon-blue text-white p-4 sm:p-5 flex items-center justify-between shadow-lg">
           <div className="flex items-center gap-3 sm:gap-4">
@@ -288,10 +288,10 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-messageSlide`}
             >
               <div
-                className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 rounded-2xl shadow-sm break-words ${
+                className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 rounded-2xl shadow-sm break-words transition-all duration-200 hover:shadow-md ${
                   message.isUser
                     ? 'bg-gradient-to-r from-gorkhon-pink to-gorkhon-green text-white shadow-pink-200'
                     : 'bg-white text-gray-800 border border-gray-100'
@@ -308,7 +308,7 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
           ))}
 
           {isTyping && (
-            <div className="flex justify-start">
+            <div className="flex justify-start animate-messageSlide">
               <div className="bg-gray-100 p-2 sm:p-3 rounded-2xl">
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
