@@ -291,12 +291,25 @@
   }
 }
 
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out;
 }
 
 .animate-confetti {
   animation: confetti linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
 }
 
 @layer base {

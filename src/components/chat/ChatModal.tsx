@@ -209,8 +209,10 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="relative">
-                  <Icon name="Sparkles" size={24} className="text-[#F1117E]" />
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 rounded-full animate-spin-slow opacity-70"></div>
+                  <div className="absolute inset-[3px] bg-white rounded-full"></div>
+                  <Icon name="Sparkles" size={20} className="text-[#F1117E] relative z-10 animate-pulse" />
                 </div>
               )}
             </div>
