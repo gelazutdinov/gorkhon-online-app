@@ -230,18 +230,28 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
           </button>
         </div>
 
-        <div className="flex-1 p-4 overflow-y-auto space-y-3">
+        <div 
+          className="flex-1 p-4 overflow-y-auto space-y-3"
+          style={{
+            backgroundColor: isSystemChat ? '#0F1419' : '#f5f5f5',
+            backgroundImage: isSystemChat 
+              ? 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 30l-30-30h60M30 30l30 30v-60M30 30l-30 30h60M30 30l30-30v60\' stroke=\'%23ffffff\' stroke-width=\'0.1\' fill=\'none\' opacity=\'0.03\'/%3E%3C/svg%3E")'
+              : 'none'
+          }}
+        >
           {chatMessages.map((msg, idx) => (
             <div key={idx}>
               <div 
                 className={`rounded-lg p-3 max-w-[80%] ${
                   msg.sender === 'user' 
                     ? 'ml-auto bg-blue-500 text-white' 
-                    : 'bg-gray-100 text-gray-800'
+                    : isSystemChat 
+                      ? 'bg-[#1C2730] text-white border border-[#2B3942]'
+                      : 'bg-gray-100 text-gray-800'
                 }`}
               >
                 <p className="text-sm whitespace-pre-line">{msg.text}</p>
-                <span className="text-xs mt-1 block opacity-70">
+                <span className={`text-xs mt-1 block ${isSystemChat ? 'text-gray-400' : 'opacity-70'}`}>
                   {msg.sender === 'user' ? 'Вы' : (isSystemChat ? 'Горхон.Online' : 'Лина ✨ (ИИ)')} • сейчас
                 </span>
               </div>
