@@ -131,15 +131,14 @@ const Index = () => {
           timestamp: new Date().toISOString()
         };
         
-        // Проверяем, не добавляли ли уже это сообщение
-        const hasUpdateMessage = systemMessages.some((msg: any) => 
-          msg.text.includes('ВАЖНЫЕ НОМЕРА ОБНОВЛЕНЫ')
+        // Удаляем старые сообщения об обновлении номеров
+        const filteredMessages = systemMessages.filter((msg: any) => 
+          !msg.text.includes('ВАЖНЫЕ НОМЕРА ОБНОВЛЕНЫ')
         );
         
-        if (!hasUpdateMessage) {
-          systemMessages.push(updateMessage);
-          localStorage.setItem('systemMessages', JSON.stringify(systemMessages));
-        }
+        // Добавляем новое сообщение
+        filteredMessages.push(updateMessage);
+        localStorage.setItem('systemMessages', JSON.stringify(filteredMessages));
         
         window.dispatchEvent(new Event('storage'));
       }
