@@ -231,7 +231,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         </div>
 
         <div 
-          className="flex-1 p-4 overflow-y-auto space-y-3"
+          className="flex-1 p-0 overflow-y-auto"
           style={{
             backgroundColor: isSystemChat ? '#0F1419' : '#f5f5f5',
             backgroundImage: isSystemChat 
@@ -241,39 +241,75 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         >
           {chatMessages.map((msg, idx) => (
             <div key={idx}>
-              <div 
-                className={`rounded-lg p-3 max-w-[80%] ${
-                  msg.sender === 'user' 
-                    ? 'ml-auto bg-blue-500 text-white' 
-                    : isSystemChat 
-                      ? 'bg-[#1C2730] text-white border border-[#2B3942]'
-                      : 'bg-gray-100 text-gray-800'
-                }`}
-              >
-                <p className="text-sm whitespace-pre-line">{msg.text}</p>
-                <span className={`text-xs mt-1 block ${isSystemChat ? 'text-gray-400' : 'opacity-70'}`}>
-                  {msg.sender === 'user' ? 'Вы' : (isSystemChat ? 'Горхон.Online' : 'Лина ✨ (ИИ)')} • сейчас
-                </span>
-              </div>
-              {msg.showAgentButton && (
-                <a
-                  href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-colors shadow-sm"
-                >
-                  <Icon name="UserCircle" size={18} />
-                  <span className="text-sm font-medium">Написать агенту</span>
-                </a>
-              )}
-              {msg.showAdminLink && (
-                <a
-                  href="/admin-panel"
-                  className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors shadow-sm"
-                >
-                  <Icon name="Settings" size={18} />
-                  <span className="text-sm font-medium">Открыть админ-панель</span>
-                </a>
+              {isSystemChat ? (
+                // Telegram-канал стиль
+                <div className="border-b border-[#2B3942] hover:bg-[#151E27] transition-colors">
+                  <div className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-[#0088CC] flex items-center justify-center flex-shrink-0">
+                        <img 
+                          src="https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png" 
+                          alt="Горхон.Online"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-white font-medium text-sm">Горхон.Online</span>
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0">
+                            <circle cx="8" cy="8" r="8" fill="#0088CC"/>
+                            <path d="M6 8l2 2 3-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          <span className="text-gray-400 text-xs">•</span>
+                          <span className="text-gray-400 text-xs">сейчас</span>
+                        </div>
+                        <p className="text-white text-sm leading-relaxed whitespace-pre-line break-words">{msg.text}</p>
+                        <div className="flex items-center gap-4 mt-2 text-gray-400 text-xs">
+                          <div className="flex items-center gap-1">
+                            <Icon name="Eye" size={14} />
+                            <span>1.2K</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Обычный чат с Линой
+                <div className="p-4">
+                  <div 
+                    className={`rounded-lg p-3 max-w-[80%] ${
+                      msg.sender === 'user' 
+                        ? 'ml-auto bg-blue-500 text-white' 
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    <p className="text-sm whitespace-pre-line">{msg.text}</p>
+                    <span className="text-xs mt-1 block opacity-70">
+                      {msg.sender === 'user' ? 'Вы' : 'Лина ✨ (ИИ)'} • сейчас
+                    </span>
+                  </div>
+                  {msg.showAgentButton && (
+                    <a
+                      href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-colors shadow-sm"
+                    >
+                      <Icon name="UserCircle" size={18} />
+                      <span className="text-sm font-medium">Написать агенту</span>
+                    </a>
+                  )}
+                  {msg.showAdminLink && (
+                    <a
+                      href="/admin-panel"
+                      className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors shadow-sm"
+                    >
+                      <Icon name="Settings" size={18} />
+                      <span className="text-sm font-medium">Открыть админ-панель</span>
+                    </a>
+                  )}
+                </div>
               )}
             </div>
           ))}
