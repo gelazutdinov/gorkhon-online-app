@@ -1,19 +1,19 @@
 import { ImportantNumber, WorkScheduleItem, PvzItem, HelpItem } from './types';
 
 export const getDefaultNumbers = (): ImportantNumber[] => [
-  { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
-  { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
-  { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
-  { name: "Скорая помощь (новый)", person: "Дополнительный номер", phone: "73013645103", icon: "Ambulance" },
-  { name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+73012344083", icon: "Zap" },
-  { name: "МФЦ Заиграево", person: "Многофункциональный центр", phone: "+73013641101", icon: "Building" },
-  { name: "Соц.защита Заиграево", person: "Социальная защита населения", phone: "+73013641220", icon: "Heart" },
-  { name: "Регистратура поликлиники", person: "Заиграево", phone: "+79245559003", icon: "Stethoscope" },
-  { name: "Нотариус Заиграево", person: "Нотариальные услуги", phone: "+73013641614", icon: "FileText" },
-  { name: "Судебные приставы", person: "Заиграевский район", phone: "83013641010", icon: "Scale" },
-  { name: "Вакуумная машина", person: "Кондаков К.Ю., Горхон", phone: "+79834539902", icon: "Truck" },
-  { name: "Почта Горхон", person: "Елена", phone: "8-914-843-45-93", icon: "Mail" },
-  { name: "Миграционная служба ГАИ", person: "Пн 9:00-12:30, Вт-Чт 9:00-15:00, Пт выходной", phone: "8-3013-64-15-70", icon: "Car" }
+  { name: "ФАП Горхон", person: "Медпункт поселка", phone: "+7 (301-36) 9-46-25", icon: "Phone" },
+  { name: "Участковый", person: "Бадмаев Баир Баторович", phone: "+7 (924) 754-32-18", icon: "Shield" },
+  { name: "Экстренные службы", person: "Полиция, скорая, пожарная", phone: "112", icon: "Ambulance" },
+  { name: "Диспетчер РЭС", person: "Электроснабжение 24/7", phone: "8-800-100-75-40", icon: "Zap" },
+  { name: "МФЦ Заиграево", person: "Многофункциональный центр", phone: "+7 (301-36) 4-15-15", icon: "Building" },
+  { name: "Почта Горхон", person: "Почтовое отделение", phone: "+7 (301-36) 9-42-31", icon: "Mail" },
+  { name: "Регистратура поликлиники", person: "Заиграево", phone: "+7 (924) 555-90-03", icon: "Stethoscope" },
+  { name: "Соц.защита Заиграево", person: "Социальная защита населения", phone: "+7 (301-36) 4-12-20", icon: "Heart" },
+  { name: "Нотариус Заиграево", person: "Нотариальные услуги", phone: "+7 (301-36) 4-16-14", icon: "FileText" },
+  { name: "Судебные приставы", person: "Заиграевский район", phone: "8 (301-36) 4-10-10", icon: "Scale" },
+  { name: "Вакуумная машина", person: "Кондаков К.Ю., Горхон", phone: "+7 (983) 453-99-02", icon: "Truck" },
+  { name: "Миграционная служба", person: "ГАИ Заиграево", phone: "8 (301-36) 4-15-70", icon: "Car" },
+  { name: "ЕДДС района", person: "Диспетчерская служба 24/7", phone: "+7 (301-36) 4-51-03", icon: "AlertCircle" }
 ];
 
 export const getDefaultTransit = (): ImportantNumber[] => [
