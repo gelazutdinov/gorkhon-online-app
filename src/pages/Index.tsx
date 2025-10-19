@@ -24,6 +24,52 @@ const Index = () => {
   const [isSystemChatOpen, setIsSystemChatOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeDocument, setActiveDocument] = useState<'privacy' | 'terms' | 'security' | null>(null);
+  const [hasNewSystemMessage, setHasNewSystemMessage] = useState(false);
+
+  useEffect(() => {
+    const checkNewMessages = () => {
+      const savedMessages = localStorage.getItem('systemMessages');
+      const lastReadTime = localStorage.getItem('lastReadSystemMessageTime');
+      
+      if (savedMessages) {
+        const messages = JSON.parse(savedMessages);
+        if (messages && messages.length > 0) {
+          const latestMessageTime = new Date(messages[messages.length - 1].timestamp || 0).getTime();
+          const lastRead = lastReadTime ? parseInt(lastReadTime) : 0;
+          
+          if (latestMessageTime > lastRead) {
+            setHasNewSystemMessage(true);
+            
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification('Горхон.Online', {
+                body: messages[messages.length - 1].text.substring(0, 100) + '...',
+                icon: 'https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png',
+                badge: 'https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png',
+                tag: 'system-message'
+              });
+            }
+          }
+        }
+      }
+    };
+
+    checkNewMessages();
+    
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'systemMessages') {
+        checkNewMessages();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const handleSystemChatOpen = () => {
+    setIsSystemChatOpen(true);
+    setHasNewSystemMessage(false);
+    localStorage.setItem('lastReadSystemMessageTime', Date.now().toString());
+  };
 
 
 
@@ -57,6 +103,7 @@ const Index = () => {
         <Header 
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           isSidebarOpen={isSidebarOpen}
+          hasNewSystemMessage={hasNewSystemMessage}
         />
 
         <NotificationsBanner />
@@ -84,8 +131,9 @@ const Index = () => {
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           onChatOpen={() => setIsChatOpen(true)}
-          onSystemChatOpen={() => setIsSystemChatOpen(true)}
+          onSystemChatOpen={handleSystemChatOpen}
           onDocumentOpen={(doc) => setActiveDocument(doc)}
+          hasNewSystemMessage={hasNewSystemMessage}
         />
 
         <ChatModal 

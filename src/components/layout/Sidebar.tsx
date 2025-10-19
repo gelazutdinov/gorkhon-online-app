@@ -6,19 +6,20 @@ interface SidebarProps {
   onChatOpen: () => void;
   onSystemChatOpen: () => void;
   onDocumentOpen: (doc: 'privacy' | 'terms' | 'security') => void;
+  hasNewSystemMessage?: boolean;
 }
 
-const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen, hasNewSystemMessage }: SidebarProps) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex" onClick={onClose}>
       <div className="flex-1 bg-black/50" />
       <div 
-        className="w-80 bg-white shadow-2xl overflow-y-auto"
+        className="w-80 bg-white shadow-2xl overflow-y-auto rounded-l-3xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 pb-4 border-b flex items-center justify-between" style={{backgroundColor: '#F1117E'}}>
+        <div className="p-6 pb-4 border-b flex items-center justify-between rounded-tl-3xl" style={{backgroundColor: '#F1117E'}}>
           <h3 className="font-semibold text-white text-lg">Меню</h3>
           <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
             <Icon name="X" size={20} />
@@ -33,7 +34,7 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen
                 onClose();
                 onSystemChatOpen();
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white shadow-sm"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white shadow-sm relative"
             >
               <div className="relative flex-shrink-0">
                 <Icon name="MessageCircle" size={20} />
@@ -47,6 +48,9 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen
                 <div className="font-medium">Горхон.Online</div>
                 <div className="text-xs opacity-90">Новости и обновления</div>
               </div>
+              {hasNewSystemMessage && (
+                <div className="absolute top-2 right-2 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
+              )}
             </button>
             <button
               onClick={() => {

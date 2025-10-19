@@ -3,9 +3,10 @@ import Icon from "@/components/ui/icon";
 interface HeaderProps {
   onMenuClick: () => void;
   isSidebarOpen: boolean;
+  hasNewSystemMessage?: boolean;
 }
 
-const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
+const Header = ({ onMenuClick, isSidebarOpen, hasNewSystemMessage }: HeaderProps) => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
       <div className="px-4 py-8 md:py-6 flex items-center justify-between">
@@ -20,9 +21,12 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
           </div>
           <button 
             onClick={onMenuClick}
-            className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors relative"
           >
             <Icon name="Menu" size={24} />
+            {hasNewSystemMessage && (
+              <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
+            )}
           </button>
         </div>
         
@@ -37,9 +41,12 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
           </div>
           <button 
             onClick={onMenuClick}
-            className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors relative"
           >
             <Icon name="Menu" size={24} />
+            {hasNewSystemMessage && (
+              <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
+            )}
           </button>
         </div>
       </div>
