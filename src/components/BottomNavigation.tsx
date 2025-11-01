@@ -58,7 +58,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
                   }`}
                 />
                 {item.id === 'weather' && (
-                  <div className="absolute -top-1 -right-1 bg-orange-500 text-white text-[8px] px-1 py-0.5 rounded-full font-medium shadow-sm">
+                  <div className="absolute -top-1 -right-1 bg-pink-500 text-white text-[8px] px-1 py-0.5 rounded-full font-medium shadow-sm">
                     beta
                   </div>
                 )}

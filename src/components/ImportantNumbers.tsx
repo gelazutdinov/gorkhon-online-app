@@ -90,36 +90,35 @@ const ImportantNumbers = () => {
   }, []);
 
   return (
-    <Card className="rounded-lg md:rounded-3xl bg-gradient-to-br from-white via-amber-50/30 to-orange-50/20 border border-autumn-gold/30 shadow-sm md:shadow-xl transition-all duration-300 overflow-hidden relative">
-      <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-autumn-burgundy/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
-      <div className="hidden md:block absolute bottom-0 left-0 w-24 h-24 bg-autumn-gold/10 rounded-full translate-y-12 -translate-x-12 group-hover:scale-125 transition-transform duration-700"></div>
-      <div className="absolute top-4 right-8 text-3xl opacity-20 animate-sway">🍂</div>
+    <Card className="rounded-lg md:rounded-3xl bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 border border-gorkhon-pink/30 shadow-sm md:shadow-xl transition-all duration-300 overflow-hidden relative">
+      <div className="hidden md:block absolute top-0 right-0 w-32 h-32 bg-gorkhon-blue/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+      <div className="hidden md:block absolute bottom-0 left-0 w-24 h-24 bg-gorkhon-pink/10 rounded-full translate-y-12 -translate-x-12 group-hover:scale-125 transition-transform duration-700"></div>
       
       <CardHeader className="p-4 md:pb-6 relative z-10">
         <CardTitle className="flex items-center gap-3 md:gap-4">
-          <div className="p-2 md:p-3 rounded-xl md:rounded-2xl bg-gradient-to-br from-autumn-burgundy/15 to-autumn-gold/15 flex-shrink-0">
-            <Icon name="Phone" size={20} className="md:w-6 md:h-6 text-autumn-burgundy" />
+          <div className="p-2 md:p-3 rounded-xl md:rounded-2xl bg-gradient-to-br from-gorkhon-blue/15 to-gorkhon-pink/15 flex-shrink-0">
+            <Icon name="Phone" size={20} className="md:w-6 md:h-6 text-gorkhon-blue" />
           </div>
           <div className="min-w-0">
-            <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-autumn-burgundy via-autumn-terracotta to-autumn-gold bg-clip-text text-transparent">Важные номера</span>
-            <p className="text-xs md:text-sm text-autumn-olive font-medium mt-0.5 md:mt-1 hidden sm:block">Всегда под рукой в трудную минуту</p>
+            <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-gorkhon-blue via-gorkhon-pink to-purple-600 bg-clip-text text-transparent">Важные номера</span>
+            <p className="text-xs md:text-sm text-gray-600 font-medium mt-0.5 md:mt-1 hidden sm:block">Всегда под рукой в трудную минуту</p>
           </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-3 md:p-6 space-y-2 md:space-y-4 relative z-10">
         {importantNumbers.map((contact, index) => (
-          <div key={index} className="group p-3 md:p-4 rounded-lg md:rounded-2xl bg-gradient-to-r from-white via-amber-50/20 to-orange-50/10 hover:from-autumn-burgundy/5 hover:via-amber-50/40 hover:to-orange-50/30 transition-all duration-300 border border-autumn-gold/20 hover:border-autumn-burgundy/30 hover:shadow-lg relative overflow-hidden">
-            <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent via-autumn-gold/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+          <div key={index} className="group p-3 md:p-4 rounded-lg md:rounded-2xl bg-gradient-to-r from-white via-blue-50/20 to-purple-50/10 hover:from-gorkhon-blue/5 hover:via-blue-50/40 hover:to-purple-50/30 transition-all duration-300 border border-gorkhon-pink/20 hover:border-gorkhon-blue/30 hover:shadow-lg relative overflow-hidden">
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent via-gorkhon-pink/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             
             <div className="flex items-center gap-2 md:gap-4 relative z-10 w-full">
               <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0 overflow-hidden">
-                <div className="p-2 md:p-3 rounded-lg md:rounded-2xl bg-gradient-to-br from-autumn-burgundy/15 to-autumn-gold/15 flex-shrink-0">
-                  <Icon name={contact.icon} size={16} className="md:w-[18px] md:h-[18px] text-autumn-burgundy" />
+                <div className="p-2 md:p-3 rounded-lg md:rounded-2xl bg-gradient-to-br from-gorkhon-blue/15 to-gorkhon-pink/15 flex-shrink-0">
+                  <Icon name={contact.icon} size={16} className="md:w-[18px] md:h-[18px] text-gorkhon-blue" />
                 </div>
                 <div className="flex-1 min-w-0 overflow-hidden">
-                  <p className="font-bold text-sm md:text-base text-autumn-burgundy truncate">{contact.name}</p>
-                  <p className="text-xs md:text-sm text-autumn-olive truncate">{contact.person}</p>
-                  {contact.phone && <p className="text-xs text-autumn-terracotta font-mono truncate">{contact.phone}</p>}
+                  <p className="font-bold text-sm md:text-base text-gorkhon-blue truncate">{contact.name}</p>
+                  <p className="text-xs md:text-sm text-gray-600 truncate">{contact.person}</p>
+                  {contact.phone && <p className="text-xs text-gorkhon-pink font-mono truncate">{contact.phone}</p>}
 
 
                 </div>
@@ -127,7 +126,7 @@ const ImportantNumbers = () => {
               {contact.phone && (
                 <Button 
                   size="sm" 
-                  className="bg-gradient-to-r from-autumn-burgundy to-autumn-terracotta hover:from-autumn-burgundy/90 hover:to-autumn-terracotta/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none shadow-md"
+                  className="bg-gradient-to-r from-gorkhon-blue to-gorkhon-pink hover:from-gorkhon-blue/90 hover:to-gorkhon-pink/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none shadow-md"
                   onClick={() => window.open(`tel:${contact.phone}`, '_self')}
                 >
                   <Icon name="Phone" size={14} />
@@ -138,28 +137,27 @@ const ImportantNumbers = () => {
           </div>
         ))}
         
-        <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-autumn-gold/30 relative">
+        <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-gorkhon-pink/30 relative">
           <div className="flex items-center gap-2 mb-2 md:mb-3">
-            <Icon name="Bus" size={16} className="text-autumn-pumpkin" />
-            <h4 className="font-bold text-sm md:text-base text-autumn-pumpkin">Заиграевский транзит</h4>
-            <span className="text-lg ml-auto">🍁</span>
+            <Icon name="Bus" size={16} className="text-gorkhon-pink" />
+            <h4 className="font-bold text-sm md:text-base text-gorkhon-pink">Заиграевский транзит</h4>
           </div>
           {transitNumbers.map((contact, index) => (
-            <div key={index} className="group p-2 md:p-3 rounded-lg md:rounded-xl bg-gradient-to-r from-amber-50/50 to-orange-50/50 hover:from-autumn-amber/10 hover:to-autumn-pumpkin/10 transition-all duration-300 border border-autumn-amber/30 hover:border-autumn-pumpkin/40 mb-2 shadow-sm">
+            <div key={index} className="group p-2 md:p-3 rounded-lg md:rounded-xl bg-gradient-to-r from-blue-50/50 to-purple-50/50 hover:from-gorkhon-blue/10 hover:to-gorkhon-pink/10 transition-all duration-300 border border-gorkhon-blue/30 hover:border-gorkhon-pink/40 mb-2 shadow-sm">
               <div className="flex items-center gap-2 md:gap-3 w-full">
                 <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0 overflow-hidden">
-                  <div className="p-2 rounded-lg md:rounded-xl bg-gradient-to-br from-autumn-pumpkin/15 to-autumn-amber/15 flex-shrink-0">
-                    <Icon name={contact.icon} size={16} className="text-autumn-pumpkin" />
+                  <div className="p-2 rounded-lg md:rounded-xl bg-gradient-to-br from-gorkhon-pink/15 to-gorkhon-blue/15 flex-shrink-0">
+                    <Icon name={contact.icon} size={16} className="text-gorkhon-pink" />
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
-                    <p className="font-semibold text-xs md:text-sm text-autumn-maple truncate">{contact.name}</p>
-                    <p className="text-xs text-autumn-olive truncate">{contact.person}</p>
-                    <p className="text-xs text-autumn-pumpkin font-mono truncate">{contact.phone}</p>
+                    <p className="font-semibold text-xs md:text-sm text-gorkhon-blue truncate">{contact.name}</p>
+                    <p className="text-xs text-gray-600 truncate">{contact.person}</p>
+                    <p className="text-xs text-gorkhon-pink font-mono truncate">{contact.phone}</p>
                   </div>
                 </div>
                 <Button 
                   size="sm" 
-                  className="bg-gradient-to-r from-autumn-pumpkin to-autumn-amber hover:from-autumn-pumpkin/90 hover:to-autumn-amber/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none shadow-md"
+                  className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-blue hover:from-gorkhon-pink/90 hover:to-gorkhon-blue/90 text-white px-2 py-2 h-10 md:h-8 rounded-lg text-xs flex-shrink-0 w-10 md:w-auto md:px-3 touch-none shadow-md"
                   onClick={() => window.open(`tel:${contact.phone}`, '_self')}
                 >
                   <Icon name="Phone" size={14} />

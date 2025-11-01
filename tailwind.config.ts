@@ -73,17 +73,7 @@ export default {
 					green: '#00BE6C',
 					orange: '#FFA800'
 				},
-				autumn: {
-					burgundy: '#8B1538',
-					gold: '#D4A574',
-					terracotta: '#CC5500',
-					olive: '#6B7F3D',
-					plum: '#6B1B54',
-					amber: '#FFBF00',
-					maple: '#D2691E',
-					forest: '#2C5F2D',
-					pumpkin: '#FF7518'
-				},
+
 				ral: {
 					7047: '#D0D0D0'
 				}
@@ -130,14 +120,7 @@ export default {
 					'0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
 					'50%': { transform: 'translateY(-10px) rotate(2deg)' }
 				},
-				'autumn-leaf': {
-					'0%': { transform: 'translateY(-10px) rotate(0deg)', opacity: '1' },
-					'100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' }
-				},
-				'sway': {
-					'0%, 100%': { transform: 'translateX(0) rotate(-2deg)' },
-					'50%': { transform: 'translateX(10px) rotate(2deg)' }
-				},
+
 				'glow': {
 					'0%, 100%': { boxShadow: '0 0 5px rgba(0, 91, 255, 0.3)' },
 					'50%': { boxShadow: '0 0 20px rgba(0, 91, 255, 0.6)' }
@@ -156,17 +139,12 @@ export default {
 				'marquee-reverse': 'marquee-reverse 15s linear infinite',
 				'float': 'float 3s ease-in-out infinite',
 				'glow': 'glow 2s ease-in-out infinite',
-				'spin-360': 'spin-360 8s linear infinite',
-				'autumn-leaf': 'autumn-leaf 8s ease-in infinite',
-				'sway': 'sway 3s ease-in-out infinite'
+				'spin-360': 'spin-360 8s linear infinite'
 			},
 			backgroundImage: {
 				'gradient-brand': 'linear-gradient(135deg, #005BFF 0%, #F1117E 50%, #00BE6C 100%)',
 				'gradient-blue': 'linear-gradient(135deg, #005BFF 0%, #00A2FF 100%)',
-				'gradient-warm': 'linear-gradient(135deg, #F1117E 0%, #FFA800 100%)',
-				'gradient-autumn': 'linear-gradient(135deg, #8B1538 0%, #D4A574 50%, #CC5500 100%)',
-				'gradient-autumn-warm': 'linear-gradient(135deg, #D2691E 0%, #FFBF00 100%)',
-				'gradient-autumn-forest': 'linear-gradient(135deg, #2C5F2D 0%, #6B7F3D 100%)'
+				'gradient-warm': 'linear-gradient(135deg, #F1117E 0%, #FFA800 100%)'
 			},
 			spacing: {
 				'safe-area-bottom': 'env(safe-area-inset-bottom)',

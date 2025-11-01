@@ -56,7 +56,7 @@ const RecommendationsBanner = ({ availableSections, sections, onSectionClick }: 
       case 'frequent':
         return 'from-purple-500 to-purple-600';
       case 'trending':
-        return 'from-orange-500 to-orange-600';
+        return 'from-pink-500 to-pink-600';
       case 'related':
         return 'from-pink-500 to-pink-600';
       default:

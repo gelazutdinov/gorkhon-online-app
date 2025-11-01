@@ -79,23 +79,23 @@ export default function InstallPrompt() {
   if (showInstructions) {
     return (
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300">
-        <Card className="max-w-md w-full bg-gradient-to-br from-white via-amber-50/30 to-orange-50/20 border-2 border-autumn-gold/40 shadow-2xl">
+        <Card className="max-w-md w-full bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 border-2 border-gorkhon-pink/40 shadow-2xl">
           <CardHeader className="relative pb-4">
             <button
               onClick={() => setShowInstructions(false)}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-autumn-burgundy/10 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gorkhon-blue/10 transition-colors"
             >
-              <Icon name="X" size={20} className="text-autumn-olive" />
+              <Icon name="X" size={20} className="text-gray-600" />
             </button>
             <CardTitle className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-autumn-burgundy/15 to-autumn-gold/15">
-                <Icon name="Download" size={24} className="text-autumn-burgundy" />
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-gorkhon-blue/15 to-gorkhon-pink/15">
+                <Icon name="Download" size={24} className="text-gorkhon-blue" />
               </div>
               <div>
-                <span className="text-xl font-bold bg-gradient-to-r from-autumn-burgundy via-autumn-terracotta to-autumn-gold bg-clip-text text-transparent">
+                <span className="text-xl font-bold bg-gradient-to-r from-gorkhon-blue via-gorkhon-pink to-purple-600 bg-clip-text text-transparent">
                   Установить приложение
                 </span>
-                <p className="text-sm text-autumn-olive font-normal mt-1">
+                <p className="text-sm text-gray-600 font-normal mt-1">
                   Быстрый доступ с главного экрана
                 </p>
               </div>
@@ -105,43 +105,43 @@ export default function InstallPrompt() {
           <CardContent className="space-y-6">
             {isIOS && (
               <div className="space-y-4">
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-autumn-gold/30">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-autumn-burgundy to-autumn-terracotta text-white flex items-center justify-center font-bold">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-gorkhon-pink/30">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-gorkhon-blue to-gorkhon-pink text-white flex items-center justify-center font-bold">
                     1
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-autumn-burgundy mb-1">
+                    <p className="text-sm font-semibold text-gorkhon-blue mb-1">
                       Откройте меню Safari
                     </p>
-                    <p className="text-xs text-autumn-olive">
+                    <p className="text-xs text-gray-600">
                       Нажмите кнопку <Icon name="Share" size={14} className="inline mx-1" /> "Поделиться" внизу экрана
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-autumn-gold/30">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-autumn-burgundy to-autumn-terracotta text-white flex items-center justify-center font-bold">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-gorkhon-pink/30">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-gorkhon-blue to-gorkhon-pink text-white flex items-center justify-center font-bold">
                     2
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-autumn-burgundy mb-1">
+                    <p className="text-sm font-semibold text-gorkhon-blue mb-1">
                       Выберите действие
                     </p>
-                    <p className="text-xs text-autumn-olive">
+                    <p className="text-xs text-gray-600">
                       Найдите и нажмите "На экран «Домой»" или "Add to Home Screen"
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-autumn-gold/30">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-autumn-burgundy to-autumn-terracotta text-white flex items-center justify-center font-bold">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-gorkhon-pink/30">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-gorkhon-blue to-gorkhon-pink text-white flex items-center justify-center font-bold">
                     3
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-autumn-burgundy mb-1">
+                    <p className="text-sm font-semibold text-gorkhon-blue mb-1">
                       Готово!
                     </p>
-                    <p className="text-xs text-autumn-olive">
+                    <p className="text-xs text-gray-600">
                       Иконка Горхон.Online появится на главном экране
                     </p>
                   </div>
@@ -151,43 +151,43 @@ export default function InstallPrompt() {
 
             {isAndroid && (
               <div className="space-y-4">
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-autumn-gold/30">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-autumn-burgundy to-autumn-terracotta text-white flex items-center justify-center font-bold">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-gorkhon-pink/30">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-gorkhon-blue to-gorkhon-pink text-white flex items-center justify-center font-bold">
                     1
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-autumn-burgundy mb-1">
+                    <p className="text-sm font-semibold text-gorkhon-blue mb-1">
                       Откройте меню браузера
                     </p>
-                    <p className="text-xs text-autumn-olive">
+                    <p className="text-xs text-gray-600">
                       Нажмите три точки <Icon name="MoreVertical" size={14} className="inline mx-1" /> в правом верхнем углу
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-autumn-gold/30">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-autumn-burgundy to-autumn-terracotta text-white flex items-center justify-center font-bold">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-gorkhon-pink/30">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-gorkhon-blue to-gorkhon-pink text-white flex items-center justify-center font-bold">
                     2
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-autumn-burgundy mb-1">
+                    <p className="text-sm font-semibold text-gorkhon-blue mb-1">
                       Добавьте на главный экран
                     </p>
-                    <p className="text-xs text-autumn-olive">
+                    <p className="text-xs text-gray-600">
                       Выберите "Добавить на главный экран" или "Install app"
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-autumn-gold/30">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-autumn-burgundy to-autumn-terracotta text-white flex items-center justify-center font-bold">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-gorkhon-pink/30">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-gorkhon-blue to-gorkhon-pink text-white flex items-center justify-center font-bold">
                     3
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-autumn-burgundy mb-1">
+                    <p className="text-sm font-semibold text-gorkhon-blue mb-1">
                       Готово!
                     </p>
-                    <p className="text-xs text-autumn-olive">
+                    <p className="text-xs text-gray-600">
                       Приложение установлено и доступно с главного экрана
                     </p>
                   </div>
@@ -197,13 +197,13 @@ export default function InstallPrompt() {
 
             {!isIOS && !isAndroid && (
               <div className="space-y-4">
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-autumn-gold/30">
-                  <Icon name="Smartphone" size={20} className="text-autumn-burgundy flex-shrink-0 mt-1" />
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/60 border border-gorkhon-pink/30">
+                  <Icon name="Smartphone" size={20} className="text-gorkhon-blue flex-shrink-0 mt-1" />
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-autumn-burgundy mb-1">
+                    <p className="text-sm font-semibold text-gorkhon-blue mb-1">
                       Откройте на мобильном устройстве
                     </p>
-                    <p className="text-xs text-autumn-olive">
+                    <p className="text-xs text-gray-600">
                       Для установки приложения откройте этот сайт в браузере на вашем телефоне (iOS или Android)
                     </p>
                   </div>
@@ -215,7 +215,7 @@ export default function InstallPrompt() {
               <Button
                 onClick={() => setShowInstructions(false)}
                 variant="outline"
-                className="flex-1 border-autumn-gold/40 hover:bg-autumn-burgundy/5"
+                className="flex-1 border-gorkhon-pink/40 hover:bg-gorkhon-blue/5"
               >
                 Закрыть
               </Button>
@@ -228,8 +228,7 @@ export default function InstallPrompt() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-40 animate-in slide-in-from-bottom duration-500">
-      <Card className="bg-gradient-to-r from-autumn-burgundy via-autumn-terracotta to-autumn-pumpkin text-white shadow-2xl border-0 overflow-hidden">
-        <div className="absolute top-0 right-0 text-6xl opacity-20">🍂</div>
+      <Card className="bg-gradient-to-r from-gorkhon-blue via-gorkhon-pink to-purple-600 text-white shadow-2xl border-0 overflow-hidden">
         <CardContent className="p-4 relative">
           <button
             onClick={handleDismiss}
@@ -249,7 +248,7 @@ export default function InstallPrompt() {
               </p>
               <Button
                 onClick={handleInstallClick}
-                className="bg-white text-autumn-burgundy hover:bg-white/90 font-semibold shadow-lg w-full"
+                className="bg-white text-gorkhon-blue hover:bg-white/90 font-semibold shadow-lg w-full"
               >
                 <Icon name="Smartphone" size={16} className="mr-2" />
                 Установить

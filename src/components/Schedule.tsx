@@ -103,12 +103,12 @@ const Schedule = () => {
           </div>
         ))}
         
-        <div className="mt-4 md:mt-6 p-3 md:p-4 rounded-lg md:rounded-xl bg-amber-50 md:bg-gradient-to-r md:from-amber-50 md:to-orange-50 border border-orange-200/50">
-          <div className="flex items-center gap-2 text-orange-800 mb-2">
+        <div className="mt-4 md:mt-6 p-3 md:p-4 rounded-lg md:rounded-xl bg-blue-50 md:bg-gradient-to-r md:from-blue-50 md:to-purple-50 border border-blue-200/50">
+          <div className="flex items-center gap-2 text-blue-800 mb-2">
             <Icon name="Info" size={16} className="flex-shrink-0" />
             <p className="text-sm md:text-sm font-semibold">Полезная информация</p>
           </div>
-          <p className="text-xs text-orange-700 leading-relaxed">Возможны изменения в расписании или отмены рейсов "Горхон - УУ", "УУ - Горхон", "Заиграево - Горхон", "Горхон - Заиграево". Уточняйте информацию в поселковых чатах в Telegram.</p>
+          <p className="text-xs text-blue-700 leading-relaxed">Возможны изменения в расписании или отмены рейсов "Горхон - УУ", "УУ - Горхон", "Заиграево - Горхон", "Горхон - Заиграево". Уточняйте информацию в поселковых чатах в Telegram.</p>
         </div>
       </CardContent>
     </Card>

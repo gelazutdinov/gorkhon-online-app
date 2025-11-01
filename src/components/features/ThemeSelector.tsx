@@ -78,13 +78,13 @@ const themes: Theme[] = [
   {
     id: 'sunset',
     name: 'Закат',
-    description: 'Теплые оранжевые тона',
+    description: 'Теплые розовые тона',
     colors: {
       primary: '#F97316',
       secondary: '#EA580C',
       accent: '#FB923C'
     },
-    preview: 'bg-gradient-to-r from-orange-500 to-orange-600'
+    preview: 'bg-gradient-to-r from-pink-500 to-rose-600'
   },
   {
     id: 'purple',

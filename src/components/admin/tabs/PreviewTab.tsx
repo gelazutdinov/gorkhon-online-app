@@ -62,13 +62,13 @@ const PreviewTab = ({
               </h4>
               <div className="space-y-2">
                 {transitNumbers.map((num) => (
-                  <div key={num.id} className="bg-orange-50 p-3 rounded-lg">
+                  <div key={num.id} className="bg-blue-50 p-3 rounded-lg">
                     <div className="flex items-center gap-3">
-                      <Icon name={num.icon as any} size={16} className="text-orange-600" />
+                      <Icon name={num.icon as any} size={16} className="text-blue-600" />
                       <div>
                         <p className="font-medium text-sm">{num.name}</p>
                         <p className="text-xs text-gray-600">{num.person}</p>
-                        <p className="text-xs font-mono text-orange-600">{num.phone}</p>
+                        <p className="text-xs font-mono text-blue-600">{num.phone}</p>
                       </div>
                     </div>
                   </div>

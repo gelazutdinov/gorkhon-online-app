@@ -157,11 +157,11 @@ const UserManagement = () => {
             
             <div className="bg-white/70 backdrop-blur-xl rounded-lg sm:rounded-2xl p-3 sm:p-4 lg:p-6 border border-white/20 shadow-lg">
               <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:gap-3 lg:text-left">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg sm:rounded-2xl flex items-center justify-center mb-2 lg:mb-0 flex-shrink-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-lg sm:rounded-2xl flex items-center justify-center mb-2 lg:mb-0 flex-shrink-0">
                   <Icon name="Calendar" className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-orange-600">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-pink-600">
                     {users.filter(u => {
                       const today = new Date().toDateString();
                       return new Date(u.createdAt).toDateString() === today;

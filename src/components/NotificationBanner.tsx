@@ -31,7 +31,7 @@ const NotificationBanner: React.FC = () => {
   const getPriorityColors = (priority: SystemNotification['priority']) => {
     switch (priority) {
       case 'critical': return 'bg-red-50 border-red-200 text-red-800';
-      case 'high': return 'bg-orange-50 border-orange-200 text-orange-800';
+      case 'high': return 'bg-yellow-50 border-yellow-200 text-yellow-800';
       case 'medium': return 'bg-blue-50 border-blue-200 text-blue-800';
       case 'low': return 'bg-gray-50 border-gray-200 text-gray-800';
       default: return 'bg-blue-50 border-blue-200 text-blue-800';

@@ -137,10 +137,10 @@ const SectionsTab = ({
       </div>
 
       {/* Настройки пожертвований */}
-      <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
               <Icon name="Heart" className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -151,7 +151,7 @@ const SectionsTab = ({
           {!editingDonation && (
             <button
               onClick={() => setEditingDonation(true)}
-              className="px-4 py-2 bg-white border border-orange-300 text-orange-700 rounded-lg hover:bg-orange-50 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-white border border-blue-300 text-blue-700 rounded-lg hover:bg-blue-50 transition-colors flex items-center gap-2"
             >
               <Icon name="Edit" size={16} />
               Редактировать
@@ -169,7 +169,7 @@ const SectionsTab = ({
                 type="text"
                 value={donationForm.text}
                 onChange={(e) => setDonationForm(prev => ({ ...prev, text: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Название благотворительного сбора"
               />
             </div>
@@ -183,7 +183,7 @@ const SectionsTab = ({
                   type="number"
                   value={donationForm.goal}
                   onChange={(e) => setDonationForm(prev => ({ ...prev, goal: Number(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="100000"
                 />
               </div>
@@ -196,7 +196,7 @@ const SectionsTab = ({
                   type="number"
                   value={donationForm.current}
                   onChange={(e) => setDonationForm(prev => ({ ...prev, current: Number(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="45000"
                 />
               </div>
@@ -205,7 +205,7 @@ const SectionsTab = ({
             <div className="flex gap-3 pt-4">
               <button
                 onClick={saveDonationSettings}
-                className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg hover:from-orange-600 hover:to-red-700 transition-all flex items-center gap-2"
+                className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all flex items-center gap-2"
               >
                 <Icon name="Save" size={16} />
                 Сохранить

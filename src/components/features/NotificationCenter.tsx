@@ -106,7 +106,7 @@ const NotificationCenter = ({ onClose }: NotificationCenterProps) => {
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'success': return 'text-green-600 bg-green-100';
-      case 'warning': return 'text-orange-600 bg-orange-100';
+      case 'warning': return 'text-yellow-600 bg-yellow-100';
       case 'error': return 'text-red-600 bg-red-100';
       default: return 'text-blue-600 bg-blue-100';
     }
@@ -195,7 +195,7 @@ const NotificationCenter = ({ onClose }: NotificationCenterProps) => {
                 {/* Индикатор важности */}
                 {notification.important && (
                   <div className="absolute top-2 right-2">
-                    <Icon name="Star" size={16} className="text-orange-500" />
+                    <Icon name="Star" size={16} className="text-yellow-500" />
                   </div>
                 )}
 

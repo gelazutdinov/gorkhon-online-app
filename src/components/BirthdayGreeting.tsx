@@ -44,7 +44,7 @@ const BirthdayGreeting = ({ name, birthDate, gender }: BirthdayGreetingProps) =>
       case 'birthday':
         return 'bg-gradient-to-r from-pink-500 to-purple-600 text-white';
       case 'age_milestone':
-        return 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white';
+        return 'bg-gradient-to-r from-yellow-400 to-pink-500 text-white';
       case 'upcoming':
         return 'bg-gradient-to-r from-blue-400 to-cyan-500 text-white';
       default:

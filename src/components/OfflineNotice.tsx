@@ -20,7 +20,7 @@ const OfflineNotice = () => {
   if (isOnline) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-orange-500 text-white px-4 py-2 flex items-center justify-center gap-2 shadow-lg">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-yellow-500 text-white px-4 py-2 flex items-center justify-center gap-2 shadow-lg">
       <Icon name="WifiOff" size={18} />
       <span className="text-sm font-medium">Офлайн режим — некоторые функции недоступны</span>
     </div>

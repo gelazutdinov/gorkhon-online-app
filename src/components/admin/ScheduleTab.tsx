@@ -18,16 +18,16 @@ const ScheduleTab = ({
   removeItem
 }: ScheduleTabProps) => {
   return (
-    <Card className="border-2 border-orange-200 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50">
-        <CardTitle className="flex items-center gap-3 text-orange-700">
+    <Card className="border-2 border-blue-200 shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
+        <CardTitle className="flex items-center gap-3 text-blue-700">
           <Icon name="Clock" size={24} />
           Режим работы организаций
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 p-6">
         {workSchedule.map((item, idx) => (
-          <div key={idx} className="bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-orange-300 transition-all space-y-3">
+          <div key={idx} className="bg-white rounded-xl p-4 border-2 border-gray-100 hover:border-blue-300 transition-all space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <Input
                 placeholder="Название организации"
@@ -64,7 +64,7 @@ const ScheduleTab = ({
         <Button
           onClick={() => addItem('schedule')}
           variant="outline"
-          className="w-full border-2 border-dashed border-orange-300 hover:border-orange-500 hover:bg-orange-50"
+          className="w-full border-2 border-dashed border-blue-300 hover:border-blue-500 hover:bg-blue-50"
         >
           <Icon name="Plus" size={18} className="mr-2" />
           Добавить расписание

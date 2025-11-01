@@ -42,11 +42,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Suspense fallback={
-          <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-amber-100">
-            <div className="relative">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-autumn-burgundy"></div>
-              <div className="absolute -top-8 -right-8 text-3xl animate-sway">🍂</div>
-            </div>
+          <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-purple-50/30 to-pink-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-gorkhon-blue"></div>
           </div>
         }>
           <Routes>

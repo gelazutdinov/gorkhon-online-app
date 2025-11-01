@@ -79,26 +79,26 @@ const NumbersTab = ({
       {/* Номера транзита */}
       <div>
         <h4 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
-          <Icon name="Bus" size={16} className="text-orange-500" />
+          <Icon name="Bus" size={16} className="text-blue-500" />
           Заиграевский транзит ({transitNumbers.length})
         </h4>
         <div className="grid gap-3">
           {transitNumbers.map((number) => (
-            <div key={number.id} className="border border-orange-200 rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow bg-orange-50/30">
+            <div key={number.id} className="border border-blue-200 rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow bg-blue-50/30">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Icon name={number.icon as any} size={16} className="text-orange-600" />
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Icon name={number.icon as any} size={16} className="text-blue-600" />
                 </div>
                 <div>
                   <h5 className="font-medium">{number.name}</h5>
                   <p className="text-sm text-gray-600">{number.person}</p>
-                  <p className="text-sm font-mono text-orange-600">{number.phone}</p>
+                  <p className="text-sm font-mono text-blue-600">{number.phone}</p>
                 </div>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => onEditNumber(number)}
-                  className="p-2 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg"
+                  className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
                 >
                   <Icon name="Edit2" size={16} />
                 </button>

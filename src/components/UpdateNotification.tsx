@@ -59,7 +59,7 @@ export default function UpdateNotification() {
 
   return (
     <div className="fixed top-20 left-4 right-4 z-50 animate-in slide-in-from-top duration-500">
-      <Card className="bg-gradient-to-r from-autumn-burgundy via-autumn-maple to-autumn-terracotta text-white shadow-2xl border-0 overflow-hidden">
+      <Card className="bg-gradient-to-r from-gorkhon-blue via-gorkhon-pink to-purple-600 text-white shadow-2xl border-0 overflow-hidden">
         <div className="absolute top-0 right-0 text-4xl opacity-20 animate-bounce">✨</div>
         <CardContent className="p-4 relative">
           <div className="flex items-start gap-3">
@@ -69,7 +69,6 @@ export default function UpdateNotification() {
             <div className="flex-1 min-w-0">
               <h3 className="font-bold text-base mb-1 flex items-center gap-2">
                 Доступно обновление
-                <span className="text-xl">🍂</span>
               </h3>
               <p className="text-sm text-white/90 mb-3">
                 Новая версия приложения готова к установке. Обновитесь, чтобы получить последние улучшения!
@@ -78,7 +77,7 @@ export default function UpdateNotification() {
                 <Button
                   onClick={handleUpdate}
                   disabled={isUpdating}
-                  className="bg-white text-autumn-burgundy hover:bg-white/90 font-semibold shadow-lg flex-1"
+                  className="bg-white text-gorkhon-blue hover:bg-white/90 font-semibold shadow-lg flex-1"
                 >
                   {isUpdating ? (
                     <>
