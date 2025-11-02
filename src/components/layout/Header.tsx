@@ -14,7 +14,7 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
             <img 
               src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
               alt="Горхон.Online" 
-              className="h-8 w-auto object-contain"
+              className="h-12 w-auto object-contain"
             />
           </div>
           <button 
@@ -30,7 +30,7 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
             <img 
               src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
               alt="Горхон.Online" 
-              className="h-10 w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
           </div>
           <button 
