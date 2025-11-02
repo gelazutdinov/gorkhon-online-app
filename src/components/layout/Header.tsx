@@ -24,7 +24,7 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
           />
         </div>
         
-        <div className="hidden md:flex items-center justify-between max-w-6xl mx-auto w-full">
+        <div className="hidden md:flex items-center justify-between max-w-4xl mx-auto w-full">
           <div className="flex items-center gap-3">
             <img 
               src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
