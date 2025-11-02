@@ -52,8 +52,8 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
       setUserName(savedName);
       
       const greeting = savedName 
-        ? `Привет, ${savedName}! Рада снова тебя видеть! 😊\n\nЧем могу помочь сегодня?`
-        : 'Привет! Я Лина — твой умный помощник! ✨\n\n🌐 Могу искать информацию в интернете\n💡 Отвечу на вопросы о Горхоне\n🔧 Помогу с техническими проблемами\n\nКак тебя зовут?';
+        ? `Привет, ${savedName}! 👋 Рада снова тебя видеть!\n\nЧем займёмся сегодня?`
+        : 'Привет! Я Лина — твой персональный ИИ-помощник! ✨\n\n💫 Ищу информацию в интернете\n🏘️ Отвечаю на вопросы о Горхоне\n🛠️ Помогаю решить любые проблемы\n📱 Подскажу, как пользоваться платформой\n\nКак тебя зовут?';
       
       const welcomeMessage: Message = {
         id: '1',
@@ -230,51 +230,63 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50 border border-purple-100">
-      <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 text-white p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+    <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-gradient-to-br from-white to-purple-50/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50 border-2 border-purple-200/50">
+      <div className="bg-gradient-to-r from-purple-500 via-violet-500 to-purple-600 text-white p-5 flex items-center justify-between relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent animate-pulse"></div>
+        <div className="flex items-center gap-3 relative z-10">
+          <div className="w-12 h-12 bg-gradient-to-br from-white to-purple-100 rounded-2xl flex items-center justify-center shadow-lg relative">
             <span className="text-2xl">✨</span>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
           </div>
           <div>
-            <h3 className="font-bold text-lg">Лина</h3>
-            <p className="text-xs text-purple-100 flex items-center gap-1">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            <h3 className="font-bold text-xl">Лина</h3>
+            <p className="text-xs text-purple-100 flex items-center gap-1.5">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg"></span>
               {isSearching ? 'Ищу в интернете...' : 'Онлайн • ИИ-помощник'}
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 relative z-10">
           <button
             onClick={() => setIsMinimized(true)}
-            className="hover:bg-white/20 rounded-lg p-2 transition-colors"
+            className="text-white/90 hover:text-white hover:bg-white/20 p-2 rounded-xl transition-all hover:scale-110 backdrop-blur-sm"
+            title="Свернуть"
           >
-            <Icon name="Minus" size={20} />
+            <Icon name="Minimize2" size={18} />
           </button>
           <button
             onClick={onClose}
-            className="hover:bg-white/20 rounded-lg p-2 transition-colors"
+            className="text-white/90 hover:text-white hover:bg-white/20 p-2 rounded-xl transition-all hover:scale-110 backdrop-blur-sm"
+            title="Закрыть"
           >
-            <Icon name="X" size={20} />
+            <Icon name="X" size={18} />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-purple-50/30 to-white">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-transparent to-purple-50/20">
         {messages.map((message) => (
-          <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-fadeIn`}>
-            <div className={`max-w-[80%] ${message.isUser ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'bg-white border border-purple-100'} rounded-2xl p-3 shadow-md`}>
-              <p className="text-sm whitespace-pre-wrap break-words">{message.text}</p>
+          <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom duration-300`}>
+            <div className={`max-w-[85%] rounded-2xl p-4 shadow-sm ${
+              message.isUser
+                ? 'bg-gradient-to-br from-purple-500 via-violet-500 to-purple-600 text-white shadow-purple-200/50'
+                : 'bg-white text-gray-800 border border-gray-100 shadow-gray-100'
+            }`}>
+              <p className="text-sm whitespace-pre-wrap break-words leading-relaxed">{message.text}</p>
               <span className={`text-xs mt-1 block ${message.isUser ? 'text-purple-100' : 'text-gray-400'}`}>
                 {message.timestamp.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
               </span>
               {message.quickReplies && (
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="flex flex-wrap gap-2 mt-4">
                   {message.quickReplies.map((reply, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleQuickReply(reply)}
-                      className="text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 px-3 py-1.5 rounded-full transition-colors border border-purple-200"
+                      className={`px-4 py-2 rounded-xl text-xs font-medium transition-all hover:scale-105 shadow-sm ${
+                        message.isUser 
+                          ? 'bg-white/20 hover:bg-white/30 border border-white/30 text-white backdrop-blur-sm'
+                          : 'bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white shadow-purple-200/50'
+                      }`}
                     >
                       {reply}
                     </button>
@@ -285,20 +297,21 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
           </div>
         ))}
         {isTyping && (
-          <div className="flex justify-start">
-            <div className="bg-white border border-purple-100 rounded-2xl p-4 shadow-md">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+          <div className="flex justify-start animate-in slide-in-from-bottom duration-300">
+            <div className="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-3 shadow-sm">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 bg-gradient-to-r from-purple-500 to-violet-500 rounded-full animate-bounce shadow-lg" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2.5 h-2.5 bg-gradient-to-r from-purple-500 to-violet-500 rounded-full animate-bounce shadow-lg" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2.5 h-2.5 bg-gradient-to-r from-purple-500 to-violet-500 rounded-full animate-bounce shadow-lg" style={{ animationDelay: '300ms' }}></div>
               </div>
+              <span className="text-xs text-gray-600 font-medium">Лина думает...</span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 bg-white border-t border-purple-100">
+      <div className="p-4 bg-gradient-to-r from-purple-50/50 to-violet-50/50 border-t border-purple-100">
         <div className="flex gap-2">
           <input
             ref={inputRef}
@@ -306,15 +319,15 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Напишите сообщение..."
-            className="flex-1 px-4 py-3 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+            placeholder="Напишите сообщение Лине..."
+            className="flex-1 px-4 py-3.5 bg-white border-2 border-purple-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm transition-all shadow-sm"
           />
           <button
             onClick={handleSendMessage}
-            disabled={!inputValue.trim()}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!inputValue.trim() || isTyping}
+            className="px-6 py-3.5 bg-gradient-to-r from-purple-500 via-violet-500 to-purple-600 text-white rounded-2xl hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all flex items-center gap-2 font-medium shadow-purple-200/50"
           >
-            <Icon name="Send" size={20} />
+            <Icon name="Send" size={18} />
           </button>
         </div>
       </div>

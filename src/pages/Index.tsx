@@ -2,7 +2,6 @@ import { useState, useCallback, memo, useEffect } from "react";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import NotificationsBanner from "@/components/NotificationsBanner";
 import InstallPrompt from "@/components/InstallPrompt";
-import UpdateNotification from "@/components/UpdateNotification";
 import SplashScreen from "@/components/SplashScreen";
 import RecommendationNotice from "@/components/RecommendationNotice";
 import Home from "@/components/sections/Home";
@@ -280,7 +279,6 @@ const Index = () => {
         />
         
         <InstallPrompt />
-        <UpdateNotification />
         <RecommendationNotice />
       </div>
     </>
