@@ -20,10 +20,8 @@ const Index = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [selectedPvzPhotos, setSelectedPvzPhotos] = useState<Photo[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isSystemChatOpen, setIsSystemChatOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeDocument, setActiveDocument] = useState<'privacy' | 'terms' | 'security' | null>(null);
-  const [hasNewSystemMessage, setHasNewSystemMessage] = useState(false);
 
   useEffect(() => {
     // Автоматическое обновление номеров у всех пользователей
@@ -72,123 +70,11 @@ const Index = () => {
         
         localStorage.setItem('homePageContent', JSON.stringify(content));
         localStorage.setItem('phoneNumbersVersion', currentVersion);
-        
-        // Добавляем системное сообщение об обновлении
-        const systemMessages = JSON.parse(localStorage.getItem('systemMessages') || '[]');
-        const updateMessage = {
-          text: `📞 ВАЖНЫЕ НОМЕРА ОБНОВЛЕНЫ!
-
-Актуальные контакты служб Горхона:
-
-👩‍⚕ ФАП Горхон
-📞 8-924-456-31-84
-👤 Аяна Анатольевна
-
-👮 Участковый
-📞 +7-999-275-34-13
-👤 Алексей
-
-🚑 Скорая Новый
-📞 7-301-364-51-03, 112
-
-⚡ Диспетчер РЭС
-📞 +7-301-234-40-83
-
-🗑️ Диспетчер ЭкоАльянс
-📞 +7-983-433-95-71
-
-🏛️ МФЦ Заиграево
-📞 +7-301-364-11-01
-
-❤️ Соц.защита Заиграево
-📞 +7-301-364-12-20
-
-🏥 Регистратура поликл. Заиграево
-📞 +7-924-555-90-03
-
-🏨 Нотариус Заиграево
-📞 +7-301-364-16-14, +7-301-364-22-92
-
-⚖️ Судебные приставы
-📞 8-301-364-10-10
-
-🚛 Вакуумная машина (Кондаков К.Ю.)
-📞 +7-983-453-99-02
-
-📪 Почта Горхон (Елена)
-📞 8-914-843-45-93
-
-🚔 Миграционная служба ГАИ
-📞 8-301-364-15-70
-
-🚌 Транспорт:
-• Заиграево: 8-983-420-04-90
-• Улан-Удэ: 8-983-420-04-03
-• Новоильинск: +7-902-167-02-26
-
-Сохраните эти номера! 💾`,
-          timestamp: new Date().toISOString()
-        };
-        
-        // Удаляем старые сообщения об обновлении номеров
-        const filteredMessages = systemMessages.filter((msg: any) => 
-          !msg.text.includes('ВАЖНЫЕ НОМЕРА ОБНОВЛЕНЫ')
-        );
-        
-        // Добавляем новое сообщение
-        filteredMessages.push(updateMessage);
-        localStorage.setItem('systemMessages', JSON.stringify(filteredMessages));
-        
-        window.dispatchEvent(new Event('storage'));
       }
     };
     
     updatePhoneNumbers();
-    
-    const checkNewMessages = () => {
-      const savedMessages = localStorage.getItem('systemMessages');
-      const lastReadTime = localStorage.getItem('lastReadSystemMessageTime');
-      
-      if (savedMessages) {
-        const messages = JSON.parse(savedMessages);
-        if (messages && messages.length > 0) {
-          const latestMessageTime = new Date(messages[messages.length - 1].timestamp || 0).getTime();
-          const lastRead = lastReadTime ? parseInt(lastReadTime) : 0;
-          
-          if (latestMessageTime > lastRead) {
-            setHasNewSystemMessage(true);
-            
-            if ('Notification' in window && Notification.permission === 'granted') {
-              new Notification('Горхон.Online', {
-                body: messages[messages.length - 1].text.substring(0, 100) + '...',
-                icon: 'https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png',
-                badge: 'https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png',
-                tag: 'system-message'
-              });
-            }
-          }
-        }
-      }
-    };
-
-    checkNewMessages();
-    
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'systemMessages') {
-        checkNewMessages();
-      }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
-
-  const handleSystemChatOpen = () => {
-    setIsSystemChatOpen(true);
-    setHasNewSystemMessage(false);
-    localStorage.setItem('lastReadSystemMessageTime', Date.now().toString());
-  };
-
 
 
   const openPhotoCarousel = useCallback((photos: Photo[], startIndex: number) => {
@@ -221,7 +107,6 @@ const Index = () => {
         <Header 
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           isSidebarOpen={isSidebarOpen}
-          hasNewSystemMessage={hasNewSystemMessage}
         />
 
         <NotificationsBanner />
@@ -249,20 +134,12 @@ const Index = () => {
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           onChatOpen={() => setIsChatOpen(true)}
-          onSystemChatOpen={handleSystemChatOpen}
           onDocumentOpen={(doc) => setActiveDocument(doc)}
-          hasNewSystemMessage={hasNewSystemMessage}
         />
 
         <ChatModal 
           isOpen={isChatOpen}
           onClose={() => setIsChatOpen(false)}
-        />
-
-        <ChatModal 
-          isOpen={isSystemChatOpen}
-          onClose={() => setIsSystemChatOpen(false)}
-          isSystemChat={true}
         />
 
         <DocumentModal 

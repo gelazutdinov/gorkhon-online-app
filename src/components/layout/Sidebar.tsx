@@ -4,12 +4,10 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onChatOpen: () => void;
-  onSystemChatOpen: () => void;
   onDocumentOpen: (doc: 'privacy' | 'terms' | 'security') => void;
-  hasNewSystemMessage?: boolean;
 }
 
-const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen, hasNewSystemMessage }: SidebarProps) => {
+const Sidebar = ({ isOpen, onClose, onChatOpen, onDocumentOpen }: SidebarProps) => {
   if (!isOpen) return null;
 
   return (
@@ -32,37 +30,16 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onSystemChatOpen, onDocumentOpen
             <button
               onClick={() => {
                 onClose();
-                onSystemChatOpen();
-              }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white shadow-sm relative"
-            >
-              <div className="relative flex-shrink-0">
-                <Icon name="MessageCircle" size={20} />
-                <img 
-                  src="https://cdn.poehali.dev/files/dbf46829-41e3-4fcf-956e-f6c84fb50dc3.png" 
-                  alt="Verified"
-                  className="absolute -bottom-1 -right-1 w-4 h-4"
-                />
-              </div>
-              <div className="flex-1">
-                <div className="font-medium">Горхон.Online</div>
-                <div className="text-xs opacity-90">Новости и обновления</div>
-              </div>
-              {hasNewSystemMessage && (
-                <div className="absolute top-2 right-2 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
-              )}
-            </button>
-            <button
-              onClick={() => {
-                onClose();
                 onChatOpen();
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-sm"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-gradient-to-r from-purple-500 via-violet-500 to-purple-600 hover:from-purple-600 hover:via-violet-600 hover:to-purple-700 text-white shadow-sm"
             >
-              <Icon name="Bot" size={20} />
+              <div className="relative">
+                <Icon name="Bot" size={22} />
+              </div>
               <div className="flex-1">
-                <div className="font-medium">Лина (ИИ-помощник)</div>
-                <div className="text-xs opacity-90">Помощь по платформе</div>
+                <div className="font-semibold">Лина - ИИ помощник</div>
+                <div className="text-xs opacity-90">Ответы на вопросы и помощь 24/7</div>
               </div>
             </button>
           </div>
