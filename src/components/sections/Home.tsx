@@ -7,7 +7,6 @@ import PvzSection from "@/components/PvzSection";
 import ActionButtons from "@/components/ActionButtons";
 import WeatherWidget from "@/components/features/WeatherWidget";
 import RecommendationsBanner from "@/components/RecommendationsBanner";
-import MusicSection from "@/components/MusicSection";
 
 import Icon from "@/components/ui/icon";
 import { saveInteraction, cleanOldInteractions } from "@/utils/recommendations";
@@ -35,9 +34,8 @@ const getDefaultSections = (): SectionConfig[] => [
   { id: 'donation', name: 'Сбор средств', enabled: true, order: 3, description: 'Благотворительные сборы' },
   { id: 'workSchedule', name: 'Режим работы', enabled: true, order: 4, description: 'График работы организаций' },
   { id: 'weather', name: 'Погода', enabled: true, order: 5, description: 'Прогноз погоды' },
-  { id: 'music', name: 'Горхон.Music', enabled: true, order: 6, description: 'Бесплатная русская музыка без интернета' },
-  { id: 'pvz', name: 'ПВЗ и фото', enabled: true, order: 7, description: 'Пункты выдачи заказов и фотогалерея' },
-  { id: 'actionButtons', name: 'Быстрые действия', enabled: true, order: 8, description: 'Кнопки быстрого доступа' }
+  { id: 'pvz', name: 'ПВЗ и фото', enabled: true, order: 6, description: 'Пункты выдачи заказов и фотогалерея' },
+  { id: 'actionButtons', name: 'Быстрые действия', enabled: true, order: 7, description: 'Кнопки быстрого доступа' }
 ];
 
 const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
@@ -90,8 +88,6 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
           return <WorkSchedule />;
         case 'weather':
           return <WeatherWidget />;
-        case 'music':
-          return <MusicSection />;
         case 'pvz':
           return <PvzSection onOpenPhotoCarousel={onOpenPhotoCarousel} />;
         case 'actionButtons':
