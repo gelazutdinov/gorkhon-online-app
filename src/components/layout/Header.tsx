@@ -7,19 +7,20 @@ interface HeaderProps {
 
 const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E'}}>
-      <div className="px-4 py-4 md:py-6 flex items-center justify-between">
+    <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl safe-top" style={{backgroundColor: '#F1117E'}}>
+      <div className="px-4 pt-2 pb-4 md:py-6 flex items-center justify-between">
         <div className="md:hidden flex items-center justify-center w-full relative">
           <button 
             onClick={onMenuClick}
-            className="absolute left-0 text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="absolute left-0 text-white p-3 hover:bg-white/10 rounded-lg transition-colors active:scale-95"
+            aria-label="Открыть меню"
           >
-            <Icon name="Menu" size={24} />
+            <Icon name="Menu" size={28} />
           </button>
           <img 
             src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
             alt="Горхон.Online" 
-            className="h-10 w-auto object-contain"
+            className="h-9 w-auto object-contain"
           />
         </div>
         
