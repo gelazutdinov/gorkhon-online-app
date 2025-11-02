@@ -10,18 +10,18 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
     <div className="fixed top-0 left-0 right-0 z-50 shadow-md md:rounded-none rounded-b-xl" style={{backgroundColor: '#F1117E', paddingTop: 'max(env(safe-area-inset-top, 0px), 12px)'}}>
       <div className="px-4 py-5 md:py-4 flex items-center justify-between">
         <div className="md:hidden flex items-center justify-center w-full relative">
-          <button 
-            onClick={onMenuClick}
-            className="absolute left-0 text-white p-4 -m-2 hover:bg-white/10 rounded-lg transition-colors active:scale-95"
-            aria-label="Открыть меню"
-          >
-            <Icon name="Menu" size={28} />
-          </button>
           <img 
             src="https://cdn.poehali.dev/files/412f3baa-4662-472a-9072-a6d85f527a4e.png" 
             alt="Горхон.Online" 
             className="h-12 w-auto object-contain"
           />
+          <button 
+            onClick={onMenuClick}
+            className="absolute right-0 text-white p-4 -m-2 hover:bg-white/10 rounded-lg transition-colors active:scale-95"
+            aria-label="Открыть меню"
+          >
+            <Icon name="Menu" size={28} />
+          </button>
         </div>
         
         <div className="hidden md:flex items-center justify-between max-w-4xl mx-auto w-full">
