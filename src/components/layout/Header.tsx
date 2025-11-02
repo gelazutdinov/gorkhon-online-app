@@ -18,9 +18,9 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
             <Icon name="Menu" size={28} />
           </button>
           <img 
-            src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
+            src="https://cdn.poehali.dev/files/412f3baa-4662-472a-9072-a6d85f527a4e.png" 
             alt="Горхон.Online" 
-            className="h-10 w-auto object-contain"
+            className="h-12 w-auto object-contain"
           />
         </div>
         
