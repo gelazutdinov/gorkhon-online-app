@@ -1,11 +1,11 @@
-const CACHE_NAME = 'gorkhon-online-v4';
-const RUNTIME_CACHE = 'gorkhon-runtime-v4';
+const CACHE_NAME = 'gorkhon-online-v5';
+const RUNTIME_CACHE = 'gorkhon-runtime-v5';
 
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  'https://cdn.poehali.dev/files/3c57d3bb-9b03-4e03-bace-9b04eb03a743.png',
+  'https://cdn.poehali.dev/files/a1c648d8-6b90-4de2-9e1d-1656421041bb.png',
   'https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png',
   'https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap'
 ];
