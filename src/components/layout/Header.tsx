@@ -12,11 +12,10 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
         <div className="md:hidden flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
             <img 
-              src="https://cdn.poehali.dev/files/09336db0-43b6-49a2-8f46-7faa33fce4f7.png" 
+              src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
               alt="Горхон.Online" 
-              className="w-8 h-8 object-contain"
+              className="h-8 w-auto object-contain"
             />
-            <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
           </div>
           <button 
             onClick={onMenuClick}
@@ -29,11 +28,10 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
         <div className="hidden md:flex items-center justify-between max-w-6xl mx-auto w-full">
           <div className="flex items-center gap-3">
             <img 
-              src="https://cdn.poehali.dev/files/09336db0-43b6-49a2-8f46-7faa33fce4f7.png" 
+              src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
               alt="Горхон.Online" 
-              className="w-10 h-10 object-contain"
+              className="h-10 w-auto object-contain"
             />
-            <h1 className="text-white font-medium text-lg">Горхон.Online</h1>
           </div>
           <button 
             onClick={onMenuClick}
