@@ -42,13 +42,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Suspense fallback={
-          <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-purple-50/30 to-pink-50">
+          <div className="flex flex-col items-center justify-center min-h-screen" style={{backgroundColor: '#F1117E'}}>
             <img 
-              src="https://cdn.poehali.dev/files/a1c648d8-6b90-4de2-9e1d-1656421041bb.png" 
+              src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
               alt="Горхон.Online" 
-              className="h-24 w-24 mb-4"
+              className="h-32 w-auto mb-6"
             />
-            <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-gorkhon-blue"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-white"></div>
           </div>
         }>
           <Routes>
