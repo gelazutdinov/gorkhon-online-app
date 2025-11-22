@@ -7,10 +7,17 @@ import {
   disableConsoleInProduction, 
   checkIntegrity, 
   generateCSRFToken,
-  logSecurityEvent 
+  logSecurityEvent,
+  preventScreenCapture,
+  detectDevTools,
+  sanitizeClipboard,
+  clearSensitiveData
 } from './utils/security';
 
 disableConsoleInProduction();
+preventScreenCapture();
+detectDevTools();
+sanitizeClipboard();
 
 if (!checkIntegrity()) {
   logSecurityEvent('INTEGRITY_CHECK_FAILED');
@@ -20,8 +27,14 @@ const csrfToken = generateCSRFToken();
 sessionStorage.setItem('csrf_token', csrfToken);
 
 window.addEventListener('beforeunload', () => {
-  const sensitiveKeys = ['chat_messages', 'temp_data'];
-  sensitiveKeys.forEach(key => sessionStorage.removeItem(key));
+  clearSensitiveData();
+});
+
+window.addEventListener('blur', () => {
+  if (import.meta.env.PROD) {
+    const sensitiveKeys = ['chat_messages', 'temp_data', 'admin_authenticated'];
+    sensitiveKeys.forEach(key => sessionStorage.removeItem(key));
+  }
 });
 
 document.addEventListener('contextmenu', (e) => {
