@@ -25,7 +25,6 @@ const ImportantNumbers = () => {
       } else {
         // Дефолтные данные, если нет сохраненных
         setImportantNumbers([
-          { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "", icon: "Phone" },
           { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
           { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
           { name: "Скорая помощь (новый)", person: "Дополнительный номер", phone: "73013645103", icon: "Ambulance" },
@@ -48,7 +47,6 @@ const ImportantNumbers = () => {
     } catch (error) {
       // Используем дефолтные данные в случае ошибки
       setImportantNumbers([
-        { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone" },
         { name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield" },
         { name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance" },
         { name: "Скорая помощь (новый)", person: "Дополнительный номер", phone: "73013645103", icon: "Ambulance" },
