@@ -14,7 +14,6 @@ const ContactManagement = () => {
     const stored = localStorage.getItem('gorkhon_contacts');
     if (stored) return JSON.parse(stored);
     return [
-      { id: '1', title: 'ФАП Горхон', phone: '+7 (XXX) XXX-XX-XX', description: 'Медицинская помощь', isEmergency: false },
       { id: '2', title: 'Скорая помощь', phone: '112', description: 'Экстренная медицинская помощь', isEmergency: true },
       { id: '3', title: 'Участковый', phone: '+7 (XXX) XXX-XX-XX', description: 'Охрана правопорядка', isEmergency: false },
       { id: '4', title: 'Диспетчер РЭС', phone: '+7 (XXX) XXX-XX-XX', description: 'Вопросы электроснабжения', isEmergency: false },

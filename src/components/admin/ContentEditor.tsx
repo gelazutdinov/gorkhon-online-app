@@ -85,7 +85,6 @@ const ContentEditor = () => {
         // Загружаем дефолтные данные
         setContent({
           importantNumbers: [
-            { id: '1', name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "89244563184", icon: "Phone", category: 'important' },
             { id: '2', name: "Участковый", person: "Алексей", phone: "+7999-275-34-13", icon: "Shield", category: 'important' },
             { id: '3', name: "Скорая помощь", person: "Служба экстренного вызова", phone: "112", icon: "Ambulance", category: 'important' },
             { id: '4', name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+73012344083", icon: "Zap", category: 'important' },

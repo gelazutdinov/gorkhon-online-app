@@ -1,7 +1,6 @@
 import { ImportantNumber, WorkScheduleItem, PvzItem, HelpItem } from './types';
 
 export const getDefaultNumbers = (): ImportantNumber[] => [
-  { name: "ФАП Горхон", person: "Медпункт поселка", phone: "+7 (301-36) 9-46-25", icon: "Phone" },
   { name: "Участковый", person: "Бадмаев Баир Баторович", phone: "+7 (924) 754-32-18", icon: "Shield" },
   { name: "Экстренные службы", person: "Полиция, скорая, пожарная", phone: "112", icon: "Ambulance" },
   { name: "Диспетчер РЭС", person: "Электроснабжение 24/7", phone: "8-800-100-75-40", icon: "Zap" },

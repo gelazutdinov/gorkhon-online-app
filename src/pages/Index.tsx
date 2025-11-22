@@ -26,13 +26,12 @@ const Index = () => {
   useEffect(() => {
     // Автоматическое обновление номеров у всех пользователей
     const updatePhoneNumbers = () => {
-      const currentVersion = '3.0'; // Версия обновления
+      const currentVersion = '3.1'; // Версия обновления
       const lastUpdate = localStorage.getItem('phoneNumbersVersion');
       
       if (lastUpdate !== currentVersion) {
         const updatedNumbers = {
           importantNumbers: [
-            { name: "ФАП Горхон", person: "Аяна Анатольевна", phone: "8-924-456-31-84", icon: "Phone" },
             { name: "Участковый", person: "Алексей", phone: "+7-999-275-34-13", icon: "Shield" },
             { name: "Скорая Новый", person: "Экстренная помощь", phone: "7-301-364-51-03, 112", icon: "Ambulance" },
             { name: "Диспетчер РЭС", person: "Электроснабжение", phone: "+7-301-234-40-83", icon: "Zap" },
