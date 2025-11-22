@@ -23,7 +23,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => {
     if (!isSystemChat) {
       return [
-        {text: 'Привет! Я Лина ✨ — ваш верифицированный ИИ-помощник! 👋\n\nМои возможности:\n🌐 Поиск актуальной информации в интернете\n🏘️ Всё о жизни в Горхоне и платформе\n🔧 Решение технических проблем\n💡 Ответы на любые вопросы\n📚 Справочная информация 24/7\n\nПросто спросите — я найду ответ! 😊', sender: 'support'}
+        {text: 'Здравствуйте!\n\nЯ — Лина, виртуальная помощница Горхон.Online. Готова помочь с любыми вопросами о платформе, поселке и сервисах.\n\nЧем могу быть полезна? 😊', sender: 'support'}
       ];
     }
     return [];
@@ -199,48 +199,20 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[80vh] flex flex-col shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-3 border-b" style={{backgroundColor: isSystemChat ? '#0088CC' : '#F1117E'}}>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center relative">
-              {isSystemChat ? (
-                <img 
-                  src="https://cdn.poehali.dev/files/538a3c94-c9c4-4488-9214-dc9493fadb43.png" 
-                  alt="Горхон.Online"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 rounded-full animate-spin-slow opacity-70"></div>
-                  <div className="absolute inset-[3px] bg-white rounded-full"></div>
-                  <Icon name="Sparkles" size={20} className="text-[#F1117E] relative z-10 animate-pulse" />
-                </div>
-              )}
-            </div>
-            <button 
-              onClick={() => isSystemChat && setShowProfile(true)}
-              className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-            >
-              <h3 className="font-semibold text-white text-base">{isSystemChat ? 'Горхон.Online' : 'Лина'}</h3>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="10" fill="white"/>
-                <path d="M14.5 7L8.5 13L5.5 10" stroke={isSystemChat ? "#0088CC" : "#F1117E"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </div>
-          <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
-            <Icon name="X" size={18} />
+        <div className="flex items-center justify-between p-4 border-b bg-white">
+          <button onClick={onClose} className="text-gorkhon-pink hover:bg-gray-100 p-2 rounded-lg transition-colors">
+            <Icon name="ChevronLeft" size={20} />
           </button>
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+              <Icon name="Headphones" size={18} className="text-white" />
+            </div>
+            <h3 className="font-semibold text-gray-900 text-base">Поддержка</h3>
+          </div>
+          <div className="w-10"></div>
         </div>
 
-        <div 
-          className="flex-1 p-0 overflow-y-auto"
-          style={{
-            backgroundColor: isSystemChat ? '#0F1419' : '#f5f5f5',
-            backgroundImage: isSystemChat 
-              ? 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 30l-30-30h60M30 30l30 30v-60M30 30l-30 30h60M30 30l30-30v60\' stroke=\'%23ffffff\' stroke-width=\'0.1\' fill=\'none\' opacity=\'0.03\'/%3E%3C/svg%3E")'
-              : 'none'
-          }}
-        >
+        <div className="flex-1 p-0 overflow-y-auto bg-white">
           {chatMessages.map((msg, idx) => (
             <div key={idx}>
               {isSystemChat ? (
@@ -277,26 +249,30 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                   </div>
                 </div>
               ) : (
-                // Обычный чат с Линой
                 <div className="p-4">
+                  {msg.sender === 'support' && (
+                    <div className="flex items-start gap-2 mb-1">
+                      <div className="font-semibold text-sm text-gray-900">Лина</div>
+                    </div>
+                  )}
                   <div 
-                    className={`rounded-lg p-3 max-w-[80%] ${
+                    className={`rounded-2xl p-3.5 max-w-[85%] ${
                       msg.sender === 'user' 
-                        ? 'ml-auto bg-blue-500 text-white' 
-                        : 'bg-gray-100 text-gray-800'
+                        ? 'ml-auto bg-gradient-to-br from-purple-500 to-pink-500 text-white' 
+                        : 'bg-purple-50 text-gray-900'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-line">{msg.text}</p>
-                    <span className="text-xs mt-1 block opacity-70">
-                      {msg.sender === 'user' ? 'Вы' : 'Лина ✨ (ИИ)'} • сейчас
-                    </span>
+                    <p className="text-sm whitespace-pre-line leading-relaxed">{msg.text}</p>
                   </div>
+                  {msg.sender === 'support' && (
+                    <div className="text-xs text-gray-500 mt-1 ml-1">07:31</div>
+                  )}
                   {msg.showAgentButton && (
                     <a
                       href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-colors shadow-sm"
+                      className="inline-flex items-center gap-2 mt-3 px-4 py-2.5 bg-gorkhon-pink text-white rounded-xl hover:bg-gorkhon-pink/90 transition-colors shadow-sm"
                     >
                       <Icon name="UserCircle" size={18} />
                       <span className="text-sm font-medium">Написать агенту</span>
@@ -318,23 +294,33 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         </div>
 
         {!isSystemChat && (
-          <div className="p-4 border-t">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                placeholder="Напишите сообщение..."
-                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button 
-                onClick={sendMessage}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-colors"
-              >
-                <Icon name="Send" size={18} />
-              </button>
-            </div>
+          <div className="p-4 border-t bg-white">
+            {isLoading ? (
+              <div className="text-center py-2">
+                <div className="inline-flex items-center gap-2 text-gray-500 text-sm">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gorkhon-pink"></div>
+                  <span>Лина печатает...</span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 bg-gray-100 rounded-2xl p-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                  placeholder="Ваше сообщение"
+                  className="flex-1 px-3 py-2 bg-transparent border-none focus:outline-none text-sm"
+                />
+                <button 
+                  onClick={sendMessage}
+                  disabled={!chatInput.trim()}
+                  className="bg-gorkhon-pink text-white p-2.5 rounded-xl hover:bg-gorkhon-pink/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Icon name="Send" size={18} />
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
