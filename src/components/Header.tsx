@@ -8,11 +8,9 @@ const Header = () => {
       
       <div className="w-full max-w-md mx-auto text-center relative z-10">
         <div className="flex flex-col items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-          <img 
-            src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
-            alt="Горхон.Online" 
-            className="h-16 sm:h-20 w-auto"
-          />
+          <h1 className="text-3xl sm:text-4xl font-bold text-white">
+            Горхон.Online
+          </h1>
         </div>
         
         <div className="space-y-1 sm:space-y-2">
