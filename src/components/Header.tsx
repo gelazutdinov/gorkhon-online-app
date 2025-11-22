@@ -3,25 +3,19 @@ import Icon from "@/components/ui/icon";
 
 const Header = () => {
   return (
-    <div data-tutorial="header" className="bg-gorkhon-pink text-white px-3 sm:px-4 py-6 sm:py-8 relative overflow-hidden rounded-b-[2rem] sm:rounded-b-[2rem]" style={{backgroundColor: '#F1117E'}}>
-
-      
-      <div className="w-full max-w-md mx-auto text-center relative z-10">
-        <div className="flex flex-col items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">
+    <div data-tutorial="header" className="bg-white px-3 sm:px-4 py-6 sm:py-8 border-b border-gray-200">
+      <div className="w-full max-w-md mx-auto text-center">
+        <div className="flex flex-col items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Горхон.Online
           </h1>
         </div>
         
-        <div className="space-y-1 sm:space-y-2">
-          <p className="text-white/95 font-medium text-sm sm:text-base">Вся нужная информация под рукой</p>
-          <p className="text-white/80 text-xs sm:text-sm">Добро пожаловать в цифровое сердце нашего поселка</p>
+        <div className="space-y-0.5 sm:space-y-1">
+          <p className="text-gray-600 font-medium text-sm sm:text-base">Вся нужная информация под рукой</p>
+          <p className="text-gray-500 text-xs sm:text-sm">Добро пожаловать в цифровое сердце нашего поселка</p>
         </div>
-
-
       </div>
-      
-
     </div>
   );
 };

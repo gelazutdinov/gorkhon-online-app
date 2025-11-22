@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-gray-50;
+  }
+}
+
 /* Улучшенная производительность анимаций */
 * {
   backface-visibility: hidden;
