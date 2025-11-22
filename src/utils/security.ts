@@ -115,9 +115,11 @@ export const clearSensitiveData = () => {
 
 export const disableConsoleInProduction = () => {
   if (import.meta.env.PROD) {
-    console.log = () => {};
-    console.debug = () => {};
-    console.info = () => {};
+    const noop = () => {};
+    console.log = noop;
+    console.debug = noop;
+    console.info = noop;
+    console.warn = noop;
   }
 };
 

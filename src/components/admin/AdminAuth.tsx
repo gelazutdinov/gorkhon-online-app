@@ -11,12 +11,21 @@ interface AdminAuthProps {
 }
 
 const DEVELOPER_EMAIL = 'smm@gelazutdinov.ru';
+const ADMIN_PASSWORD_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
 
 const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const hashPassword = async (password: string): Promise<string> => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  };
 
   useEffect(() => {
     // Проверяем, если пользователь уже авторизован
@@ -40,12 +49,22 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
       return;
     }
 
-    // Простая проверка пароля (в реальном приложении это должно быть на сервере)
-    if (password !== 'admin123') {
+    const hashedPassword = await hashPassword(password);
+    if (hashedPassword !== ADMIN_PASSWORD_HASH) {
       setError('Неверный пароль');
       setIsLoading(false);
+      
+      const attempts = parseInt(sessionStorage.getItem('login_attempts') || '0') + 1;
+      sessionStorage.setItem('login_attempts', attempts.toString());
+      
+      if (attempts >= 5) {
+        setError('Слишком много попыток входа. Попробуйте позже.');
+        setTimeout(() => sessionStorage.removeItem('login_attempts'), 300000);
+      }
       return;
     }
+    
+    sessionStorage.removeItem('login_attempts');
 
     // Сохраняем авторизацию
     localStorage.setItem('admin_authenticated', 'true');
@@ -115,9 +134,8 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
             </Button>
           </form>
           <div className="mt-6 p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
-            <div className="font-medium mb-1">Для разработчиков:</div>
-            <div>Email: {DEVELOPER_EMAIL}</div>
-            <div>Пароль: admin123</div>
+            <div className="font-medium mb-1">⚠️ Только для авторизованных разработчиков</div>
+            <div className="text-xs">Используйте корпоративные учётные данные</div>
           </div>
         </CardContent>
       </Card>

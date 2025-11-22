@@ -42,21 +42,27 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        console.log('✅ Service Worker зарегистрирован:', registration.scope);
+        if (import.meta.env.DEV) {
+          console.log('✅ Service Worker зарегистрирован:', registration.scope);
+        }
         
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
           if (newWorker) {
             newWorker.addEventListener('statechange', () => {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('🔄 Доступно обновление приложения');
+                if (import.meta.env.DEV) {
+                  console.log('🔄 Доступно обновление приложения');
+                }
               }
             });
           }
         });
       })
       .catch((error) => {
-        console.log('❌ Service Worker не зарегистрирован:', error);
+        if (import.meta.env.DEV) {
+          console.log('❌ Service Worker не зарегистрирован:', error);
+        }
       });
   });
 }
