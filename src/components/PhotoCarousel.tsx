@@ -52,7 +52,7 @@ const PhotoCarousel = ({
   
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-full p-0 bg-black/95 max-h-screen overflow-hidden">
+      <DialogContent className="max-w-4xl w-full p-0 bg-black/95 max-h-[100dvh] md:max-h-screen overflow-hidden">
         {selectedImageIndex !== null && selectedPvzPhotos.length > 0 && selectedPvzPhotos[selectedImageIndex] && (
           <div className="relative flex items-center justify-center min-h-0">
             <img

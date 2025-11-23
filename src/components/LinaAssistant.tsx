@@ -165,10 +165,11 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[70] flex items-end md:items-center justify-center p-0 md:p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose}></div>
       
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-2xl bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden h-[92vh] md:h-auto flex flex-col"
+        style={{paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0px)'}}>
         <div className="bg-gradient-to-r from-purple-500 via-violet-600 to-purple-600 p-6 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -189,7 +190,7 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
           </div>
         </div>
 
-        <div className="h-96 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:h-96">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -228,7 +229,7 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-4 border-t bg-gray-50">
+        <div className="p-3 md:p-4 border-t bg-gray-50">
           <div className="flex gap-2">
             <input
               type="text"
@@ -236,13 +237,14 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Вопрос о сайте..."
-              className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="flex-1 px-3 md:px-4 py-2.5 md:py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
             />
             <button
               onClick={handleSend}
-              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl hover:shadow-lg transition-all font-medium"
+              className="px-4 md:px-6 py-2.5 md:py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl hover:shadow-lg transition-all font-medium text-sm md:text-base min-w-[80px] md:min-w-0"
             >
-              Отправить
+              <span className="hidden md:inline">Отправить</span>
+              <Icon name="Send" size={18} className="md:hidden" />
             </button>
           </div>
         </div>

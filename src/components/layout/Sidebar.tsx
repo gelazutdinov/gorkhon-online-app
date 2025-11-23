@@ -11,10 +11,12 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onDocumentOpen }: SidebarProps) 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end" onClick={onClose}>
+    <>
+      <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={onClose}></div>
       <div 
-        className="w-80 bg-white shadow-2xl overflow-y-auto rounded-l-3xl ml-auto"
+        className="fixed top-0 right-0 bottom-0 z-50 w-[85vw] max-w-sm bg-white shadow-2xl overflow-y-auto rounded-l-3xl transform transition-transform duration-300"
         onClick={(e) => e.stopPropagation()}
+        style={{paddingTop: 'max(env(safe-area-inset-top, 0px), 0px)', paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 16px)'}}
       >
         <div className="p-6 pb-4 border-b flex items-center justify-between rounded-tl-3xl" style={{backgroundColor: '#F1117E'}}>
           <h3 className="font-semibold text-white text-lg">Меню</h3>
@@ -80,7 +82,7 @@ const Sidebar = ({ isOpen, onClose, onChatOpen, onDocumentOpen }: SidebarProps) 
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

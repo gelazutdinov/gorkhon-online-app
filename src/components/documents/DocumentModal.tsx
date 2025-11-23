@@ -26,8 +26,9 @@ const DocumentModal = ({ activeDocument, onClose }: DocumentModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
       <div 
-        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-[600px] md:max-w-2xl h-[90vh] md:max-h-[85vh] flex flex-col shadow-2xl"
+        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-[600px] md:max-w-2xl h-[92vh] md:max-h-[85vh] flex flex-col shadow-2xl"
         onClick={(e) => e.stopPropagation()}
+        style={{paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0px)'}}
       >
         <div className="flex items-center justify-between p-4 border-b" style={{backgroundColor: '#F1117E'}}>
           <div className="flex items-center gap-3">
@@ -45,16 +46,16 @@ const DocumentModal = ({ activeDocument, onClose }: DocumentModalProps) => {
           </button>
         </div>
 
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto">
           {activeDocument === 'privacy' && <PrivacyPolicy />}
           {activeDocument === 'terms' && <TermsOfUse />}
           {activeDocument === 'security' && <SecurityPolicy />}
         </div>
 
-        <div className="p-4 border-t bg-gray-50">
+        <div className="p-3 md:p-4 border-t bg-gray-50">
           <button 
             onClick={onClose}
-            className="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors font-medium"
+            className="w-full px-4 py-2.5 md:py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors font-medium text-sm md:text-base"
           >
             Закрыть
           </button>

@@ -196,7 +196,8 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
       <div 
-        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[90vh] md:max-h-[80vh] flex flex-col shadow-2xl"
+        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[92vh] md:max-h-[80vh] flex flex-col shadow-2xl"
+        style={{paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0px)'}}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-4 border-b bg-white">

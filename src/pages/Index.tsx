@@ -110,9 +110,9 @@ const Index = () => {
 
         <NotificationsBanner />
 
-        <div className="flex pt-24 md:pt-24">
+        <div className="flex pt-20 md:pt-24">
           <main className="flex-1 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">
-            <div className="max-w-full md:max-w-2xl mx-auto px-4 py-4 md:p-4 space-y-4 md:space-y-4 pb-4">
+            <div className="max-w-full md:max-w-2xl mx-auto px-3 py-3 md:p-4 space-y-3 md:space-y-4 pb-20 md:pb-4">
               <Home onOpenPhotoCarousel={openPhotoCarousel} />
               
               <div className="text-center pt-4 pb-2">

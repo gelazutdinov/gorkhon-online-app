@@ -131,6 +131,14 @@
   .safe-top {
     padding-top: max(env(safe-area-inset-top), 0.5rem);
   }
+
+  /* Применение safe area для всего приложения */
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
 }
 
 /* Улучшенные касательные зоны для мобильных */
@@ -158,8 +166,14 @@
 @media (max-width: 768px) {
   /* Оптимизация касаний */
   * {
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     -webkit-touch-callout: none;
+  }
+
+  /* Оптимизация высоты для мобильных с учетом панелей браузера */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 
   /* Предотвращение масштабирования при фокусе на input */
@@ -167,8 +181,15 @@
   input[type="email"],
   input[type="password"],
   input[type="tel"],
-  textarea {
+  input[type="search"],
+  textarea,
+  select {
     font-size: 16px !important;
+  }
+
+  /* Улучшенная прокрутка для iOS */
+  body {
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Оптимизация для мобильных карточек */
@@ -203,6 +224,19 @@
   .max-w-4xl,
   .max-w-6xl {
     max-width: calc(100vw - 1.5rem) !important;
+  }
+
+  /* Оптимизация модальных окон для мобильных */
+  [role="dialog"],
+  [data-dialog] {
+    max-height: 92vh;
+    max-height: 92dvh;
+  }
+
+  /* Улучшенные кнопки для сенсорных экранов */
+  button:active {
+    transform: scale(0.97);
+    transition: transform 0.1s;
   }
 }
 
