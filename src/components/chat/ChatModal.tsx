@@ -106,6 +106,12 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
     }
   }, [isOpen, isSystemChat, showProfile]);
 
+  const playMessageSound = () => {
+    const audio = new Audio('data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADhAC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7v/////////////////////////////////////////////////////////////////AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAA4SC+vk2AAAAAAD/+xDEAAPAAAGkAAAAIAAANIAAAARMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
+    audio.volume = 0.3;
+    audio.play().catch(() => {});
+  };
+
   const sendMessage = async () => {
     if (chatInput.trim()) {
       const sanitized = sanitizeInput(chatInput.trim());
@@ -115,6 +121,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         return;
       }
       
+      playMessageSound();
       setChatMessages(prev => [...prev, {text: userMsg, sender: 'user'}]);
       setChatInput('');
       
@@ -213,7 +220,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
           <div className="w-10"></div>
         </div>
 
-        <div className="flex-1 p-0 overflow-y-auto bg-white">
+        <div className="flex-1 overflow-y-auto bg-white">
           {chatMessages.map((msg, idx) => (
             <div key={idx}>
               {isSystemChat ? (
@@ -250,7 +257,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                   </div>
                 </div>
               ) : (
-                <div className="p-4">
+                <div className="px-4 py-2">
                   {msg.sender === 'support' && (
                     <div className="flex items-start gap-2 mb-1">
                       <div className="font-semibold text-sm text-gray-900">Лина</div>
