@@ -1,5 +1,6 @@
 import Icon from '@/components/ui/icon';
 import { UserProfile } from '@/types/user';
+import { getCurrentTimeIrkutsk } from '@/utils/timezone';
 
 interface QuickStatsProps {
   user: UserProfile;
@@ -9,7 +10,7 @@ interface QuickStatsProps {
 
 const QuickStats = ({ user, daysWithUs, formattedTimeSpent }: QuickStatsProps) => {
   const getTodayStats = () => {
-    const today = new Date().toDateString();
+    const today = getCurrentTimeIrkutsk().toDateString();
     const todaySessions = user.stats?.dailySessions?.[today] || 0;
     const todayTime = user.stats?.dailyTime?.[today] || 0;
     
@@ -20,7 +21,7 @@ const QuickStats = ({ user, daysWithUs, formattedTimeSpent }: QuickStatsProps) =
   };
 
   const getWeeklyStats = () => {
-    const now = new Date();
+    const now = getCurrentTimeIrkutsk();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     
     let weeklyTime = 0;

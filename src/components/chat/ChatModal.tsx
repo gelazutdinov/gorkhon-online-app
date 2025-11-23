@@ -3,6 +3,7 @@ import { sanitizeInput, preventXSS } from "@/utils/security";
 import Icon from "@/components/ui/icon";
 import { getLinaResponse } from "@/utils/linaKnowledge";
 import ChannelProfile from "./ChannelProfile";
+import { formatTimeIrkutsk } from "@/utils/timezone";
 
 const SYSTEM_MESSAGES_URL = 'https://functions.poehali.dev/a7b8d7b8-eb5d-4ecc-ac30-8672db766806';
 
@@ -273,7 +274,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                     <p className="text-sm whitespace-pre-line leading-relaxed">{msg.text}</p>
                   </div>
                   {msg.sender === 'support' && (
-                    <div className="text-xs text-gray-500 mt-1 ml-1">07:31</div>
+                    <div className="text-xs text-gray-500 mt-1 ml-1">{formatTimeIrkutsk()}</div>
                   )}
                   {msg.showAgentButton && (
                     <a

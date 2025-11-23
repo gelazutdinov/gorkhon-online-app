@@ -1,5 +1,6 @@
 import { UserProfile } from '@/types/user';
 import Icon from '@/components/ui/icon';
+import { getGreetingByTime } from '@/utils/timezone';
 
 interface UserGreetingProps {
   user: UserProfile;
@@ -14,15 +15,6 @@ interface UserGreetingProps {
 }
 
 const UserGreeting = ({ user, daysWithUs, formattedTimeSpent, activityLevel }: UserGreetingProps) => {
-  const getGreeting = () => {
-    // Получаем время в Иркутске (UTC+8)
-    const irkutskTime = new Date(new Date().getTime() + (8 * 60 * 60 * 1000));
-    const hour = irkutskTime.getUTCHours();
-    if (hour < 6) return 'Доброй ночи';
-    if (hour < 12) return 'Доброе утро';
-    if (hour < 18) return 'Добрый день';
-    return 'Добрый вечер';
-  };
 
   return (
     <>
@@ -33,7 +25,7 @@ const UserGreeting = ({ user, daysWithUs, formattedTimeSpent, activityLevel }: U
         <div className="relative z-10">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0 pr-3">
-              <h2 className="text-lg sm:text-2xl font-bold mb-1">{getGreeting()}, {user.name}!</h2>
+              <h2 className="text-lg sm:text-2xl font-bold mb-1">{getGreetingByTime()}, {user.name}!</h2>
 
               <p className="text-white/90 text-sm sm:text-base">Добро пожаловать!</p>
             </div>

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { SystemMessage } from './types';
 import { useRef, useEffect } from 'react';
+import { formatTimeIrkutsk, formatDateTimeIrkutsk } from '@/utils/timezone';
 
 interface SystemMessagesTabProps {
   systemMessages: SystemMessage[];
@@ -26,17 +27,7 @@ const SystemMessagesTab = ({
 
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
-    const now = new Date();
-    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-    
-    if (diffInHours < 24) {
-      return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-    } else if (diffInHours < 48) {
-      return 'вчера ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-    } else {
-      return date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short' }) + ' ' + 
-             date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-    }
+    return formatTimeIrkutsk(date);
   };
 
   return (

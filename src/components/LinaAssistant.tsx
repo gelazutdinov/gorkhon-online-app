@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
+import { formatTimeIrkutsk } from '@/utils/timezone';
 
 interface LinaAssistantProps {
   onClose: () => void;
@@ -212,10 +213,7 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
               >
                 <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.text}</p>
                 <p className={`text-xs mt-2 ${message.isUser ? 'text-purple-200' : 'text-gray-500'}`}>
-                  {message.timestamp.toLocaleTimeString('ru-RU', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  })}
+                  {formatTimeIrkutsk(message.timestamp)}
                 </p>
               </div>
             </div>
