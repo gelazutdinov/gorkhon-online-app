@@ -16,7 +16,7 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я Лина, ваш ИИ-помощник с поддержкой Яндекс сервисов. Могу помочь с картами, аналитикой, поиском и любыми вопросами по Горхон.Online! 🚀',
+      text: 'Привет! Я Лина 👋\n\nПомогу найти на сайте:\n• Контакты организаций\n• Объявления и новости\n• Адреса на Яндекс.Картах\n• Телефоны служб\n\n⚠️ Важно: работаю только с данными сайта, не ищу в интернете.',
       isUser: false,
       timestamp: new Date()
     }
@@ -50,9 +50,14 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
       return 'Горхон.Online интегрирован с Яндекс сервисами! 🚀\n\nДоступно:\n• Яндекс.Карты для навигации\n• Яндекс.Метрика для аналитики\n• Поиск на технологиях Яндекса\n\nЧто именно интересует?';
     }
     
+    // Вопросы о поселках и информации
+    if (lowerInput.includes('поселок') || lowerInput.includes('посёлок') || lowerInput.includes('информация о')) {
+      return '📍 ИНФОРМАЦИЯ О ПОСЁЛКАХ:\n\nЯ помогу найти информацию на сайте Горхон.Online:\n• Контакты организаций\n• Объявления и новости\n• Телефоны служб\n• Адреса на карте\n\nВажно: я работаю только с данными сайта, не ищу в интернете.\n\nУточните название поселка или что конкретно нужно найти?';
+    }
+    
     // Вопросы о Горхон.Online
     if (lowerInput.includes('горхон') || lowerInput.includes('gorhon') || lowerInput.includes('платформ')) {
-      return 'Горхон.Online — это платформа для социального взаимодействия и обмена контентом. Здесь можно общаться, делиться постами, находить интересных людей и следить за их активностью!';
+      return 'Горхон.Online — это информационная платформа поселка. Здесь можно найти контакты, объявления, новости и другую важную информацию о поселке!';
     }
     
     // Вопросы о функционале платформы
@@ -125,13 +130,18 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
       return 'Все сайты автоматически адаптивные! 📱 Они отлично выглядят на:\n• Телефонах\n• Планшетах\n• Компьютерах\n• Любых экранах\n\nНикаких дополнительных настроек не нужно!';
     }
     
+    // Поиск информации
+    if (lowerInput.includes('найди') || lowerInput.includes('найти') || lowerInput.includes('ищу') || lowerInput.includes('поищи') || lowerInput.includes('поиск')) {
+      return '⚠️ Не удалось выполнить поиск в интернете.\n\n💡 Попробуйте:\n• Уточнить запрос конкретнее\n• Использовать поиск на сайте Горхон.Online\n• Проверить раздел объявлений или контактов\n• Посмотреть на Яндекс.Картах (для адресов)\n\nЯ работаю только с данными сайта и не имею доступа к интернету.';
+    }
+    
     // Общий умный ответ
     const contextResponses = [
-      'Интересный вопрос! 🤔 Расскажите больше деталей, и я подскажу лучшее решение.',
-      'Давайте разберёмся! Опишите подробнее, что нужно сделать.',
-      'Хорошая идея! Могу помочь воплотить её в жизнь. Что именно планируете?',
-      'С удовольствием помогу! Поделитесь подробностями задачи.',
-      'Отлично! Готова взяться за работу. Что конкретно нужно создать или изменить?'
+      'Интересный вопрос! 🤔 Уточните, пожалуйста, детали. Я помогу найти информацию на сайте.',
+      'Давайте разберёмся! Опишите подробнее, что именно ищете на Горхон.Online.',
+      'С удовольствием помогу! Уточните запрос, и я найду нужную информацию.',
+      'Я работаю с данными сайта Горхон.Online. Уточните, что конкретно вас интересует?',
+      'Готова помочь! Расскажите подробнее, какая информация нужна?'
     ];
     
     return contextResponses[Math.floor(Math.random() * contextResponses.length)];
@@ -152,8 +162,7 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
     setInputText('');
     setIsTyping(true);
 
-    // Реалистичная задержка для "размышления"
-    const timeoutId = setTimeout(() => {
+    setTimeout(() => {
       const response = getSmartResponse(userInput);
       
       const aiMessage: Message = {
@@ -165,10 +174,7 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
 
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
-    }, 1000 + Math.random() * 2000); // 1-3 секунды
-
-    // Cleanup function будет автоматически вызвана при размонтировании
-    return () => clearTimeout(timeoutId);
+    }, 1000 + Math.random() * 2000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -183,7 +189,6 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose}></div>
       
       <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden">
-        {/* Заголовок */}
         <div className="bg-gradient-to-r from-purple-500 via-violet-600 to-purple-600 p-6 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -204,72 +209,62 @@ export default function LinaAssistant({ onClose }: LinaAssistantProps) {
           </div>
         </div>
 
-        {/* Сообщения */}
         <div className="h-96 overflow-y-auto p-6 space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`flex items-end gap-2 max-w-sm ${message.isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${message.isUser ? 'bg-blue-500' : 'bg-gradient-to-br from-purple-500 to-violet-600'}`}>
-                  <Icon name={message.isUser ? 'User' : 'Bot'} size={16} className="text-white" />
-                </div>
-                <div className={`px-4 py-3 rounded-2xl ${message.isUser 
-                  ? 'bg-blue-500 text-white rounded-br-md' 
-                  : 'bg-gray-100 text-gray-900 rounded-bl-md'
-                }`}>
-                  <p className="text-sm whitespace-pre-line leading-relaxed">{message.text}</p>
-                  <p className={`text-xs mt-1 ${message.isUser ? 'text-blue-100' : 'text-gray-500'}`}>
-                    {message.timestamp.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
+              <div
+                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                  message.isUser
+                    ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white'
+                    : 'bg-gray-100 text-gray-800'
+                }`}
+              >
+                <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.text}</p>
+                <p className={`text-xs mt-2 ${message.isUser ? 'text-purple-200' : 'text-gray-500'}`}>
+                  {message.timestamp.toLocaleTimeString('ru-RU', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  })}
+                </p>
               </div>
             </div>
           ))}
           
           {isTyping && (
             <div className="flex justify-start">
-              <div className="flex items-end gap-2 max-w-sm">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
-                  <Icon name="Bot" size={16} className="text-white" />
-                </div>
-                <div className="px-4 py-2 rounded-2xl rounded-bl-md bg-gray-100">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                  </div>
+              <div className="bg-gray-100 rounded-2xl px-4 py-3">
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                 </div>
               </div>
             </div>
           )}
+          
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Поле ввода */}
-        <div className="p-6 border-t bg-gray-50">
-          <div className="flex gap-3">
-            <textarea
+        <div className="p-4 border-t bg-gray-50">
+          <div className="flex gap-2">
+            <input
+              type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Задайте любой вопрос о платформе Горхон.Online..."
-              rows={2}
-              className="flex-1 px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-              disabled={isTyping}
+              onKeyPress={handleKeyPress}
+              placeholder="Напишите сообщение..."
+              className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <button
               onClick={handleSend}
-              disabled={!inputText.trim() || isTyping}
-              className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 text-white rounded-2xl hover:from-purple-600 hover:to-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
+              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl hover:shadow-lg transition-all font-medium"
             >
-              <Icon name="Send" size={18} />
+              Отправить
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            Лина готова помочь с любыми вопросами по Горхон.Online! 🚀
-          </p>
         </div>
       </div>
     </div>
