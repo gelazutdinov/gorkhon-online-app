@@ -101,7 +101,7 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
 
     return (
       <div 
-        className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+        className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.01]"
         onClick={() => handleSectionClick(sectionId, sectionName)}
         onMouseEnter={() => handleSectionView(sectionId, sectionName)}
       >
@@ -112,12 +112,12 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 md:space-y-6">
         {[1, 2, 3].map(i => (
-          <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div key={i} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
             <div className="animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="h-20 bg-gray-200 rounded"></div>
+              <div className="h-5 bg-gradient-to-r from-gray-200 to-gray-100 rounded-xl w-3/4 mb-4"></div>
+              <div className="h-24 bg-gradient-to-r from-gray-200 to-gray-100 rounded-xl"></div>
             </div>
           </div>
         ))}
@@ -126,7 +126,7 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   }
 
   return (
-    <div className="space-y-4 relative">
+    <div className="space-y-4 md:space-y-6 relative">
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
         {[...Array(12)].map((_, i) => (
           <div

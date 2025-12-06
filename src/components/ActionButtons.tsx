@@ -6,34 +6,35 @@ const ActionButtons = () => {
   return (
     <div className="space-y-6">
       {/* Medical Link */}
-      <Card className="animate-fade-in bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border-2 border-blue-200/60 rounded-2xl md:rounded-3xl hover:shadow-xl transition-all duration-300 group overflow-hidden relative">
+      <Card className="animate-fade-in bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100/80 border-0 rounded-2xl md:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-hidden relative">
         {/* Декоративные элементы */}
-        <div className="absolute top-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-blue-300/20 to-indigo-300/20 rounded-full -translate-y-10 translate-x-10 md:-translate-y-16 md:translate-x-16 group-hover:scale-125 transition-transform duration-500"></div>
+        <div className="absolute top-0 right-0 w-24 h-24 md:w-40 md:h-40 bg-gradient-to-br from-blue-400/15 to-indigo-400/15 rounded-full -translate-y-12 translate-x-12 md:-translate-y-20 md:translate-x-20 group-hover:scale-150 transition-transform duration-700"></div>
+        <div className="absolute bottom-0 left-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-tr from-indigo-400/10 to-transparent rounded-full translate-y-10 -translate-x-10 md:translate-y-16 md:-translate-x-16 group-hover:scale-125 transition-transform duration-700"></div>
         
-        <CardContent className="p-4 md:p-6 relative z-10">
+        <CardContent className="p-5 md:p-7 relative z-10">
           <div className="flex items-center gap-3 md:gap-4">
-            <div className="p-3 md:p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 group-hover:shadow-lg transition-all duration-300 flex-shrink-0">
-              <Icon name="Stethoscope" size={24} className="md:w-7 md:h-7 text-white group-hover:scale-110 transition-transform duration-300" />
+            <div className="p-3.5 md:p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30 group-hover:shadow-xl group-hover:shadow-blue-500/40 transition-all duration-300 flex-shrink-0 group-hover:scale-110">
+              <Icon name="Stethoscope" size={26} className="md:w-8 md:h-8 text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-blue-800 text-lg md:text-xl mb-1">Запись к врачу</p>
-              <p className="text-sm md:text-base text-blue-600/80 mb-1 leading-tight">
+              <p className="font-bold text-blue-900 text-xl md:text-2xl mb-1 tracking-tight">Запись к врачу</p>
+              <p className="text-sm md:text-base text-blue-700 mb-1.5 leading-tight font-medium">
                 Чат с Заиграевской ЦРБ
               </p>
-              <p className="text-xs md:text-sm text-blue-500/70 font-medium">Быстро и удобно</p>
+              <p className="text-xs md:text-sm text-blue-600/80 font-medium">Быстро и удобно</p>
             </div>
           </div>
           
           {/* Кнопка на всю ширину на мобильных */}
-          <div className="mt-4 md:mt-5">
+          <div className="mt-5 md:mt-6">
             <Button 
               size="lg"
-              className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base border-0"
+              className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-7 py-3.5 rounded-xl font-bold shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 hover:scale-105 transition-all duration-300 text-base md:text-lg border-0"
               onClick={() => window.open('https://t.me/ZaigrCRB/8', '_blank')}
             >
-              <Icon name="Calendar" size={18} className="mr-2" />
+              <Icon name="Calendar" size={20} className="mr-2.5" />
               Записаться
-              <Icon name="ExternalLink" size={14} className="ml-2 opacity-70" />
+              <Icon name="ExternalLink" size={16} className="ml-2.5 opacity-80" />
             </Button>
           </div>
         </CardContent>

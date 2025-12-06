@@ -102,40 +102,40 @@ const ImportantNumbers = () => {
   }, []);
 
   return (
-    <Card className="rounded-2xl md:rounded-3xl bg-white border border-gray-200 shadow-sm transition-all duration-300">
-      <CardHeader className="p-4 md:p-6 border-b border-gray-100">
+    <Card className="rounded-2xl md:rounded-3xl bg-gradient-to-br from-white to-gray-50 border-0 shadow-sm transition-all duration-300">
+      <CardHeader className="p-5 md:p-7 border-b-0 bg-gradient-to-r from-gorkhon-blue/5 to-transparent">
         <CardTitle className="flex items-center gap-3 md:gap-4">
-          <div className="p-2 md:p-3 rounded-xl bg-gorkhon-blue/10 flex-shrink-0">
-            <Icon name="Phone" size={20} className="md:w-6 md:h-6 text-gorkhon-blue" />
+          <div className="p-3 md:p-3.5 rounded-2xl bg-gradient-to-br from-gorkhon-blue to-gorkhon-blue/80 shadow-lg shadow-gorkhon-blue/20 flex-shrink-0">
+            <Icon name="Phone" size={22} className="md:w-7 md:h-7 text-white" />
           </div>
           <div className="min-w-0">
-            <span className="text-lg md:text-xl font-bold text-gray-900">Важные номера</span>
-            <p className="text-xs md:text-sm text-gray-500 font-normal mt-0.5 md:mt-1 hidden sm:block">Всегда под рукой в трудную минуту</p>
+            <span className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">Важные номера</span>
+            <p className="text-xs md:text-sm text-gray-600 font-medium mt-1 md:mt-1.5 hidden sm:block">Всегда под рукой в трудную минуту</p>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-3 md:p-6 space-y-2 md:space-y-3">
+      <CardContent className="p-4 md:p-7 space-y-2.5 md:space-y-3">
         {importantNumbers.map((contact, index) => (
-          <div key={index} className="group p-3 md:p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-200 border border-gray-200 hover:border-gray-300">
-            <div className="flex items-center gap-2 md:gap-4 w-full">
-              <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0 overflow-hidden">
-                <div className="p-2 md:p-2.5 rounded-lg bg-white border border-gray-200 flex-shrink-0">
-                  <Icon name={contact.icon} size={16} className="md:w-[18px] md:h-[18px] text-gorkhon-blue" />
+          <div key={index} className="group p-3.5 md:p-5 rounded-2xl bg-white hover:bg-gradient-to-r hover:from-white hover:to-gray-50 transition-all duration-300 border border-gray-100 hover:border-gorkhon-blue/30 hover:shadow-md hover:scale-[1.02]">
+            <div className="flex items-center gap-3 md:gap-4 w-full">
+              <div className="flex items-center gap-3 md:gap-3.5 flex-1 min-w-0 overflow-hidden">
+                <div className="p-2.5 md:p-3 rounded-xl bg-gradient-to-br from-gorkhon-blue/10 to-gorkhon-blue/5 border border-gorkhon-blue/10 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <Icon name={contact.icon} size={18} className="md:w-5 md:h-5 text-gorkhon-blue" />
                 </div>
                 <div className="flex-1 min-w-0 overflow-hidden">
-                  <p className="font-semibold text-sm md:text-base text-gray-900 truncate">{contact.name}</p>
-                  <p className="text-xs md:text-sm text-gray-500 truncate">{contact.person}</p>
-                  {contact.phone && <p className="text-xs text-gray-600 font-mono truncate mt-0.5">{contact.phone}</p>}
+                  <p className="font-bold text-sm md:text-base text-gray-900 truncate">{contact.name}</p>
+                  <p className="text-xs md:text-sm text-gray-600 truncate mt-0.5">{contact.person}</p>
+                  {contact.phone && <p className="text-xs text-gray-500 font-mono truncate mt-1">{contact.phone}</p>}
                 </div>
               </div>
               {contact.phone && (
                 <Button 
                   size="sm" 
-                  className="bg-gorkhon-pink hover:bg-gorkhon-pink/90 text-white px-2 py-2 h-10 md:h-9 rounded-xl text-xs flex-shrink-0 w-10 md:w-auto md:px-4 touch-none shadow-sm"
+                  className="bg-gradient-to-r from-gorkhon-pink to-gorkhon-pink/90 hover:from-gorkhon-pink/90 hover:to-gorkhon-pink text-white px-2 py-2 h-11 md:h-10 rounded-xl text-xs flex-shrink-0 w-11 md:w-auto md:px-5 touch-none shadow-lg shadow-gorkhon-pink/25 hover:shadow-xl hover:shadow-gorkhon-pink/30 hover:scale-105 transition-all duration-300"
                   onClick={() => window.open(`tel:${contact.phone}`, '_self')}
                 >
-                  <Icon name="Phone" size={14} />
-                  <span className="hidden md:inline ml-1.5">Позвонить</span>
+                  <Icon name="Phone" size={16} className="md:w-4 md:h-4" />
+                  <span className="hidden md:inline ml-2 font-semibold">Позвонить</span>
                 </Button>
               )}
             </div>
