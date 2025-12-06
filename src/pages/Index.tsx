@@ -26,7 +26,7 @@ const Index = () => {
   useEffect(() => {
     // Автоматическое обновление номеров у всех пользователей
     const updatePhoneNumbers = () => {
-      const currentVersion = '3.1'; // Версия обновления
+      const currentVersion = '3.2'; // Версия обновления
       const lastUpdate = localStorage.getItem('phoneNumbersVersion');
       
       if (lastUpdate !== currentVersion) {
@@ -42,7 +42,7 @@ const Index = () => {
             { name: "Нотариус Заиграево", person: "Нотариальные услуги", phone: "+7-301-364-16-14, +7-301-364-22-92", icon: "FileText" },
             { name: "Судебные приставы", person: "Заиграевский район", phone: "8-301-364-10-10", icon: "Scale" },
             { name: "Вакуумная машина", person: "Кондаков К.Ю., Горхон", phone: "+7-983-453-99-02", icon: "Truck" },
-            { name: "Почта Горхон", person: "Елена", phone: "8-914-843-45-93", icon: "Mail" },
+            { name: "Почта Горхон", person: "Волгина Наталья", phone: "+7-914-849-03-92", icon: "Mail" },
             { name: "Миграционная служба", person: "ГАИ Заиграево", phone: "8-301-364-15-70", icon: "Car" }
           ],
           transitNumbers: [
