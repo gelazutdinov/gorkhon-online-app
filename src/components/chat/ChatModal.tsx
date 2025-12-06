@@ -138,7 +138,13 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         
         try {
           const searchResponse = await fetch(`https://functions.poehali.dev/45af682d-92cb-4090-82b9-6ae2eb896eed?q=${encodeURIComponent(aiResponse.searchQuery)}`);
+          
+          if (!searchResponse.ok) {
+            throw new Error(`HTTP ${searchResponse.status}`);
+          }
+          
           const searchData = await searchResponse.json();
+          console.log('Search results:', searchData);
           
           let resultText = '';
           if (searchData.hasResults && searchData.results && searchData.results.length > 0) {
@@ -150,6 +156,16 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                 resultText += `📌 ${result}\n`;
               }
             });
+            
+            // Добавляем ссылки если есть детальные результаты
+            if (searchData.detailed_results && searchData.detailed_results.length > 0) {
+              resultText += '\n\n🔗 Источники:\n';
+              searchData.detailed_results.forEach((detail: any, index: number) => {
+                if (detail.url && index < 3) {
+                  resultText += `• ${detail.url}\n`;
+                }
+              });
+            }
           } else {
             resultText = '🔍 К сожалению, не нашла актуальной информации в интернете.\n\n💡 Рекомендую:\n• Проверить официальные источники\n• Спросить в местных группах\n• Написать агенту для уточнения';
           }
@@ -159,8 +175,9 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
             sender: 'support'
           }]);
         } catch (error) {
+          console.error('Search error:', error);
           setChatMessages(prev => [...prev, {
-            text: '⚠️ Не удалось выполнить поиск в интернете.\n\n💡 Попробуйте:\n• Переформулировать запрос\n• Спросить по-другому\n• Написать агенту для помощи',
+            text: `⚠️ Технический сбой при поиске: ${error instanceof Error ? error.message : 'неизвестная ошибка'}\n\n💡 Попробуйте:\n• Переформулировать запрос\n• Спросить по-другому\n• Обновить страницу\n\n🆘 Проблема не уходит? Напишите агенту!`,
             sender: 'support',
             showAgentButton: true
           }]);
