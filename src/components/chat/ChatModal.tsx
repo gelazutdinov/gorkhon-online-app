@@ -260,8 +260,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md flex flex-col shadow-2xl"
         style={{
           height: keyboardHeight > 0 ? `calc(100vh - ${keyboardHeight}px)` : '92vh',
-          maxHeight: keyboardHeight > 0 ? `calc(100vh - ${keyboardHeight}px)` : '92vh',
-          paddingBottom: keyboardHeight > 0 ? '0px' : 'max(env(safe-area-inset-bottom, 0px), 0px)'
+          maxHeight: keyboardHeight > 0 ? `calc(100vh - ${keyboardHeight}px)` : '92vh'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -363,12 +362,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         </div>
 
         {!isSystemChat && (
-          <div 
-            className="p-4 border-t bg-white/95 backdrop-blur-sm"
-            style={{
-              paddingBottom: keyboardHeight > 0 ? '8px' : 'max(env(safe-area-inset-bottom, 0px), 16px)'
-            }}
-          >
+          <div className="p-4 border-t bg-white/95 backdrop-blur-sm">
             {isLoading ? (
               <div className="text-center py-2">
                 <div className="inline-flex items-center gap-2 text-gray-500 text-sm">
