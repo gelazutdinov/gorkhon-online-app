@@ -8,15 +8,7 @@ interface HeaderProps {
 const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
-      <div className="md:hidden flex items-center justify-center pt-3 pb-2 px-4" style={{paddingTop: 'max(env(safe-area-inset-top, 0px), 12px)'}}>
-        <div className="bg-gorkhon-pink rounded-full px-6 py-2 shadow-lg animate-slide-down">
-          <span className="text-white font-bold text-sm tracking-wide">
-            Горхон.Online
-          </span>
-        </div>
-      </div>
-
-      <div className="shadow-lg md:shadow-md backdrop-blur-sm bg-gorkhon-pink/95 md:bg-gorkhon-pink rounded-b-2xl md:rounded-none" style={{paddingTop: 'max(0px, env(safe-area-inset-top, 0px))'}}>
+      <div className="shadow-lg md:shadow-md backdrop-blur-sm bg-gorkhon-pink/95 md:bg-gorkhon-pink rounded-b-2xl md:rounded-none" style={{paddingTop: 'max(env(safe-area-inset-top, 0px), 0px)'}}>
         <div className="px-4 py-3.5 md:py-4 flex items-center justify-between">
           <div className="md:hidden flex items-center justify-center w-full relative">
             <img 
