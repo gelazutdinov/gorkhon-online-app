@@ -1,13 +1,13 @@
 '''
-Business: Advanced web search using DuckDuckGo with fallbacks for Lina AI assistant
+Business: Web search using Wikipedia API for reliable results
 Args: event with query parameter 'q'
-Returns: Search results as JSON with snippets and URLs
+Returns: Search results as JSON with snippets
 '''
 import json
 import urllib.request
 import urllib.parse
 from typing import Dict, Any, List
-import re
+import ssl
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     method: str = event.get('httpMethod', 'GET')
@@ -54,78 +54,92 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         encoded_query = urllib.parse.quote(query)
         results: List[Dict[str, str]] = []
         
-        # Method 1: HTML scraping from DuckDuckGo
+        # Create SSL context that doesn't verify certificates (for Cloud Functions)
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        
+        # Wikipedia API search
         try:
-            search_url = f'https://html.duckduckgo.com/html/?q={encoded_query}'
+            # Search Wikipedia
+            search_url = f'https://ru.wikipedia.org/w/api.php?action=opensearch&search={encoded_query}&limit=3&namespace=0&format=json'
             req = urllib.request.Request(search_url)
-            req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
-            req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-            req.add_header('Accept-Language', 'ru-RU,ru;q=0.9,en;q=0.8')
+            req.add_header('User-Agent', 'LinaBot/1.0 (https://gorkhon.online; support@gorkhon.online)')
             
-            with urllib.request.urlopen(req, timeout=10) as response:
-                html = response.read().decode('utf-8')
+            with urllib.request.urlopen(req, timeout=10, context=ctx) as response:
+                data = json.loads(response.read().decode('utf-8'))
                 
-                # Extract snippets
-                snippet_pattern = r'class="result__snippet"[^>]*>([^<]+(?:<[^>]+>[^<]*</[^>]+>[^<]*)*)'
-                snippets = re.findall(snippet_pattern, html)
-                
-                # Extract URLs
-                url_pattern = r'class="result__url"[^>]*>([^<]+)'
-                urls = re.findall(url_pattern, html)
-                
-                # Extract titles
-                title_pattern = r'class="result__a"[^>]*>([^<]+)'
-                titles = re.findall(title_pattern, html)
-                
-                # Combine results
-                for i in range(min(len(snippets), 5)):
-                    snippet = re.sub(r'<[^>]+>', '', snippets[i]).strip()
-                    snippet = re.sub(r'\s+', ' ', snippet)
+                # data format: [query, [titles], [descriptions], [urls]]
+                if len(data) >= 4:
+                    titles = data[1]
+                    descriptions = data[2]
+                    urls = data[3]
                     
-                    if snippet and len(snippet) > 20:
-                        result_obj = {'text': snippet}
-                        if i < len(urls):
-                            result_obj['url'] = urls[i].strip()
-                        if i < len(titles):
-                            result_obj['title'] = titles[i].strip()
-                        results.append(result_obj)
-        except Exception as e:
-            print(f'HTML scraping failed: {e}')
-        
-        # Method 2: Fallback to API
-        if not results:
-            try:
-                api_url = f'https://api.duckduckgo.com/?q={encoded_query}&format=json&no_html=1&skip_disambig=1'
-                req_api = urllib.request.Request(api_url)
-                req_api.add_header('User-Agent', 'Mozilla/5.0')
-                
-                with urllib.request.urlopen(req_api, timeout=8) as response:
-                    data = json.loads(response.read().decode('utf-8'))
-                
-                if data.get('AbstractText'):
-                    results.append({
-                        'text': data['AbstractText'],
-                        'url': data.get('AbstractURL', ''),
-                        'title': 'Abstract'
-                    })
-                
-                if data.get('RelatedTopics'):
-                    for topic in data['RelatedTopics'][:4]:
-                        if isinstance(topic, dict) and topic.get('Text'):
+                    for i in range(min(len(titles), 3)):
+                        if descriptions[i]:
                             results.append({
-                                'text': topic['Text'],
-                                'url': topic.get('FirstURL', ''),
-                                'title': topic.get('Text', '')[:50]
+                                'text': descriptions[i],
+                                'url': urls[i] if i < len(urls) else '',
+                                'title': titles[i]
                             })
-            except Exception as e:
-                print(f'API fallback failed: {e}')
+        except Exception as e:
+            print(f'Wikipedia search failed: {e}')
         
-        # If still no results, return friendly message
+        # Fallback: try to get page extract if we have results
+        if results and len(results) > 0:
+            try:
+                page_title = urllib.parse.quote(results[0]['title'])
+                extract_url = f'https://ru.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles={page_title}&format=json'
+                req_extract = urllib.request.Request(extract_url)
+                req_extract.add_header('User-Agent', 'LinaBot/1.0')
+                
+                with urllib.request.urlopen(req_extract, timeout=8, context=ctx) as response:
+                    extract_data = json.loads(response.read().decode('utf-8'))
+                    pages = extract_data.get('query', {}).get('pages', {})
+                    
+                    for page_id, page_info in pages.items():
+                        extract = page_info.get('extract', '')
+                        if extract:
+                            # Take first 2 sentences
+                            sentences = extract.split('. ')[:2]
+                            short_extract = '. '.join(sentences)
+                            if short_extract and len(short_extract) > 50:
+                                results[0]['text'] = short_extract
+            except Exception as e:
+                print(f'Extract fetch failed: {e}')
+        
+        # If no results, try different approach
+        if not results:
+            # Try searching in English Wikipedia as fallback
+            try:
+                search_url_en = f'https://en.wikipedia.org/w/api.php?action=opensearch&search={encoded_query}&limit=2&namespace=0&format=json'
+                req_en = urllib.request.Request(search_url_en)
+                req_en.add_header('User-Agent', 'LinaBot/1.0')
+                
+                with urllib.request.urlopen(req_en, timeout=8, context=ctx) as response:
+                    data_en = json.loads(response.read().decode('utf-8'))
+                    
+                    if len(data_en) >= 4 and len(data_en[1]) > 0:
+                        titles = data_en[1]
+                        descriptions = data_en[2]
+                        urls = data_en[3]
+                        
+                        for i in range(min(len(titles), 2)):
+                            if descriptions[i]:
+                                results.append({
+                                    'text': f'{titles[i]}: {descriptions[i]}',
+                                    'url': urls[i] if i < len(urls) else '',
+                                    'title': titles[i]
+                                })
+            except Exception as e:
+                print(f'English Wikipedia failed: {e}')
+        
+        # If still no results
         if not results:
             results.append({
-                'text': f'По запросу "{query}" не найдено точной информации. Попробуйте переформулировать вопрос или спросите что-то другое.',
+                'text': f'По запросу "{query}" не нашла информации в Википедии. Попробуйте переформулировать или спросите о чём-то другом.',
                 'url': '',
-                'title': 'Результаты не найдены'
+                'title': 'Нет результатов'
             })
         
         # Format results as simple text list
@@ -148,17 +162,18 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         }
     
     except Exception as e:
+        print(f'Search error: {e}')
         return {
-            'statusCode': 500,
+            'statusCode': 200,  # Return 200 to avoid frontend errors
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
             'isBase64Encoded': False,
             'body': json.dumps({
-                'error': f'Search failed: {str(e)}',
                 'query': query,
-                'results': [f'Извините, поиск временно недоступен. Попробуйте позже или спросите что-то другое.'],
+                'results': [f'Сейчас не могу выполнить поиск. Попробуйте спросить по-другому или задайте вопрос о Горхоне — там я точно помогу!'],
+                'detailed_results': [],
                 'hasResults': False
             }, ensure_ascii=False)
         }
