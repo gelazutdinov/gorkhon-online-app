@@ -33,20 +33,21 @@ const Header = ({ onMenuClick, isSidebarOpen }: HeaderProps) => {
             </button>
           </div>
         
-        <div className="hidden md:flex items-center justify-between max-w-4xl mx-auto w-full">
-          <div className="flex items-center gap-3">
-            <img 
-              src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
-              alt="Горхон.Online" 
-              className="h-14 w-auto object-contain"
-            />
+          <div className="hidden md:flex items-center justify-between max-w-4xl mx-auto w-full">
+            <div className="flex items-center gap-3">
+              <img 
+                src="https://cdn.poehali.dev/files/1a1a192c-75b6-4f34-a536-33e715eec24e.png" 
+                alt="Горхон.Online" 
+                className="h-14 w-auto object-contain"
+              />
+            </div>
+            <button 
+              onClick={onMenuClick}
+              className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <Icon name="Menu" size={24} />
+            </button>
           </div>
-          <button 
-            onClick={onMenuClick}
-            className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <Icon name="Menu" size={24} />
-          </button>
         </div>
       </div>
     </div>
