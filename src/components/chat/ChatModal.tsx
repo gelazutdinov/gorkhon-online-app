@@ -213,7 +213,15 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         setIsLoading(true);
         
         try {
-          const searchResponse = await fetch(`https://functions.poehali.dev/45af682d-92cb-4090-82b9-6ae2eb896eed?q=${encodeURIComponent(aiResponse.searchQuery)}`);
+          const searchResponse = await fetch(`https://functions.poehali.dev/45af682d-92cb-4090-82b9-6ae2eb896eed?q=${encodeURIComponent(aiResponse.searchQuery)}`, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+            }
+          }).catch(err => {
+            console.error('Fetch error:', err);
+            throw new Error('Load failed');
+          });
           
           if (!searchResponse.ok) {
             throw new Error(`HTTP ${searchResponse.status}`);
@@ -253,10 +261,15 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
           }]);
         } catch (error) {
           console.error('Search error:', error);
+          
+          // Более понятное сообщение для пользователя
+          const errorMessage = error instanceof Error && error.message === 'Load failed'
+            ? 'К сожалению, не могу выполнить поиск в интернете прямо сейчас. Возможно, проблема с подключением.\n\nМогу помочь с вопросами о Горхоне, платформе или важными контактами!'
+            : `Не удалось выполнить поиск.\n\nМогу помочь по другим вопросам о Горхоне и платформе!`;
+          
           setChatMessages(prev => [...prev, {
-            text: `⚠️ Технический сбой при поиске: ${error instanceof Error ? error.message : 'неизвестная ошибка'}\n\n💡 Попробуйте:\n• Переформулировать запрос\n• Спросить по-другому\n• Обновить страницу\n\n🆘 Проблема не уходит? Напишите агенту!`,
+            text: errorMessage,
             sender: 'support',
-            showAgentButton: true,
             timestamp: getCurrentTime()
           }]);
         } finally {
