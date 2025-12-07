@@ -35,7 +35,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   const [showProfile, setShowProfile] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
-  // Функция для воспроизведения мягкого звука отправки
+  // Функция для воспроизведения мягкого звука "тап"
   const playSendSound = () => {
     try {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -45,16 +45,16 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
 
-      // Мягкий тон (E6 = 1318.51 Hz)
-      oscillator.frequency.setValueAtTime(1318.51, audioContext.currentTime);
+      // Низкий тон для мягкого "тап" (C5 = 523.25 Hz)
+      oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
       oscillator.type = 'sine';
 
-      // Очень тихий звук с плавным затуханием
-      gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+      // Тихий звук с быстрым затуханием для эффекта "тап"
+      gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
 
       oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.15);
+      oscillator.stop(audioContext.currentTime + 0.08);
     } catch (error) {
       console.log('Sound playback not supported');
     }
