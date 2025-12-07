@@ -12,6 +12,7 @@ interface ChatMessage {
   sender: 'user' | 'support';
   showAgentButton?: boolean;
   showAdminLink?: boolean;
+  timestamp?: string;
 }
 
 interface ChatModalProps {
@@ -24,7 +25,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => {
     if (!isSystemChat) {
       return [
-        {text: 'Здравствуйте!\n\nЯ — Лина, виртуальная помощница Горхон.Online. Готова помочь с любыми вопросами о платформе, поселке и сервисах.\n\nЧем могу быть полезна? 😊', sender: 'support'}
+        {text: 'Здравствуйте!\n\nЯ — Лина, виртуальная помощница Горхон.Online. Готова помочь с любыми вопросами о платформе, поселке и сервисах.\n\nЧем могу быть полезна? 😊', sender: 'support', timestamp: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
       ];
     }
     return [];
@@ -32,6 +33,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   const [chatInput, setChatInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   // Загрузка системных сообщений из localStorage (офлайн-режим)
   useEffect(() => {
@@ -107,6 +109,36 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
     }
   }, [isOpen, isSystemChat, showProfile]);
 
+  // Адаптация под клавиатуру
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleResize = () => {
+      if (window.visualViewport) {
+        const viewportHeight = window.visualViewport.height;
+        const windowHeight = window.innerHeight;
+        const diff = windowHeight - viewportHeight;
+        setKeyboardHeight(diff > 100 ? diff : 0);
+      }
+    };
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+      window.visualViewport.addEventListener('scroll', handleResize);
+    }
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+        window.visualViewport.removeEventListener('scroll', handleResize);
+      }
+    };
+  }, [isOpen]);
+
+  const getCurrentTime = () => {
+    return new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  };
+
   const playMessageSound = () => {
     const audio = new Audio('data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADhAC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7v/////////////////////////////////////////////////////////////////AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAA4SC+vk2AAAAAAD/+xDEAAPAAAGkAAAAIAAANIAAAARMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
     audio.volume = 0.3;
@@ -123,7 +155,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
       }
       
       playMessageSound();
-      setChatMessages(prev => [...prev, {text: userMsg, sender: 'user'}]);
+      setChatMessages(prev => [...prev, {text: userMsg, sender: 'user', timestamp: getCurrentTime()}]);
       setChatInput('');
       
       const aiResponse = getLinaResponse(userMsg);
@@ -131,7 +163,8 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
       if (aiResponse.needsWebSearch && aiResponse.searchQuery) {
         setChatMessages(prev => [...prev, {
           text: aiResponse.text,
-          sender: 'support'
+          sender: 'support',
+          timestamp: getCurrentTime()
         }]);
         
         setIsLoading(true);
@@ -172,14 +205,16 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
           
           setChatMessages(prev => [...prev, {
             text: resultText,
-            sender: 'support'
+            sender: 'support',
+            timestamp: getCurrentTime()
           }]);
         } catch (error) {
           console.error('Search error:', error);
           setChatMessages(prev => [...prev, {
             text: `⚠️ Технический сбой при поиске: ${error instanceof Error ? error.message : 'неизвестная ошибка'}\n\n💡 Попробуйте:\n• Переформулировать запрос\n• Спросить по-другому\n• Обновить страницу\n\n🆘 Проблема не уходит? Напишите агенту!`,
             sender: 'support',
-            showAgentButton: true
+            showAgentButton: true,
+            timestamp: getCurrentTime()
           }]);
         } finally {
           setIsLoading(false);
@@ -190,7 +225,8 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
             text: aiResponse.text,
             sender: 'support',
             showAgentButton: aiResponse.showAgentButton,
-            showAdminLink: aiResponse.showAdminLink
+            showAdminLink: aiResponse.showAdminLink,
+            timestamp: getCurrentTime()
           }]);
         }, 800);
       }
@@ -221,8 +257,12 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
       <div 
-        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md h-[92vh] md:max-h-[80vh] flex flex-col shadow-2xl"
-        style={{paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0px)'}}
+        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md flex flex-col shadow-2xl"
+        style={{
+          height: keyboardHeight > 0 ? `calc(100vh - ${keyboardHeight}px)` : '92vh',
+          maxHeight: keyboardHeight > 0 ? `calc(100vh - ${keyboardHeight}px)` : '92vh',
+          paddingBottom: keyboardHeight > 0 ? '0px' : 'max(env(safe-area-inset-bottom, 0px), 0px)'
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-4 border-b bg-white">
@@ -275,24 +315,27 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                   </div>
                 </div>
               ) : (
-                <div className="px-4 py-2">
+                <div className="px-4 py-3">
                   {msg.sender === 'support' && (
-                    <div className="flex items-start gap-2 mb-1">
-                      <div className="font-semibold text-sm text-gray-900">Лина</div>
+                    <div className="font-bold text-sm text-gray-900 mb-2">Лина</div>
+                  )}
+                  <div className="flex items-end gap-2">
+                    {msg.sender === 'support' && (
+                      <span className="text-xs text-gray-500 mb-1">{msg.timestamp || formatTimeIrkutsk()}</span>
+                    )}
+                    <div 
+                      className={`rounded-3xl px-4 py-3 max-w-[75%] ${
+                        msg.sender === 'user' 
+                          ? 'ml-auto bg-gradient-to-br from-purple-500 via-purple-600 to-pink-500 text-white' 
+                          : 'bg-purple-50 text-gray-900'
+                      }`}
+                    >
+                      <p className="text-sm whitespace-pre-line leading-relaxed">{msg.text}</p>
                     </div>
-                  )}
-                  <div 
-                    className={`rounded-2xl p-3.5 max-w-[85%] ${
-                      msg.sender === 'user' 
-                        ? 'ml-auto bg-gradient-to-br from-purple-500 to-pink-500 text-white' 
-                        : 'bg-purple-50 text-gray-900'
-                    }`}
-                  >
-                    <p className="text-sm whitespace-pre-line leading-relaxed">{msg.text}</p>
+                    {msg.sender === 'user' && (
+                      <span className="text-xs text-gray-500 mb-1">{msg.timestamp || formatTimeIrkutsk()}</span>
+                    )}
                   </div>
-                  {msg.sender === 'support' && (
-                    <div className="text-xs text-gray-500 mt-1 ml-1">{formatTimeIrkutsk()}</div>
-                  )}
                   {msg.showAgentButton && (
                     <a
                       href="https://forms.yandex.ru/u/687f5b9a84227c08790f3222/"
@@ -320,7 +363,12 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         </div>
 
         {!isSystemChat && (
-          <div className="p-4 border-t bg-white">
+          <div 
+            className="p-4 border-t bg-white/95 backdrop-blur-sm"
+            style={{
+              paddingBottom: keyboardHeight > 0 ? '8px' : 'max(env(safe-area-inset-bottom, 0px), 16px)'
+            }}
+          >
             {isLoading ? (
               <div className="text-center py-2">
                 <div className="inline-flex items-center gap-2 text-gray-500 text-sm">
@@ -329,19 +377,22 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                 </div>
               </div>
             ) : (
-              <div className="flex items-center gap-2 bg-gray-100 rounded-2xl p-2">
+              <div className="flex items-center gap-2 bg-gray-100 rounded-3xl p-2 shadow-sm">
+                <button className="text-gray-400 p-2 active:bg-gray-200 rounded-full transition-colors">
+                  <Icon name="Paperclip" size={20} />
+                </button>
                 <input
                   type="text"
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                  onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                   placeholder="Ваше сообщение"
-                  className="flex-1 px-3 py-2 bg-transparent border-none focus:outline-none text-sm"
+                  className="flex-1 px-2 py-2 bg-transparent border-none focus:outline-none text-sm"
                 />
                 <button 
                   onClick={sendMessage}
                   disabled={!chatInput.trim()}
-                  className="bg-gorkhon-pink text-white p-2.5 rounded-xl hover:bg-gorkhon-pink/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-gradient-to-br from-purple-500 to-pink-500 text-white p-2.5 rounded-full active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                 >
                   <Icon name="Send" size={18} />
                 </button>
