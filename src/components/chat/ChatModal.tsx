@@ -134,7 +134,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
     }
   }, [isOpen, isSystemChat, showProfile]);
 
-  // Адаптация под клавиатуру
+  // Адаптация под клавиатуру для всех мобильных устройств
   useEffect(() => {
     if (!isOpen) return;
 
@@ -143,20 +143,38 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         const viewportHeight = window.visualViewport.height;
         const windowHeight = window.innerHeight;
         const diff = windowHeight - viewportHeight;
-        setKeyboardHeight(diff > 100 ? diff : 0);
+        
+        // Устанавливаем высоту клавиатуры если разница больше 50px
+        setKeyboardHeight(diff > 50 ? diff : 0);
+        
+        // Скроллим к полю ввода когда клавиатура открывается
+        if (diff > 50) {
+          setTimeout(() => {
+            const inputElement = document.querySelector('input[type="text"]') as HTMLElement;
+            if (inputElement) {
+              inputElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 100);
+        }
       }
     };
 
+    // Добавляем обработчики для разных событий
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', handleResize);
       window.visualViewport.addEventListener('scroll', handleResize);
+      handleResize(); // Вызываем сразу для начальной настройки
     }
+
+    // Fallback для устройств без visualViewport API
+    window.addEventListener('resize', handleResize);
 
     return () => {
       if (window.visualViewport) {
         window.visualViewport.removeEventListener('resize', handleResize);
         window.visualViewport.removeEventListener('scroll', handleResize);
       }
+      window.removeEventListener('resize', handleResize);
     };
   }, [isOpen]);
 
@@ -282,10 +300,10 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50" onClick={onClose}>
       <div 
-        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md flex flex-col shadow-2xl"
+        className="bg-white rounded-t-2xl md:rounded-2xl w-full md:w-96 md:max-w-md flex flex-col shadow-2xl transition-all duration-200"
         style={{
-          height: keyboardHeight > 0 ? `calc(100vh - ${keyboardHeight}px)` : '92vh',
-          maxHeight: keyboardHeight > 0 ? `calc(100vh - ${keyboardHeight}px)` : '92vh'
+          height: keyboardHeight > 0 ? `${window.visualViewport?.height || window.innerHeight}px` : '92vh',
+          maxHeight: keyboardHeight > 0 ? `${window.visualViewport?.height || window.innerHeight}px` : '92vh'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -387,7 +405,13 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         </div>
 
         {!isSystemChat && (
-          <div className="p-4 border-t bg-white/95 backdrop-blur-sm">
+          <div 
+            className="p-4 border-t bg-white sticky bottom-0"
+            style={{
+              position: keyboardHeight > 0 ? 'sticky' : 'relative',
+              bottom: 0
+            }}
+          >
             {isLoading ? (
               <div className="text-center py-2">
                 <div className="inline-flex items-center gap-2 text-gray-500 text-sm">
@@ -405,6 +429,15 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
+                  onFocus={() => {
+                    // Скроллим к полю при фокусе
+                    setTimeout(() => {
+                      const input = document.activeElement as HTMLElement;
+                      if (input) {
+                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    }, 300);
+                  }}
                   placeholder="Ваше сообщение"
                   className="flex-1 px-2 py-2 bg-transparent border-none focus:outline-none text-sm"
                 />
