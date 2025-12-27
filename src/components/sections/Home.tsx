@@ -9,7 +9,6 @@ import WeatherWidget from "@/components/features/WeatherWidget";
 import RecommendationsBanner from "@/components/RecommendationsBanner";
 
 import Icon from "@/components/ui/icon";
-import { saveInteraction, cleanOldInteractions } from "@/utils/recommendations";
 
 interface Photo {
   url: string;
@@ -56,8 +55,6 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
       setSections(getDefaultSections());
     }
     setLoading(false);
-    
-    cleanOldInteractions();
   }, []);
 
   const availableSectionIds = useMemo(() => 
@@ -68,11 +65,9 @@ const Home = ({ onOpenPhotoCarousel }: HomeProps) => {
   );
 
   const handleSectionView = useCallback((sectionId: string, sectionName: string) => {
-    saveInteraction(sectionId, sectionName, 'view');
   }, []);
 
   const handleSectionClick = useCallback((sectionId: string, sectionName: string) => {
-    saveInteraction(sectionId, sectionName, 'click');
   }, []);
 
   const renderSection = useCallback((sectionId: string, sectionName: string) => {

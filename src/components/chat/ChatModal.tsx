@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import { sanitizeInput, preventXSS } from "@/utils/security";
 import Icon from "@/components/ui/icon";
 import { getLinaResponse } from "@/utils/linaKnowledge";
 import ChannelProfile from "./ChannelProfile";
-import { formatTimeIrkutsk } from "@/utils/timezone";
 
 const SYSTEM_MESSAGES_URL = 'https://functions.poehali.dev/a7b8d7b8-eb5d-4ecc-ac30-8672db766806';
 
@@ -190,8 +188,7 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
 
   const sendMessage = async () => {
     if (chatInput.trim()) {
-      const sanitized = sanitizeInput(chatInput.trim());
-      const userMsg = preventXSS(sanitized);
+      const userMsg = chatInput.trim();
       
       if (userMsg.length > 1000) {
         return;

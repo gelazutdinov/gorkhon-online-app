@@ -1,5 +1,4 @@
 
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,7 +16,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./components/legal/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./components/legal/TermsOfService"));
 const DataProtection = lazy(() => import("./components/legal/DataProtection"));
-const SaveTestForm = lazy(() => import("./components/SaveTestForm"));
+
 
 // Оптимизированная конфигурация QueryClient
 const queryClient = new QueryClient({
@@ -36,7 +35,6 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
 
-      <Toaster />
       <Sonner />
       <BrowserRouter>
         <Suspense fallback={
@@ -53,7 +51,7 @@ const App = () => (
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/data-protection" element={<DataProtection />} />
-            <Route path="/save-test" element={<SaveTestForm />} />
+
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
