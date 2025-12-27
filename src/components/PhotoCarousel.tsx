@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import Icon from "@/components/ui/icon";
 import { useEffect } from "react";
 
@@ -53,6 +54,9 @@ const PhotoCarousel = ({
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl w-full p-0 bg-black/95 max-h-[100dvh] md:max-h-screen overflow-hidden">
+        <VisuallyHidden>
+          <DialogTitle>Просмотр фото</DialogTitle>
+        </VisuallyHidden>
         {selectedImageIndex !== null && selectedPvzPhotos.length > 0 && selectedPvzPhotos[selectedImageIndex] && (
           <div className="relative flex items-center justify-center min-h-0">
             <img
