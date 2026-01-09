@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
-import { getLinaResponse } from '@/utils/linaKnowledge';
 
 interface Message {
   id: string;
@@ -84,22 +83,9 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const performWebSearch = async (query: string): Promise<string[]> => {
-    try {
-      setIsSearching(true);
-      const response = await fetch(`https://functions.poehali.dev/45af682d-92cb-4090-82b9-6ae2eb896eed?q=${encodeURIComponent(query)}`);
-      const data = await response.json();
-      
-      if (data.results && data.results.length > 0) {
-        return data.results;
-      }
-      return [];
-    } catch (error) {
-      console.error('Web search error:', error);
-      return [];
-    } finally {
-      setIsSearching(false);
-    }
+  const performWebSearch = async (_query: string): Promise<string[]> => {
+    setIsSearching(false);
+    return [];
   };
 
   const findResponse = async (question: string): Promise<{ text: string; quickReplies?: string[] }> => {
@@ -116,31 +102,10 @@ const LinaAssistant = ({ onClose }: LinaAssistantProps) => {
       }
     }
 
-    const knowledgeResponse = getLinaResponse(question);
-    
-    if (knowledgeResponse.needsWebSearch && knowledgeResponse.searchQuery) {
-      const searchResults = await performWebSearch(knowledgeResponse.searchQuery);
-      
-      if (searchResults.length > 0) {
-        const enhancedText = `${knowledgeResponse.text}\n\n🔍 Найдено в интернете:\n${searchResults.slice(0, 3).map((r, i) => `${i + 1}. ${r}`).join('\n\n')}`;
-        return { text: enhancedText, quickReplies: ['Ещё вопрос', 'Главная'] };
-      }
-    }
-    
-    if (knowledgeResponse.showAdminLink) {
-      return { 
-        text: knowledgeResponse.text, 
-        quickReplies: ['Открыть админ-панель', 'Важные контакты'] 
-      };
-    }
-    
-    const quickReplies = knowledgeResponse.category === 'platform' 
-      ? ['Важные контакты', 'Поиск в интернете', 'О платформе']
-      : knowledgeResponse.category === 'technical'
-      ? ['Написать агенту', 'Поиск решения', 'Главная']
-      : ['Поиск в интернете', 'Ещё вопрос', 'Главная'];
-    
-    return { text: knowledgeResponse.text, quickReplies };
+    return { 
+      text: 'Извините, эта функция временно недоступна. Могу помочь чем-то ещё?',
+      quickReplies: ['Важные контакты', 'О платформе', 'Главная']
+    };
   };
 
   const handleSendMessage = async () => {

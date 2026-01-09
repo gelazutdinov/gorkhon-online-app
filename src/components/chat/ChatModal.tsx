@@ -78,35 +78,12 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
             }
           }
           
-          // Если нет локальных сообщений, пытаемся загрузить с сервера
-          fetch(SYSTEM_MESSAGES_URL)
-            .then(response => {
-              if (!response.ok) throw new Error('Network error');
-              return response.json();
-            })
-            .then(data => {
-              if (data.messages && data.messages.length > 0) {
-                setChatMessages(data.messages.map((msg: any) => ({
-                  text: msg.text,
-                  sender: 'support' as const
-                })));
-              } else {
-                setChatMessages([{
-                  text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
-                  sender: 'support'
-                }]);
-              }
-            })
-            .catch(() => {
-              // При ошибке показываем приветственное сообщение
-              setChatMessages([{
-                text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
-                sender: 'support'
-              }]);
-            })
-            .finally(() => {
-              setIsLoading(false);
-            });
+          // Если нет локальных сообщений, показываем приветственное
+          setChatMessages([{
+            text: '👋 Добро пожаловать в системный чат Горхон.Online!\n\n📢 Следите за новостями и обновлениями здесь!',
+            sender: 'support'
+          }]);
+          setIsLoading(false);
         } catch (error) {
           console.error('Failed to load system messages:', error);
           setChatMessages([{
@@ -203,78 +180,12 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
         searchQuery: ''
       };
       
-      if (aiResponse.needsWebSearch && aiResponse.searchQuery) {
+      if (aiResponse.needsWebSearch) {
         setChatMessages(prev => [...prev, {
-          text: aiResponse.text,
+          text: 'Извините, поиск в интернете временно недоступен. Могу помочь с вопросами о Горхоне и важными контактами!',
           sender: 'support',
           timestamp: getCurrentTime()
         }]);
-        
-        setIsLoading(true);
-        
-        try {
-          const searchResponse = await fetch(`https://functions.poehali.dev/45af682d-92cb-4090-82b9-6ae2eb896eed?q=${encodeURIComponent(aiResponse.searchQuery)}`, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-            }
-          }).catch(err => {
-            console.error('Fetch error:', err);
-            throw new Error('Load failed');
-          });
-          
-          if (!searchResponse.ok) {
-            throw new Error(`HTTP ${searchResponse.status}`);
-          }
-          
-          const searchData = await searchResponse.json();
-          console.log('Search results:', searchData);
-          
-          let resultText = '';
-          if (searchData.hasResults && searchData.results && searchData.results.length > 0) {
-            resultText = '✅ Вот что мне удалось найти:\n\n';
-            searchData.results.forEach((result: string, index: number) => {
-              if (index === 0) {
-                resultText += result + '\n\n';
-              } else {
-                resultText += `📌 ${result}\n`;
-              }
-            });
-            
-            // Добавляем ссылки если есть детальные результаты
-            if (searchData.detailed_results && searchData.detailed_results.length > 0) {
-              resultText += '\n\n🔗 Источники:\n';
-              searchData.detailed_results.forEach((detail: any, index: number) => {
-                if (detail.url && index < 3) {
-                  resultText += `• ${detail.url}\n`;
-                }
-              });
-            }
-          } else {
-            resultText = '🔍 К сожалению, не нашла актуальной информации в интернете.\n\n💡 Рекомендую:\n• Проверить официальные источники\n• Спросить в местных группах\n• Написать агенту для уточнения';
-          }
-          
-          setChatMessages(prev => [...prev, {
-            text: resultText,
-            sender: 'support',
-            timestamp: getCurrentTime()
-          }]);
-        } catch (error) {
-          console.error('Search error:', error);
-          
-          // Более понятное сообщение для пользователя
-          const errorMessage = error instanceof Error && error.message === 'Load failed'
-            ? 'Не могу сейчас поискать в интернете — проблема с подключением.\n\nЗато могу помочь с вопросами о Горхоне, платформе или подсказать важные контакты!'
-            : `Поиск не сработал.\n\nЧем ещё помочь?`;
-          
-          setChatMessages(prev => [...prev, {
-            text: errorMessage,
-            sender: 'support',
-            timestamp: getCurrentTime()
-          }]);
-        } finally {
-          setIsLoading(false);
-        }
       } else {
         setTimeout(() => {
           setChatMessages(prev => [...prev, {

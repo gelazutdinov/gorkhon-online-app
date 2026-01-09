@@ -22,15 +22,12 @@ const SystemChatManagement = () => {
   const loadMessages = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(SYSTEM_MESSAGES_URL);
-      const data = await response.json();
-      
-      if (data.messages) {
-        setSystemMessages(data.messages);
+      const saved = localStorage.getItem('systemMessages');
+      if (saved) {
+        setSystemMessages(JSON.parse(saved));
       }
     } catch (error) {
       console.error('Failed to load messages:', error);
-      alert('⚠️ Не удалось загрузить сообщения. Проверьте подключение к интернету.');
     } finally {
       setIsLoading(false);
     }
@@ -41,27 +38,20 @@ const SystemChatManagement = () => {
     
     setIsSending(true);
     try {
-      const response = await fetch(SYSTEM_MESSAGES_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Admin-Token': 'admin2024'
-        },
-        body: JSON.stringify({ text: newMessage.trim() })
-      });
+      const message: SystemMessage = {
+        id: Date.now().toString(),
+        text: newMessage.trim(),
+        timestamp: new Date().toISOString()
+      };
       
-      if (response.ok) {
-        const data = await response.json();
-        
-        setSystemMessages(prev => [data.message, ...prev]);
-        setNewMessage('');
-        alert('✅ Новость отправлена в системный чат! Все жители увидят её при открытии чата.');
-      } else {
-        alert('❌ Не удалось отправить сообщение. Проверьте права доступа.');
-      }
+      const updated = [message, ...systemMessages];
+      setSystemMessages(updated);
+      localStorage.setItem('systemMessages', JSON.stringify(updated));
+      setNewMessage('');
+      alert('✅ Новость отправлена в системный чат! Все жители увидят её при открытии чата.');
     } catch (error) {
       console.error('Failed to send message:', error);
-      alert('❌ Ошибка при отправке сообщения. Проверьте подключение к интернету.');
+      alert('❌ Ошибка при отправке сообщения.');
     } finally {
       setIsSending(false);
     }
