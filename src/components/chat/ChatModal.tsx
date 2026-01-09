@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
-import { getLinaResponse } from "@/utils/linaKnowledge";
 import ChannelProfile from "./ChannelProfile";
 
 const SYSTEM_MESSAGES_URL = 'https://functions.poehali.dev/a7b8d7b8-eb5d-4ecc-ac30-8672db766806';
@@ -198,7 +197,11 @@ const ChatModal = ({ isOpen, onClose, isSystemChat = false }: ChatModalProps) =>
       setChatMessages(prev => [...prev, {text: userMsg, sender: 'user', timestamp: getCurrentTime()}]);
       setChatInput('');
       
-      const aiResponse = getLinaResponse(userMsg);
+      const aiResponse = {
+        text: 'Извините, функция временно недоступна.',
+        needsWebSearch: false,
+        searchQuery: ''
+      };
       
       if (aiResponse.needsWebSearch && aiResponse.searchQuery) {
         setChatMessages(prev => [...prev, {
