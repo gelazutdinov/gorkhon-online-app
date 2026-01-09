@@ -5,7 +5,6 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Icon from '@/components/ui/icon';
-import { logSecurityEvent, rateLimit } from '@/utils/security';
 
 interface AdminAuthProps {
   onAuthenticated: () => void;
@@ -40,7 +39,6 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
         sessionStorage.removeItem('admin_session_token');
         sessionStorage.removeItem('admin_session_expires');
         sessionStorage.removeItem('admin_email');
-        logSecurityEvent('ADMIN_SESSION_EXPIRED');
       }
     }
   }, [onAuthenticated]);
@@ -50,17 +48,11 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
     setIsLoading(true);
     setError('');
 
-    if (!rateLimit('admin_login', 3, 300000)) {
-      setError('Слишком много попыток входа. Попробуйте через 5 минут.');
-      setIsLoading(false);
-      logSecurityEvent('ADMIN_LOGIN_RATE_LIMIT', { email });
-      return;
-    }
+
 
     if (email !== DEVELOPER_EMAIL) {
       setError('Доступ запрещен. Только для разработчиков.');
       setIsLoading(false);
-      logSecurityEvent('ADMIN_LOGIN_INVALID_EMAIL', { email });
       return;
     }
 
@@ -71,8 +63,6 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
       
       const attempts = parseInt(sessionStorage.getItem('login_attempts') || '0') + 1;
       sessionStorage.setItem('login_attempts', attempts.toString());
-      
-      logSecurityEvent('ADMIN_LOGIN_FAILED', { email, attempts });
       
       if (attempts >= 5) {
         setError('Слишком много попыток входа. Попробуйте позже.');
@@ -89,8 +79,6 @@ const AdminAuth = ({ onAuthenticated }: AdminAuthProps) => {
     sessionStorage.setItem('admin_session_token', sessionToken);
     sessionStorage.setItem('admin_session_expires', expiresAt.toString());
     sessionStorage.setItem('admin_email', email);
-    
-    logSecurityEvent('ADMIN_LOGIN_SUCCESS', { email });
     
     setTimeout(() => {
       setIsLoading(false);

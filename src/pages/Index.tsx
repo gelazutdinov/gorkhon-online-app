@@ -1,6 +1,5 @@
 import { useState, useCallback, memo, useEffect } from "react";
 import PhotoCarousel from "@/components/PhotoCarousel";
-import NotificationsBanner from "@/components/NotificationsBanner";
 import InstallPrompt from "@/components/InstallPrompt";
 import SplashScreen from "@/components/SplashScreen";
 import RecommendationNotice from "@/components/RecommendationNotice";
@@ -107,8 +106,6 @@ const Index = () => {
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           isSidebarOpen={isSidebarOpen}
         />
-
-        <NotificationsBanner />
 
         <div className="flex pt-20 md:pt-24">
           <main className="flex-1 bg-gray-50 min-h-screen relative z-10 overflow-x-hidden">

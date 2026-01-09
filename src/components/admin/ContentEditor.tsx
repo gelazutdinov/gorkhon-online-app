@@ -7,7 +7,6 @@ import SettingsTab from './tabs/SettingsTab';
 import PreviewTab from './tabs/PreviewTab';
 import NumberModal from './modals/NumberModal';
 import TelegramBotSetupModal from './modals/TelegramBotSetupModal';
-import { telegramMockService } from '@/services/telegramMockService';
 
 interface ImportantNumber {
   id: string;
@@ -73,7 +72,7 @@ const ContentEditor = () => {
   }, []);
 
   const checkBotConfiguration = () => {
-    setIsBotConfigured(telegramMockService.isServerConfigured());
+    setIsBotConfigured(false);
   };
 
   const loadContent = () => {

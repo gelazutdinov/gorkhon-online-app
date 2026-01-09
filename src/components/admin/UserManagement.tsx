@@ -1,36 +1,24 @@
-import { useState, useEffect } from 'react';
-import { userService } from '@/services/userService';
-import { UserProfile, DatabaseStats } from '@/types/user';
+import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  status: 'active' | 'blocked' | 'pending';
+}
+
+interface DatabaseStats {
+  totalUsers: number;
+  activeUsers: number;
+  blockedUsers: number;
+}
+
 const UserManagement = () => {
-  const [users, setUsers] = useState<UserProfile[]>([]);
-  const [stats, setStats] = useState<DatabaseStats | null>(null);
+  const [users] = useState<UserProfile[]>([]);
+  const [stats] = useState<DatabaseStats | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    setLoading(true);
-    try {
-      const allUsers = await userService.getAllUsers();
-      // Фильтруем только реальных пользователей (исключаем тестовых)
-      const realUsers = allUsers.filter(user => 
-        !user.email.includes('@example.com') && 
-        user.email !== 'admin@gorkhon.online'
-      );
-      setUsers(realUsers);
-      setStats(userService.getDatabaseStats());
-    } catch (error) {
-      console.error('Ошибка загрузки данных:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -39,24 +27,12 @@ const UserManagement = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const handleStatusChange = async (userId: string, newStatus: UserProfile['status']) => {
-    const result = await userService.updateUserStatus(userId, newStatus);
-    if (result.success) {
-      await loadData();
-      alert('Статус пользователя изменен');
-    } else {
-      alert(`Ошибка: ${result.error}`);
-    }
+  const handleStatusChange = async (_userId: string, _newStatus: UserProfile['status']) => {
+    console.log('Status change not implemented');
   };
 
-  const handleVerifyUser = async (userId: string, verified: boolean) => {
-    const result = await userService.verifyUser(userId, verified);
-    if (result.success) {
-      await loadData();
-      alert(verified ? 'Пользователь верифицирован' : 'Верификация снята');
-    } else {
-      alert(`Ошибка: ${result.error}`);
-    }
+  const handleVerifyUser = async (_userId: string, _verified: boolean) => {
+    console.log('Verify user not implemented');
   };
 
   const exportData = () => {

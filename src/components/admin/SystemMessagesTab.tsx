@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { SystemMessage } from './types';
 import { useRef, useEffect } from 'react';
-import { formatTimeIrkutsk, formatDateTimeIrkutsk } from '@/utils/timezone';
 
 interface SystemMessagesTabProps {
   systemMessages: SystemMessage[];
@@ -27,7 +26,11 @@ const SystemMessagesTab = ({
 
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
-    return formatTimeIrkutsk(date);
+    return date.toLocaleTimeString('ru-RU', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      timeZone: 'Asia/Irkutsk'
+    });
   };
 
   return (

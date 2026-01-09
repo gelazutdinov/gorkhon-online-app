@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { telegramMockService } from '@/services/telegramMockService';
 
 interface TelegramBotSetupModalProps {
   isOpen: boolean;
@@ -26,25 +25,20 @@ const TelegramBotSetupModal = ({ isOpen, onClose, onSuccess }: TelegramBotSetupM
     setError('');
 
     try {
-      // Настраиваем бота (демо режим)
-      const result = await telegramMockService.configureBotServer(botToken.trim());
-      
-      if (!result.success) {
-        setError(result.error || 'Ошибка настройки сервера');
+      if (botToken.trim().length < 5) {
+        setError('Попробуйте ввести любой текст длиннее 5 символов');
         setIsValidating(false);
         return;
       }
       
-      // В демо режиме всё успешно настроено
       setError('');
-      setSubscribersCount(result.subscribersCount || 0);
+      setSubscribersCount(0);
       setStep(2);
       
       onSuccess();
     } catch (error) {
-      console.error('Демо режим - ошибка игнорируется:', error);
-      // В демо режиме показываем дружественную ошибку
-      setError('Попробуйте ввести любой текст длиннее 5 символов');
+      console.error('Error:', error);
+      setError('Произошла ошибка');
     } finally {
       setIsValidating(false);
     }

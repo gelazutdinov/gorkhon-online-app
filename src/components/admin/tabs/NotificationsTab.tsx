@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import { telegramMockService } from '@/services/telegramMockService';
 
 interface TelegramNotification {
   id: string;
@@ -56,8 +55,7 @@ const NotificationsTab = ({ onSendNotification }: NotificationsTabProps) => {
   const checkBotStatus = async () => {
     setBotStatus('checking');
     try {
-      const health = await telegramMockService.checkHealth();
-      setBotStatus(health.isOnline && health.botConfigured ? 'connected' : 'disconnected');
+      setBotStatus('disconnected');
     } catch (error) {
       setBotStatus('disconnected');
     }
